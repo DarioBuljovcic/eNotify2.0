@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "441876563435",
+    "project_id": "enotify-c579a",
+    "storage_bucket": "enotify-c579a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441876563435:android:aeb4c72e787fb68d6205ae",
+        "android_client_info": {
+          "package_name": "com.enotifyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441876563435-jutc11gk67red79rf7iflol69ie25ucf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.enotifyapp",
+            "certificate_hash": "bfdf1537472c67c1c7536831d45d34ce019617cc"
+          }
+        },
+        {
+          "client_id": "441876563435-8r9ahg1c46pf3phbf9ukkqdjf02evahe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVUykDQbpWvaf6ifiK_-k8nuLchIbBvJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441876563435-2ejfn7n34mv0rtqg6917lequieqpklg9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
