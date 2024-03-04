@@ -27,23 +27,25 @@ import Notification from './screens/All/Notification';
 
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
-import {LinkingOptions} from '@react-navigation/native';
 
 const Stack = createStackNavigator<Navigation>();
-const NAVIGATION_IDS = ['home', 'post', 'settings'];
-type Loading1 = string;
+const NAVIGATION_IDS = ['Registration', 'Notification'];
+type Screens = {
+  [key: string]: string;
+};
 
 function buildDeepLinkFromNotificationData(data: any): string | null {
+  console.log('This opened');
   const navigationId = data?.navigationId;
   if (!NAVIGATION_IDS.includes(navigationId)) {
     console.warn('Unverified navigationId', navigationId);
     return null;
   }
-  if (navigationId === 'home') {
-    return 'myapp://home';
+  if (navigationId === 'Registration') {
+    return 'myapp://Registration';
   }
-  if (navigationId === 'settings') {
-    return 'myapp://settings';
+  if (navigationId === 'Notification') {
+    return 'myapp://Notification';
   }
   const postId = data?.postId;
   if (typeof postId === 'string') {
@@ -56,10 +58,13 @@ function buildDeepLinkFromNotificationData(data: any): string | null {
 const linking = {
   prefixes: ['myapp://'],
   config: {
-    initialRouteName: 'Home',
-    screens: {},
+    initialRouteName: `Registration`,
+    screens: {
+      Registration: `Registration`,
+    } as Screens,
   },
   async getInitialURL() {
+    console.log('This opened getInitialURL');
     const url = await Linking.getInitialURL();
     if (typeof url === 'string') {
       return url;
@@ -72,6 +77,7 @@ const linking = {
     }
   },
   subscribe(listener: (url: string) => void) {
+    console.log('This opened subscribe');
     const onReceiveURL = ({url}: {url: string}) => listener(url);
 
     // Listen to incoming links from deep linking
@@ -106,7 +112,7 @@ function App(): React.JSX.Element {
       fallback={<ActivityIndicator animating />}>
       <Stack.Navigator>
         <Stack.Screen name="Loading" component={Loading} />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="Registration"
           component={Registration}
           options={({navigation}) => ({
@@ -192,7 +198,7 @@ function App(): React.JSX.Element {
               </TouchableOpacity>
             ),
           })}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
