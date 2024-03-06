@@ -1,7 +1,6 @@
 import {View, Text, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Input} from 'react-native-elements';
 import {RegistrationProps, User} from '../../components/Types/indexTypes';
@@ -27,7 +26,9 @@ const Registration = ({navigation}: RegistrationProps) => {
           const user: User = querySnapshot.docs[0].data() as User;
           saveUser(user);
           Alert.alert('Uspesno ste se ulogovali');
-          navigation.navigate('Student');
+          user.Role === 'Student'
+            ? navigation.navigate('Student')
+            : navigation.navigate('Professor');
         } else {
           // Document does not exist
           Alert.alert('Nije dobar kod koji ste upisali');

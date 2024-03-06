@@ -10,9 +10,9 @@ export default function Loading({navigation}: LoadingProps) {
     // await AsyncStorage.setItem('role', 'Profesor');
     // await AsyncStorage.setItem('razred', '4ITS - Profesor');
     // await AsyncStorage.setItem('naziv', 'Dario Buljovčić');
-    // await AsyncStorage.removeItem('naziv');
-    // await AsyncStorage.removeItem('razred');
-    // await AsyncStorage.removeItem('role');
+    // await AsyncStorage.removeItem('Name');
+    // await AsyncStorage.removeItem('Class');
+    // await AsyncStorage.removeItem('Role');
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Loading({navigation}: LoadingProps) {
       }
     };
     uzmiNaziv();
-
+    console.log(naziv);
     naziv === true ? getRazred() : navigation.navigate('Registration');
   }, [naziv]);
   return (

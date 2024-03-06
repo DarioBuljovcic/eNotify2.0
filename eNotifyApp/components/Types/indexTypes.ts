@@ -2,6 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { Timestamp } from "firebase/firestore";
 
 
+
 //Navigation
 type Navigation = {
     Loading: undefined,
@@ -14,6 +15,7 @@ type Navigation = {
 }
 type LoadingProps = StackScreenProps<Navigation, "Loading">
 type StudentProps = StackScreenProps<Navigation, "Student">
+type ProfessorProps = StackScreenProps<Navigation, "Professor">
 type RegistrationProps = StackScreenProps<Navigation, "Registration">
 type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
 //Notification
@@ -54,6 +56,6 @@ type Theme ={
 }
 
 
-export type {Navigation,Theme,LoadingProps,StudentProps,RegistrationProps,Notification,User,NotificationLoaderProps};
+export type {Navigation,Theme,LoadingProps,StudentProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,Notification,User};
 
 

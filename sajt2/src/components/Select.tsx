@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import "./select.css";
+import "./css/select.css";
 
 type SelectOption = {
-  razred: string;
+  Class: string;
   id: string;
 };
 
@@ -26,9 +26,9 @@ export function Select({ value, onChange, options }: SelectProps) {
     if (value.includes(option)) {
       onChange(value.filter((o) => o !== option));
     } else {
-      if (options[0].razred == "Svi razredi" && value.includes(options[0]))
+      if (options[0].Class == "Svi razredi" && value.includes(options[0]))
         onChange([...value.filter((o) => o !== options[0]), option]);
-      else if (option.razred == "Svi razredi") onChange([option]);
+      else if (option.Class == "Svi razredi") onChange([option]);
       else onChange([...value, option]);
     }
   }
@@ -36,6 +36,7 @@ export function Select({ value, onChange, options }: SelectProps) {
     return value.includes(option);
   }
   useEffect(() => {
+    console.log(options, value, onChange);
     if (isOpen) setHighlightedIndex(0);
     if (highlighterRef.current) {
       highlighterRef.current.style.opacity = `100%`;
@@ -103,7 +104,7 @@ export function Select({ value, onChange, options }: SelectProps) {
               }}
               className="selected-option"
             >
-              {v.razred}
+              {v.Class}
               <span className="remove-btn">&times;</span>
             </button>
           ))}
@@ -145,7 +146,7 @@ export function Select({ value, onChange, options }: SelectProps) {
                 highlightedIndex === index ? "highlighted" : ""
               } `}
             >
-              {option.razred}
+              {option.Class}
             </li>
           ))}
         </ul>

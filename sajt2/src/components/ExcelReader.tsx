@@ -12,6 +12,7 @@ type ExcelItem = {
   Name: string;
   Surname: string;
   Class: string;
+  Role: string;
 };
 type Data = {
   Name: string;
@@ -24,10 +25,10 @@ type Data = {
 const ExcelReader: React.FC = () => {
   const [excelData, setExcelData] = useState<Data[] | null>(null);
 
-  const generatePassword = () => {
-    const length = 12; // Define the length of the password
+  const generatePassword = (length: number) => {
+    // Define the length of the password
     const charset =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"; // Define the character set
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Define the character set
     let password = "";
     for (let i = 0; i < length; i++) {
       const randomIndex = Math.floor(Math.random() * charset.length);
@@ -50,22 +51,13 @@ const ExcelReader: React.FC = () => {
             const name = item.Name + " " + item.Surname;
             const email = item.Name + item.Surname + "@gmail.com";
             try {
-              // Create user
-              const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                email,
-                generatePassword()
-              );
-              const user = userCredential.user;
-              console.log(user.uid);
-
               // Insert data
               const data: Data = {
                 Name: name,
                 Email: email,
                 Class: item.Class,
-                Role: "Student",
-                UserID: user.uid,
+                Role: item.Role,
+                UserID: generatePassword(28),
               };
 
               await addDoc(collection(db, "Users"), data);

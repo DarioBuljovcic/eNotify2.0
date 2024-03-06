@@ -23,13 +23,14 @@ import messaging from '@react-native-firebase/messaging';
 import Registration from './screens/All/Registration';
 import Loading from './screens/All/Loading';
 import Student from './screens/Student/Student';
+import Professor from './screens/Professor/Professor';
 import Notification from './screens/All/Notification';
 
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
 
 const Stack = createStackNavigator<Navigation>();
-const NAVIGATION_IDS = ['Registration', 'Notification'];
+const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
 type Screens = {
   [key: string]: string;
 };
@@ -144,6 +145,35 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Student"
           component={Student}
+          options={({navigation}) => ({
+            headerBackVisible: false,
+            title: 'Glavni Meni',
+            headerLeft: () => null,
+            headerStyle: {
+              backgroundColor: Colors.Light.accent,
+              height: 100,
+            },
+            headerTintColor: Colors.Light.headerText,
+            headerTitleStyle: {
+              marginLeft: 10,
+              fontSize: 22,
+              textTransform: 'uppercase',
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('Settings')}>
+                <Image
+                  style={{width: 25, height: 25, marginRight: 15}}
+                  source={require('./images/cog-wheel.png')}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="Professor"
+          component={Professor}
           options={({navigation}) => ({
             headerBackVisible: false,
             title: 'Glavni Meni',
