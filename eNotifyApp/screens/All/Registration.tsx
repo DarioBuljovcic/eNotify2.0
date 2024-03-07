@@ -1,15 +1,17 @@
-import {View, Text, Alert} from 'react-native';
+import {View, Text, Alert, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {Input} from 'react-native-elements';
 import {RegistrationProps, User} from '../../components/Types/indexTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PermissionsAndroid} from 'react-native';
+import Colors from '../../components/Constants/Color'
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
 const Registration = ({navigation}: RegistrationProps) => {
+  const [isCorrect,setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
   const saveUser = async (user: User) => {
     await AsyncStorage.setItem('Role', user.Role);
@@ -23,15 +25,14 @@ const Registration = ({navigation}: RegistrationProps) => {
       .get()
       .then(querySnapshot => {
         if (!querySnapshot.empty) {
+          setIsCorrect(true);
           const user: User = querySnapshot.docs[0].data() as User;
           saveUser(user);
-          Alert.alert('Uspesno ste se ulogovali');
           user.Role === 'Student'
             ? navigation.navigate('Student')
             : navigation.navigate('Professor');
         } else {
-          // Document does not exist
-          Alert.alert('Nije dobar kod koji ste upisali');
+          setIsCorrect(false);
         }
       })
       .catch(error => {
@@ -39,16 +40,80 @@ const Registration = ({navigation}: RegistrationProps) => {
       });
   };
   return (
-    <View>
-      <Input
-        placeholder="Enter some text"
-        onChangeText={text => setValue(text)}
-        value={value}></Input>
-      <TouchableOpacity onPress={() => Login()}>
-        <Text>Click me</Text>
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.incorrectText}>{isCorrect?'':'Niste uneli dobar kod'}</Text>
+        <TextInput
+          placeholder="Unesite vas identifikacioni kod"
+          placeholderTextColor={Colors.Light.lightText}
+          onChangeText={text => {setValue(text); setIsCorrect(true)}}
+          value={value}
+          style={[styles.input, {borderColor:isCorrect?Colors.Light.lightText:'red'}]}/>
+      </View>
+      
+      <TouchableOpacity onPress={() => Login()} style={styles.confirmBtn} activeOpacity={0.8}>
+        <Text style={styles.confirmTxt}>Registruj se</Text>
       </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container:{
+    backgroundColor:Colors.Light.appBackground,
+
+    flex:1,
+    gap:20,
+    alignContent:'center',
+    
+    paddingTop:'50%',
+  },
+  incorrectText:{
+    color:'red',
+
+    width:'80%',
+
+    alignSelf:'center',
+    textAlign:'left',
+  },
+  input:{
+    fontSize:17,
+
+    backgroundColor:Colors.Light.textInputBackground,
+    color:Colors.Light.textPrimary,
+
+    padding:15,
+    width:'80%',
+
+    alignSelf:'center',
+
+    borderRadius:10,
+
+    borderWidth:1,
+    borderColor:Colors.Light.lightText,
+
+    elevation: 13,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
+  confirmBtn:{
+    backgroundColor:Colors.Light.accent,
+
+    padding:20,
+
+    width:'50%',
+
+    alignSelf:'center',
+    alignItems:'center',
+
+    borderRadius:50,
+  },
+  confirmTxt:{
+    fontSize:17,
+
+    color:Colors.Light.whiteText
+  },
+});
 
 export default Registration;

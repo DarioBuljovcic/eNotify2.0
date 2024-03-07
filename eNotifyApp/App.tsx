@@ -118,28 +118,17 @@ function App(): React.JSX.Element {
           component={Registration}
           options={({navigation}) => ({
             headerBackVisible: false,
-            title: 'Registracija',
+            title: 'Unesite kod',
             headerLeft: () => null,
             headerStyle: {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
-            headerTintColor: Colors.Light.headerText,
+            headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              marginLeft: 10,
-              fontSize: 22,
-              textTransform: 'uppercase',
+              fontSize: 30,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings')}>
-                <Image
-                  style={{width: 25, height: 25, marginRight: 15}}
-                  source={require('./images/cog-wheel.png')}
-                />
-              </TouchableOpacity>
-            ),
+            headerTitleAlign: 'center'
           })}
         />
         <Stack.Screen
@@ -147,7 +136,7 @@ function App(): React.JSX.Element {
           component={Student}
           options={({navigation}) => ({
             headerBackVisible: false,
-            title: 'Glavni Meni',
+            title: 'Obavestenja',
             headerLeft: () => null,
             headerStyle: {
               backgroundColor: Colors.Light.accent,
@@ -155,16 +144,15 @@ function App(): React.JSX.Element {
             },
             headerTintColor: Colors.Light.headerText,
             headerTitleStyle: {
-              marginLeft: 10,
-              fontSize: 22,
-              textTransform: 'uppercase',
+              marginLeft: 20,
+              fontSize: 30,
             },
             headerRight: () => (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('Settings')}>
                 <Image
-                  style={{width: 25, height: 25, marginRight: 15}}
+                  style={{width: 30, height: 30, marginRight: 35}}
                   source={require('./images/cog-wheel.png')}
                 />
               </TouchableOpacity>
@@ -185,15 +173,14 @@ function App(): React.JSX.Element {
             headerTintColor: Colors.Light.headerText,
             headerTitleStyle: {
               marginLeft: 10,
-              fontSize: 22,
-              textTransform: 'uppercase',
+              fontSize: 30,
             },
             headerRight: () => (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('Settings')}>
                 <Image
-                  style={{width: 25, height: 25, marginRight: 15}}
+                  style={{width: 30, height: 30, marginRight: 35}}
                   source={require('./images/cog-wheel.png')}
                 />
               </TouchableOpacity>
@@ -222,7 +209,7 @@ function App(): React.JSX.Element {
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('Settings')}>
                 <Image
-                  style={{width: 25, height: 25, marginRight: 15}}
+                  style={{width: 30, height: 30, marginRight: 35}}
                   source={require('./images/cog-wheel.png')}
                 />
               </TouchableOpacity>
