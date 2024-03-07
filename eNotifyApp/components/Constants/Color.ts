@@ -9,9 +9,16 @@ const Colors: Theme = {
     textPrimary: '#252525',
     textSecondary: '#3d3d3d',
     headerText: 'white',
+
     white: 'white',
     black: 'black',
-    accent: '#2192ff'
+
+    accent: '#2192ff',
+    appBackground: '#f8f9fa',
+    textInputBackground:'#ffffff',
+
+    lightText: '#adb5bd',
+    whiteText: '#ffffff',
   },
   Dark:{
     primary: '#ACE1FF',
@@ -21,9 +28,16 @@ const Colors: Theme = {
     textPrimary: '#252525',
     textSecondary: '#3d3d3d',
     headerText: 'white',
+
     white: 'white',
     black: 'black',
-    accent: '#2192ff'
+
+    accent: '#2192ff',
+    appBackground: '#ffffff',
+    textInputBackground:'#e5e5e5',
+
+    lightText: '#adb5bd',
+    whiteText: '#ffffff',
   }
 };
 export default Colors;

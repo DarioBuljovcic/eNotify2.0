@@ -46,9 +46,16 @@ type Color = {
     textPrimary: string,
     textSecondary: string,
     headerText: string,
+
     white: string,
     black: string,
+
     accent: string,
+    appBackground: string,
+    textInputBackground: string,
+    lightText: string,
+    whiteText:string,
+    //darkText:string,
 };
 type Theme ={
   Light:Color,
