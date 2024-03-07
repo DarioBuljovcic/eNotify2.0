@@ -5,26 +5,27 @@ import {
   Switch,
   TouchableOpacity,
   Image,
-} from "react-native";
+} from 'react-native';
 //import { LinearGradient } from 'expo-linear-gradient';
-import { useState, useEffect } from "react";
-import Colors from "../../components/Color";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import RazrediList from "../ProfesorskeStranice/RazrediList";
+import {useState, useEffect} from 'react';
+import Colors from '../../components/Constants/Color';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {SettingsProps} from '../../components/Types/indexTypes';
+import firestore from '@react-native-firebase/firestore';
 
-export default function Settings({ navigation }) {
+export default function Settings({navigation}: SettingsProps) {
   const [notifications, setNotifications] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  const [razred, setRazred] = useState("");
+  const [razred, setRazred] = useState<string | null>('');
   const [razredi, setRazredi] = useState([]);
-  const [naziv, setNaziv] = useState("");
-  const [role, setRole] = useState("");
+  const [naziv, setNaziv] = useState<string | null>('');
+  const [role, setRole] = useState<string | null>('');
 
   const nabaviPodatke = async () => {
     try {
-      const vRazred = await AsyncStorage.getItem("razred");
-      const vNaziv = await AsyncStorage.getItem("naziv");
-      const vRole = await AsyncStorage.getItem("role");
+      const vRazred: string | null = await AsyncStorage.getItem('Class');
+      const vNaziv: string | null = await AsyncStorage.getItem('Name');
+      const vRole: string | null = await AsyncStorage.getItem('Role');
 
       setRazred(vRazred);
       setNaziv(vNaziv);
@@ -36,52 +37,32 @@ export default function Settings({ navigation }) {
 
   const promeniRazred = async () => {
     try {
-      await AsyncStorage.removeItem("razred");
-      console.log("Pokusano menjanje");
-      navigation.navigate("Login");
+      await AsyncStorage.removeItem('Class');
+      console.log('Pokusano menjanje');
+      navigation.navigate('Registration');
     } catch (e) {
       console.log(e);
     }
   };
   function displayRazred() {
-    if (role === "Ucenik") {
-      return (
-        <TouchableOpacity
-          style={styles.option}
-          activeOpacity={0.8}
-          onPress={() => promeniRazred()}
-        >
-          <Text style={styles.optionText}>Promeni razred</Text>
-          <Text style={styles.optionGrade}>{razred}</Text>
-          <Image
-            style={{ width: 25, height: 25, marginRight: 12 }}
-            source={require("../../images/dots-menu.png")}
-          />
-        </TouchableOpacity>
-      );
-    } else {
-      return <RazrediList></RazrediList>;
-    }
+    return (
+      <TouchableOpacity
+        style={styles.option}
+        activeOpacity={0.8}
+        onPress={() => promeniRazred()}>
+        <Text style={styles.optionText}>Promeni razred</Text>
+        <Text style={styles.optionGrade}>{razred}</Text>
+        <Image
+          style={{width: 25, height: 25, marginRight: 12}}
+          source={require('../../images/dots-menu.png')}
+        />
+      </TouchableOpacity>
+    );
   }
 
   useEffect(() => {
     nabaviPodatke();
   }, [razred]);
-
-  useEffect(() => {
-    const nabaviRazrede = async () => {
-      const { data, error, status } = await supabase.from("Razredi").select();
-      if (error && status !== 406) {
-        throw error;
-      }
-
-      if (data) {
-        setLoading(true);
-        setRazredi([...data].sort((a, b) => (a.razred > b.razred ? 1 : -1)));
-      }
-    };
-    nabaviRazrede();
-  }, []);
 
   // const toggleNotification = () => {
   //   setNotifications((previousState) => !previousState);
@@ -139,7 +120,7 @@ export default function Settings({ navigation }) {
       <TouchableOpacity
         style={styles.option}
         activeOpacity={0.8}
-        onPress={() => navigation.navigate("Raspored")}
+        //onPress={()=>{} }
       >
         <Text style={styles.optionText}>Raspored časova</Text>
       </TouchableOpacity>
@@ -150,8 +131,7 @@ export default function Settings({ navigation }) {
       <TouchableOpacity
         style={styles.option}
         activeOpacity={0.8}
-        onPress={() => navigation.navigate("About")}
-      >
+        onPress={() => navigation.navigate('About')}>
         <Text style={styles.optionText}>O aplikaciji</Text>
       </TouchableOpacity>
     </View>
@@ -160,60 +140,60 @@ export default function Settings({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    backgroundColor: "#fff",
+    display: 'flex',
+    backgroundColor: '#fff',
     padding: 20,
   },
   background: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     opacity: 0.95,
     padding: 20,
   },
   option: {
     height: 70,
-    width: "100%",
+    width: '100%',
 
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 20,
 
-    backgroundColor: Colors.noticationBG,
+    backgroundColor: Colors.Light.notificationBG,
     marginVertical: 10,
     borderRadius: 10,
     //borderColor: 'gray',
     //borderWidth: 1,
 
     elevation: 10,
-    shadowColor: Colors.black,
-    shadowOffset: { width: 2, height: 5 },
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
   optionText: {
     fontSize: 17,
     flex: 1,
-    color: Colors.textPrimary,
+    color: Colors.Light.textPrimary,
   },
   optionGrade: {
     fontSize: 15,
     flex: 1,
-    color: Colors.accent,
+    color: Colors.Light.accent,
     marginLeft: 40,
   },
   optionSwitch: {
     flex: 1,
-    transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
+    transform: [{scaleX: 1.2}, {scaleY: 1.2}],
     marginRight: 10,
   },
   line: {
-    width: "100%",
-    backgroundColor: Colors.textPrimary,
+    width: '100%',
+    backgroundColor: Colors.Light.textPrimary,
     height: 1,
   },
   lineText: {
     marginTop: 10,
     marginBottom: 3,
-    color: Colors.textPrimary,
-    textAlign: "center",
+    color: Colors.Light.textPrimary,
+    textAlign: 'center',
   },
 });

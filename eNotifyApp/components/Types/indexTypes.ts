@@ -11,13 +11,15 @@ type Navigation = {
     Professor: undefined,
     Registration: undefined,
     Notification: undefined,
-    NotificationLoader: undefined
+    NotificationLoader: undefined,
+    Settings: undefined
 }
 type LoadingProps = StackScreenProps<Navigation, "Loading">
 type StudentProps = StackScreenProps<Navigation, "Student">
 type ProfessorProps = StackScreenProps<Navigation, "Professor">
 type RegistrationProps = StackScreenProps<Navigation, "Registration">
 type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
+type SettingsProps = StackScreenProps<Navigation, "Settings">
 //Notification
 type Notification ={
   Tittle: string,
@@ -63,6 +65,6 @@ type Theme ={
 }
 
 
-export type {Navigation,Theme,LoadingProps,StudentProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,Notification,User};
+export type {Navigation,Theme,LoadingProps,StudentProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,SettingsProps,Notification,User};
 
 
