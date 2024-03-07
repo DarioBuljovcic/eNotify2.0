@@ -67,7 +67,7 @@ export default function NotificationLoader({navigation}: any) {
           activeOpacity={0.8}
           key={item.Text}
           onPress={() => {
-            navigation.navigate('Notification');
+            navigation.navigate('Notification', item);
           }}>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -85,7 +85,7 @@ export default function NotificationLoader({navigation}: any) {
             style={styles.obavestenje}
             activeOpacity={0.8}
             onPress={() => {
-              navigation.navigate('Notification');
+              navigation.navigate('Notification', item);
             }}>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>

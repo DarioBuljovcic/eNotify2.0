@@ -2,18 +2,25 @@ import {StyleSheet, Text, View} from 'react-native';
 //import { LinearGradient } from 'expo-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
+import {format} from 'date-fns';
+import {Notification} from '../../components/Types/indexTypes';
 
 export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
-  navigation.setOptions({title: route.params.title});
+  const notification: Notification = route.params;
+  console.log('Item', notification);
+  navigation.setOptions({title: route.params.Tittle});
 
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
-        <Text style={styles.class}>{route.params.class}</Text>
+        <Text style={styles.class}>{notification.Class}</Text>
+        <Text style={styles.class}>
+          {format(notification.Date.toDate(), 'dd. MM. yyyy')}
+        </Text>
       </View>
 
-      <Text style={styles.body}>{route.params.body}</Text>
+      <Text style={styles.body}>{notification.Text}</Text>
     </View>
   );
 }
@@ -34,14 +41,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     flex: 15,
     fontSize: 18,
-    color: Colors.textPrimary,
+    color: Colors.Light.textPrimary,
     paddingHorizontal: 10,
   },
   infoContainer: {
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: 'row',
-    borderColor: Colors.textSecondary,
+    borderColor: Colors.Light.textSecondary,
     borderRadius: 0,
     borderBottomWidth: 1.5,
     marginHorizontal: 10,
@@ -49,10 +56,10 @@ const styles = StyleSheet.create({
   date: {
     flex: 1,
     textAlign: 'right',
-    color: Colors.textPrimary,
+    color: Colors.Light.textPrimary,
   },
   class: {
     flex: 1,
-    color: Colors.textPrimary,
+    color: Colors.Light.textPrimary,
   },
 });
