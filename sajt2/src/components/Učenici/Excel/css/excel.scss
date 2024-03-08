@@ -1,0 +1,66 @@
+@import "../../../Colors/colors.scss";
+
+.card {
+    padding: 10px;
+    box-shadow: 0 0 5px white;
+    border-radius: 5px;
+    overflow: hidden;
+
+    .top {
+        text-align: center;
+    }
+    p {
+        font-weight: bold;
+        color: $lightText;
+    }
+    .dragContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 180px;
+        width: 480px;
+        .drag-area {
+            height: 150px;
+            width: 450px;
+            border-radius: 5px;
+            border: 2px dashed $borderColor;
+            color: rgb(31, 31, 32);
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            -webkist-user-select: none;
+            margin-top: 10px;
+            transition: all 0.3s;
+
+            .visible {
+                font-size: 18px;
+            }
+            &.draging {
+                height: 140px;
+                width: 440px;
+                border: 2px dashed $selectBorder;
+                background-color: rgb(231, 240, 247);
+            }
+        }
+    }
+
+    .select {
+        color: rgb(98, 98, 224);
+        margin-left: 5px;
+        cursor: pointer;
+        transition: 0.4s;
+    }
+    .select:hover {
+        opacity: 0.6s;
+    }
+    input,
+    .drag-area .on-drop,
+    .drag-area.dragover .visible {
+        display: none;
+    }
+}
+.delete {
+    z-index: 9999;
+}

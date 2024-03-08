@@ -1,0 +1,30 @@
+html ::-webkit-scrollbar {
+  width: 0.3em;
+  border-radius: 1vw;
+}
+html ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+html ::-webkit-scrollbar-thumb {
+  background: #888;
+}
+html ::-webkit-scrollbar-thumb:hover {
+  cursor: pointer;
+}
+html body {
+  display: grid;
+}
+html body .display {
+  margin-block: 2em;
+  display: grid;
+  gap: 2em;
+  max-width: 800px;
+  justify-self: center;
+  width: 480px;
+}
+html body .display .optionText {
+  font-size: 2em;
+  font-family: "Source Sans 3";
+  font-weight: 600;
+  color: #303336;
+}/*# sourceMappingURL=App.css.map */

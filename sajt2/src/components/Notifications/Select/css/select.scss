@@ -1,8 +1,10 @@
+@import "../../../Colors/colors.scss";
+
 .container {
     position: relative;
     width: 20em;
     min-height: 1.5em;
-    border: 0.1em solid skyblue;
+    border: 0.1em solid $borderColor;
     border-radius: 0.25em;
     display: flex;
     align-items: center;
@@ -11,10 +13,10 @@
     transition: 0.2s;
 
     &:focus {
-        border: 0.1em solid rgb(68, 156, 238);
+        border: 0.1em solid $selectBorder;
     }
     &:has(.options.show) {
-        margin-bottom: 10em;
+        margin-bottom: 8em;
     }
     .value {
         flex-grow: 1;
@@ -25,7 +27,7 @@
         .selected-option {
             display: flex;
             align-items: center;
-            border: 0.1em solid skyblue;
+            border: 0.1em solid $borderColor;
             border-radius: 0.25em;
             padding: 0.15em 0.25em;
             gap: 0.25em;
@@ -48,11 +50,12 @@
             .remove-btn {
                 font-size: 1.2em;
                 color: black;
+                transition: all 0.15s;
             }
         }
     }
     .clear-btn {
-        color: skyblue;
+        color: $borderColor;
         outline: 0;
         border: 0;
         cursor: pointer;
@@ -63,24 +66,25 @@
         user-select: none;
         &:focus,
         &:hover {
-            color: rgb(68, 156, 238);
+            color: $selectBorder;
         }
     }
     .divider {
-        background-color: skyblue;
+        background-color: $borderColor;
         align-self: stretch;
         width: 0.1em;
     }
     .caret {
         translate: 0 25%;
         border: 0.25em solid transparent;
-        border-top-color: skyblue;
+        border-top-color: $borderColor;
         cursor: pointer;
         user-select: none;
         &.open {
             rotate: 180deg;
             transform-origin: top;
             translate: 0 60%;
+            border-top-color: $selectBorder;
         }
     }
     .options {
@@ -104,14 +108,14 @@
             width: 8px;
         }
         &::-webkit-scrollbar-thumb {
-            background: rgb(68, 156, 238);
+            background: $dark;
         }
         &::-webkit-scrollbar-thumb:hover {
-            background: rgb(51, 127, 199);
+            cursor: pointer;
         }
         &.show {
             height: 8em;
-            border: 0.1em solid skyblue;
+            border: 0.1em solid $selectBorder;
         }
         .option {
             padding: 0.25em 0.5em;
@@ -123,13 +127,13 @@
                 background-color 0.2s;
 
             &.selected {
-                background-color: rgb(167, 223, 255);
+                background-color: $selectedOption;
                 color: rgb(24, 24, 24);
             }
             &.highlighted {
                 //background-color: rgba(51, 152, 247, 0.699);
                 background: transparent;
-                color: white;
+                color: black;
             }
         }
     }
@@ -140,7 +144,7 @@
         width: 100%;
         z-index: 1;
         top: 1.85em;
-        background-color: rgba(51, 152, 247);
+        background-color: $hoverOption;
         transition: 0.2s;
     }
 }

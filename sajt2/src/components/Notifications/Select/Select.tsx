@@ -119,7 +119,7 @@ export function Select({ value, onChange, options }: SelectProps) {
           &times;
         </button>
         <div className="divider"></div>
-        <div className={`caret ${isOpen ? "" : "open"}`}></div>
+        <div className={`caret ${isOpen ? "open" : ""}`}></div>
         <ul ref={listRef} className={`options ${isOpen ? "show" : ""}`}>
           <div className="highlighter" ref={highlighterRef}></div>
           {options.map((option, index) => (

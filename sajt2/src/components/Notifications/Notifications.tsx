@@ -1,17 +1,15 @@
-import React, { useEffect, useState, useRef, DetailedHTMLProps } from "react";
-import { Select } from "./Select.tsx";
+import React, { useEffect, useState, useRef } from "react";
+import { Select } from "./Select/Select.tsx";
 import {
   collection,
   getDocs,
   addDoc,
   query,
-  where,
   DocumentData,
   QuerySnapshot,
-  Timestamp,
 } from "firebase/firestore";
-import { db } from "../lib/firebase.js";
-import ExcelReader from "./ExcelReader.tsx";
+import { db } from "../../lib/firebase.js";
+import "./css/notifications.css";
 
 type SelectOption = {
   Class: string;
@@ -109,6 +107,7 @@ function MainPage() {
         });
 
         setClasses(fetchedData);
+        setSelectData(fetchedData);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -117,49 +116,53 @@ function MainPage() {
   }, []);
 
   return (
-    <div className="forma">
-      <label htmlFor="inputField">Naslov obavestenja</label>
-      <input ref={tittleRef} type="text" />
-
-      <label htmlFor="inputField">Tekst obavestenja</label>
-      <textarea ref={textRef} cols={30} rows={10}></textarea>
-
-      <div className="razredi-options">
-        <span>Razredi:</span>
-        <div className="radio-list">
-          <div className={`stick ${selectedOption}`}>
-            <div className="dot"></div>
+    <div className="formaContainer">
+      <div className="forma">
+        <span className="inputContainer">
+          <label htmlFor="inputField">Naslov obavestenja</label>
+          <input ref={tittleRef} type="text" placeholder="Obaveštenje" />
+        </span>
+        <span className="inputContainer">
+          <label htmlFor="inputField">Tekst obavestenja</label>
+          <textarea ref={textRef} cols={30} rows={10}></textarea>
+        </span>
+        <div className="razredi-options">
+          <span>Razredi:</span>
+          <div className="radio-list">
+            <button
+              className={`razredi-btn ${
+                selectedOption === "option1" ? "selectedOption" : ""
+              }`}
+              onClick={() => handleOptionChange("option1")}
+            >
+              Pojedinačno
+            </button>
+            <button
+              className={`razredi-btn ${
+                selectedOption === "option2" ? "selectedOption" : ""
+              }`}
+              onClick={() => handleOptionChange("option2")}
+            >
+              Grupno
+            </button>
           </div>
-          <button
-            className="razredi-btn"
-            onClick={() => handleOptionChange("option1")}
-          >
-            Pojedinačno
-          </button>
-          <button
-            className="razredi-btn"
-            onClick={() => handleOptionChange("option2")}
-          >
-            Grupno
-          </button>
         </div>
-      </div>
-      {classes.length > 0 && (
-        <Select
-          options={classes}
-          value={options}
-          onChange={(o) => setOptions(o)}
-        />
-      )}
+        {classes.length > 0 && (
+          <Select
+            options={selectData}
+            value={options}
+            onChange={(o) => setOptions(o)}
+          />
+        )}
 
-      <button
-        type="submit"
-        className="submit-btn"
-        onClick={() => sendNotification()}
-      >
-        Posalji
-      </button>
-      <ExcelReader />
+        <button
+          type="submit"
+          className="submit-btn"
+          onClick={() => sendNotification()}
+        >
+          Posalji
+        </button>
+      </div>
     </div>
   );
 }

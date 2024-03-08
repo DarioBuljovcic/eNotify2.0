@@ -1,0 +1,70 @@
+.formaContainer {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.formaContainer .forma {
+  display: grid;
+  gap: 1em;
+}
+.formaContainer .forma .inputContainer {
+  display: grid;
+}
+.formaContainer .forma .inputContainer input {
+  padding: 0.3em;
+  border: 0.1em solid #adb5bd;
+  border-radius: 0.25em;
+  font-size: 1em;
+  outline: 0;
+  transition: 0.2s;
+}
+.formaContainer .forma .inputContainer input:focus, .formaContainer .forma .inputContainer input:active {
+  border: 0.1em solid #212529;
+}
+.formaContainer .forma .inputContainer textarea {
+  border: 0.15em solid #adb5bd;
+  border-radius: 0.25em;
+  font-size: 1em;
+  outline: 0;
+  transition: 0.2s;
+}
+.formaContainer .forma .inputContainer textarea:focus, .formaContainer .forma .inputContainer textarea:active {
+  border: 0.15em solid #212529;
+}
+.formaContainer .forma .razredi-options {
+  display: flex;
+  justify-content: space-between;
+}
+.formaContainer .forma .razredi-options .radio-list {
+  display: flex;
+  justify-content: center;
+  gap: 1.2em;
+  position: relative;
+}
+.formaContainer .forma .razredi-options .radio-list .razredi-btn {
+  border: 0.15em solid #adb5bd;
+  border-radius: 0.25em;
+  background-color: transparent;
+  padding: 0.25em 0.5em;
+  transition: 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+.formaContainer .forma .razredi-options .radio-list .razredi-btn:hover {
+  border: 0.15em solid #212529;
+}
+.formaContainer .forma .razredi-options .radio-list .selectedOption {
+  border: 0.15em solid #212529;
+}
+.formaContainer .forma .submit-btn {
+  border: 0.15em solid #adb5bd;
+  border-radius: 0.25em;
+  background-color: transparent;
+  padding: 0.25em 0.5em;
+  transition: 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+.formaContainer .forma .submit-btn:hover {
+  border: 0.15em solid #212529;
+}/*# sourceMappingURL=notifications.css.map */

@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.scss","App.css","../components/Colors/colors.scss"],"names":[],"mappings":"AAGI;EACI,YAAA;EACA,kBAAA;ACFR;ADKI;EACI,mBAAA;ACHR;ADMI;EACI,gBAAA;ACJR;ADOI;EACI,eAAA;ACLR;ADQI;EACI,aAAA;ACNR;ADOQ;EACI,iBAAA;EACA,aAAA;EACA,QAAA;EACA,gBAAA;EACA,oBAAA;EACA,YAAA;ACLZ;ADMY;EACI,cAAA;EACA,4BAAA;EACA,gBAAA;EACA,cExBL;ADoBX","file":"App.css"}

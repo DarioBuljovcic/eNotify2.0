@@ -1,0 +1,43 @@
+@import "../components/Colors/colors.scss";
+
+html {
+    ::-webkit-scrollbar {
+        width: 0.3em;
+        border-radius: 1vw;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        cursor: pointer;
+    }
+
+    body {
+        display: grid;
+        .display {
+            margin-block: 2em;
+            display: grid;
+            gap: 2em;
+            max-width: 800px;
+            justify-self: center;
+            width: 480px;
+            .optionText {
+                font-size: 2em;
+                font-family: "Source Sans 3";
+                font-weight: 600;
+                color: $darkText;
+            }
+        }
+    }
+}
+// outline: 2px dashed #92b0b3;
+//     outline-offset: -10px;
+//     transition:
+//         outline-offset 0.15s ease-in-out,
+//         background-color 0.15s linear;

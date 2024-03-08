@@ -1,0 +1,79 @@
+@import "../../Colors/colors.scss";
+
+.formaContainer {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+
+    .forma {
+        display: grid;
+        gap: 1em;
+        .inputContainer {
+            display: grid;
+            input {
+                padding: 0.3em;
+                border: 0.1em solid $borderColor;
+                border-radius: 0.25em;
+                font-size: 1em;
+                outline: 0;
+                transition: 0.2s;
+                &:focus,
+                &:active {
+                    border: 0.1em solid $selectBorder;
+                }
+            }
+            textarea {
+                border: 0.15em solid $borderColor;
+                border-radius: 0.25em;
+                font-size: 1em;
+                outline: 0;
+                transition: 0.2s;
+                &:focus,
+                &:active {
+                    border: 0.15em solid $selectBorder;
+                }
+            }
+        }
+
+        .razredi-options {
+            display: flex;
+            justify-content: space-between;
+            .radio-list {
+                display: flex;
+                justify-content: center;
+                gap: 1.2em;
+                position: relative;
+                .razredi-btn {
+                    border: 0.15em solid $borderColor;
+                    border-radius: 0.25em;
+                    background-color: transparent;
+                    padding: 0.25em 0.5em;
+                    transition: 0.2s;
+                    cursor: pointer;
+                    text-align: center;
+
+                    &:hover {
+                        border: 0.15em solid $selectBorder;
+                    }
+                }
+                .selectedOption {
+                    border: 0.15em solid $selectBorder;
+                }
+            }
+        }
+
+        .submit-btn {
+            border: 0.15em solid $borderColor;
+            border-radius: 0.25em;
+            background-color: transparent;
+            padding: 0.25em 0.5em;
+            transition: 0.2s;
+            cursor: pointer;
+            text-align: center;
+
+            &:hover {
+                border: 0.15em solid $selectBorder;
+            }
+        }
+    }
+}
