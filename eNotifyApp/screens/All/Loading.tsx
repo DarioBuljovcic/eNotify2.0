@@ -25,9 +25,7 @@ export default function Loading({navigation}: LoadingProps) {
       const razred = await AsyncStorage.getItem('Class');
 
       if (razred !== null) {
-        navigation.navigate(
-          razred.includes('Professor') ? 'Professor' : 'Student',
-        );
+        navigation.navigate('NavigationScreen');
       } else {
         navigation.navigate('Registration');
       }
@@ -38,7 +36,7 @@ export default function Loading({navigation}: LoadingProps) {
   }, [naziv]);
   return (
     <View>
-      <Text>Hello</Text>
+      <Text>Loading</Text>
     </View>
   );
 }

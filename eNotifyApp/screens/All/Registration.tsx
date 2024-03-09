@@ -6,7 +6,7 @@ import {Input} from 'react-native-elements';
 import {RegistrationProps, User} from '../../components/Types/indexTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PermissionsAndroid} from 'react-native';
-import Colors from '../../components/Constants/Color'
+import Colors from '../../components/Constants/Color';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -28,9 +28,7 @@ const Registration = ({navigation}: RegistrationProps) => {
           setIsCorrect(true);
           const user: User = querySnapshot.docs[0].data() as User;
           saveUser(user);
-          user.Role === 'Student'
-            ? navigation.navigate('Student')
-            : navigation.navigate('Professor');
+          navigation.navigate('NavigationScreen');
         } else {
           setIsCorrect(false);
         }
