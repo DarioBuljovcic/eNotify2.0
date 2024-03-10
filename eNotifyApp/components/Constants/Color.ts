@@ -6,7 +6,6 @@ const Colors: Theme = {
     secondary: '#e0f4ff',
     notificationBG: 'white',
     headerBG: '#65C8FF',
-    textPrimary: '#252525',
     textSecondary: '#3d3d3d',
     headerText: 'white',
 
@@ -17,6 +16,7 @@ const Colors: Theme = {
     appBackground: '#f8f9fa',
     textInputBackground:'#ffffff',
 
+    textPrimary: '#252525',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
   },
@@ -25,7 +25,6 @@ const Colors: Theme = {
     secondary: '#e0f4ff',
     notificationBG: 'white',
     headerBG: '#65C8FF',
-    textPrimary: '#252525',
     textSecondary: '#3d3d3d',
     headerText: 'white',
 
@@ -36,6 +35,7 @@ const Colors: Theme = {
     appBackground: '#ffffff',
     textInputBackground:'#e5e5e5',
 
+    textPrimary: '#252525',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
   }

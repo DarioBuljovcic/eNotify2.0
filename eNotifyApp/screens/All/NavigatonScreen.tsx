@@ -9,13 +9,14 @@ import Settings from './Settings';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native-elements';
+import UserScreen from './UserScreen';
 
 const NavigationScreen=()=>{
     const [role,setRole] = useState('');
 
     useEffect(()=>{
         const saveUser = async () => {
-            setRole(await AsyncStorage.getItem('Role') as string)
+            setRole(await AsyncStorage.getItem('Role') as string);
         };
         saveUser();
     });
@@ -23,11 +24,22 @@ const NavigationScreen=()=>{
     const Tab = createBottomTabNavigator();
     if(role=='Student') {//check role (Student)
         return(
-        // <View><Text>stud</Text></View>
-                <Tab.Navigator>
-                    <Tab.Screen name="Student" component={Student} options={{ headerShown: false }}/>
-                    
-                </Tab.Navigator>
+            <Tab.Navigator>
+                <Tab.Screen 
+                    name="Student" 
+                    component={Student} 
+                    options={{ 
+                        headerShown: false 
+
+                    }}/>
+                <Tab.Screen
+                    name="Nalog"
+                    component={UserScreen}
+                    options={{
+                        headerShown: false
+
+                    }}/>
+            </Tab.Navigator>
         );
     }else if(role=='Professor'){//(Profesor)
         return(

@@ -75,7 +75,7 @@ export default function NotificationLoader({navigation}: any) {
       );
     } else {
       date = dateNew;
-
+      
       return (
         <View key={item.Text}>
           <View style={styles.datum}>
@@ -113,11 +113,6 @@ export default function NotificationLoader({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   list: {
     flex: 1,
     alignItems: 'center',
