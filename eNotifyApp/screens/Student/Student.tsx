@@ -16,6 +16,7 @@ import Colors from '../../components/Constants/Color';
 import NotificationLoader from '../All/NotificationLoader';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
+
 const screenWidth = Dimensions.get('window').width;
 
 export default function Student({navigation}: StudentProps|StudentTabProps) {

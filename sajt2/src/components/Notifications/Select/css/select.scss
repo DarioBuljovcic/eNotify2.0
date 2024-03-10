@@ -11,12 +11,17 @@
     gap: 0.5em;
     padding: 0.5em;
     transition: 0.2s;
+    background-color: #ffffff;
 
     &:focus {
         border: 0.1em solid $selectBorder;
     }
     &:has(.options.show) {
         margin-bottom: 8em;
+    }
+    &:hover {
+        cursor: pointer;
+        background-color: #eeeeee;
     }
     .value {
         flex-grow: 1;

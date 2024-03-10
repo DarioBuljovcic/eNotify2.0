@@ -9,12 +9,17 @@
   gap: 0.5em;
   padding: 0.5em;
   transition: 0.2s;
+  background-color: #ffffff;
 }
 .container:focus {
   border: 0.1em solid #212529;
 }
 .container:has(.options.show) {
   margin-bottom: 8em;
+}
+.container:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
 }
 .container .value {
   flex-grow: 1;

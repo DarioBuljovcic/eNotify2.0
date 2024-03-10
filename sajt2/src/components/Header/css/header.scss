@@ -1,3 +1,5 @@
+@import "../../Colors/colors.scss";
+
 $headerBorderBottom: 2px solid gray;
 $headerPadding: 0.5em 1em;
 
@@ -45,10 +47,28 @@ header {
 
         .option {
             cursor: pointer;
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -0.3em;
+                left: 0;
+                width: 0%;
+                height: 0.1em;
+                background-color: $selectBorder;
+                transition: all 0.3s;
+            }
+        }
+        .selected {
+            position: relative;
+            color: $darkText;
+            font-weight: 600;
+            &::after {
+                width: 100%;
+            }
         }
         .profile {
             border-radius: 50%;
-            border: 1px solid black;
+            border: 1px solid $borderColor;
             width: $profileSize;
             height: $profileSize;
             cursor: pointer;

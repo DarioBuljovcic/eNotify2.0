@@ -1,0 +1,78 @@
+.textAreaContainer {
+  position: relative;
+}
+.textAreaContainer .input {
+  display: none;
+}
+.textAreaContainer .addFiles {
+  position: absolute;
+  cursor: pointer;
+  font-size: 2em;
+  background-color: #fff;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  width: 1.4em;
+  left: calc(100% - 0.8em);
+  top: -0.3em;
+  opacity: 0;
+  transition: opacity 0.2s, top 0.2s;
+}
+.textAreaContainer .addFiles:hover {
+  top: -0.5em;
+}
+.textAreaContainer .textarea {
+  width: calc(100% - 2em);
+  color: #666666;
+  padding: 1em;
+  border-radius: 10px;
+  border: 2px solid #adb5bd;
+  outline: none;
+  font-family: "Heebo", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  height: 100px;
+  transition: all 0.2s;
+  resize: none;
+}
+.textAreaContainer .textarea:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
+}
+.textAreaContainer .textarea:focus {
+  cursor: text;
+  color: #333333;
+  background-color: white;
+  border-color: #212529;
+}
+.textAreaContainer .textarea:focus ~ .addFiles {
+  opacity: 1;
+}
+.textAreaContainer .selectedFiles:has(.file) {
+  opacity: 1;
+}
+.textAreaContainer .selectedFiles {
+  max-height: 100px;
+  overflow-y: scroll;
+  border: 2px solid #adb5bd;
+  border-radius: 1em;
+  padding: 0.5em;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.textAreaContainer .selectedFiles .file {
+  border-bottom: 1px solid #212529;
+  padding-block: 0.2em;
+  position: relative;
+}
+.textAreaContainer .selectedFiles .file span {
+  font-weight: 600;
+}
+.textAreaContainer .selectedFiles .file .delete {
+  position: absolute;
+  font-size: 1.2em;
+  color: red;
+  right: 0;
+  bottom: 10%;
+  cursor: pointer;
+}/*# sourceMappingURL=textArea.css.map */
