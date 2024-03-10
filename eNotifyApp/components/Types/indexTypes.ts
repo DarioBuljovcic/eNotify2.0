@@ -1,3 +1,5 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { ParamListBase } from "@react-navigation/native";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Timestamp } from "firebase/firestore";
 
@@ -12,14 +14,17 @@ type Navigation = {
     Registration: undefined,
     Notification: undefined,
     NotificationLoader: undefined,
-    Settings: undefined
+    Settings: undefined,
+    NavigationScreen: undefined,
 }
 type LoadingProps = StackScreenProps<Navigation, "Loading">
 type StudentProps = StackScreenProps<Navigation, "Student">
+type StudentTabProps = BottomTabScreenProps<ParamListBase,"Student">
 type ProfessorProps = StackScreenProps<Navigation, "Professor">
 type RegistrationProps = StackScreenProps<Navigation, "Registration">
 type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
 type SettingsProps = StackScreenProps<Navigation, "Settings">
+type NavigationScreen = StackScreenProps<Navigation,"NavigationScreen">
 //Notification
 type Notification ={
   Tittle: string,
@@ -65,6 +70,6 @@ type Theme ={
 }
 
 
-export type {Navigation,Theme,LoadingProps,StudentProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,SettingsProps,Notification,User};
+export type {Navigation,Theme,LoadingProps,StudentProps,StudentTabProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,SettingsProps,Notification,User,NavigationScreen};
 
 

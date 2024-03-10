@@ -15,7 +15,7 @@ export default function Obavestenje({route}: any) {
     <View style={styles.container}>
       <View style={styles.infoContainer}>
         <Text style={styles.class}>{notification.Class}</Text>
-        <Text style={styles.class}>
+        <Text style={styles.date}>
           {format(notification.Date.toDate(), 'dd. MM. yyyy')}
         </Text>
       </View>
@@ -28,8 +28,6 @@ export default function Obavestenje({route}: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   background: {
     width: '100%',
@@ -39,10 +37,9 @@ const styles = StyleSheet.create({
   },
   body: {
     marginTop: 10,
-    flex: 15,
     fontSize: 18,
     color: Colors.Light.textPrimary,
-    paddingHorizontal: 10,
+    marginHorizontal: 15,
   },
   infoContainer: {
     paddingHorizontal: 10,

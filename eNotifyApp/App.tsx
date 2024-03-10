@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, {useEffect} from 'react';
 import {
   StyleSheet,
@@ -25,9 +18,12 @@ import Loading from './screens/All/Loading';
 import Student from './screens/Student/Student';
 import Professor from './screens/Professor/Professor';
 import Notification from './screens/All/Notification';
+import Settings from './screens/All/Settings';
 
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
+import NavigationScreen from './screens/All/NavigatonScreen';
+
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -116,7 +112,7 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Registration"
           component={Registration}
-          options={({navigation}) => ({
+          options={() => ({
             headerBackVisible: false,
             title: 'Unesite kod',
             headerLeft: () => null,
@@ -129,6 +125,34 @@ function App(): React.JSX.Element {
               fontSize: 30,
             },
             headerTitleAlign: 'center'
+          })}
+        />
+        <Stack.Screen
+          name="NavigationScreen"
+          component={NavigationScreen}
+          options={({navigation}) => ({
+            headerBackVisible: false,
+            title: 'Obavestenja',
+            headerLeft: () => null,
+            headerStyle: {
+              backgroundColor: Colors.Light.accent,
+              height: 100,
+            },
+            headerTintColor: Colors.Light.headerText,
+            headerTitleStyle: {
+              marginLeft: 20,
+              fontSize: 30,
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('Settings')}>
+                <Image
+                  style={{width: 27, height: 27, marginRight: 35}}
+                  source={require('./images/cog-wheel.png')}
+                />
+              </TouchableOpacity>
+            ),
           })}
         />
         <Stack.Screen
@@ -152,7 +176,7 @@ function App(): React.JSX.Element {
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('Settings')}>
                 <Image
-                  style={{width: 30, height: 30, marginRight: 35}}
+                  style={{width: 27, height: 27, marginRight: 35}}
                   source={require('./images/cog-wheel.png')}
                 />
               </TouchableOpacity>
@@ -180,7 +204,7 @@ function App(): React.JSX.Element {
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('Settings')}>
                 <Image
-                  style={{width: 30, height: 30, marginRight: 35}}
+                  style={{width: 27, height: 27, marginRight: 35}}
                   source={require('./images/cog-wheel.png')}
                 />
               </TouchableOpacity>
@@ -201,15 +225,40 @@ function App(): React.JSX.Element {
             headerTintColor: Colors.Light.headerText,
             headerTitleStyle: {
               marginLeft: 10,
-              fontSize: 22,
-              textTransform: 'uppercase',
+              fontSize: 30,
             },
             headerRight: () => (
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => navigation.navigate('Settings')}>
                 <Image
-                  style={{width: 30, height: 30, marginRight: 35}}
+                  style={{width: 27, height: 27, marginRight: 35}}
+                  source={require('./images/cog-wheel.png')}
+                />
+              </TouchableOpacity>
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={({navigation}) => ({
+            headerBackVisible: false,
+            title: 'Notifikacija',
+            headerStyle: {
+              backgroundColor: Colors.Light.accent,
+              height: 100,
+            },
+            headerTintColor: Colors.Light.headerText,
+            headerTitleStyle: {
+              fontSize: 30,
+            },
+            headerRight: () => (
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('Settings')}>
+                <Image
+                  style={{width: 27, height: 27, marginRight: 35}}
                   source={require('./images/cog-wheel.png')}
                 />
               </TouchableOpacity>
