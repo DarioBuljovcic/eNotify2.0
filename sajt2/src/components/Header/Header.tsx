@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./css/header.css";
 
 type HeaderProps = {
@@ -6,6 +6,7 @@ type HeaderProps = {
 };
 
 export default function Header({ setOptionText }: HeaderProps) {
+  const [selected, setSelected] = useState(1);
   return (
     <header>
       <div className="logo">
@@ -13,20 +14,29 @@ export default function Header({ setOptionText }: HeaderProps) {
       </div>
       <div className="options">
         <div
-          className="option"
-          onClick={() => setOptionText(["Dodavanje Učenika", 0])}
+          className={`option ${selected === 1 ? "selected" : ""}`}
+          onClick={() => {
+            setOptionText(["Dodavanje Učenika", 0]);
+            setSelected(1);
+          }}
         >
           Učenici
         </div>
         <div
-          className="option"
-          onClick={() => setOptionText(["Slanje Obaveštenja", 1])}
+          className={`option ${selected === 2 ? "selected" : ""}`}
+          onClick={() => {
+            setOptionText(["Slanje Obaveštenja", 1]);
+            setSelected(2);
+          }}
         >
           Obaveštenja
         </div>
         <div
-          className="option"
-          onClick={() => setOptionText(["Dodavanje Razreda", 2])}
+          className={`option ${selected === 3 ? "selected" : ""}`}
+          onClick={() => {
+            setOptionText(["Dodavanje Razreda", 2]);
+            setSelected(3);
+          }}
         >
           Razredi
         </div>

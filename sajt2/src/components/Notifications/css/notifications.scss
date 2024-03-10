@@ -21,16 +21,9 @@
                 &:active {
                     border: 0.1em solid $selectBorder;
                 }
-            }
-            textarea {
-                border: 0.15em solid $borderColor;
-                border-radius: 0.25em;
-                font-size: 1em;
-                outline: 0;
-                transition: 0.2s;
-                &:focus,
-                &:active {
-                    border: 0.15em solid $selectBorder;
+                &:hover {
+                    cursor: pointer;
+                    background-color: #eeeeee;
                 }
             }
         }
@@ -51,9 +44,11 @@
                     transition: 0.2s;
                     cursor: pointer;
                     text-align: center;
+                    background-color: #ffffff;
 
                     &:hover {
                         border: 0.15em solid $selectBorder;
+                        background-color: #eeeeee;
                     }
                 }
                 .selectedOption {
@@ -65,7 +60,7 @@
         .submit-btn {
             border: 0.15em solid $borderColor;
             border-radius: 0.25em;
-            background-color: transparent;
+            background-color: #fff;
             padding: 0.25em 0.5em;
             transition: 0.2s;
             cursor: pointer;
@@ -73,6 +68,7 @@
 
             &:hover {
                 border: 0.15em solid $selectBorder;
+                background-color: #eeeeee;
             }
         }
     }

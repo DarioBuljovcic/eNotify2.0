@@ -1,0 +1,33 @@
+@import "../../Colors/colors.scss";
+
+.studentOptions {
+    display: flex;
+    justify-content: space-around;
+    padding-block: 1.5em;
+    border-bottom: 1px solid $dark;
+    margin-bottom: 20px;
+
+    .studentOption {
+        font-size: 1.2em;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -0.3em;
+            left: 0;
+            width: 0%;
+            height: 0.1em;
+            background-color: $borderColor;
+            transition: all 0.3s;
+        }
+    }
+    .selected {
+        &::after {
+            width: 100%;
+        }
+    }
+}

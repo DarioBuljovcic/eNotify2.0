@@ -21,15 +21,9 @@
 .formaContainer .forma .inputContainer input:focus, .formaContainer .forma .inputContainer input:active {
   border: 0.1em solid #212529;
 }
-.formaContainer .forma .inputContainer textarea {
-  border: 0.15em solid #adb5bd;
-  border-radius: 0.25em;
-  font-size: 1em;
-  outline: 0;
-  transition: 0.2s;
-}
-.formaContainer .forma .inputContainer textarea:focus, .formaContainer .forma .inputContainer textarea:active {
-  border: 0.15em solid #212529;
+.formaContainer .forma .inputContainer input:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
 }
 .formaContainer .forma .razredi-options {
   display: flex;
@@ -49,9 +43,11 @@
   transition: 0.2s;
   cursor: pointer;
   text-align: center;
+  background-color: #ffffff;
 }
 .formaContainer .forma .razredi-options .radio-list .razredi-btn:hover {
   border: 0.15em solid #212529;
+  background-color: #eeeeee;
 }
 .formaContainer .forma .razredi-options .radio-list .selectedOption {
   border: 0.15em solid #212529;
@@ -59,7 +55,7 @@
 .formaContainer .forma .submit-btn {
   border: 0.15em solid #adb5bd;
   border-radius: 0.25em;
-  background-color: transparent;
+  background-color: #fff;
   padding: 0.25em 0.5em;
   transition: 0.2s;
   cursor: pointer;
@@ -67,4 +63,5 @@
 }
 .formaContainer .forma .submit-btn:hover {
   border: 0.15em solid #212529;
+  background-color: #eeeeee;
 }/*# sourceMappingURL=notifications.css.map */

@@ -1,0 +1,27 @@
+.studentOptions {
+  display: flex;
+  justify-content: space-around;
+  padding-block: 1.5em;
+  border-bottom: 1px solid #212529;
+  margin-bottom: 20px;
+}
+.studentOptions .studentOption {
+  font-size: 1.2em;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  position: relative;
+}
+.studentOptions .studentOption::after {
+  content: "";
+  position: absolute;
+  bottom: -0.3em;
+  left: 0;
+  width: 0%;
+  height: 0.1em;
+  background-color: #adb5bd;
+  transition: all 0.3s;
+}
+.studentOptions .selected::after {
+  width: 100%;
+}/*# sourceMappingURL=student.css.map */

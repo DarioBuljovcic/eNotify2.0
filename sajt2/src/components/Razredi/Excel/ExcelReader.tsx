@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useRef } from "react";
 import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
-import "./css/excel.css";
+import "../../ExcelCss/excel.css";
 
 import * as XLSX from "xlsx";
 
@@ -103,9 +103,6 @@ const ExcelReader: React.FC = () => {
   }
   return (
     <div className="card">
-      <div className="top">
-        <p>Putem fajla</p>
-      </div>
       <div className="dragContainer">
         <div
           className={`drag-area ${isDragging ? "draging" : ""}`}

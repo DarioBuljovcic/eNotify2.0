@@ -1,19 +1,19 @@
-import Notifications from "./components/Notifications/Notifications.tsx";
-import ExcelReader from "./components/Učenici/Excel/ExcelReader.tsx";
 import Header from "./components/Header/Header.tsx";
+import Student from "./components/Student/Students.tsx";
+import Notifications from "./components/Notifications/Notifications.tsx";
 import { useState } from "react";
 import "./css/App.css";
 
 function App() {
   const [selectedOption, setSelectedOption] = useState([
-    "Slanje Notifikacija",
+    "Dodavanje Učenika",
     0,
   ]);
 
   const displayOption = () => {
     switch (selectedOption[1]) {
       case 0:
-        return <ExcelReader />;
+        return <Student />;
       case 1:
         return <Notifications />;
     }

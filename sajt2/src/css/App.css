@@ -1,5 +1,5 @@
 html ::-webkit-scrollbar {
-  width: 0.3em;
+  width: 0;
   border-radius: 1vw;
 }
 html ::-webkit-scrollbar-track {
@@ -27,4 +27,7 @@ html body .display .optionText {
   font-family: "Source Sans 3";
   font-weight: 600;
   color: #303336;
+}
+html body #fr-logo {
+  display: none;
 }/*# sourceMappingURL=App.css.map */

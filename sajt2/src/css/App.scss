@@ -2,7 +2,7 @@
 
 html {
     ::-webkit-scrollbar {
-        width: 0.3em;
+        width: 0;
         border-radius: 1vw;
     }
 
@@ -17,7 +17,6 @@ html {
     ::-webkit-scrollbar-thumb:hover {
         cursor: pointer;
     }
-
     body {
         display: grid;
         .display {
@@ -33,6 +32,9 @@ html {
                 font-weight: 600;
                 color: $darkText;
             }
+        }
+        #fr-logo {
+            display: none;
         }
     }
 }

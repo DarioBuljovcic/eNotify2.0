@@ -10,6 +10,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../lib/firebase.js";
 import "./css/notifications.css";
+import TextArea from "./TextArea/TextArea.tsx";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 type SelectOption = {
   Class: string;
@@ -18,18 +20,24 @@ type SelectOption = {
 type inputData = {
   Class: string;
   Date: Date;
-  File: string | undefined;
-  Image: string | undefined;
+  Files: string | undefined;
   Text: string | undefined;
   Tittle: string | undefined;
   Type: string;
 };
+interface File {
+  name: string;
+}
+const storage = getStorage();
 
 function MainPage() {
   const [classes, setClasses] = useState<SelectOption[]>([]);
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [selectedOption, setSelectedOption] = useState("option1");
   const [selectData, setSelectData] = useState<SelectOption[]>([]);
+  const [text, setText] = useState("");
+  const [files, setFiles] = useState<File[]>([]);
+
   const grupno = [
     { Class: "Svi razredi", id: "0" },
     { Class: "Prvi razredi", id: "1" },
@@ -48,6 +56,18 @@ function MainPage() {
   };
 
   async function sendNotification() {
+    if (files) {
+      files.forEach((f) => {
+        const storageRef = ref(storage, f?.name);
+        uploadBytes(storageRef, f)
+          .then((snapshot) => {
+            console.log("Uploaded a blob or file!");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
+    }
     let razred: string[] = [];
     options.map((o) => {
       if (selectedOption === "option2") {
@@ -74,20 +94,18 @@ function MainPage() {
         razred.push(o.Class);
       }
     });
-    if (textRef.current && tittleRef.current) {
+    if (text && tittleRef.current) {
       const selectedClasses: string[] = [];
       options.forEach((option) => {
         selectedClasses.push(option.Class);
       });
-
       const dataToInsert: inputData = {
         Class: selectedClasses.join("|"),
         Date: new Date(),
-        File: "",
-        Image: "",
-        Text: textRef.current.value.toString(),
+        Files: files.length > 0 ? `${files.map((f) => f.name)}` : ``,
+        Text: text,
         Tittle: tittleRef.current.value.toString(),
-        Type: "T",
+        Type: `T${files.length > 0 ? "F" : ""}`,
       };
       await addDoc(collection(db, "Notifications"), dataToInsert);
     }
@@ -124,7 +142,11 @@ function MainPage() {
         </span>
         <span className="inputContainer">
           <label htmlFor="inputField">Tekst obavestenja</label>
-          <textarea ref={textRef} cols={30} rows={10}></textarea>
+          <TextArea
+            setText={(o) => setText(o)}
+            setFiles={(o) => setFiles(o)}
+            text={text}
+          />
         </span>
         <div className="razredi-options">
           <span>Razredi:</span>

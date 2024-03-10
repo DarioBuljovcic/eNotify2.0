@@ -38,9 +38,27 @@ header .options {
 header .options .option {
   cursor: pointer;
 }
+header .options .option::after {
+  content: "";
+  position: absolute;
+  bottom: -0.3em;
+  left: 0;
+  width: 0%;
+  height: 0.1em;
+  background-color: #212529;
+  transition: all 0.3s;
+}
+header .options .selected {
+  position: relative;
+  color: #303336;
+  font-weight: 600;
+}
+header .options .selected::after {
+  width: 100%;
+}
 header .options .profile {
   border-radius: 50%;
-  border: 1px solid black;
+  border: 1px solid #adb5bd;
   width: 2em;
   height: 2em;
   cursor: pointer;

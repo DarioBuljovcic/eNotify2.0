@@ -15,6 +15,7 @@ import {StudentProps} from '../../components/Types/indexTypes';
 import Colors from '../../components/Constants/Color';
 import NotificationLoader from '../All/NotificationLoader';
 
+
 const screenWidth = Dimensions.get('window').width;
 
 export default function Student({navigation}: StudentProps) {
