@@ -31,22 +31,38 @@ const NavigationScreen=()=>{
                     let iconName:string='';
         
                     if (route.name === 'Obavestenja') {
-                        iconName = focused ? 'bed': 'bed';
+                        iconName = focused ? 'notifications': 'notifications-outline';
+                    } else if (route.name === 'Raspored') {
+                        iconName = focused ? 'calendar' : 'calendar-outline';
                     } else if (route.name === 'Nalog') {
-                        iconName = focused ? 'bed' : 'bed';
-                    }
-        
+                        iconName = focused ? 'people' : 'people-outline';
+                    } 
+                    size=30;
                     // You can return any component that you like here!
                     return <Ionicons name={iconName} size={size} color={color} />;
                     },
-                    tabBarActiveTintColor: Colors.Light.accent,
-                    tabBarInactiveTintColor: 'gray',
-                    headerShown: false,
+                    tabBarActiveTintColor: Colors.Light.whiteText,
+                    tabBarInactiveTintColor: Colors.Light.whiteText,
+                    tabBarStyle: styles.tabBar,
+                    headerStyle: {
+                        backgroundColor: Colors.Light.accent,
+                        height: 90,
+                      },
+                      headerTintColor: Colors.Light.whiteText,
+                      headerTitleStyle: {
+                        fontSize: 30,
+                      },
+                      headerTitleAlign: 'center'
+                      
                 })}
             >
                 <Tab.Screen 
                     name="Obavestenja" 
                     component={Student} 
+                    />
+                <Tab.Screen
+                    name="Raspored"
+                    component={UserScreen}//TODO: dodati raspored
                     />
                 <Tab.Screen
                     name="Nalog"
@@ -65,7 +81,14 @@ const styles = StyleSheet.create({
     userImage:{
         width:20,
         height:20,
-    }
+    },
+    tabBar:{
+        backgroundColor:Colors.Light.accent,
+        height:80,
+        paddingBottom:10,
+        paddingTop:10,
+        position:'absolute'
+    },
 })
 
 export default NavigationScreen;
