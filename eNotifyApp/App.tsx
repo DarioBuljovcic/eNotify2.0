@@ -132,27 +132,17 @@ function App(): React.JSX.Element {
           component={NavigationScreen}
           options={({navigation}) => ({
             headerBackVisible: false,
-            title: 'Obavestenja',
+            headerShown: false,
             headerLeft: () => null,
             headerStyle: {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
-            headerTintColor: Colors.Light.headerText,
+            headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               marginLeft: 20,
               fontSize: 30,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings')}>
-                <Image
-                  style={{width: 27, height: 27, marginRight: 35}}
-                  source={require('./images/cog-wheel.png')}
-                />
-              </TouchableOpacity>
-            ),
           })}
         />
         <Stack.Screen
@@ -166,21 +156,11 @@ function App(): React.JSX.Element {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
-            headerTintColor: Colors.Light.headerText,
+            headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               marginLeft: 20,
               fontSize: 30,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings')}>
-                <Image
-                  style={{width: 27, height: 27, marginRight: 35}}
-                  source={require('./images/cog-wheel.png')}
-                />
-              </TouchableOpacity>
-            ),
           })}
         />
         <Stack.Screen
@@ -194,21 +174,11 @@ function App(): React.JSX.Element {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
-            headerTintColor: Colors.Light.headerText,
+            headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               marginLeft: 10,
               fontSize: 30,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings')}>
-                <Image
-                  style={{width: 27, height: 27, marginRight: 35}}
-                  source={require('./images/cog-wheel.png')}
-                />
-              </TouchableOpacity>
-            ),
           })}
         />
         <Stack.Screen
@@ -222,21 +192,11 @@ function App(): React.JSX.Element {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
-            headerTintColor: Colors.Light.headerText,
+            headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               marginLeft: 10,
               fontSize: 30,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings')}>
-                <Image
-                  style={{width: 27, height: 27, marginRight: 35}}
-                  source={require('./images/cog-wheel.png')}
-                />
-              </TouchableOpacity>
-            ),
           })}
         />
         <Stack.Screen
@@ -249,20 +209,10 @@ function App(): React.JSX.Element {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
-            headerTintColor: Colors.Light.headerText,
+            headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 30,
             },
-            headerRight: () => (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate('Settings')}>
-                <Image
-                  style={{width: 27, height: 27, marginRight: 35}}
-                  source={require('./images/cog-wheel.png')}
-                />
-              </TouchableOpacity>
-            ),
           })}
         />
       </Stack.Navigator>

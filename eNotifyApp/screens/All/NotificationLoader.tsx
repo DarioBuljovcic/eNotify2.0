@@ -59,7 +59,7 @@ export default function NotificationLoader({navigation}: any) {
   let date: string;
   const renderObavestenje = ({item}: {item: Notification}) => {
     let dateNew: string;
-    dateNew = format(item.Date.toDate(), 'MM. do. yyyy.');
+    dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
     if (dateNew === date) {
       return (
         <TouchableOpacity
@@ -113,11 +113,6 @@ export default function NotificationLoader({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   list: {
     flex: 1,
     alignItems: 'center',
@@ -135,7 +130,8 @@ const styles = StyleSheet.create({
   obavestenje: {
     height: 100,
     width: '90%',
-    marginVertical: 10,
+    marginTop: 5,
+    marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
     backgroundColor: Colors.Light.notificationBG,
@@ -154,11 +150,12 @@ const styles = StyleSheet.create({
     color: Colors.Light.textSecondary,
   },
   datum: {
-    marginTop: 30,
+    marginTop: 20,
     marginLeft: screenWidth * 0.06,
   },
   datumText: {
     color: Colors.Light.textSecondary,
-    fontSize: 14,
+    fontSize: 13,
+    marginTop:5,
   },
 });

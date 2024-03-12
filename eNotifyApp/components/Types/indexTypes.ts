@@ -19,7 +19,7 @@ type Navigation = {
 }
 type LoadingProps = StackScreenProps<Navigation, "Loading">
 type StudentProps = StackScreenProps<Navigation, "Student">
-type StudentTabProps = BottomTabScreenProps<ParamListBase,"Student">
+type StudentTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
 type ProfessorProps = StackScreenProps<Navigation, "Professor">
 type RegistrationProps = StackScreenProps<Navigation, "Registration">
 type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
