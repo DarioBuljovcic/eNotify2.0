@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ExcelReader from "./Excel/ExcelReader.tsx";
 import "./css/student.css";
+import InsertOne from "./InsertOne/InsertOne.tsx";
 
 export default function Users() {
   const [inputType, setInputType] = useState(1);
@@ -10,7 +11,7 @@ export default function Users() {
       case 1:
         return <ExcelReader />;
       case 2:
-        return "Hello";
+        return <InsertOne />;
     }
   }
 

@@ -3,7 +3,6 @@ import "./css/select.css";
 
 type SelectOption = {
   Class: string;
-  id: string;
 };
 
 type SelectProps = {
@@ -97,7 +96,7 @@ export function Select({ value, onChange, options }: SelectProps) {
         <span className="value">
           {value.map((v) => (
             <button
-              key={v.id}
+              key={v.Class}
               onClick={(e) => {
                 e.stopPropagation();
                 selectOption(v);
@@ -141,7 +140,7 @@ export function Select({ value, onChange, options }: SelectProps) {
                 if (highlighterRef.current)
                   highlighterRef.current.style.opacity = `0`;
               }}
-              key={option.id}
+              key={option.Class}
               className={`option ${isOpenSelected(option) ? "selected" : ""} ${
                 highlightedIndex === index ? "highlighted" : ""
               } `}

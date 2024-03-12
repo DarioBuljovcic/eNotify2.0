@@ -15,7 +15,6 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 type SelectOption = {
   Class: string;
-  id: string;
 };
 type inputData = {
   Class: string;
@@ -47,7 +46,6 @@ function MainPage() {
   ];
 
   const tittleRef = useRef<HTMLInputElement>(null);
-  const textRef = useRef<HTMLTextAreaElement>(null);
 
   const handleOptionChange = (btn: string) => {
     setSelectedOption(btn);
@@ -57,7 +55,7 @@ function MainPage() {
 
   async function sendNotification() {
     if (files) {
-      files.forEach((f) => {
+      files.forEach((f: any) => {
         const storageRef = ref(storage, f?.name);
         uploadBytes(storageRef, f)
           .then((snapshot) => {

@@ -69,6 +69,10 @@ const FileUploadForm = () => {
       reader.readAsBinaryString(file);
     }
   };
+  const insertFile = (e) => {
+    const file = e.target.files[0];
+    handleFile(file);
+  };
   useEffect(() => {
     const checkAdvancedUpload = () => {
       const div = document.createElement("div");
@@ -128,6 +132,7 @@ const FileUploadForm = () => {
       });
 
       form?.addEventListener("drop", (e: any) => {
+        console.log("hello");
         const files = e.dataTransfer.files;
         if (files.length == 0) return;
         handleFile(files[0]);
@@ -160,6 +165,7 @@ const FileUploadForm = () => {
           className="box__file"
           data-multiple-caption="{count} files selected"
           multiple
+          onChange={insertFile}
         />
         <label htmlFor="file" className="fileLabel">
           <strong>Choose a file</strong>
