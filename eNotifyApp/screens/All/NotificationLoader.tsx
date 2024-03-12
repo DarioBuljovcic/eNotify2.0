@@ -11,11 +11,7 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
-import {
-  Notification,
-  NotificationLoaderProps,
-  StudentProps,
-} from '../../components/Types/indexTypes';
+import {Notification} from '../../components/Types/indexTypes';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -23,6 +19,7 @@ export default function NotificationLoader({navigation}: any) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(false);
   const [studentClass, setClass] = useState('');
+  let date: string;
 
   const getRazred = async () => {
     try {
@@ -39,8 +36,7 @@ export default function NotificationLoader({navigation}: any) {
   const getData = async () => {
     const snapshot = await firestore()
       .collection('Notifications')
-      //.where('Class', '==', '4ITS')
-      .orderBy('Date')
+      .where('Class', '==', studentClass)
       .get();
     const data: Notification[] = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -48,15 +44,20 @@ export default function NotificationLoader({navigation}: any) {
     }));
     setNotifications(data);
   };
+
   useEffect(() => {
-    getRazred();
+    if (loading) date = '';
+  }, [notifications]);
+
+  useEffect(() => {
+    if (studentClass == '') getRazred();
     if (studentClass != '') {
+      date = '';
       getData();
       setLoading(true);
     }
   }, [studentClass]);
 
-  let date: string;
   const renderObavestenje = ({item}: {item: Notification}) => {
     let dateNew: string;
     dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
@@ -101,7 +102,7 @@ export default function NotificationLoader({navigation}: any) {
         <View style={styles.list}>
           <FlatList
             style={styles.flatList}
-            data={notifications}
+            data={notifications.sort((a, b) => Number(a.Date) - Number(b.Date))}
             renderItem={renderObavestenje}
             keyExtractor={obavestenje => obavestenje.Text}
             showsVerticalScrollIndicator={false}
@@ -156,6 +157,6 @@ const styles = StyleSheet.create({
   datumText: {
     color: Colors.Light.textSecondary,
     fontSize: 13,
-    marginTop:5,
+    marginTop: 5,
   },
 });

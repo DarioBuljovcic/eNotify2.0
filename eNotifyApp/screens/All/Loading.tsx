@@ -31,7 +31,6 @@ export default function Loading({navigation}: LoadingProps) {
       }
     };
     uzmiNaziv();
-    console.log(naziv);
     naziv === true ? getRazred() : navigation.navigate('Registration');
   }, [naziv]);
   return (
