@@ -23,7 +23,6 @@ type StudentTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
 type ProfessorProps = StackScreenProps<Navigation, "Professor">
 type RegistrationProps = StackScreenProps<Navigation, "Registration">
 type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
-type SettingsProps = StackScreenProps<Navigation, "Settings">
 type NavigationScreen = StackScreenProps<Navigation,"NavigationScreen">
 //Notification
 type Notification ={
@@ -70,6 +69,6 @@ type Theme ={
 }
 
 
-export type {Navigation,Theme,LoadingProps,StudentProps,StudentTabProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,SettingsProps,Notification,User,NavigationScreen};
+export type {Navigation,Theme,LoadingProps,StudentProps,StudentTabProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,Notification,User,NavigationScreen};
 
 

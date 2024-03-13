@@ -1,11 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 import Colors from '../../components/Constants/Color';
-import { SettingsProps, User } from '../../components/Types/indexTypes';
+import { User } from '../../components/Types/indexTypes';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Student from '../Student/Student';
-import Settings from './Settings';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image, Text } from 'react-native-elements';
@@ -29,11 +28,11 @@ const UserScreen=()=>{
     let imgSource;
 
     if (role=='Student') {
-        imgSource = require('../../images/graduation.png');
+        imgSource = require('../../assets/images/graduation.png');
     } else if (role=='Professor') {
-        imgSource = require('../../images/open-book.png');
+        imgSource = require('../../assets/images/open-book.png');
     } else {
-        imgSource = require('../../images/graduation.png');
+        imgSource = require('../../assets/images/graduation.png');
     }
 
     return(
@@ -49,21 +48,21 @@ const UserScreen=()=>{
                     </View>
                     
                     <Text style={styles.nameText}>{name}</Text>
-                    <Text style={styles.roleText}>{role}</Text>
+                    <Text style={styles.roleText}>{role=='Professor'?'Profesor':'Student'}</Text>
 
                     <TouchableOpacity
                         style={styles.option}
                         activeOpacity={0.5}
                         //onPress={()=>{} }
                     >
-                        <Text style={styles.optionText}>About</Text>
+                        <Text style={styles.optionText}>O aplikaciji</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.option}
                         activeOpacity={0.5}
                         //onPress={()=>{} }
                     >
-                        <Text style={styles.optionText}>Contact programmer</Text>
+                        <Text style={styles.optionText}>Kontaktiraj programera</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -129,6 +128,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         flex: 1,
         color: Colors.Light.textPrimary,
+        fontFamily: 'Mulish-Light',
     },
   });
   

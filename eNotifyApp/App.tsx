@@ -18,7 +18,6 @@ import Loading from './screens/All/Loading';
 import Student from './screens/Student/Student';
 import Professor from './screens/Professor/Professor';
 import Notification from './screens/All/Notification';
-import Settings from './screens/All/Settings';
 
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
@@ -184,22 +183,6 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Notification"
           component={Notification}
-          options={({navigation}) => ({
-            headerBackVisible: false,
-            title: 'Notifikacija',
-            headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
-            },
-            headerTintColor: Colors.Light.whiteText,
-            headerTitleStyle: {
-              fontSize: 30,
-            },
-          })}
-        />
-        <Stack.Screen
-          name="Settings"
-          component={Settings}
           options={({navigation}) => ({
             headerBackVisible: false,
             title: 'Notifikacija',
