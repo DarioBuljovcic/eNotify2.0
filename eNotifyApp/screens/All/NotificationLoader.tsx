@@ -65,7 +65,7 @@ export default function NotificationLoader({navigation}: any) {
       return (
         <TouchableOpacity
           style={styles.obavestenje}
-          activeOpacity={0.8}
+          activeOpacity={0.5}
           key={item.Text}
           onPress={() => {
             navigation.navigate('Notification', item);
@@ -84,7 +84,7 @@ export default function NotificationLoader({navigation}: any) {
           </View>
           <TouchableOpacity
             style={styles.obavestenje}
-            activeOpacity={0.8}
+            activeOpacity={0.5}
             onPress={() => {
               navigation.navigate('Notification', item);
             }}>
@@ -155,8 +155,9 @@ const styles = StyleSheet.create({
     marginLeft: screenWidth * 0.06,
   },
   datumText: {
-    color: Colors.Light.textSecondary,
+    color: Colors.Light.textPrimary,
     fontSize: 13,
     marginTop: 5,
+    opacity:0.6,
   },
 });

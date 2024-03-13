@@ -187,14 +187,12 @@ function App(): React.JSX.Element {
           options={({navigation}) => ({
             headerBackVisible: false,
             title: 'Notifikacija',
-            headerLeft: () => null,
             headerStyle: {
               backgroundColor: Colors.Light.accent,
               height: 100,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              marginLeft: 10,
               fontSize: 30,
             },
           })}

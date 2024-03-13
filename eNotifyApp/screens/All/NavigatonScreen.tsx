@@ -36,7 +36,7 @@ const NavigationScreen = () => {
               iconName = focused ? 'notifications' : 'notifications-outline';
             } else if (route.name === 'Raspored') {
               iconName = focused ? 'calendar' : 'calendar-outline';
-            } else if (route.name === 'Nalog') {
+            } else if (route.name === 'Moj Nalog') {
               iconName = focused ? 'people' : 'people-outline';
             }
             size = 30;
@@ -56,20 +56,51 @@ const NavigationScreen = () => {
           },
           headerTitleAlign: 'center',
         })}>
-        <Tab.Screen name="Obavestenja" component={Student} />
-        <Tab.Screen
-          name="Raspored"
-          component={Raspored} //TODO: dodati raspored
-        />
-        <Tab.Screen name="Nalog" component={UserScreen} />
+        <Tab.Screen name='Obavestenja' component={Student} />
+        <Tab.Screen name='Raspored' component={Raspored}/>
+        <Tab.Screen name='Moj Nalog' component={UserScreen} >
+          {/* TODO: add stack tree*/}
+        </Tab.Screen>
       </Tab.Navigator>
     );
   } else if (role == 'Professor') {
     //(Profesor)
     return (
-      <View>
-        <Text>prof</Text>
-      </View>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({focused, color, size}) => {
+            let iconName: string = '';
+
+            if (route.name === 'Obavestenja') {
+              iconName = focused ? 'notifications' : 'notifications-outline';
+            } else if (route.name === 'Raspored') {
+              iconName = focused ? 'calendar' : 'calendar-outline';
+            } else if (route.name === 'Moj Nalog') {
+              iconName = focused ? 'people' : 'people-outline';
+            }
+            size = 30;
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+          tabBarActiveTintColor: Colors.Light.whiteText,
+          tabBarInactiveTintColor: Colors.Light.whiteText,
+          tabBarStyle: styles.tabBar,
+          headerStyle: {
+            backgroundColor: Colors.Light.accent,
+            height: 90,
+          },
+          headerTintColor: Colors.Light.whiteText,
+          headerTitleStyle: {
+            fontSize: 30,
+          },
+          headerTitleAlign: 'center',
+        })}>
+        <Tab.Screen name='Obavestenja' component={Student} />
+        <Tab.Screen name='Raspored' component={Raspored}/>
+        <Tab.Screen name='Moj Nalog' component={UserScreen} >
+          {/* TODO: add stack tree*/}
+        </Tab.Screen>
+      </Tab.Navigator>
     );
   }
 };
@@ -84,7 +115,6 @@ const styles = StyleSheet.create({
     height: 80,
     paddingBottom: 10,
     paddingTop: 10,
-    position: 'absolute',
   },
 });
 
