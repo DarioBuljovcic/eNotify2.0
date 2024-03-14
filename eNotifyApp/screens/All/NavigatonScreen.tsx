@@ -5,7 +5,6 @@ import {StyleSheet, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Student from '../Student/Student';
-import Settings from './Settings';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
@@ -56,9 +55,9 @@ const NavigationScreen = () => {
           },
           headerTitleAlign: 'center',
         })}>
-        <Tab.Screen name='Obavestenja' component={Student} />
-        <Tab.Screen name='Raspored' component={Raspored}/>
-        <Tab.Screen name='Moj Nalog' component={UserScreen} >
+        <Tab.Screen name="Obavestenja" component={Student} />
+        <Tab.Screen name="Raspored" component={Raspored} />
+        <Tab.Screen name="Moj Nalog" component={UserScreen}>
           {/* TODO: add stack tree*/}
         </Tab.Screen>
       </Tab.Navigator>
@@ -95,9 +94,9 @@ const NavigationScreen = () => {
           },
           headerTitleAlign: 'center',
         })}>
-        <Tab.Screen name='Obavestenja' component={Student} />
-        <Tab.Screen name='Raspored' component={Raspored}/>
-        <Tab.Screen name='Moj Nalog' component={UserScreen} >
+        <Tab.Screen name="Obavestenja" component={Student} />
+        <Tab.Screen name="Raspored" component={Raspored} />
+        <Tab.Screen name="Moj Nalog" component={UserScreen}>
           {/* TODO: add stack tree*/}
         </Tab.Screen>
       </Tab.Navigator>
