@@ -128,7 +128,7 @@ const App = () => {
   useEffect(() => {
     getRazred();
     if (!raspored) getData();
-  }, [raspored]);
+  }, [studentClass]);
 
   return (
     <ScrollView horizontal={true}>
