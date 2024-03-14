@@ -17,8 +17,16 @@ type Navigation = {
     Settings: undefined,
     NavigationScreen: undefined,
 }
+type StudentData={
+key:string;
+}
+type NavigationData={
+  key:string;
+  }
+export type {StudentData,NavigationData};
+
 type LoadingProps = StackScreenProps<Navigation, "Loading">
-type StudentProps = StackScreenProps<Navigation, "Student">
+type StudentProps = StackScreenProps<Navigation, "Student" >
 type StudentTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
 type ProfessorProps = StackScreenProps<Navigation, "Professor">
 type RegistrationProps = StackScreenProps<Navigation, "Registration">

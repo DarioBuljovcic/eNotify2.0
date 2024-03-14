@@ -14,7 +14,7 @@ import Raspored from '../Student/Raspored';
 
 const NavigationScreen = () => {
   const [role, setRole] = useState('');
-
+  console.log('Reloaded');
   useEffect(() => {
     const saveUser = async () => {
       setRole((await AsyncStorage.getItem('Role')) as string);

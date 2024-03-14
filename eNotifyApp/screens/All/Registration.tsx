@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {RegistrationProps, User} from '../../components/Types/indexTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
 import Colors from '../../components/Constants/Color';
 
@@ -16,6 +17,7 @@ const Registration = ({navigation}: RegistrationProps) => {
     await AsyncStorage.setItem('Role', user.Role);
     await AsyncStorage.setItem('Class', user.Class);
     await AsyncStorage.setItem('Name', user.Name);
+    await messaging().subscribeToTopic(user.Class);
   };
   //Email and Password
   const Login = () => {
