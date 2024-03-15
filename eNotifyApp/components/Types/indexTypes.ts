@@ -12,18 +12,14 @@ type Navigation = {
     Student : undefined,
     Professor: undefined,
     Registration: undefined,
-    Notification: undefined,
+    Notification: NotificationData,
     NotificationLoader: undefined,
     Settings: undefined,
     NavigationScreen: undefined,
 }
-type StudentData={
-key:string;
+type NotificationData={
+  Notification:NotificationType;
 }
-type NavigationData={
-  key:string;
-  }
-export type {StudentData,NavigationData};
 
 type LoadingProps = StackScreenProps<Navigation, "Loading">
 type StudentProps = StackScreenProps<Navigation, "Student" >
@@ -33,7 +29,8 @@ type RegistrationProps = StackScreenProps<Navigation, "Registration">
 type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
 type NavigationScreen = StackScreenProps<Navigation,"NavigationScreen">
 //Notification
-type Notification ={
+type NotificationType ={
+  NotificationId:string,
   Tittle: string,
   Text:string,
   Class: string,
@@ -77,6 +74,6 @@ type Theme ={
 }
 
 
-export type {Navigation,Theme,LoadingProps,StudentProps,StudentTabProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,Notification,User,NavigationScreen};
+export type {Navigation,Theme,LoadingProps,StudentProps,StudentTabProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,NotificationType,User,NavigationScreen};
 
 

@@ -1,16 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Image,
-  AppState,
-  TouchableOpacity,
-  Alert,
-  Linking,
-  ActivityIndicator,
-} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet, Linking, ActivityIndicator} from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 import Registration from './screens/All/Registration';
@@ -18,7 +10,6 @@ import Loading from './screens/All/Loading';
 import Student from './screens/Student/Student';
 import Professor from './screens/Professor/Professor';
 import Notification from './screens/All/Notification';
-import PushNotification from 'react-native-push-notification';
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
 import NavigationScreen from './screens/All/NavigatonScreen';
@@ -29,95 +20,78 @@ type Screens = {
   [key: string]: string;
 };
 
-// function buildDeepLinkFromNotificationData(data: any): string | null {
-//   console.log(data);
-//   const navigationId = data;
-//   if (!NAVIGATION_IDS.includes(navigationId)) {
-//     console.warn('Unverified navigationId', navigationId);
-//     return null;
-//   }
-//   if (navigationId === 'Registration') {
-//     return 'myapp://Registration';
-//   }
-//   if (navigationId === 'Notification') {
-//     return 'myapp://Notification';
-//   }
-//   const postId = data?.postId;
-//   if (typeof postId === 'string') {
-//     return `myapp://post/${postId}`;
-//   }
-//   console.warn('Missing postId');
-//   return null;
-// }
+function buildDeepLinkFromNotificationData(data: any): string | null {
+  const notificationId = data.notification.android.channelId;
+  return `eNotify://Notification/${notificationId}`;
+}
 
-// const linking = {
-//   prefixes: ['myapp://'],
-//   config: {
-//     initialRouteName: `Registration`,
-//     screens: {
-//       Registration: `Registration`,
-//     } as Screens,
-//   },
-//   async getInitialURL() {
-//     console.log('This opened getInitialURL');
-//     const url = await Linking.getInitialURL();
-//     if (typeof url === 'string') {
-//       return url;
-//     }
-//     //getInitialNotification: When the application is opened from a quit state.
-//     const message = await messaging().getInitialNotification();
-//     const deeplinkURL = buildDeepLinkFromNotificationData('Notification');
-//     if (typeof deeplinkURL === 'string') {
-//       return deeplinkURL;
-//     }
-//   },
-//   subscribe(listener: (url: string) => void) {
-//     console.log('This opened subscribe Hello');
-//     const onReceiveURL = ({url}: {url: string}) => listener(url);
+const linking = {
+  prefixes: ['eNotify://'],
+  config: {
+    initialRouteName: `Registration`,
+    screens: {
+      Registration: `Registration`,
+      Notification: {
+        path: 'Notification/:id',
+        parse: {
+          id: (id: string) => `${id}`,
+        },
+      },
+    } as any,
+  },
+  async getInitialURL() {
+    const url = await Linking.getInitialURL();
+    if (typeof url === 'string') {
+      return url;
+    }
+    //getInitialNotification: When the application is opened from a quit state.
+    const message = await messaging().getInitialNotification();
+    const deeplinkURL = buildDeepLinkFromNotificationData('Notification');
+    if (typeof deeplinkURL === 'string') {
+      return deeplinkURL;
+    }
+  },
+  subscribe(listener: (url: string) => void) {
+    const onReceiveURL = ({url}: {url: string}) => listener(url);
 
-//     // Listen to incoming links from deep linking
-//     const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+    // Listen to incoming links from deep linking
+    const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
 
-//     //onNotificationOpenedApp: When the application is running, but in the background.
-//     const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-//       console.log(remoteMessage);
-//       const url = buildDeepLinkFromNotificationData('Notification');
-//       if (typeof url === 'string') {
-//         listener(url);
-//       }
-//     });
+    //onNotificationOpenedApp: When the application is running, but in the background.
+    const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(remoteMessage);
+      const url = buildDeepLinkFromNotificationData(remoteMessage);
 
-//     return () => {
-//       linkingSubscription.remove();
-//       unsubscribe();
-//     };
-//   },
-// };
+      if (typeof url === 'string') {
+        console.log(url);
+        listener(url);
+        Linking.openURL(url);
+      }
+    });
+
+    return () => {
+      linkingSubscription.remove();
+      unsubscribe();
+    };
+  },
+};
 
 function App(): React.JSX.Element {
+  const [unseenNotify, setUnseenNotify] = useState(0);
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('hello');
-      //nekako da se refreshuje
-    });
+    const unsubscribe = messaging().onMessage(async remoteMessage => {});
 
     return unsubscribe;
   }, []);
   useEffect(() => {
     const unsubscribe = messaging().setBackgroundMessageHandler(
-      async remoteMessage => {
-        PushNotification.localNotification({
-          title: remoteMessage.notification?.title,
-          message: remoteMessage.notification?.body,
-        });
-        //nekako da se ode na notifikaciju
-      },
+      async remoteMessage => {},
     );
     return unsubscribe;
   });
   return (
     <NavigationContainer
-      //linking={linking}
+      linking={linking}
       fallback={<ActivityIndicator animating />}>
       <Stack.Navigator>
         <Stack.Screen name="Loading" component={Loading} />

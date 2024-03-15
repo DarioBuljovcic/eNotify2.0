@@ -26,6 +26,11 @@ app.post("/api/data", (req, res) => {
       title: data.Tittle,
       body: data.Text,
     },
+    android: {
+      notification: {
+        channelId: data.NotificationId, // Set your channel ID here
+      },
+    },
     topic: data.Class, // or specify the device token for individual devices
   };
 

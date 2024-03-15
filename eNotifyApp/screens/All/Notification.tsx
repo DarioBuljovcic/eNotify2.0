@@ -3,24 +3,42 @@ import {StyleSheet, Text, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import {format} from 'date-fns';
-import {Notification} from '../../components/Types/indexTypes';
+import {NotificationType} from '../../components/Types/indexTypes';
+import firestore from '@react-native-firebase/firestore';
+import {useEffect, useState} from 'react';
 
 export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
-  const notification: Notification = route.params;
-  console.log('Item', notification);
+  const [notification, setNotification] = useState<NotificationType>();
+
+  useEffect(() => {
+    const getNotification = async () => {
+      console.log('This is done');
+      const querySnapshot = await firestore()
+        .collection('Notifications') // Replace 'yourCollection' with your collection name
+        .where('NotificationId', '==', route.params.id)
+        .get();
+      const data = querySnapshot.docs[0].data() as NotificationType;
+      setNotification(data);
+    };
+    if (!notification) getNotification();
+  });
+
   navigation.setOptions({title: route.params.Tittle});
 
   return (
     <View style={styles.container}>
-      <View style={styles.infoContainer}>
-        <Text style={styles.class}>{notification.Class}</Text>
-        <Text style={styles.date}>
-          {format(notification.Date.toDate(), 'dd. MM. yyyy')}
-        </Text>
-      </View>
-
-      <Text style={styles.body}>{notification.Text}</Text>
+      {notification && (
+        <>
+          <View style={styles.infoContainer}>
+            <Text style={styles.class}>{notification?.Class}</Text>
+            <Text style={styles.date}>
+              {format(notification.Date.toDate(), 'dd. MM. yyyy')}
+            </Text>
+          </View>
+          <Text style={styles.body}>{notification.Text}</Text>
+        </>
+      )}
     </View>
   );
 }

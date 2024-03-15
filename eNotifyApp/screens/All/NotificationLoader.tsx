@@ -11,12 +11,12 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
-import {Notification} from '../../components/Types/indexTypes';
+import {NotificationType} from '../../components/Types/indexTypes';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function NotificationLoader({navigation}: any) {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(false);
   const [studentClass, setClass] = useState('');
   let date: string;
@@ -33,16 +33,17 @@ export default function NotificationLoader({navigation}: any) {
     }
   };
   //uzimanje podataka iz baze
-  const getData = async () => {
-    const snapshot = await firestore()
+  const getData = () => {
+    firestore()
       .collection('Notifications')
       .where('Class', '==', studentClass)
-      .get();
-    const data: Notification[] = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...(doc.data() as Notification), // Here, we assert that the document data conforms to the User interface
-    }));
-    setNotifications(data);
+      .onSnapshot(snapshot => {
+        const data: NotificationType[] = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...(doc.data() as NotificationType), // Here, we assert that the document data conforms to the User interface
+        }));
+        setNotifications(data);
+      });
   };
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export default function NotificationLoader({navigation}: any) {
     }
   }, [studentClass]);
 
-  const renderObavestenje = ({item}: {item: Notification}) => {
+  const renderObavestenje = ({item}: {item: NotificationType}) => {
     let dateNew: string;
     dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
     if (dateNew === date) {
@@ -66,9 +67,9 @@ export default function NotificationLoader({navigation}: any) {
         <TouchableOpacity
           style={styles.obavestenje}
           activeOpacity={0.5}
-          key={item.Text}
+          key={item.NotificationId}
           onPress={() => {
-            navigation.navigate('Notification', item);
+            navigation.navigate('Notification', {id: item.NotificationId});
           }}>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -78,7 +79,7 @@ export default function NotificationLoader({navigation}: any) {
       date = dateNew;
 
       return (
-        <View key={item.Text}>
+        <View key={item.NotificationId}>
           <View style={styles.datum}>
             <Text style={styles.datumText}>{date}</Text>
           </View>
@@ -86,7 +87,7 @@ export default function NotificationLoader({navigation}: any) {
             style={styles.obavestenje}
             activeOpacity={0.5}
             onPress={() => {
-              navigation.navigate('Notification', item);
+              navigation.navigate('Notification', {id: item.NotificationId});
             }}>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -102,9 +103,9 @@ export default function NotificationLoader({navigation}: any) {
         <View style={styles.list}>
           <FlatList
             style={styles.flatList}
-            data={notifications.sort((a, b) => Number(a.Date) - Number(b.Date))}
+            data={notifications.sort((a, b) => Number(b.Date) - Number(a.Date))}
             renderItem={renderObavestenje}
-            keyExtractor={obavestenje => obavestenje.Text}
+            keyExtractor={obavestenje => obavestenje.NotificationId}
             showsVerticalScrollIndicator={false}
           />
         </View>
@@ -158,6 +159,6 @@ const styles = StyleSheet.create({
     color: Colors.Light.textPrimary,
     fontSize: 13,
     marginTop: 5,
-    opacity:0.6,
+    opacity: 0.6,
   },
 });

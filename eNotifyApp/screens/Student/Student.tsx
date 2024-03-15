@@ -11,11 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
-import {
-  StudentProps,
-  StudentTabProps,
-  StudentData,
-} from '../../components/Types/indexTypes';
+import {StudentProps, StudentTabProps} from '../../components/Types/indexTypes';
 import Colors from '../../components/Constants/Color';
 import NotificationLoader from '../All/NotificationLoader';
 import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';

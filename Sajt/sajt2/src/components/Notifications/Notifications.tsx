@@ -13,11 +13,13 @@ import "./css/notifications.css";
 import TextArea from "./TextArea/TextArea.tsx";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
+import { generateKey } from "crypto";
 
 type SelectOption = {
   Class: string;
 };
 type inputData = {
+  NotificationId: string;
   Class: string;
   Date: Date;
   Files: string | undefined;
@@ -25,9 +27,9 @@ type inputData = {
   Tittle: string | undefined;
   Type: string;
 };
-interface File {
+type File = {
   name: string;
-}
+};
 const storage = getStorage();
 
 function MainPage() {
@@ -52,6 +54,17 @@ function MainPage() {
     setSelectedOption(btn);
     setSelectData(btn === "option1" ? classes : grupno);
     setOptions([]);
+  };
+  const generatePassword = (length: number) => {
+    // Define the length of the password
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Define the character set
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+    return password;
   };
 
   async function sendNotification() {
@@ -99,6 +112,7 @@ function MainPage() {
         selectedClasses.push(option.Class);
       });
       const dataToInsert: inputData = {
+        NotificationId: generatePassword(7),
         Class: selectedClasses.join("|"),
         Date: new Date(),
         Files: files.length > 0 ? `${files.map((f) => f.name)}` : ``,
