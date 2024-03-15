@@ -35,8 +35,7 @@ type NotificationType ={
   Text:string,
   Class: string,
   Type:string,
-  File: string,
-  Image: string,
+  Files: string,
   Date: Timestamp
 }
 type User = {
