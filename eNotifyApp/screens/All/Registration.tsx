@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
 import Colors from '../../components/Constants/Color';
+import LinearGradient from 'react-native-linear-gradient';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
@@ -59,12 +60,18 @@ const Registration = ({navigation}: RegistrationProps) => {
         />
       </View>
 
-      <TouchableOpacity
+      <LinearGradient
+              start={{ x: 0.8, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={styles.confirmBtn}
+      >
+        <TouchableOpacity
         onPress={() => Login()}
-        style={styles.confirmBtn}
         activeOpacity={0.8}>
-        <Text style={styles.confirmTxt}>Registruj se</Text>
-      </TouchableOpacity>
+          <Text style={styles.confirmTxt}>Registruj se</Text>
+        </TouchableOpacity>
+      </LinearGradient>
     </View>
   );
 };
@@ -76,8 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 20,
     alignContent: 'center',
-
-    paddingTop: '50%',
+    justifyContent:'center',
   },
   incorrectText: {
     color: 'red',
@@ -86,9 +92,11 @@ const styles = StyleSheet.create({
 
     alignSelf: 'center',
     textAlign: 'left',
+    fontFamily:'Mulish'
   },
   input: {
     fontSize: 17,
+    fontFamily:'Mulish',
 
     backgroundColor: Colors.Light.textInputBackground,
     color: Colors.Light.textPrimary,
@@ -124,6 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
 
     color: Colors.Light.whiteText,
+    fontFamily:'Mulish'
   },
 });
 

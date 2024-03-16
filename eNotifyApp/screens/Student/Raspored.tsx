@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.Light.textPrimary,
     textAlign: 'center',
+    fontFamily: 'Mulish',
   },
   vremena: {
     display: 'flex',
@@ -201,5 +202,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     color: 'white',
+    fontFamily: 'Mulish',
   },
 });

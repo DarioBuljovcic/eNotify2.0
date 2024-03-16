@@ -146,10 +146,12 @@ const styles = StyleSheet.create({
   obavestenjeTitle: {
     fontSize: 20,
     color: Colors.Light.textPrimary,
+    fontFamily: 'Mulish-Light',
   },
   obavestenjeBody: {
     flexShrink: 1,
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish-Light',
   },
   datum: {
     marginTop: 20,
@@ -160,5 +162,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 5,
     opacity: 0.6,
+    fontFamily: 'Mulish-Light',
   },
 });
