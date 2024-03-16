@@ -61,6 +61,7 @@ type Color = {
     black: string,
 
     accent: string,
+    accentGreen: string,
     appBackground: string,
     textInputBackground: string,
     lightText: string,

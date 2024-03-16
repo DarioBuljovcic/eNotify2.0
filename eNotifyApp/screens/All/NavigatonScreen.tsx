@@ -11,6 +11,7 @@ import {Image, Text} from 'react-native-elements';
 import UserScreen from './UserScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Raspored from '../Student/Raspored';
+import LinearGradient from 'react-native-linear-gradient';
 
 const NavigationScreen = () => {
   const [role, setRole] = useState('');
@@ -45,15 +46,36 @@ const NavigationScreen = () => {
           tabBarActiveTintColor: Colors.Light.whiteText,
           tabBarInactiveTintColor: Colors.Light.whiteText,
           tabBarStyle: styles.tabBar,
+          tabBarLabelStyle:{
+            fontSize:12,
+            fontFamily: 'Mulish'
+          },
           headerStyle: {
             backgroundColor: Colors.Light.accent,
-            height: 90,
+            height: 60,
           },
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
-            fontSize: 30,
+            fontSize: 23,
+            fontFamily: 'Mulish'
           },
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
+          tabBarBackground: () => (
+              <LinearGradient
+                start={{ x: 0.8, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+                style={{ flex:1 }}
+              />
+          ),
+          headerBackground: ()=> (
+            <LinearGradient
+            start={{ x: 0.8, y: 0 }}
+            end={{ x: 0, y: 0 }}
+            colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+            style={{ flex:1 }}
+          />
+          ),
         })}>
         <Tab.Screen name="Obavestenja" component={Student} />
         <Tab.Screen name="Raspored" component={Raspored} />
@@ -84,15 +106,20 @@ const NavigationScreen = () => {
           tabBarActiveTintColor: Colors.Light.whiteText,
           tabBarInactiveTintColor: Colors.Light.whiteText,
           tabBarStyle: styles.tabBar,
+          tabBarLabelStyle:{
+            fontSize:12,
+            fontFamily: 'Mulish'
+          },
           headerStyle: {
             backgroundColor: Colors.Light.accent,
-            height: 90,
+            height: 60,
           },
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
-            fontSize: 30,
+            fontSize: 23,
+            fontFamily: 'Mulish'
           },
-          headerTitleAlign: 'center',
+          headerTitleAlign: 'left',
         })}>
         <Tab.Screen name="Obavestenja" component={Student} />
         <Tab.Screen name="Raspored" component={Raspored} />
@@ -111,7 +138,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: Colors.Light.accent,
-    height: 80,
+    height: 70,
     paddingBottom: 10,
     paddingTop: 10,
   },

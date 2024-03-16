@@ -9,6 +9,7 @@ import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import LinearGradient from 'react-native-linear-gradient';
 
 const UserScreen = () => {
   const [role, setRole] = useState('');
@@ -62,6 +63,8 @@ const UserScreen = () => {
           >
             <Text style={styles.optionText}>Kontaktiraj programera</Text>
           </TouchableOpacity>
+
+          
         </View>
       </View>
     </View>
@@ -99,11 +102,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: Colors.Light.textPrimary,
     fontSize: 20,
+    fontFamily: 'Mulish-Light',
   },
   roleText: {
     color: Colors.Light.lightText,
     fontSize: 13,
     marginBottom: 20,
+    fontFamily: 'Mulish-Light',
   },
   option: {
     height: 70,

@@ -13,6 +13,7 @@ import Notification from './screens/All/Notification';
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
 import NavigationScreen from './screens/All/NavigatonScreen';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -103,84 +104,120 @@ function App(): React.JSX.Element {
             title: 'Unesite kod',
             headerLeft: () => null,
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
+              height: 60,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 30,
+              fontSize: 23,
+              fontFamily:'Mulish-Light'
             },
-            headerTitleAlign: 'center',
+            headerBackground: ()=> (
+              <LinearGradient
+              start={{ x: 0.8, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{ flex:1 }}
+              />
+            ),
           })}
         />
         <Stack.Screen
           name="NavigationScreen"
           component={NavigationScreen}
-          options={({navigation}) => ({
+          options={() => ({
             headerBackVisible: false,
             headerShown: false,
             headerLeft: () => null,
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
+              height: 60,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              marginLeft: 20,
-              fontSize: 30,
+              fontSize: 23,
+              fontFamily:'Mulish-Light'
             },
+            headerBackground: ()=> (
+              <LinearGradient
+              start={{ x: 0.8, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{ flex:1 }}
+              />
+            ),
           })}
         />
         <Stack.Screen
           name="Student"
           component={Student}
-          options={({navigation}) => ({
+          options={() => ({
             headerBackVisible: false,
             title: 'Obavestenja',
             headerLeft: () => null,
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
+              height: 60,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              marginLeft: 20,
-              fontSize: 30,
+              fontSize: 23,
+              fontFamily:'Mulish-Light'
             },
+            headerBackground: ()=> (
+              <LinearGradient
+              start={{ x: 0.8, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{ flex:1 }}
+              />
+            ),
           })}
         />
         <Stack.Screen
           name="Professor"
           component={Professor}
-          options={({navigation}) => ({
+          options={() => ({
             headerBackVisible: false,
             title: 'Glavni Meni',
             headerLeft: () => null,
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
+              height: 60,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              marginLeft: 10,
-              fontSize: 30,
+              fontSize: 23,
+              fontFamily:'Mulish-Light'
             },
+            headerBackground: ()=> (
+              <LinearGradient
+              start={{ x: 0.8, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{ flex:1 }}
+              />
+            ),
           })}
         />
         <Stack.Screen
           name="Notification"
           component={Notification}
-          options={({navigation}) => ({
+          options={() => ({
             headerBackVisible: false,
             title: 'Notifikacija',
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
+              height: 60,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 30,
+              fontSize: 23,
+              fontFamily:'Mulish-Light'
             },
+            headerBackground: ()=> (
+              <LinearGradient
+              start={{ x: 0.8, y: 0 }}
+              end={{ x: 0, y: 0 }}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{ flex:1 }}
+              />
+            ),
           })}
         />
       </Stack.Navigator>

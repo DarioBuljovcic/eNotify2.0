@@ -117,7 +117,7 @@ export default function Obavestenje({route}: any) {
           <View style={styles.infoContainer}>
             <Text style={styles.class}>{notification?.Class}</Text>
             <Text style={styles.date}>
-              {format(notification.Date.toDate(), 'dd. MM. yyyy')}
+              {format(notification.Date.toDate(), 'dd.MM.yyyy')}
             </Text>
           </View>
           <Text style={styles.body}>{notification.Text}</Text>
@@ -133,17 +133,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  background: {
-    width: '100%',
-    height: '100%',
-    opacity: 0.95,
-    padding: 20,
-  },
   body: {
     marginTop: 10,
     fontSize: 18,
     color: Colors.Light.textPrimary,
     marginHorizontal: 15,
+    fontFamily:'Mulish'
   },
   infoContainer: {
     paddingHorizontal: 10,
@@ -158,9 +153,11 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
     color: Colors.Light.textPrimary,
+    fontFamily:'Mulish'
   },
   class: {
     flex: 1,
     color: Colors.Light.textPrimary,
+    fontFamily:'Mulish'
   },
 });

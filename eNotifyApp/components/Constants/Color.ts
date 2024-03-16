@@ -13,6 +13,7 @@ const Colors: Theme = {
     black: 'black',
 
     accent: '#2192ff',
+    accentGreen: '#00B981',
     appBackground: '#f8f9fa',
     textInputBackground:'#ffffff',
 
@@ -32,6 +33,7 @@ const Colors: Theme = {
     black: 'black',
 
     accent: '#2192ff',
+    accentGreen: '#00B981',
     appBackground: '#ffffff',
     textInputBackground:'#e5e5e5',
 
