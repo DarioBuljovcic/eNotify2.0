@@ -122,10 +122,12 @@ function MainPage() {
       };
       const sendData = async () => {
         try {
+          console.log("hello");
           const response = await axios.post(
-            "http://localhost:5000/api/data",
+            "https://65f5d714ed117bd97a7815c6--enotifyserver2.netlify.app/.netlify/functions/api/data",
             dataToInsert
           );
+          console.log(response);
         } catch (error) {
           console.error("Error sending data:", error);
         }
