@@ -20,6 +20,7 @@ const Colors: Theme = {
     textPrimary: '#252525',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
+    hyperlinkText: '#0055cc',
   },
   Dark:{
     primary: '#ACE1FF',
@@ -40,6 +41,7 @@ const Colors: Theme = {
     textPrimary: '#252525',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
+    hyperlinkText: '#0055cc',
   }
 };
 export default Colors;

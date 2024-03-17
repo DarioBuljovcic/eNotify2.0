@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 10,
 
-    elevation: 10,
+    elevation: 3,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,

@@ -62,11 +62,13 @@ type Color = {
 
     accent: string,
     accentGreen: string,
+
     appBackground: string,
     textInputBackground: string,
+
     lightText: string,
     whiteText:string,
-    //darkText:string,
+    hyperlinkText: string,
 };
 type Theme ={
   Light:Color,

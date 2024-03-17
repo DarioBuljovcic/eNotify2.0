@@ -26,8 +26,6 @@ export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [images, setImages] = useState<Images[]>([]);
-  const [imgOpen, setImgOpen] = useState(false);
-
   navigation.setOptions({title: ''});
   useEffect(() => {
     const getNotification = async () => {
@@ -94,19 +92,27 @@ export default function Obavestenje({route}: any) {
   //funkcija za prikazivanje slike -- trebas malo dorediti style i dodati na klik da se moze skinuti
   const renderImages = () => {
     return (
-      <View>
+      <View style={styles.imageContainer}>
         {images.map((image, index) => (
           <TouchableOpacity
             key={index}
+            activeOpacity={0.8}
             onPress={() => {
               downloadImage(image.imageUrl, image.imageName);
-              // requestStoragePermission();
-            }}>
-            <Image
-              key={index}
-              source={{uri: image.imageUrl}}
-              style={{width: 200, height: 200}}
-            />
+              //requestStoragePermission();
+            }}
+            >
+              <View style={styles.imageButton}>
+                <Image
+                  key={index}
+                  source={{uri: image.imageUrl}}
+                  style={styles.image}
+                />
+                <View style={styles.txtContainer}>
+                  <Text style={styles.txtImageName}>{image.imageName}</Text>
+                  <Text style={styles.txtClick}>Click to Download</Text>
+                </View>
+              </View>
           </TouchableOpacity>
         ))}
       </View>
@@ -162,5 +168,44 @@ const styles = StyleSheet.create({
     flex: 1,
     color: Colors.Light.textPrimary,
     fontFamily: 'Mulish',
+  },
+  imageContainer:{
+    position:'absolute',
+    bottom:10,
+    width:'100%',
+    gap:10,
+    padding:10
+
+  },
+  imageButton:{
+    backgroundColor:Colors.Light.textInputBackground,
+    borderRadius:10,
+    padding:10,
+    flexDirection:'row',
+
+    elevation: 3,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
+  image:{
+    width:70,
+    height:70,
+    borderRadius:10,
+    borderWidth:1,
+    borderColor:Colors.Light.lightText,
+  },
+  txtContainer:{
+    marginLeft:10,
+  },
+  txtImageName:{
+    color:Colors.Light.hyperlinkText,
+    fontSize:14,
+    fontFamily:'Mulish'
+  },
+  txtClick:{
+    color:Colors.Light.lightText,
+    fontSize:11,
+    fontFamily:'Mulish'
   },
 });
