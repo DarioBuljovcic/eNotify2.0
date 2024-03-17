@@ -10,13 +10,14 @@ export default function Loading({navigation}: LoadingProps) {
     // await AsyncStorage.setItem('role', 'Profesor');
     // await AsyncStorage.setItem('razred', '4ITS - Profesor');
     // await AsyncStorage.setItem('naziv', 'Dario Buljovčić');
-    // await AsyncStorage.removeItem('Name');
-    // await AsyncStorage.removeItem('Class');
-    // await AsyncStorage.removeItem('Role');
+    await AsyncStorage.removeItem('Name');
+    await AsyncStorage.removeItem('Class');
+    await AsyncStorage.removeItem('Role');
   };
 
   useEffect(() => {
     doIt();
+    console.log('This is done');
     const uzmiNaziv = async () => {
       const value = await AsyncStorage.getItem('Name');
       if (value !== null) setNaziv(true);

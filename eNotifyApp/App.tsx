@@ -95,6 +95,32 @@ function App(): React.JSX.Element {
       linking={linking}
       fallback={<ActivityIndicator animating />}>
       <Stack.Navigator>
+        <Stack.Screen name="Loading" component={Loading} />
+        <Stack.Screen
+          name="Registration"
+          component={Registration}
+          options={() => ({
+            headerBackVisible: false,
+            title: 'Unesite kod',
+            headerLeft: () => null,
+            headerStyle: {
+              height: 60,
+            },
+            headerTintColor: Colors.Light.whiteText,
+            headerTitleStyle: {
+              fontSize: 23,
+              fontFamily: 'Mulish-Light',
+            },
+            headerBackground: () => (
+              <LinearGradient
+                start={{x: 0.8, y: 0}}
+                end={{x: 0, y: 0}}
+                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+                style={{flex: 1}}
+              />
+            ),
+          })}
+        />
         <Stack.Screen
           name="NavigationScreen"
           component={NavigationScreen}
@@ -176,32 +202,6 @@ function App(): React.JSX.Element {
           options={() => ({
             headerBackVisible: false,
             title: 'Notifikacija',
-            headerStyle: {
-              height: 60,
-            },
-            headerTintColor: Colors.Light.whiteText,
-            headerTitleStyle: {
-              fontSize: 23,
-              fontFamily: 'Mulish-Light',
-            },
-            headerBackground: () => (
-              <LinearGradient
-                start={{x: 0.8, y: 0}}
-                end={{x: 0, y: 0}}
-                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-                style={{flex: 1}}
-              />
-            ),
-          })}
-        />
-        <Stack.Screen name="Loading" component={Loading} />
-        <Stack.Screen
-          name="Registration"
-          component={Registration}
-          options={() => ({
-            headerBackVisible: false,
-            title: 'Unesite kod',
-            headerLeft: () => null,
             headerStyle: {
               height: 60,
             },
