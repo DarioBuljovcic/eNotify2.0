@@ -26,7 +26,9 @@ export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [images, setImages] = useState<Images[]>([]);
-  // navigation.setOptions({title: route.params.Tittle});
+  const [imgOpen, setImgOpen] = useState(false);
+
+  navigation.setOptions({title: ''});
   useEffect(() => {
     const getNotification = async () => {
       //Kod da uzmes podatke za notifikaciju
@@ -36,7 +38,7 @@ export default function Obavestenje({route}: any) {
         .get();
       const data = querySnapshot.docs[0].data() as NotificationType;
       setNotification(data);
-
+      navigation.setOptions({title: data.Tittle});
       //Kod da uzmes slike
       let imgs: string[] = data.Files.split(',');
       let imgUrls: Images[] = [];
@@ -66,28 +68,28 @@ export default function Obavestenje({route}: any) {
   };
 
   //request premission ne radi ali idalje mozes dodavati slike jer ne koristimo ovo ali trebamo popraviti :D
-  const requestStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Storage Permission Required',
-          message: 'This app needs access to your storage to download files.',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Storage permission granted');
-        return true;
-      } else {
-        console.log('Storage permission denied');
-        return false;
-      }
-    } catch (error) {
-      console.error('Error requesting storage permission:', error);
-      return false;
-    }
-  };
+  // const requestStoragePermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //       {
+  //         title: 'Storage Permission Required',
+  //         message: 'This app needs access to your storage to download files.',
+  //         buttonPositive: 'OK',
+  //       },
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('Storage permission granted');
+  //       return true;
+  //     } else {
+  //       console.log('Storage permission denied');
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     console.error('Error requesting storage permission:', error);
+  //     return false;
+  //   }
+  // };
 
   //funkcija za prikazivanje slike -- trebas malo dorediti style i dodati na klik da se moze skinuti
   const renderImages = () => {
@@ -98,7 +100,7 @@ export default function Obavestenje({route}: any) {
             key={index}
             onPress={() => {
               downloadImage(image.imageUrl, image.imageName);
-              requestStoragePermission();
+              // requestStoragePermission();
             }}>
             <Image
               key={index}
@@ -110,6 +112,7 @@ export default function Obavestenje({route}: any) {
       </View>
     );
   };
+
   return (
     <View style={styles.container}>
       {notification && (
@@ -138,7 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: Colors.Light.textPrimary,
     marginHorizontal: 15,
-    fontFamily:'Mulish'
+    fontFamily: 'Mulish',
   },
   infoContainer: {
     paddingHorizontal: 10,
@@ -153,11 +156,11 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'right',
     color: Colors.Light.textPrimary,
-    fontFamily:'Mulish'
+    fontFamily: 'Mulish',
   },
   class: {
     flex: 1,
     color: Colors.Light.textPrimary,
-    fontFamily:'Mulish'
+    fontFamily: 'Mulish',
   },
 });
