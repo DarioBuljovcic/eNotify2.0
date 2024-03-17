@@ -26,7 +26,7 @@ export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [images, setImages] = useState<Images[]>([]);
-  //navigation.setOptions({title: route.params.Tittle});
+  navigation.setOptions({title: ''});
   useEffect(() => {
     const getNotification = async () => {
       //Kod da uzmes podatke za notifikaciju
