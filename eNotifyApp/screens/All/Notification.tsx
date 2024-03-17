@@ -66,28 +66,28 @@ export default function Obavestenje({route}: any) {
   };
 
   //request premission ne radi ali idalje mozes dodavati slike jer ne koristimo ovo ali trebamo popraviti :D
-  const requestStoragePermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'Storage Permission Required',
-          message: 'This app needs access to your storage to download files.',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Storage permission granted');
-        return true;
-      } else {
-        console.log('Storage permission denied');
-        return false;
-      }
-    } catch (error) {
-      console.error('Error requesting storage permission:', error);
-      return false;
-    }
-  };
+  // const requestStoragePermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+  //       {
+  //         title: 'Storage Permission Required',
+  //         message: 'This app needs access to your storage to download files.',
+  //         buttonPositive: 'OK',
+  //       },
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log('Storage permission granted');
+  //       return true;
+  //     } else {
+  //       console.log('Storage permission denied');
+  //       return false;
+  //     }
+  //   } catch (error) {
+  //     console.error('Error requesting storage permission:', error);
+  //     return false;
+  //   }
+  // };
 
   //funkcija za prikazivanje slike -- trebas malo dorediti style i dodati na klik da se moze skinuti
   const renderImages = () => {
@@ -99,7 +99,7 @@ export default function Obavestenje({route}: any) {
             activeOpacity={0.8}
             onPress={() => {
               downloadImage(image.imageUrl, image.imageName);
-              requestStoragePermission();
+              //requestStoragePermission();
             }}
             >
               <View style={styles.imageButton}>
