@@ -16,10 +16,15 @@ type Navigation = {
     NotificationLoader: undefined,
     Settings: undefined,
     NavigationScreen: undefined,
+    RasporedV2:undefined,
+    RasporedV3:undefined,
 }
 type NotificationData={
   Notification:NotificationType;
 }
+export type RasporedV2 = StackScreenProps<Navigation,"RasporedV2">
+export type RasporedV3 = StackScreenProps<Navigation,"RasporedV3">
+
 
 type LoadingProps = StackScreenProps<Navigation, "Loading">
 type StudentProps = StackScreenProps<Navigation, "Student" >

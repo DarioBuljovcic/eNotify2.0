@@ -14,6 +14,7 @@ import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
 import NavigationScreen from './screens/All/NavigatonScreen';
 import LinearGradient from 'react-native-linear-gradient';
+import Rasporedv3 from './screens/Student/RasporedV3';
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -95,6 +96,7 @@ function App(): React.JSX.Element {
       linking={linking}
       fallback={<ActivityIndicator animating />}>
       <Stack.Navigator>
+        {/* <Stack.Screen name="RasporedV3" component={Rasporedv3} /> */}
         <Stack.Screen name="Loading" component={Loading} />
         <Stack.Screen
           name="Registration"
