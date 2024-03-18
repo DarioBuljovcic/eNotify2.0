@@ -73,9 +73,9 @@ const App = () => {
             );
           } else {
             tableItem.push(
-              <View style={styles.cas} key={day + count}>
-                <Text style={styles.casText}> {element}</Text>
-              </View>,
+                <View style={styles.cas} key={day + count}>
+                  <Text style={styles.casText} numberOfLines={2}> {element}</Text>
+                </View>,
             );
           }
           count > maxLength ? (maxLength = count) : null;
@@ -144,29 +144,15 @@ export default App;
 const overlaySize = 200;
 const cellWidth = 120;
 const cellHight = 50;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 'auto',
-  },
-  text: {
-    fontSize: 40,
-  },
-  list: {
-    width: '100%',
-  },
   flatList: {
     display: 'flex',
     justifyContent: 'center',
-    padding: 10,
-    gap: 10,
   },
   day: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 5,
   },
   cas: {
     height: cellHight,
@@ -175,14 +161,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.Light.notificationBG,
-    borderRadius: 10,
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
+    borderWidth:0.5,
     padding: 5,
   },
-  prazanCas: {height: cellHight, width: cellWidth},
+  prazanCas: {
+    height: cellHight,
+    width: cellWidth,
+  },
   casText: {
     fontSize: 12,
     color: Colors.Light.textPrimary,
@@ -194,7 +179,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 50,
-    gap: 5,
     backgroundColor: '#2192ff',
   },
   vreme: {
