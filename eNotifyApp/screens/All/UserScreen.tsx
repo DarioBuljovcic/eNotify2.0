@@ -45,11 +45,22 @@ const UserScreen = () => {
           </View>
 
           <Text style={styles.nameText}>{name}</Text>
+          <Text style={styles.gradeText}>{grade}</Text>
           <Text style={styles.roleText}>
             {role == 'Professor' ? 'Profesor' : 'Student'}
           </Text>
 
-          <TouchableOpacity
+          <View style={styles.aboutContainer}>
+            <Text style={styles.aboutHeaderText}>O aplikaciji</Text>
+            <View style={styles.aboutLine}></View>
+            <Text style={styles.aboutText}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. A dicta labore tempore distinctio cumque laboriosam. Doloribus iure eaque rem minima aliquid architecto necessitatibus consequuntur sunt at illum, ad ullam alias.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus aperiam quaerat qui cumque reiciendis quo rerum, dolorem doloribus error fugiat officiis dolor eius facilis blanditiis. Error, asperiores sapiente. Amet, praesentium.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </Text>
+          </View>
+
+          {/* <TouchableOpacity
             style={styles.option}
             activeOpacity={0.5}
             //onPress={()=>{} }
@@ -62,7 +73,7 @@ const UserScreen = () => {
             //onPress={()=>{} }
           >
             <Text style={styles.optionText}>Kontaktiraj programera</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           
         </View>
@@ -85,18 +96,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imgBorder: {
-    height: 220,
-    width: 220,
+    height: 150,
+    width: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 10,
+    borderWidth: 5,
     borderColor: Colors.Light.textPrimary,
     borderRadius: 150,
     padding: 5,
   },
   userImage: {
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
   },
   nameText: {
     marginTop: 15,
@@ -104,35 +115,57 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Mulish-Light',
   },
-  roleText: {
+  gradeText: {
     color: Colors.Light.lightText,
     fontSize: 13,
-    marginBottom: 20,
     fontFamily: 'Mulish-Light',
   },
-  option: {
-    height: 70,
-    width: '100%',
-
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-
-    backgroundColor: Colors.Light.textInputBackground,
-    marginVertical: 10,
-    borderRadius: 10,
-
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
-  },
-  optionText: {
-    fontSize: 17,
-    flex: 1,
-    color: Colors.Light.textPrimary,
+  roleText:{
+    color: Colors.Light.lightText,
+    fontSize: 13,
+    marginBottom: 30,
     fontFamily: 'Mulish-Light',
   },
+  aboutContainer:{
+    width:'100%',
+  },
+  aboutLine:{
+    backgroundColor:Colors.Light.lightText,
+    height:1,
+    marginTop:5,
+  },
+  aboutHeaderText:{
+    color:Colors.Light.lightText,
+    marginLeft:5,
+  },
+  aboutText:{
+    color:Colors.Light.lightText,
+    marginTop:5,
+    marginHorizontal:5,
+  },
+  // option: {
+  //   height: 70,
+  //   width: '100%',
+
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   padding: 20,
+
+  //   backgroundColor: Colors.Light.textInputBackground,
+  //   marginVertical: 10,
+  //   borderRadius: 10,
+
+  //   elevation: 3,
+  //   shadowColor: Colors.Light.black,
+  //   shadowOffset: {width: 2, height: 5},
+  //   shadowRadius: 1,
+  // },
+  // optionText: {
+  //   fontSize: 17,
+  //   flex: 1,
+  //   color: Colors.Light.textPrimary,
+  //   fontFamily: 'Mulish-Light',
+  // },
 });
 
 export default UserScreen;
