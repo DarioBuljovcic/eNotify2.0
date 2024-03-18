@@ -73,9 +73,12 @@ const App = () => {
             );
           } else {
             tableItem.push(
-                <View style={styles.cas} key={day + count}>
-                  <Text style={styles.casText} numberOfLines={2}> {element}</Text>
-                </View>,
+              <View style={styles.cas} key={day + count}>
+                <Text style={styles.casText} numberOfLines={3}>
+                  {' '}
+                  {element}
+                </Text>
+              </View>,
             );
           }
           count > maxLength ? (maxLength = count) : null;
@@ -106,9 +109,11 @@ const App = () => {
           .padStart(2, '0')}:${((time % 1) * 100).toFixed(0).padStart(2, '0')}`;
 
         times[i] = (
-          <Text style={styles.vreme}>
-            {formattedTime1} - {formattedTime2}
-          </Text>
+          <View style={styles.vreme}>
+            <Text style={styles.vremeText}>
+              {formattedTime1} - {formattedTime2}
+            </Text>
+          </View>
         );
 
         if (i === 1 || i === 8) time += 0.15;
@@ -131,28 +136,67 @@ const App = () => {
   }, [studentClass]);
 
   return (
-    <ScrollView horizontal={true}>
+    <>
+      <View style={styles.days}>
+        <View style={styles.displayDay}>
+          <Text>{studentClass}</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Ponedeljak</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Utorak</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Sreda</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Četvrtak</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Petak</Text>
+        </View>
+      </View>
       <ScrollView contentContainerStyle={styles.flatList}>
         {raspored && renderRaspored(raspored)}
       </ScrollView>
-    </ScrollView>
+    </>
   );
 };
 const screenWidth = Dimensions.get('window').width;
 
 export default App;
 const overlaySize = 200;
-const cellWidth = 120;
-const cellHight = 50;
+const cellWidth = screenWidth / 6;
+const cellHight = 80;
 
 const styles = StyleSheet.create({
   flatList: {
     display: 'flex',
     justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  days: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  displayDay: {
+    height: cellHight,
+    width: cellWidth,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.Light.notificationBG,
+    borderWidth: 0.5,
+    padding: 5,
+  },
+  displayDayText: {
+    fontSize: 11,
   },
   day: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   cas: {
     height: cellHight,
@@ -161,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.Light.notificationBG,
-    borderWidth:0.5,
+    borderWidth: 0.5,
     padding: 5,
   },
   prazanCas: {
@@ -176,14 +220,23 @@ const styles = StyleSheet.create({
   },
   vremena: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    height: 50,
     backgroundColor: '#2192ff',
   },
   vreme: {
     width: cellWidth,
+    height: cellHight,
     textAlign: 'center',
+
+    padding: 5,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    borderWidth: 0.5,
+  },
+  vremeText: {
     fontSize: 12,
     color: 'white',
     fontFamily: 'Mulish',
