@@ -3,7 +3,7 @@ import ExcelReader from "./Excel/ExcelReader.tsx";
 import "./css/student.css";
 import InsertOne from "./InsertOne/InsertOne.tsx";
 
-export default function Users() {
+export default function Users({ Successful }) {
   const [inputType, setInputType] = useState(1);
 
   function displayOption() {
@@ -11,7 +11,7 @@ export default function Users() {
       case 1:
         return <ExcelReader />;
       case 2:
-        return <InsertOne />;
+        return <InsertOne Successful={Successful} />;
     }
   }
 

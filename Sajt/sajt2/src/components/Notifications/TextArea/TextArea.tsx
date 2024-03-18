@@ -58,7 +58,7 @@ export default function TextArea({ text, setText, setFiles }) {
 
       <textarea
         className="textarea"
-        placeholder="Enter a message..."
+        placeholder="Unesite tekst obaveštenja..."
         value={text}
         onChange={handleTextAreaChange}
       ></textarea>

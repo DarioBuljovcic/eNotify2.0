@@ -10,7 +10,7 @@ type Data = {
   UserID: string;
 };
 
-function InsertOne() {
+function InsertOne({ Successful }) {
   const Ime = useRef<HTMLInputElement>(null);
   const Prezime = useRef<HTMLInputElement>(null);
   const StudentClass = useRef<HTMLInputElement>(null);
@@ -33,9 +33,16 @@ function InsertOne() {
         Email: Ime.current.value + Prezime.current.value + "@gmail.com",
         Name: `${Ime.current.value} ${Prezime.current.value}`,
         Role: "Student",
-        UserID: generatePassword(28),
+        UserID: generatePassword(7),
       };
       await addDoc(collection(db, "Users"), dataToInsert);
+    }
+  }
+  function emptyInsert() {
+    if (Ime.current && Prezime.current && StudentClass.current) {
+      Ime.current.value = "";
+      Prezime.current.value = "";
+      StudentClass.current.value = "";
     }
   }
 
@@ -52,14 +59,18 @@ function InsertOne() {
         </span>
         <span className="inputContainer">
           <label htmlFor="inputField">Razred učenika</label>
-          <input ref={StudentClass} type="text" placeholder="Obaveštenje" />
+          <input ref={StudentClass} type="text" placeholder="3ITS" />
         </span>
         <div className="razredi-options"></div>
 
         <button
           type="submit"
           className="submit-btn"
-          onClick={() => createUser()}
+          onClick={() => {
+            createUser();
+            emptyInsert();
+            Successful("Korisnik je dodat!");
+          }}
         >
           Unesi
         </button>

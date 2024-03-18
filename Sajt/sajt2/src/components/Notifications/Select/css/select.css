@@ -127,7 +127,7 @@
   transition: color 0.2s, background-color 0.2s;
 }
 .container .options .option.selected {
-  background-color: #e9ecef;
+  background-color: #c7dbef;
   color: rgb(24, 24, 24);
 }
 .container .options .option.highlighted {
@@ -141,6 +141,6 @@
   width: 100%;
   z-index: 1;
   top: 1.85em;
-  background-color: #ced4da;
+  background-color: #accceb;
   transition: 0.2s;
 }/*# sourceMappingURL=select.css.map */

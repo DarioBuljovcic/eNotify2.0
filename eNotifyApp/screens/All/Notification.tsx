@@ -26,7 +26,7 @@ export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [images, setImages] = useState<Images[]>([]);
-  navigation.setOptions({title: ''});
+
   useEffect(() => {
     const getNotification = async () => {
       //Kod da uzmes podatke za notifikaciju
@@ -42,12 +42,14 @@ export default function Obavestenje({route}: any) {
       let imgUrls: Images[] = [];
       for (let i = 0; i < imgs.length; i++) {
         const url = await storage().ref(imgs[i]).getDownloadURL();
-        console.log(url);
         imgUrls.push({imageName: imgs[i], imageUrl: url});
       }
       setImages(imgUrls);
     };
     if (!notification) getNotification();
+  });
+  useEffect(() => {
+    if (!notification) navigation.setOptions({title: ''});
   });
 
   const downloadImage = async (imageUrl: string, fileName: string) => {
@@ -100,23 +102,46 @@ export default function Obavestenje({route}: any) {
             onPress={() => {
               downloadImage(image.imageUrl, image.imageName);
               //requestStoragePermission();
-            }}
-            >
-              <View style={styles.imageButton}>
-                <Image
-                  key={index}
-                  source={{uri: image.imageUrl}}
-                  style={styles.image}
-                />
-                <View style={styles.txtContainer}>
-                  <Text style={styles.txtImageName}>{image.imageName}</Text>
-                  <Text style={styles.txtClick}>Click to Download</Text>
-                </View>
+            }}>
+            <View style={styles.imageButton}>
+              <Image
+                key={index}
+                source={{uri: image.imageUrl}}
+                style={styles.image}
+              />
+              <View style={styles.txtContainer}>
+                <Text style={styles.txtImageName}>{image.imageName}</Text>
+                <Text style={styles.txtClick}>Click to Download</Text>
               </View>
+            </View>
           </TouchableOpacity>
         ))}
       </View>
     );
+  };
+  const renderClass = () => {
+    let studentClass;
+    switch (notification?.Class) {
+      case 'Svi':
+        studentClass = 'Opšto';
+        break;
+      case 'Prvi':
+        studentClass = 'Prvi razredi';
+        break;
+      case 'Drugi':
+        studentClass = 'Drugi razredi';
+        break;
+      case 'Treci':
+        studentClass = 'Treći razredi';
+        break;
+      case 'Cetvrti':
+        studentClass = 'Četvrti razredi';
+        break;
+      default:
+        studentClass = notification?.Class;
+        break;
+    }
+    return <Text style={styles.class}>{studentClass}</Text>;
   };
 
   return (
@@ -124,7 +149,7 @@ export default function Obavestenje({route}: any) {
       {notification && (
         <>
           <View style={styles.infoContainer}>
-            <Text style={styles.class}>{notification?.Class}</Text>
+            {true && renderClass()}
             <Text style={styles.date}>
               {format(notification.Date.toDate(), 'dd.MM.yyyy')}
             </Text>
@@ -169,43 +194,42 @@ const styles = StyleSheet.create({
     color: Colors.Light.textPrimary,
     fontFamily: 'Mulish',
   },
-  imageContainer:{
-    position:'absolute',
-    bottom:10,
-    width:'100%',
-    gap:10,
-    padding:10
-
+  imageContainer: {
+    position: 'absolute',
+    bottom: 10,
+    width: '100%',
+    gap: 10,
+    padding: 10,
   },
-  imageButton:{
-    backgroundColor:Colors.Light.textInputBackground,
-    borderRadius:10,
-    padding:10,
-    flexDirection:'row',
+  imageButton: {
+    backgroundColor: Colors.Light.textInputBackground,
+    borderRadius: 10,
+    padding: 10,
+    flexDirection: 'row',
 
     elevation: 3,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
-  image:{
-    width:70,
-    height:70,
-    borderRadius:10,
-    borderWidth:1,
-    borderColor:Colors.Light.lightText,
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.Light.lightText,
   },
-  txtContainer:{
-    marginLeft:10,
+  txtContainer: {
+    marginLeft: 10,
   },
-  txtImageName:{
-    color:Colors.Light.hyperlinkText,
-    fontSize:14,
-    fontFamily:'Mulish'
+  txtImageName: {
+    color: Colors.Light.hyperlinkText,
+    fontSize: 14,
+    fontFamily: 'Mulish',
   },
-  txtClick:{
-    color:Colors.Light.lightText,
-    fontSize:11,
-    fontFamily:'Mulish'
+  txtClick: {
+    color: Colors.Light.lightText,
+    fontSize: 11,
+    fontFamily: 'Mulish',
   },
 });

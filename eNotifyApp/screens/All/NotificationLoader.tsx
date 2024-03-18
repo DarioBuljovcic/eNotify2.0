@@ -19,6 +19,7 @@ export default function NotificationLoader({navigation}: any) {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(false);
   const [studentClass, setClass] = useState('');
+  const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
   let date: string;
 
   const getRazred = async () => {
@@ -36,7 +37,11 @@ export default function NotificationLoader({navigation}: any) {
   const getData = () => {
     firestore()
       .collection('Notifications')
-      .where('Class', '==', studentClass)
+      .where('Class', 'in', [
+        studentClass,
+        subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
+        'Svi',
+      ])
       .onSnapshot(snapshot => {
         const data: NotificationType[] = snapshot.docs.map(doc => ({
           id: doc.id,

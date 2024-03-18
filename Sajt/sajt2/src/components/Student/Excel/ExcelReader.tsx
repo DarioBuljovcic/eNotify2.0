@@ -55,7 +55,7 @@ const FileUploadForm = () => {
                 Email: email,
                 Class: item.Class,
                 Role: item.Role,
-                UserID: generatePassword(28),
+                UserID: generatePassword(7),
               };
               console.log(data);
               await addDoc(collection(db, "Users"), data);
@@ -168,33 +168,33 @@ const FileUploadForm = () => {
           onChange={insertFile}
         />
         <label htmlFor="file" className="fileLabel">
-          <strong>Choose a file</strong>
-          <span className="box__dragndrop"> or drag it here</span>.
+          <strong>Izaberite fajl</strong>
+          <span className="box__dragndrop"> ili ga prevucite ovde</span>.
         </label>
         <button type="submit" className="box__button">
-          Upload
+          Unesi
         </button>
       </div>
 
-      <div className="box__uploading">Uploading&hellip;</div>
+      <div className="box__uploading">Unošenje&hellip;</div>
       <div className="box__success">
-        Done!{" "}
+        Gotov!{" "}
         <a
           href="https://css-tricks.com/examples/DragAndDropFileUploading//?"
           className="box__restart"
           role="button"
         >
-          Upload more?
+          Unesite još?
         </a>
       </div>
       <div className="box__error">
-        Error! <span></span>.{" "}
+        Greška! <span></span>.{" "}
         <a
           href="https://css-tricks.com/examples/DragAndDropFileUploading//?"
           className="box__restart"
           role="button"
         >
-          Try again!
+          Pokušajte ponovo!
         </a>
       </div>
     </form>

@@ -24,32 +24,31 @@ router.get("/", (req, res) => {
 });
 router.post("/data", (req, res) => {
   const data = req.body; // Data sent from the client
-  console.log(data);
-  const message = {
-    notification: {
-      title: data.Tittle,
-      body: data.Text,
-    },
-    android: {
+  data.Class.split("|").forEach((studentClass) => {
+    const message = {
       notification: {
-        channelId: data.NotificationId, // Set your channel ID here
+        title: data.Tittle,
+        body: data.Text,
       },
-    },
-    topic: data.Class, // or specify the device token for individual devices
-  };
+      android: {
+        notification: {
+          channelId: data.NotificationId, // Set your channel ID here
+        },
+      },
+      topic: studentClass, // or specify the device token for individual devices
+    };
 
-  // Send the message
-  admin
-    .messaging()
-    .send(message)
-    .then((response) => {
-      console.log("Successfully sent message:", response);
-      res.status(200).send("Message sent successfully");
-    })
-    .catch((error) => {
-      console.error("Error sending message:", error);
-      res.status(500).send("Error sending message");
-    });
+    // Send the message
+    admin
+      .messaging()
+      .send(message)
+      .then((response) => {
+        console.log("Successfully sent message:", response);
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
+  });
 });
 app.use(`/.netlify/functions/api`, router);
 

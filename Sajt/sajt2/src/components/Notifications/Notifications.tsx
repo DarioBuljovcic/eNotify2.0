@@ -32,7 +32,7 @@ type File = {
 };
 const storage = getStorage();
 
-function MainPage() {
+function MainPage({ Successful }) {
   const [classes, setClasses] = useState<SelectOption[]>([]);
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [selectedOption, setSelectedOption] = useState("option1");
@@ -66,6 +66,12 @@ function MainPage() {
     }
     return password;
   };
+  const emptyInsert = () => {
+    if (tittleRef.current) tittleRef.current.value = "";
+    if (text) setText("");
+    if (options) setOptions([]);
+    if (files) setFiles([]);
+  };
 
   async function sendNotification() {
     if (files) {
@@ -87,25 +93,26 @@ function MainPage() {
         switch (item) {
           case "Svi razredi":
             console.log("Veliki pozdrav");
-            razred.push("0");
+            razred.push("Svi");
             break;
           case "Prvi razredi":
-            razred.push("1");
+            razred.push("Prvi");
             break;
           case "Drugi razredi":
-            razred.push("2");
+            razred.push("Drugi");
             break;
           case "Treći razredi":
-            razred.push("3");
+            razred.push("Treci");
             break;
           case "Četvrti razredi":
-            razred.push("4");
+            razred.push("Cetvrti");
             break;
         }
       } else {
         razred.push(o.Class);
       }
     });
+
     if (text && tittleRef.current) {
       const selectedClasses: string[] = [];
       options.forEach((option) => {
@@ -113,21 +120,21 @@ function MainPage() {
       });
       const dataToInsert: inputData = {
         NotificationId: generatePassword(7),
-        Class: selectedClasses.join("|"),
+        Class: razred ? razred.join("|") : selectedClasses.join("|"),
         Date: new Date(),
         Files: files.length > 0 ? `${files.map((f) => f.name)}` : ``,
         Text: text,
         Tittle: tittleRef.current.value.toString(),
         Type: `T${files.length > 0 ? "F" : ""}`,
       };
+
       const sendData = async () => {
         try {
-          console.log("hello");
+          console.log(dataToInsert.Class);
           const response = await axios.post(
-            "https://65f5d714ed117bd97a7815c6--enotifyserver2.netlify.app/.netlify/functions/api/data",
+            "https://enotifyserver2.netlify.app/.netlify/functions/api/data",
             dataToInsert
           );
-          console.log(response);
         } catch (error) {
           console.error("Error sending data:", error);
         }
@@ -163,11 +170,11 @@ function MainPage() {
     <div className="formaContainer">
       <div className="forma">
         <span className="inputContainer">
-          <label htmlFor="inputField">Naslov obavestenja</label>
+          <label htmlFor="inputField">Naslov obaveštenja</label>
           <input ref={tittleRef} type="text" placeholder="Obaveštenje" />
         </span>
         <span className="inputContainer">
-          <label htmlFor="inputField">Tekst obavestenja</label>
+          <label htmlFor="inputField">Tekst obaveštenja</label>
           <TextArea
             setText={(o) => setText(o)}
             setFiles={(o) => setFiles(o)}
@@ -206,9 +213,13 @@ function MainPage() {
         <button
           type="submit"
           className="submit-btn"
-          onClick={() => sendNotification()}
+          onClick={() => {
+            sendNotification();
+            emptyInsert();
+            Successful("Obaveštenje je poslato!");
+          }}
         >
-          Posalji
+          Pošalji
         </button>
       </div>
     </div>

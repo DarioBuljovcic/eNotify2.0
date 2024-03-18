@@ -14,10 +14,16 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 const Registration = ({navigation}: RegistrationProps) => {
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
+  const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
+
   const saveUser = async (user: User) => {
     await AsyncStorage.setItem('Role', user.Role);
     await AsyncStorage.setItem('Class', user.Class);
     await AsyncStorage.setItem('Name', user.Name);
+    await messaging().subscribeToTopic('Svi');
+    await messaging().subscribeToTopic(
+      subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
+    );
     await messaging().subscribeToTopic(user.Class);
   };
   //Email and Password
@@ -61,14 +67,11 @@ const Registration = ({navigation}: RegistrationProps) => {
       </View>
 
       <LinearGradient
-              start={{ x: 0.8, y: 0 }}
-              end={{ x: 0, y: 0 }}
-              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-              style={styles.confirmBtn}
-      >
-        <TouchableOpacity
-        onPress={() => Login()}
-        activeOpacity={0.8}>
+        start={{x: 0.8, y: 0}}
+        end={{x: 0, y: 0}}
+        colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+        style={styles.confirmBtn}>
+        <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
           <Text style={styles.confirmTxt}>Registruj se</Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 20,
     alignContent: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
   },
   incorrectText: {
     color: 'red',
@@ -92,11 +95,11 @@ const styles = StyleSheet.create({
 
     alignSelf: 'center',
     textAlign: 'left',
-    fontFamily:'Mulish'
+    fontFamily: 'Mulish',
   },
   input: {
     fontSize: 17,
-    fontFamily:'Mulish',
+    fontFamily: 'Mulish',
 
     backgroundColor: Colors.Light.textInputBackground,
     color: Colors.Light.textPrimary,
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
 
     color: Colors.Light.whiteText,
-    fontFamily:'Mulish'
+    fontFamily: 'Mulish',
   },
 });
 

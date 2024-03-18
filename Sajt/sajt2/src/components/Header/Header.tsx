@@ -31,7 +31,7 @@ export default function Header({ setOptionText }: HeaderProps) {
         >
           Obaveštenja
         </div>
-        <div
+        {/* <div
           className={`option ${selected === 3 ? "selected" : ""}`}
           onClick={() => {
             setOptionText(["Dodavanje Razreda", 2]);
@@ -39,9 +39,13 @@ export default function Header({ setOptionText }: HeaderProps) {
           }}
         >
           Razredi
-        </div>
+        </div> */}
         {/* <div className="option"></div> */}
-        <div className="profile"></div>
+        <img
+          className="profile"
+          src={require("./images/school.png")}
+          alt="School logo"
+        />
       </div>
     </header>
   );

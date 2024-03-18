@@ -21,10 +21,10 @@
   top: -0.5em;
 }
 .textAreaContainer .textarea {
-  width: calc(100% - 2em);
+  width: calc(100% - 1em);
   color: #666666;
-  padding: 1em;
-  border-radius: 10px;
+  padding: 0.5em;
+  border-radius: 0.5vw;
   border: 2px solid #adb5bd;
   outline: none;
   font-family: "Heebo", sans-serif;
@@ -55,7 +55,7 @@
   max-height: 100px;
   overflow-y: scroll;
   border: 2px solid #adb5bd;
-  border-radius: 1em;
+  border-radius: 0.2vw;
   padding: 0.5em;
   opacity: 0;
   transition: opacity 0.2s;

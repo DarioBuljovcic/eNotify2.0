@@ -35,7 +35,6 @@ export function Select({ value, onChange, options }: SelectProps) {
     return value.includes(option);
   }
   useEffect(() => {
-    console.log(options, value, onChange);
     if (isOpen) setHighlightedIndex(0);
     if (highlighterRef.current) {
       highlighterRef.current.style.opacity = `100%`;
