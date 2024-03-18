@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
+import LinearGradient from 'react-native-linear-gradient';
 
 type Data = {
   [key: string]: string;
@@ -137,9 +138,15 @@ const App = () => {
 
   return (
     <>
-      <View style={styles.days}>
+      <View >
+        <LinearGradient
+        start={{ x: 0.8, y: 0 }}
+        end={{ x: 0, y: 0 }}
+        colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+        style={styles.days}
+        >
         <View style={styles.displayDay}>
-          <Text>{studentClass}</Text>
+          <Text style={styles.displayDayText}>{studentClass}</Text>
         </View>
         <View style={styles.displayDay}>
           <Text style={styles.displayDayText}>Ponedeljak</Text>
@@ -156,6 +163,8 @@ const App = () => {
         <View style={styles.displayDay}>
           <Text style={styles.displayDayText}>Petak</Text>
         </View>
+        </LinearGradient>
+        
       </View>
       <ScrollView contentContainerStyle={styles.flatList}>
         {raspored && renderRaspored(raspored)}
@@ -187,12 +196,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.Light.notificationBG,
-    borderWidth: 0.5,
     padding: 5,
   },
   displayDayText: {
     fontSize: 11,
+    color:Colors.Light.whiteText,
   },
   day: {
     display: 'flex',
@@ -206,6 +214,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.Light.notificationBG,
     borderWidth: 0.5,
+    borderColor:Colors.Light.lightText,
     padding: 5,
   },
   prazanCas: {
@@ -213,7 +222,7 @@ const styles = StyleSheet.create({
     width: cellWidth,
   },
   casText: {
-    fontSize: 12,
+    fontSize: 11,
     color: Colors.Light.textPrimary,
     textAlign: 'center',
     fontFamily: 'Mulish',
@@ -222,7 +231,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#2192ff',
+    backgroundColor: Colors.Light.accentGreen,
   },
   vreme: {
     width: cellWidth,
@@ -235,10 +244,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     borderWidth: 0.5,
+    borderColor:'white',
   },
   vremeText: {
     fontSize: 12,
-    color: 'white',
+    color:Colors.Light.whiteText,
     fontFamily: 'Mulish',
   },
 });

@@ -130,18 +130,22 @@ const styles = StyleSheet.create({
     width:'100%',
   },
   aboutLine:{
-    backgroundColor:Colors.Light.lightText,
+    backgroundColor:Colors.Light.textPrimary,
     height:1,
     marginTop:5,
   },
   aboutHeaderText:{
-    color:Colors.Light.lightText,
+    fontSize:16,
+    color:Colors.Light.textPrimary,
     marginLeft:5,
+    fontFamily: 'Mulish',
   },
   aboutText:{
-    color:Colors.Light.lightText,
+    fontSize:16,
+    color:Colors.Light.textPrimary,
     marginTop:5,
     marginHorizontal:5,
+    fontFamily: 'Mulish',
   },
   // option: {
   //   height: 70,
