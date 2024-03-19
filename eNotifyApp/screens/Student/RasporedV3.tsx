@@ -1,17 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Button,
-  Dimensions,
-  FlatList,
-  ScrollView,
-} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
+import LinearGradient from 'react-native-linear-gradient';
+import Professor from './../Professor/Professor';
 
 type Data = {
   [key: string]: string;
@@ -83,23 +76,31 @@ const App = () => {
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
-          <View style={styles.displayDay} key={day + count}>
+          <LinearGradient
+            start={{x: 0.8, y: 0}}
+            end={{x: 0, y: 0}}
+            colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+            style={styles.displayDay}
+            key={day + count}>
             <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
-          </View>,
+          </LinearGradient>,
         );
         row[day].split(':/:').forEach((element: string, index) => {
           count++;
 
-          if (element !== 'none') {
+          if (!element.includes('none')) {
+            const [ClassName, Professor, Classroom] = element.split('|');
             tableItem.push(
-              <View style={styles.casContainer}>
-                <Text style={styles.time}>{vreme[index]}</Text>
+              <View style={styles.casContainer} key={day + count}>
+                <Text style={styles.time} key={vreme[index]}>
+                  {vreme[index]}
+                </Text>
                 <View style={styles.cas} key={day + count}>
-                  <Text style={styles.casUcionica}>Ucionica</Text>
+                  <Text style={styles.casUcionica}>{Classroom}</Text>
                   <Text style={styles.casText} numberOfLines={1}>
-                    {element}
+                    {ClassName}
                   </Text>
-                  <Text style={styles.casProf}>Profesor</Text>
+                  <Text style={styles.casProf}>{Professor}</Text>
                 </View>
               </View>,
             );
@@ -140,6 +141,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
+    marginVertical: 5,
   },
   days: {
     display: 'flex',
@@ -182,10 +184,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Light.notificationBG,
     borderWidth: 0.5,
     padding: 5,
+    borderRadius: 10,
+    borderColor: 'black',
   },
   casUcionica: {
     position: 'absolute',
-    top: 3,
+    top: 0,
     right: 5,
   },
   casText: {

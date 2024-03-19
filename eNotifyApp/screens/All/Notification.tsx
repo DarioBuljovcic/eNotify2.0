@@ -1,31 +1,50 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Platform,
-  PermissionsAndroid,
-} from 'react-native';
-//import { LinearGradient } from 'expo-linear-gradient';
+import {StyleSheet, Text, View, Image, Animated} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import {format} from 'date-fns';
 import {NotificationType} from '../../components/Types/indexTypes';
 import firestore from '@react-native-firebase/firestore';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import storage from '@react-native-firebase/storage';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RNFS from 'react-native-fs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Images = {
   imageUrl: string;
   imageName: string;
+};
+type Icon = {
+  name: string;
+  color: string;
 };
 
 export default function Obavestenje({route}: any) {
   const navigation = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [images, setImages] = useState<Images[]>([]);
+  const animationValue = useRef(new Animated.Value(-110)).current;
+  const [message, setMessage] = useState('Slika je uspešno skinuta!');
+  const [icon, setIcon] = useState<Icon>({
+    name: 'checkmark-circle-outline',
+    color: 'green',
+  });
+
+  const startAnimation = () => {
+    Animated.sequence([
+      Animated.timing(animationValue, {
+        toValue: -50,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animationValue, {
+        toValue: -110,
+        duration: 200,
+        useNativeDriver: true,
+        delay: 2000,
+      }),
+    ]).start();
+  };
 
   useEffect(() => {
     const getNotification = async () => {
@@ -59,9 +78,29 @@ export default function Obavestenje({route}: any) {
         fromUrl: imageUrl,
         toFile: downloadDest,
       };
-
-      const response = await RNFS.downloadFile(options);
-      console.log(response);
+      const exists = await RNFS.exists(downloadDest);
+      if (!exists) {
+        RNFS.downloadFile(options)
+          .promise.then(result => {
+            if (result.statusCode === 200) {
+              setMessage('Slika je uspešno skinuta!');
+              setIcon({name: 'checkmark-circle-outline', color: 'green'});
+              startAnimation();
+            } else {
+              console.log(
+                'Failed to download file. Status code:',
+                result.statusCode,
+              );
+            }
+          })
+          .catch(error => {
+            console.error('Error downloading file:', error);
+          });
+      } else {
+        setMessage('Slika već jednom skinuta!');
+        setIcon({name: 'alert-circle-outline', color: 'red'});
+        startAnimation();
+      }
     } catch (error) {
       console.error('Error downloading file:', error);
     }
@@ -146,6 +185,11 @@ export default function Obavestenje({route}: any) {
 
   return (
     <View style={styles.container}>
+      <Animated.View
+        style={[styles.message, {transform: [{translateY: animationValue}]}]}>
+        <Ionicons name={icon.name} size={24} color={icon.color}></Ionicons>
+        <Text style={styles.messageText}>{message}</Text>
+      </Animated.View>
       {notification && (
         <>
           <View style={styles.infoContainer}>
@@ -231,5 +275,27 @@ const styles = StyleSheet.create({
     color: Colors.Light.lightText,
     fontSize: 11,
     fontFamily: 'Mulish',
+  },
+  message: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 5,
+
+    alignSelf: 'center',
+
+    width: '90%',
+    height: 50,
+    position: 'absolute',
+    backgroundColor: Colors.Light.textInputBackground,
+    zIndex: 10,
+
+    borderWidth: 0.5,
+    borderRadius: 10,
+  },
+  messageText: {
+    fontSize: 18,
   },
 });

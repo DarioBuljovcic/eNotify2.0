@@ -1,21 +1,20 @@
-import firestore from '@react-native-firebase/firestore';
 import Colors from '../../components/Constants/Color';
-import {User} from '../../components/Types/indexTypes';
-import {StyleSheet, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {StyleSheet} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Student from '../Student/Student';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Image, Text} from 'react-native-elements';
 import UserScreen from './UserScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Raspored from '../Student/Raspored';
+import RasporedV3 from '../Student/RasporedV3';
 import LinearGradient from 'react-native-linear-gradient';
+import {NavigationScreenProps} from '../../components/Types/indexTypes';
 
-const NavigationScreen = () => {
+const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const [role, setRole] = useState('');
-  console.log('Reloaded');
+  navigation.addListener('beforeRemove', e => {
+    e.preventDefault();
+  });
   useEffect(() => {
     const saveUser = async () => {
       setRole((await AsyncStorage.getItem('Role')) as string);
@@ -46,9 +45,9 @@ const NavigationScreen = () => {
           tabBarActiveTintColor: Colors.Light.whiteText,
           tabBarInactiveTintColor: Colors.Light.whiteText,
           tabBarStyle: styles.tabBar,
-          tabBarLabelStyle:{
-            fontSize:12,
-            fontFamily: 'Mulish'
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontFamily: 'Mulish',
           },
           headerStyle: {
             backgroundColor: Colors.Light.accent,
@@ -57,28 +56,28 @@ const NavigationScreen = () => {
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
             fontSize: 23,
-            fontFamily: 'Mulish'
+            fontFamily: 'Mulish',
           },
           headerTitleAlign: 'left',
           tabBarBackground: () => (
-              <LinearGradient
-                start={{ x: 0.8, y: 0 }}
-                end={{ x: 0, y: 0 }}
-                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-                style={{ flex:1 }}
-              />
-          ),
-          headerBackground: ()=> (
             <LinearGradient
-            start={{ x: 0.8, y: 0 }}
-            end={{ x: 0, y: 0 }}
-            colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-            style={{ flex:1 }}
-          />
+              start={{x: 0.8, y: 0}}
+              end={{x: 0, y: 0}}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{flex: 1}}
+            />
+          ),
+          headerBackground: () => (
+            <LinearGradient
+              start={{x: 0.8, y: 0}}
+              end={{x: 0, y: 0}}
+              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+              style={{flex: 1}}
+            />
           ),
         })}>
         <Tab.Screen name="Obavestenja" component={Student} />
-        <Tab.Screen name="Raspored" component={Raspored} />
+        <Tab.Screen name="Raspored" component={RasporedV3} />
         <Tab.Screen name="Moj Nalog" component={UserScreen}>
           {/* TODO: add stack tree*/}
         </Tab.Screen>
@@ -106,9 +105,9 @@ const NavigationScreen = () => {
           tabBarActiveTintColor: Colors.Light.whiteText,
           tabBarInactiveTintColor: Colors.Light.whiteText,
           tabBarStyle: styles.tabBar,
-          tabBarLabelStyle:{
-            fontSize:12,
-            fontFamily: 'Mulish'
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontFamily: 'Mulish',
           },
           headerStyle: {
             backgroundColor: Colors.Light.accent,
@@ -117,12 +116,12 @@ const NavigationScreen = () => {
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
             fontSize: 23,
-            fontFamily: 'Mulish'
+            fontFamily: 'Mulish',
           },
           headerTitleAlign: 'left',
         })}>
         <Tab.Screen name="Obavestenja" component={Student} />
-        <Tab.Screen name="Raspored" component={Raspored} />
+        <Tab.Screen name="Raspored" component={RasporedV3} />
         <Tab.Screen name="Moj Nalog" component={UserScreen}>
           {/* TODO: add stack tree*/}
         </Tab.Screen>

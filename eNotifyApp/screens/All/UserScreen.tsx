@@ -54,9 +54,11 @@ const UserScreen = () => {
             <Text style={styles.aboutHeaderText}>O aplikaciji</Text>
             <View style={styles.aboutLine}></View>
             <Text style={styles.aboutText}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. A dicta labore tempore distinctio cumque laboriosam. Doloribus iure eaque rem minima aliquid architecto necessitatibus consequuntur sunt at illum, ad ullam alias.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus aperiam quaerat qui cumque reiciendis quo rerum, dolorem doloribus error fugiat officiis dolor eius facilis blanditiis. Error, asperiores sapiente. Amet, praesentium.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              "eNotify" je moćan alat za efikasno obaveštavanje učenika o važnim
+              događajima, aktivnostima i informacijama u vezi sa njihovom
+              školom. Ova aplikacija omogućava školama da lako komuniciraju sa
+              svojim učenicima putem brzih, pouzdanih i personalizovanih
+              obaveštenja.
             </Text>
           </View>
 
@@ -74,8 +76,6 @@ const UserScreen = () => {
           >
             <Text style={styles.optionText}>Kontaktiraj programera</Text>
           </TouchableOpacity> */}
-
-          
         </View>
       </View>
     </View>
@@ -120,31 +120,31 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Mulish-Light',
   },
-  roleText:{
+  roleText: {
     color: Colors.Light.lightText,
     fontSize: 13,
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
   },
-  aboutContainer:{
-    width:'100%',
+  aboutContainer: {
+    width: '100%',
   },
-  aboutLine:{
-    backgroundColor:Colors.Light.textPrimary,
-    height:1,
-    marginTop:5,
+  aboutLine: {
+    backgroundColor: Colors.Light.textPrimary,
+    height: 1,
+    marginTop: 5,
   },
-  aboutHeaderText:{
-    fontSize:16,
-    color:Colors.Light.textPrimary,
-    marginLeft:5,
+  aboutHeaderText: {
+    fontSize: 16,
+    color: Colors.Light.textPrimary,
+    marginLeft: 5,
     fontFamily: 'Mulish',
   },
-  aboutText:{
-    fontSize:16,
-    color:Colors.Light.textPrimary,
-    marginTop:5,
-    marginHorizontal:5,
+  aboutText: {
+    fontSize: 16,
+    color: Colors.Light.textPrimary,
+    marginTop: 5,
+    marginHorizontal: 5,
     fontFamily: 'Mulish',
   },
   // option: {

@@ -1,0 +1,6 @@
+
+none:/:none:/:Računarski Sistemi|Danijel Mandić|K226:/:Računarski Sistemi|Danijel Mandić|K226:/:Veb Programiranje|Jasmina Stričević|K202:/:Veb Programiranje|Jasmina Stričević|K202
+Fizičko vaspitanje|Srđan Dakić|Sala:/:ČOS|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Engleski jezik|Vera Janjatović|U206:/:Engleski jezik|Vera Janjatović|U206
+PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:Računarske mreže i internet servisi|Danijel Mandić|U209:/:Srpski jezik i književnost|Ljiljana Stjiepović|U209
+Izabrana poglavlja matematike|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Sprski jezik i književnost|Aleksandra Tanasin|U206:/:Sprski jezik i književnost|Aleksandra Tanasin|U206:/:Preduzetništvo|Sonja Maravić|U134:/:Preduzetništvo|Sonja Maravić|U134
+none:/:none:/:Fizičko vaspitanje|Srđan Dakić|Sala:/:Programiranje|Nikola Krmpotić|K203:/:Programiranje|Nikola Krmpotić|K203:/:Programiranje|Nikola Krmpotić|K203:/:Zaštita računarskih sistema|Danijel Mandić|K224:/:Zaštita računarskih sistema|Danijel Mandić|K224

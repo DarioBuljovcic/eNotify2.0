@@ -2,16 +2,25 @@ import {View, Text, Alert, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-import {RegistrationProps, User} from '../../components/Types/indexTypes';
+import {
+  RegistrationProps,
+  User,
+  Navigation,
+} from '../../components/Types/indexTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
 import Colors from '../../components/Constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 
-const Registration = ({navigation}: RegistrationProps) => {
+const RegistrationScreen = ({
+  navigation,
+}: {
+  navigation: StackNavigationProp<Navigation, 'Registration', undefined>;
+}) => {
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
@@ -54,6 +63,7 @@ const Registration = ({navigation}: RegistrationProps) => {
         <TextInput
           placeholder="Unesite vas identifikacioni kod"
           placeholderTextColor={Colors.Light.lightText}
+          autoCapitalize="none"
           onChangeText={text => {
             setValue(text);
             setIsCorrect(true);
@@ -77,6 +87,38 @@ const Registration = ({navigation}: RegistrationProps) => {
       </LinearGradient>
     </View>
   );
+};
+
+const LoadingScreen = (
+  navigation: StackNavigationProp<Navigation, 'Registration', undefined>,
+) => {
+  const [naziv, setNaziv] = useState(false);
+  const uzmiNaziv = async () => {
+    const value = await AsyncStorage.getItem('Name');
+    if (value !== null) setNaziv(true);
+  };
+  const getRazred = async () => {
+    const razred = await AsyncStorage.getItem('Class');
+
+    if (razred !== null) {
+      navigation.navigate('NavigationScreen');
+    } else {
+      return true;
+    }
+  };
+  uzmiNaziv();
+  return naziv === true ? getRazred() : true;
+};
+const func = async () => {
+  await AsyncStorage.removeItem('Role');
+  await AsyncStorage.removeItem('Class');
+  await AsyncStorage.removeItem('Name');
+};
+const Registration = ({navigation}: RegistrationProps) => {
+  func();
+  if (LoadingScreen(navigation)) {
+    return <RegistrationScreen navigation={navigation} />;
+  }
 };
 
 const styles = StyleSheet.create({

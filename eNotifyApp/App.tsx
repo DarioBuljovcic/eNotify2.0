@@ -96,8 +96,6 @@ function App(): React.JSX.Element {
       linking={linking}
       fallback={<ActivityIndicator animating />}>
       <Stack.Navigator>
-        {/* <Stack.Screen name="RasporedV3" component={Rasporedv3} /> */}
-        <Stack.Screen name="Loading" component={Loading} />
         <Stack.Screen
           name="Registration"
           component={Registration}
@@ -126,7 +124,7 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="NavigationScreen"
           component={NavigationScreen}
-          options={() => ({
+          options={navigation => ({
             headerBackVisible: false,
             headerShown: false,
             headerLeft: () => null,
