@@ -6,8 +6,7 @@ import { Timestamp } from "firebase/firestore";
 
 
 //Navigation
-type Navigation = {
-    Loading: undefined,
+export type Navigation = {
     About : undefined,
     Student : undefined,
     Professor: undefined,
@@ -18,23 +17,26 @@ type Navigation = {
     NavigationScreen: undefined,
     RasporedV2:undefined,
     RasporedV3:undefined,
+    UserScreen:undefined,
 }
-type NotificationData={
+export type NotificationData={
   Notification:NotificationType;
 }
 export type RasporedV2 = StackScreenProps<Navigation,"RasporedV2">
 export type RasporedV3 = StackScreenProps<Navigation,"RasporedV3">
 
 
-type LoadingProps = StackScreenProps<Navigation, "Loading">
-type StudentProps = StackScreenProps<Navigation, "Student" >
-type StudentTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
-type ProfessorProps = StackScreenProps<Navigation, "Professor">
-type RegistrationProps = StackScreenProps<Navigation, "Registration">
-type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
-type NavigationScreenProps = StackScreenProps<Navigation,"NavigationScreen">
+export type StudentProps = StackScreenProps<Navigation, "Student" >
+export type StudentTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
+export type ProfessorProps = StackScreenProps<Navigation, "Professor">
+export type RegistrationProps = StackScreenProps<Navigation, "Registration">
+export type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
+export type NavigationScreenProps = StackScreenProps<Navigation,"NavigationScreen">
+export type UserScreenTabProps = BottomTabScreenProps<ParamListBase,"UserScreen" | "Moj Nalog">
+
+
 //Notification
-type NotificationType ={
+export type NotificationType ={
   NotificationId:string,
   Tittle: string,
   Text:string,
@@ -43,7 +45,7 @@ type NotificationType ={
   Files: string,
   Date: Timestamp
 }
-type User = {
+export type User = {
   UserID: string,
   Name: string,
   Email: string,
@@ -53,7 +55,7 @@ type User = {
 
 
 //Colors
-type Color = {
+export type Color = {
     primary: string,
     secondary: string,
     notificationBG: string,
@@ -75,12 +77,11 @@ type Color = {
     whiteText:string,
     hyperlinkText: string,
 };
-type Theme ={
+export type Theme ={
   Light:Color,
   Dark:Color
 }
 
 
-export type {Navigation,Theme,LoadingProps,StudentProps,StudentTabProps,ProfessorProps,RegistrationProps,NotificationLoaderProps,NotificationType,User,NavigationScreenProps};
 
 

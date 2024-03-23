@@ -6,7 +6,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 import Registration from './screens/All/Registration';
-import Loading from './screens/All/Loading';
 import Student from './screens/Student/Student';
 import Professor from './screens/Professor/Professor';
 import Notification from './screens/All/Notification';
@@ -14,7 +13,8 @@ import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
 import NavigationScreen from './screens/All/NavigatonScreen';
 import LinearGradient from 'react-native-linear-gradient';
-import Rasporedv3 from './screens/Student/RasporedV3';
+import About from './screens/All/About';
+import Test from './screens/All/Test';
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -123,7 +123,7 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="NavigationScreen"
-          component={NavigationScreen}
+          component={Test}
           options={navigation => ({
             headerBackVisible: false,
             headerShown: false,
@@ -202,6 +202,30 @@ function App(): React.JSX.Element {
           options={() => ({
             headerBackVisible: false,
             title: 'Notifikacija',
+            headerStyle: {
+              height: 60,
+            },
+            headerTintColor: Colors.Light.whiteText,
+            headerTitleStyle: {
+              fontSize: 23,
+              fontFamily: 'Mulish-Light',
+            },
+            headerBackground: () => (
+              <LinearGradient
+                start={{x: 0.8, y: 0}}
+                end={{x: 0, y: 0}}
+                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+                style={{flex: 1}}
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="About"
+          component={About}
+          options={() => ({
+            headerBackVisible: false,
+            title: 'O aplikaciji',
             headerStyle: {
               height: 60,
             },

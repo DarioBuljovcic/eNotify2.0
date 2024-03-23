@@ -1,26 +1,23 @@
-import firestore from '@react-native-firebase/firestore';
 import Colors from '../../components/Constants/Color';
-import {User} from '../../components/Types/indexTypes';
-import {StyleSheet, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Student from '../Student/Student';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import LinearGradient from 'react-native-linear-gradient';
+import LanguageText from '../Text';
+import {UserScreenTabProps} from '../../components/Types/indexTypes';
 
-const UserScreen = () => {
+const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [role, setRole] = useState('');
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
+  const [language, setLanguage] = useState('');
 
   useEffect(() => {
     const saveUser = async () => {
       setRole((await AsyncStorage.getItem('Role')) as string);
       setName((await AsyncStorage.getItem('Name')) as string);
       setGrade((await AsyncStorage.getItem('Class')) as string);
+      setLanguage((await AsyncStorage.getItem('Language')) as string);
     };
     saveUser();
   });
@@ -50,23 +47,10 @@ const UserScreen = () => {
             {role == 'Professor' ? 'Profesor' : 'Student'}
           </Text>
 
-          <View style={styles.aboutContainer}>
-            <Text style={styles.aboutHeaderText}>O aplikaciji</Text>
-            <View style={styles.aboutLine}></View>
-            <Text style={styles.aboutText}>
-              "eNotify" je moćan alat za efikasno obaveštavanje učenika o važnim
-              događajima, aktivnostima i informacijama u vezi sa njihovom
-              školom. Ova aplikacija omogućava školama da lako komuniciraju sa
-              svojim učenicima putem brzih, pouzdanih i personalizovanih
-              obaveštenja.
-            </Text>
-          </View>
-
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={styles.option}
             activeOpacity={0.5}
-            //onPress={()=>{} }
-          >
+            onPress={() => navigation.navigate('About')}>
             <Text style={styles.optionText}>O aplikaciji</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -75,7 +59,7 @@ const UserScreen = () => {
             //onPress={()=>{} }
           >
             <Text style={styles.optionText}>Kontaktiraj programera</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -126,50 +110,30 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
   },
-  aboutContainer: {
+
+  option: {
+    height: 70,
     width: '100%',
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+
+    backgroundColor: Colors.Light.textInputBackground,
+    marginVertical: 10,
+    borderRadius: 10,
+
+    elevation: 3,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
   },
-  aboutLine: {
-    backgroundColor: Colors.Light.textPrimary,
-    height: 1,
-    marginTop: 5,
-  },
-  aboutHeaderText: {
-    fontSize: 16,
+  optionText: {
+    fontSize: 17,
+    flex: 1,
     color: Colors.Light.textPrimary,
-    marginLeft: 5,
-    fontFamily: 'Mulish',
+    fontFamily: 'Mulish-Light',
   },
-  aboutText: {
-    fontSize: 16,
-    color: Colors.Light.textPrimary,
-    marginTop: 5,
-    marginHorizontal: 5,
-    fontFamily: 'Mulish',
-  },
-  // option: {
-  //   height: 70,
-  //   width: '100%',
-
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   padding: 20,
-
-  //   backgroundColor: Colors.Light.textInputBackground,
-  //   marginVertical: 10,
-  //   borderRadius: 10,
-
-  //   elevation: 3,
-  //   shadowColor: Colors.Light.black,
-  //   shadowOffset: {width: 2, height: 5},
-  //   shadowRadius: 1,
-  // },
-  // optionText: {
-  //   fontSize: 17,
-  //   flex: 1,
-  //   color: Colors.Light.textPrimary,
-  //   fontFamily: 'Mulish-Light',
-  // },
 });
 
 export default UserScreen;

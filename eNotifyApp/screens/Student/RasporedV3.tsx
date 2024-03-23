@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
   displayDayText: {
     fontSize: 20,
     color: 'white',
+    fontFamily: 'Mulish',
   },
   day: {
     display: 'flex',
@@ -191,6 +192,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 5,
+    color: Colors.Light.textSecondary,
   },
   casText: {
     fontSize: 18,
@@ -201,11 +203,13 @@ const styles = StyleSheet.create({
   },
   casProf: {
     fontSize: 13,
+    color: Colors.Light.textSecondary,
   },
   time: {
     textAlign: 'left',
     padding: 10,
     height: cellHeight,
     textAlignVertical: 'center',
+    color: Colors.Light.textSecondary,
   },
 });

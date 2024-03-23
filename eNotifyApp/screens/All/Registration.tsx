@@ -75,16 +75,15 @@ const RegistrationScreen = ({
           ]}
         />
       </View>
-
-      <LinearGradient
-        start={{x: 0.8, y: 0}}
-        end={{x: 0, y: 0}}
-        colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-        style={styles.confirmBtn}>
-        <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
+        <LinearGradient
+          start={{x: 0.8, y: 0}}
+          end={{x: 0, y: 0}}
+          colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+          style={styles.confirmBtn}>
           <Text style={styles.confirmTxt}>Registruj se</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -115,7 +114,7 @@ const func = async () => {
   await AsyncStorage.removeItem('Name');
 };
 const Registration = ({navigation}: RegistrationProps) => {
-  func();
+  false ? func() : null;
   if (LoadingScreen(navigation)) {
     return <RegistrationScreen navigation={navigation} />;
   }

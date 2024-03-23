@@ -97,7 +97,7 @@ export default function Obavestenje({route}: any) {
             console.error('Error downloading file:', error);
           });
       } else {
-        setMessage('Slika već jednom skinuta!');
+        setMessage('Slika je već skinuta!');
         setIcon({name: 'alert-circle-outline', color: 'red'});
         startAnimation();
       }
@@ -297,5 +297,6 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 18,
+    color: Colors.Light.textSecondary,
   },
 });
