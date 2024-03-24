@@ -43,14 +43,16 @@ export type NotificationType ={
   Class: string,
   Type:string,
   Files: string,
-  Date: Timestamp
+  Date: Timestamp,
+  Seen: string
 }
 export type User = {
   UserID: string,
   Name: string,
   Email: string,
   Class: string
-  Role: string
+  Role: string,
+  LogOut:boolean,
 }
 
 

@@ -29,6 +29,7 @@ const RegistrationScreen = ({
     await AsyncStorage.setItem('Role', user.Role);
     await AsyncStorage.setItem('Class', user.Class);
     await AsyncStorage.setItem('Name', user.Name);
+    await AsyncStorage.setItem('UserId', value);
     await messaging().subscribeToTopic('Svi');
     await messaging().subscribeToTopic(
       subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
@@ -108,13 +109,29 @@ const LoadingScreen = (
   uzmiNaziv();
   return naziv === true ? getRazred() : true;
 };
-const func = async () => {
-  await AsyncStorage.removeItem('Role');
-  await AsyncStorage.removeItem('Class');
-  await AsyncStorage.removeItem('Name');
+const checkStat = async () => {
+  const userId = await AsyncStorage.getItem('UserId');
+  firestore()
+    .collection('Users')
+    .where('UserID', '==', userId)
+    .get()
+    .then(snapShoot => {
+      if (!snapShoot.empty) {
+        const user: User = snapShoot.docs[0].data() as User;
+        if (user.LogOut === true) {
+          const deleteUser = async () => {
+            await AsyncStorage.removeItem('Role');
+            await AsyncStorage.removeItem('Class');
+            await AsyncStorage.removeItem('Name');
+            await AsyncStorage.removeItem('UserId');
+          };
+          deleteUser();
+        }
+      }
+    });
 };
 const Registration = ({navigation}: RegistrationProps) => {
-  false ? func() : null;
+  checkStat();
   if (LoadingScreen(navigation)) {
     return <RegistrationScreen navigation={navigation} />;
   }

@@ -13,6 +13,7 @@ import {Button, Text} from 'react-native-elements';
 
 const Test = ({navigation}: NavigationScreenProps) => {
   const [role, setRole] = useState('');
+  const [pressed, setPressed] = useState('');
 
   const translateY = useRef(new Animated.Value(0)).current;
   const bgColor = useRef(new Animated.Value(0)).current;
@@ -23,8 +24,10 @@ const Test = ({navigation}: NavigationScreenProps) => {
   });
 
   useEffect(() => {
-    ResetAnimation();
-    animateCircle();
+    if (pressed === '') {
+      ResetAnimation();
+      animateCircle();
+    }
   }, []);
 
   const animateCircle = () => {
@@ -139,8 +142,11 @@ const Test = ({navigation}: NavigationScreenProps) => {
           component={Student}
           listeners={{
             tabPress: e => {
-              ResetAnimation();
-              animateCircle();
+              if (pressed !== 'Obavestenja') {
+                ResetAnimation();
+                animateCircle();
+                setPressed('Obavestenja');
+              }
             },
           }}
         />
@@ -149,8 +155,11 @@ const Test = ({navigation}: NavigationScreenProps) => {
           component={RasporedV3}
           listeners={{
             tabPress: e => {
-              ResetAnimation();
-              animateCircle();
+              if (pressed !== 'Raspored') {
+                ResetAnimation();
+                animateCircle();
+                setPressed('Raspored');
+              }
             },
           }}
         />
@@ -159,8 +168,11 @@ const Test = ({navigation}: NavigationScreenProps) => {
           component={UserScreen}
           listeners={{
             tabPress: () => {
-              ResetAnimation();
-              animateCircle();
+              if (pressed !== 'Moj Nalog') {
+                ResetAnimation();
+                animateCircle();
+                setPressed('Moj Nalog');
+              }
             },
           }}>
           {/* TODO: add stack tree*/}

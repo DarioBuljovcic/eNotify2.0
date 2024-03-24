@@ -19,8 +19,15 @@ export default function NotificationLoader({navigation}: any) {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(false);
   const [studentClass, setClass] = useState('');
+  const [userId, setUserId] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
-  let date: string;
+
+  const getId = async () => {
+    const value = await AsyncStorage.getItem('UserId');
+    if (value !== null) {
+      setUserId(value);
+    }
+  };
 
   const getRazred = async () => {
     try {
@@ -56,16 +63,21 @@ export default function NotificationLoader({navigation}: any) {
   }, [notifications]);
 
   useEffect(() => {
-    if (studentClass == '') getRazred();
-    if (studentClass != '') {
+    if (studentClass == '' && userId == '') {
+      getRazred();
+      getId();
+    }
+    if (studentClass != '' && userId !== '') {
       date = '';
       getData();
       setLoading(true);
     }
-  }, [studentClass]);
+  }, [studentClass, userId]);
 
+  let date: string;
   const renderObavestenje = ({item}: {item: NotificationType}) => {
     let dateNew: string;
+
     dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
     if (dateNew === date) {
       return (
@@ -76,6 +88,14 @@ export default function NotificationLoader({navigation}: any) {
           onPress={() => {
             navigation.navigate('Notification', {id: item.NotificationId});
           }}>
+          <View
+            style={
+              userId && item.Seen.includes(userId)
+                ? {display: 'none'}
+                : styles.newObavestenje
+            }>
+            <Text style={styles.newObavestenjeText}>New</Text>
+          </View>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
         </TouchableOpacity>
@@ -94,6 +114,14 @@ export default function NotificationLoader({navigation}: any) {
             onPress={() => {
               navigation.navigate('Notification', {id: item.NotificationId});
             }}>
+            <View
+              style={
+                userId && item.Seen.includes(userId)
+                  ? {display: 'none'}
+                  : styles.newObavestenje
+              }>
+              <Text style={styles.newObavestenjeText}>New</Text>
+            </View>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
           </TouchableOpacity>
@@ -157,6 +185,24 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     color: Colors.Light.textSecondary,
     fontFamily: 'Mulish-Light',
+  },
+  newObavestenje: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    width: 40,
+    height: 20,
+    borderRadius: 10,
+
+    position: 'absolute',
+    top: 5,
+    right: 5,
+
+    backgroundColor: 'red',
+  },
+  newObavestenjeText: {
+    color: 'white',
   },
   datum: {
     marginTop: 20,

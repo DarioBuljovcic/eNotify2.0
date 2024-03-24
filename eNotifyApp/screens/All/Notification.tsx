@@ -9,6 +9,7 @@ import storage from '@react-native-firebase/storage';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RNFS from 'react-native-fs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Images = {
   imageUrl: string;
@@ -53,7 +54,14 @@ export default function Obavestenje({route}: any) {
         .collection('Notifications')
         .where('NotificationId', '==', route.params.id)
         .get();
+      const UserdId = await AsyncStorage.getItem('UserId');
       const data = querySnapshot.docs[0].data() as NotificationType;
+      if (UserdId && !data.Seen.includes(UserdId)) {
+        querySnapshot.docs[0].ref.update({
+          Seen: [UserdId, ...data.Seen.split(',')].join(','),
+        });
+      }
+
       setNotification(data);
       navigation.setOptions({title: data.Tittle});
       //Kod da uzmes slike
@@ -65,6 +73,7 @@ export default function Obavestenje({route}: any) {
       }
       setImages(imgUrls);
     };
+    const setSeen = async () => {};
     if (!notification) getNotification();
   });
   useEffect(() => {
