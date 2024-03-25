@@ -1,6 +1,7 @@
 import Header from "./components/Header/Header.tsx";
 import Student from "./components/Student/Students.tsx";
 import Notifications from "./components/Notifications/Notifications.tsx";
+import DataTableNotifications from "./components/Notifications/DataTable/DataTableNotifications.tsx";
 import { useEffect, useState } from "react";
 import "./css/App.css";
 
@@ -17,6 +18,8 @@ function App() {
         return <Student Successful={(text) => setText(text)} />;
       case 1:
         return <Notifications Successful={(text) => setText(text)} />;
+      case 2:
+        return <DataTableNotifications />;
     }
   };
 
@@ -26,14 +29,16 @@ function App() {
   return (
     <body>
       <Header setOptionText={(o) => setSelectedOption(o)} />
-      <div className="display">
-        <div className="optionText">{selectedOption[0]}</div>
-        {selectedOption && displayOption()}
-        <div className={`successful ${text ? "open" : ""}`}>
-          <div>{text}</div>
-          <button className="closeSuccessful" onClick={() => setText("")}>
-            &times;
-          </button>
+      <div className="rightContainer">
+        <div className="display">
+          <div className="optionText">{selectedOption[0]}</div>
+          {selectedOption && displayOption()}
+          <div className={`successful ${text ? "open" : ""}`}>
+            <div>{text}</div>
+            <button className="closeSuccessful" onClick={() => setText("")}>
+              &times;
+            </button>
+          </div>
         </div>
       </div>
     </body>

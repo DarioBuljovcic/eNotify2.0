@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
@@ -14,12 +14,33 @@ type Data = {
   sreda: string;
   cetvrtak: string;
   petak: string;
+} & {
+  [key: number]: string;
 };
 const screenWidth = Dimensions.get('window').width;
 const App = () => {
   const [raspored, setRaspored] = useState<Data>();
   const [loading, setLoading] = useState(false);
   const [studentClass, getClass] = useState('');
+  const scrollViewRef = useRef<ScrollView>(null);
+  const days = ['ponedeljak', 'utorak', 'sreda', 'cetvrtak', 'petak'];
+  const dayDisplay = ['Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak'];
+  const vreme = [
+    '07:30\n08:15', // Prvi čas
+    '08:20\n09:05', // Drugi čas
+    '09:20\n10:05', // Treći čas
+    '10:10\n10:55', // Četvrti čas
+    '11:05\n11:50', // Peti čas
+    '11:55\n12:40', // Šesti čas
+    '12:45\n13:25', // Sedmi čas
+    '13:30\n14:15', // Prvi čas
+    '14:20\n15:05', // Drugi čas
+    '15:20\n16:05', // Treći čas
+    '16:10\n16:55', // Četvrti čas
+    '17:05\n17:50', // Peti čas
+    '17:55\n18:40', // Šesti čas
+    '18:45\n19:25', // Sedmi čas
+  ];
 
   //uzmi razred korisnika
   const getRazred = async () => {
@@ -40,7 +61,6 @@ const App = () => {
         .collection('Classes')
         .where('Class', '==', studentClass)
         .get();
-      console.log(snapshot.docs[0].data());
       setLoading(true);
       setRaspored(snapshot.docs[0].data() as Data);
     };
@@ -54,25 +74,6 @@ const App = () => {
       let tableItem: any = [];
       let row: Data = item;
       let maxLength = 0;
-      const days = ['ponedeljak', 'utorak', 'sreda', 'cetvrtak', 'petak'];
-      const dayDisplay = ['Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak'];
-      const vreme = [
-        '07:30\n08:15', // Prvi čas
-        '08:20\n09:05', // Drugi čas
-        '09:20\n10:05', // Treći čas
-        '10:10\n10:55', // Četvrti čas
-        '11:05\n11:50', // Peti čas
-        '11:55\n12:40', // Šesti čas
-        '12:45\n13:25', // Sedmi čas
-        '13:30\n14:15', // Prvi čas
-        '14:20\n15:05', // Drugi čas
-        '15:20\n16:05', // Treći čas
-        '16:10\n16:55', // Četvrti čas
-        '17:05\n17:50', // Peti čas
-        '17:55\n18:40', // Šesti čas
-        '18:45\n19:25', // Sedmi čas
-      ];
-
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
@@ -119,12 +120,27 @@ const App = () => {
     getRazred();
     if (!raspored) getData();
   }, [studentClass]);
+  useEffect(() => {
+    //scroll to day
+    if (raspored) {
+      const n = new Date().getDay() - 1;
+      let scrollHeight = 0;
+      for (let i = 0; i < n; i++) {
+        scrollHeight += raspored[days[i]]
+          .split(':/:')
+          .filter(day => day != 'none').length;
+      }
+      if (scrollViewRef.current)
+        scrollViewRef.current.scrollTo({
+          y: scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * n,
+          animated: true,
+        });
+    }
+  });
 
   return (
     <>
-      <ScrollView
-        contentContainerStyle={styles.flatList}
-        contentOffset={{x: (new Date().getDay() - 1) * screenWidth, y: 0}}>
+      <ScrollView contentContainerStyle={styles.flatList} ref={scrollViewRef}>
         {raspored && renderRaspored(raspored)}
       </ScrollView>
     </>
@@ -142,6 +158,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
     marginVertical: 5,
+    paddingBottom: 30,
   },
   days: {
     display: 'flex',

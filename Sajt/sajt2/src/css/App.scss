@@ -18,21 +18,31 @@ html {
         cursor: pointer;
     }
     body {
-        display: grid;
-        .display {
-            margin-block: 2em;
-            display: grid;
-            gap: 2em;
-            max-width: 800px;
-            justify-self: center;
-            width: 480px;
-            .optionText {
-                font-size: 2em;
-                font-family: "Source Sans 3";
-                font-weight: 600;
-                color: $darkText;
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        .rightContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            .display {
+                margin-inline: 2em;
+                display: grid;
+                gap: 2em;
+                max-width: 800px;
+                justify-self: center;
+                min-width: 480px;
+                .optionText {
+                    font-size: 2em;
+                    font-family: "Source Sans 3";
+                    font-weight: 600;
+                    color: $darkText;
+                }
             }
         }
+
         .successful {
             opacity: 0;
             position: absolute;

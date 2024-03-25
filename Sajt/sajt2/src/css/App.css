@@ -12,17 +12,26 @@ html ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
 }
 html body {
-  display: grid;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
 }
-html body .display {
-  margin-block: 2em;
+html body .rightContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+html body .rightContainer .display {
+  margin-inline: 2em;
   display: grid;
   gap: 2em;
   max-width: 800px;
   justify-self: center;
-  width: 480px;
+  min-width: 480px;
 }
-html body .display .optionText {
+html body .rightContainer .display .optionText {
   font-size: 2em;
   font-family: "Source Sans 3";
   font-weight: 600;

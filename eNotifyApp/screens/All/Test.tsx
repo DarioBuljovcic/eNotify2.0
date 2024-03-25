@@ -112,11 +112,11 @@ const Test = ({navigation}: NavigationScreenProps) => {
           },
           headerStyle: {
             backgroundColor: Colors.Light.accent,
-            height: 60,
+            height: 80,
           },
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
-            fontSize: 23,
+            fontSize: 30,
             fontFamily: 'Mulish',
           },
           headerTitleAlign: 'left',
@@ -128,14 +128,6 @@ const Test = ({navigation}: NavigationScreenProps) => {
           //       style={{flex: 1}}
           //     />
           //   ),
-          headerBackground: () => (
-            <LinearGradient
-              start={{x: 0.8, y: 0}}
-              end={{x: 0, y: 0}}
-              colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-              style={{flex: 1}}
-            />
-          ),
         })}>
         <Tab.Screen
           name="Obavestenja"

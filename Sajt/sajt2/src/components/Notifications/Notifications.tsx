@@ -13,7 +13,6 @@ import "./css/notifications.css";
 import TextArea from "./TextArea/TextArea.tsx";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
-import { generateKey } from "crypto";
 
 type SelectOption = {
   Class: string;
@@ -26,6 +25,7 @@ type inputData = {
   Text: string | undefined;
   Tittle: string | undefined;
   Type: string;
+  Seen: string;
 };
 type File = {
   name: string;
@@ -126,6 +126,7 @@ function MainPage({ Successful }) {
         Text: text,
         Tittle: tittleRef.current.value.toString(),
         Type: `T${files.length > 0 ? "F" : ""}`,
+        Seen: "",
       };
 
       const sendData = async () => {

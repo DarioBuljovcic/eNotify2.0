@@ -94,7 +94,7 @@ export default function NotificationLoader({navigation}: any) {
                 ? {display: 'none'}
                 : styles.newObavestenje
             }>
-            <Text style={styles.newObavestenjeText}>New</Text>
+            <Text style={styles.newObavestenjeText}>Novo</Text>
           </View>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -120,7 +120,7 @@ export default function NotificationLoader({navigation}: any) {
                   ? {display: 'none'}
                   : styles.newObavestenje
               }>
-              <Text style={styles.newObavestenjeText}>New</Text>
+              <Text style={styles.newObavestenjeText}>Novo</Text>
             </View>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -131,7 +131,7 @@ export default function NotificationLoader({navigation}: any) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       {loading && (
         <View style={styles.list}>
           <FlatList
@@ -148,10 +148,24 @@ export default function NotificationLoader({navigation}: any) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.Light.accent,
+    borderWidth: 0,
+    marginTop: 0,
+  },
   list: {
     flex: 1,
     alignItems: 'center',
     width: '80%',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    marginTop: 10,
+    backgroundColor: Colors.Light.appBackground,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
   },
   background: {
     width: '100%',
