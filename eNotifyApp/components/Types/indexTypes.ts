@@ -29,6 +29,7 @@ export type RasporedV3 = StackScreenProps<Navigation,"RasporedV3">
 export type StudentProps = StackScreenProps<Navigation, "Student" >
 export type StudentTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
 export type ProfessorProps = StackScreenProps<Navigation, "Professor">
+export type ProfessorTabProps = BottomTabScreenProps<ParamListBase,"Obavestenja">
 export type RegistrationProps = StackScreenProps<Navigation, "Registration">
 export type NotificationLoaderProps = StackScreenProps<Navigation, "NotificationLoader">
 export type NavigationScreenProps = StackScreenProps<Navigation,"NavigationScreen">

@@ -53,13 +53,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             onPress={() => navigation.navigate('About')}>
             <Text style={styles.optionText}>O aplikaciji</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.option}
-            activeOpacity={0.5}
-            //onPress={()=>{} }
-          >
-            <Text style={styles.optionText}>Kontaktiraj programera</Text>
-          </TouchableOpacity>
+          
         </View>
       </View>
     </View>

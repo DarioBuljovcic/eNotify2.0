@@ -5,8 +5,6 @@ import Colors from '../../components/Constants/Color';
 export default function About() {
   return (
     <View style={styles.aboutContainer}>
-      <Text style={styles.aboutHeaderText}>O aplikaciji</Text>
-      <View style={styles.aboutLine}></View>
       <Text style={styles.aboutText}>
         "eNotify" je moćan alat za efikasno obaveštavanje učenika o važnim
         događajima, aktivnostima i informacijama u vezi sa njihovom školom. Ova
@@ -20,6 +18,7 @@ export default function About() {
 const styles = StyleSheet.create({
   aboutContainer: {
     width: '100%',
+    padding:20,
   },
   aboutLine: {
     backgroundColor: Colors.Light.textPrimary,

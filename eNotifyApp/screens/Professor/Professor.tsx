@@ -10,17 +10,28 @@ import {
   AppState,
   Platform,
 } from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
-import {ProfessorProps} from '../../components/Types/indexTypes';
-import Colors from '../../components/Constants/Color';
+import React from 'react';
+import {ProfessorProps, ProfessorTabProps} from '../../components/Types/indexTypes';
+import AddNotifaciton from './AddNotfication';
 import NotificationLoader from '../All/NotificationLoader';
+import Colors from '../../components/Constants/Color';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function Professor({navigation}: ProfessorProps) {
+const addNotification = ()=>{
+  console.log('click');
+}
+
+export default function Professor({navigation}: ProfessorTabProps) {
+  
+
   return (
     <View style={styles.container}>
-      <NotificationLoader navigation={navigation} />
+      <NotificationLoader/>
+      <TouchableOpacity style={styles.add} activeOpacity={0.9} onPress={addNotification}>
+        <Ionicons name={'add-outline'} size={35} color={Colors.Light.white} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -31,47 +42,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  list: {
-    flex: 1,
-    alignItems: 'center',
-    width: '80%',
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    opacity: 0.95,
-    alignItems: 'center',
-  },
-  flatList: {
-    width: screenWidth,
-  },
-  obavestenje: {
-    height: 100,
-    width: '90%',
-    marginVertical: 10,
-    marginLeft: screenWidth * 0.05,
-    padding: 10,
-    backgroundColor: Colors.Light.notificationBG,
-    borderRadius: 10,
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
-  },
-  obavestenjeTitle: {
-    fontSize: 20,
-    color: Colors.Light.textPrimary,
-  },
-  obavestenjeBody: {
-    flexShrink: 1,
-    color: Colors.Light.textSecondary,
-  },
-  datum: {
-    marginTop: 30,
-    marginLeft: screenWidth * 0.06,
-  },
-  datumText: {
-    color: Colors.Light.textSecondary,
-    fontSize: 14,
+  add:{
+    width:70,
+    height:70,
+    backgroundColor:Colors.Light.accentGreen,
+
+    position:'absolute',
+    bottom:10,
+    right:10,
+
+    borderRadius:50,
+
+    justifyContent:'center',
+    alignItems:'center',
   },
 });

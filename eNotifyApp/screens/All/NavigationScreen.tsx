@@ -10,8 +10,9 @@ import RasporedV3 from '../Student/RasporedV3';
 import LinearGradient from 'react-native-linear-gradient';
 import {NavigationScreenProps} from '../../components/Types/indexTypes';
 import {Button, Text} from 'react-native-elements';
+import Professor from '../Professor/Professor';
 
-const Test = ({navigation}: NavigationScreenProps) => {
+const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const [role, setRole] = useState('');
   const [pressed, setPressed] = useState('');
 
@@ -188,7 +189,25 @@ const Test = ({navigation}: NavigationScreenProps) => {
             }
             size = 30;
             // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return (
+              <Animated.View
+                style={
+                  focused
+                    ? [styles.tabButton, {transform: [{translateY}]}]
+                    : null
+                }>
+                <Animated.View
+                  style={
+                    focused
+                      ? [
+                          styles.tabBackground,
+                          {backgroundColor, transform: [{scale}]},
+                        ]
+                      : null
+                  }></Animated.View>
+                <Ionicons name={iconName} size={size} color={color} />
+              </Animated.View>
+            );
           },
           tabBarActiveTintColor: Colors.Light.whiteText,
           tabBarInactiveTintColor: Colors.Light.whiteText,
@@ -199,18 +218,62 @@ const Test = ({navigation}: NavigationScreenProps) => {
           },
           headerStyle: {
             backgroundColor: Colors.Light.accent,
-            height: 60,
+            height: 80,
+            elevation:0,
           },
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
-            fontSize: 23,
+            fontSize: 30,
             fontFamily: 'Mulish',
           },
           headerTitleAlign: 'left',
+          //   tabBarBackground: () => (
+          //     <LinearGradient
+          //       start={{x: 0.8, y: 0}}
+          //       end={{x: 0, y: 0}}
+          //       colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+          //       style={{flex: 1}}
+          //     />
+          //   ),
         })}>
-        <Tab.Screen name="Obavestenja" component={Student} />
-        <Tab.Screen name="Raspored" component={RasporedV3} />
-        <Tab.Screen name="Moj Nalog" component={UserScreen}>
+        <Tab.Screen
+          name="Obavestenja"
+          component={Professor}
+          listeners={{
+            tabPress: e => {
+              if (pressed !== 'Obavestenja') {
+                ResetAnimation();
+                animateCircle();
+                setPressed('Obavestenja');
+              }
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Raspored"
+          component={RasporedV3}
+          listeners={{
+            tabPress: e => {
+              if (pressed !== 'Raspored') {
+                ResetAnimation();
+                animateCircle();
+                setPressed('Raspored');
+              }
+            },
+          }}
+        />
+        <Tab.Screen
+          name="Moj Nalog"
+          component={UserScreen}
+          listeners={{
+            tabPress: () => {
+              if (pressed !== 'Moj Nalog') {
+                ResetAnimation();
+                animateCircle();
+                setPressed('Moj Nalog');
+              }
+            },
+          }}>
           {/* TODO: add stack tree*/}
         </Tab.Screen>
       </Tab.Navigator>
@@ -251,4 +314,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Test;
+export default NavigationScreen;

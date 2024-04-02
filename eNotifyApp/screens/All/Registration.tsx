@@ -150,6 +150,10 @@ const LoadingScreen = (
 };
 
 const Registration = ({navigation}: RegistrationProps) => {
+  // AsyncStorage.removeItem('Role');
+  // AsyncStorage.removeItem('Class');
+  // AsyncStorage.removeItem('Name');
+  // AsyncStorage.removeItem('UserId');
   if (LoadingScreen(navigation)) {
     return <RegistrationScreen navigation={navigation} />;
   }

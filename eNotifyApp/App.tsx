@@ -11,10 +11,9 @@ import Professor from './screens/Professor/Professor';
 import Notification from './screens/All/Notification';
 import Colors from './components/Constants/Color';
 import {Navigation} from './components/Types/indexTypes';
-import NavigationScreen from './screens/All/NavigatonScreen';
 import LinearGradient from 'react-native-linear-gradient';
 import About from './screens/All/About';
-import Test from './screens/All/Test';
+import NavigationScreen from './screens/All/NavigationScreen';
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -123,7 +122,7 @@ function App(): React.JSX.Element {
         />
         <Stack.Screen
           name="NavigationScreen"
-          component={Test}
+          component={NavigationScreen}
           options={navigation => ({
             headerBackVisible: false,
             headerShown: false,

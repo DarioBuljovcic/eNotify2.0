@@ -94,7 +94,7 @@ export default function NotificationLoader({navigation}: any) {
                 ? {display: 'none'}
                 : styles.newObavestenje
             }>
-            <Text style={styles.newObavestenjeText}>Novo</Text>
+            
           </View>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -120,7 +120,7 @@ export default function NotificationLoader({navigation}: any) {
                   ? {display: 'none'}
                   : styles.newObavestenje
               }>
-              <Text style={styles.newObavestenjeText}>Novo</Text>
+              
             </View>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
@@ -205,15 +205,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
-    width: 40,
+    width: 20,
     height: 20,
     borderRadius: 10,
 
     position: 'absolute',
-    top: 5,
-    right: 5,
+    top: -5,
+    right: -5,
 
-    backgroundColor: 'red',
+    backgroundColor: Colors.Light.accentGreen,
   },
   newObavestenjeText: {
     color: 'white',
