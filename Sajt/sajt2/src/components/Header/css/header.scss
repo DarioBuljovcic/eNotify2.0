@@ -175,12 +175,8 @@ header {
         }
     }
     .profile {
-        border-radius: 50%;
-        border: 1px solid $borderColor;
-        width: $profileSize;
-        height: $profileSize;
-        cursor: pointer;
-        position: relative;
-        bottom: 0;
+        width: 70%;
+        margin-inline: auto;
+        margin-top:130%;
     }
 }

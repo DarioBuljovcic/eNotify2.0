@@ -155,11 +155,7 @@ header .options .selected .collection {
   height: 4em;
 }
 header .profile {
-  border-radius: 50%;
-  border: 1px solid #adb5bd;
-  width: 2em;
-  height: 2em;
-  cursor: pointer;
-  position: relative;
-  bottom: 0;
+  width: 70%;
+  margin-inline: auto;
+  margin-top: 130%;
 }/*# sourceMappingURL=header.css.map */

@@ -148,7 +148,7 @@ export default function Header({ setOptionText }: HeaderProps) {
       </div>
       <img
         className="profile"
-        // src={require("./images/school.png")}
+        src={require("./images/school.png")}
         alt="School logo"
       />
     </header>
