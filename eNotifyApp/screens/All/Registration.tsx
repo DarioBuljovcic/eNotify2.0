@@ -35,6 +35,18 @@ const RegistrationScreen = ({
       subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
     );
     await messaging().subscribeToTopic(user.Class);
+    await firestore()
+      .collection('Users')
+      .where('UserID', '==', user.UserID)
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          // Update the document
+          firestore().collection('Users').doc(doc.id).update({
+            LogOut: false,
+          });
+        });
+      });
   };
   //Email and Password
   const Login = () => {
@@ -43,10 +55,13 @@ const RegistrationScreen = ({
       .get()
       .then(querySnapshot => {
         if (!querySnapshot.empty) {
-          setIsCorrect(true);
-          const user: User = querySnapshot.docs[0].data() as User;
-          saveUser(user);
-          navigation.navigate('NavigationScreen');
+          const saveAll = async () => {
+            setIsCorrect(true);
+            const user: User = querySnapshot.docs[0].data() as User;
+            await saveUser(user);
+            navigation.navigate('NavigationScreen');
+          };
+          saveAll();
         } else {
           setIsCorrect(false);
         }
@@ -88,7 +103,27 @@ const RegistrationScreen = ({
     </View>
   );
 };
-
+const checkStat = async () => {
+  const userId = await AsyncStorage.getItem('UserId');
+  await firestore()
+    .collection('Users')
+    .where('UserID', '==', userId)
+    .get()
+    .then(snapshot => {
+      if (!snapshot.empty) {
+        const user: User = snapshot.docs[0].data() as User;
+        if (user.LogOut === true) {
+          const deleteUser = async () => {
+            await AsyncStorage.removeItem('Role');
+            await AsyncStorage.removeItem('Class');
+            await AsyncStorage.removeItem('Name');
+            await AsyncStorage.removeItem('UserId');
+          };
+          deleteUser();
+        }
+      }
+    });
+};
 const LoadingScreen = (
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>,
 ) => {
@@ -106,32 +141,15 @@ const LoadingScreen = (
       return true;
     }
   };
-  uzmiNaziv();
+  const check = async () => {
+    await checkStat();
+    uzmiNaziv();
+  };
+  check();
   return naziv === true ? getRazred() : true;
 };
-const checkStat = async () => {
-  const userId = await AsyncStorage.getItem('UserId');
-  firestore()
-    .collection('Users')
-    .where('UserID', '==', userId)
-    .get()
-    .then(snapShoot => {
-      if (!snapShoot.empty) {
-        const user: User = snapShoot.docs[0].data() as User;
-        if (user.LogOut === true) {
-          const deleteUser = async () => {
-            await AsyncStorage.removeItem('Role');
-            await AsyncStorage.removeItem('Class');
-            await AsyncStorage.removeItem('Name');
-            await AsyncStorage.removeItem('UserId');
-          };
-          deleteUser();
-        }
-      }
-    });
-};
+
 const Registration = ({navigation}: RegistrationProps) => {
-  checkStat();
   if (LoadingScreen(navigation)) {
     return <RegistrationScreen navigation={navigation} />;
   }

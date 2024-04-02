@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
+import DataTable, { TableColumn } from "react-data-table-component";
 import { db } from "../../../lib/firebase.js";
 import {
   collection,
@@ -12,6 +12,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import "./css/table.css";
 
 type inputData = {
   NotificationId: string;
@@ -28,16 +29,18 @@ export default function DataTableNotifications() {
   const [data, setData] = useState<inputData[]>([]);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(true);
-  const columns = [
+
+  const columns: TableColumn<inputData>[] = [
     {
       name: "Naslov",
-      selector: (row: inputData) => row.Tittle,
+      selector: (row: inputData) => row.Tittle || "",
       width: "200px",
       sortable: true,
     },
     {
       name: "Tekst",
-      selector: (row: inputData) => <CustomText row={row} />,
+      selector: (row: inputData) => row.Text || "",
+      cell: (row: inputData) => <CustomText row={row} />,
       sortable: true,
     },
     {
@@ -54,13 +57,14 @@ export default function DataTableNotifications() {
     },
     {
       name: "Rzred",
-      selector: (row: inputData) => row.Class,
+      selector: (row: inputData) => row.Class || "",
       width: "100px",
       sortable: true,
     },
     {
       name: "Brisanje",
-      selector: (row: inputData) => <DeleteButton row={row} />,
+      selector: (row: inputData) => row.NotificationId || "",
+      cell: (row: inputData) => <DeleteButton row={row} />,
       width: "100px",
       sortable: true,
     },

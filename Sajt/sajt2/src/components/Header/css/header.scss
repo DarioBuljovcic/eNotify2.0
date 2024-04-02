@@ -110,13 +110,41 @@ header {
                 overflow: hidden;
                 display: flex;
                 flex-direction: column;
-                gap: 0.5em;
+                gap: 0.8em;
                 padding-left: 0.8em;
-                padding-top: 0.5em;
+                padding-top: 0.8em;
                 font-size: 0.8em;
                 transition: height 0.3s;
 
                 .collectionOption {
+                    position: relative;
+                    &::after {
+                        background-color: #212529;
+                        bottom: -0.3em;
+                        content: "";
+                        height: 1px;
+                        left: 0;
+                        position: absolute;
+                        transition: all 0.3s;
+                        width: 0;
+                    }
+                    &:hover {
+                        &::after {
+                            width: 100%;
+                        }
+                    }
+                }
+                .selectedColl {
+                    &::after {
+                        background-color: #212529;
+                        bottom: -0.3em;
+                        content: "";
+                        height: 1px;
+                        left: 0;
+                        position: absolute;
+                        transition: all 0.3s;
+                        width: 100%;
+                    }
                 }
             }
         }

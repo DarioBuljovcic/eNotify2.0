@@ -22,7 +22,6 @@ export default function Header({ setOptionText }: HeaderProps) {
           <div
             className="text"
             onClick={() => {
-              setOptionText(["Dodavanje Učenika", 0]);
               setSelected((prev) => (prev == 1 ? 0 : 1));
               setSelectedColl(1);
             }}
@@ -39,17 +38,23 @@ export default function Header({ setOptionText }: HeaderProps) {
           <div className="collection">
             <div
               className={`collectionOption ${
-                selectedColl === 1 ? ".selectedColl" : ""
+                selectedColl === 1 ? "selectedColl" : ""
               }`}
-              onClick={() => setSelectedColl(1)}
+              onClick={() => {
+                setSelectedColl(1);
+                setOptionText(["Dodavanje Učenika", 0]);
+              }}
             >
               Dodavanje učenika
             </div>
             <div
               className={`collectionOption ${
-                selectedColl === 2 ? ".selectedColl" : ""
+                selectedColl === 2 ? "selectedColl" : ""
               }`}
-              onClick={() => setSelectedColl(2)}
+              onClick={() => {
+                setSelectedColl(2);
+                setOptionText(["Pregled Učenika", 1]);
+              }}
             >
               Pregled učenika
             </div>
@@ -77,23 +82,22 @@ export default function Header({ setOptionText }: HeaderProps) {
           <div className="collection">
             <div
               className={`collectionOption ${
-                selectedColl === 1 ? ".selectedColl" : ""
+                selectedColl === 1 ? "selectedColl" : ""
               }`}
               onClick={() => {
                 setSelectedColl(1);
-                setOptionText(["Slanje Obaveštenja", 1]);
+                setOptionText(["Slanje Obaveštenja", 2]);
               }}
             >
-              Dodavanje obaveštenja
+              Slanje obaveštenja
             </div>
             <div
               className={`collectionOption ${
-                selectedColl === 2 ? ".selectedColl" : ""
+                selectedColl === 2 ? "selectedColl" : ""
               }`}
               onClick={() => {
-                console.log("hello");
-                setSelectedColl(1);
-                setOptionText(["Pregled Obaveštenja", 2]);
+                setSelectedColl(2);
+                setOptionText(["Pregled Obaveštenja", 3]);
               }}
             >
               Pregled obaveštenja
@@ -123,7 +127,7 @@ export default function Header({ setOptionText }: HeaderProps) {
           <div className="collection">
             <div
               className={`collectionOption ${
-                selectedColl === 1 ? ".selectedColl" : ""
+                selectedColl === 1 ? "selectedColl" : ""
               }`}
               onClick={() => setSelectedColl(1)}
             >
@@ -131,7 +135,7 @@ export default function Header({ setOptionText }: HeaderProps) {
             </div>
             <div
               className={`collectionOption ${
-                selectedColl === 2 ? ".selectedColl" : ""
+                selectedColl === 2 ? "selectedColl" : ""
               }`}
               onClick={() => setSelectedColl(2)}
             >

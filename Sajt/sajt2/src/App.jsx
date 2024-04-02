@@ -2,6 +2,7 @@ import Header from "./components/Header/Header.tsx";
 import Student from "./components/Student/Students.tsx";
 import Notifications from "./components/Notifications/Notifications.tsx";
 import DataTableNotifications from "./components/Notifications/DataTable/DataTableNotifications.tsx";
+import DataTableStudents from "./components/Student/DataTable/DataTableStudents.tsx";
 import { useEffect, useState } from "react";
 import "./css/App.css";
 
@@ -17,8 +18,10 @@ function App() {
       case 0:
         return <Student Successful={(text) => setText(text)} />;
       case 1:
-        return <Notifications Successful={(text) => setText(text)} />;
+        return <DataTableStudents />;
       case 2:
+        return <Notifications Successful={(text) => setText(text)} />;
+      case 3:
         return <DataTableNotifications />;
     }
   };
