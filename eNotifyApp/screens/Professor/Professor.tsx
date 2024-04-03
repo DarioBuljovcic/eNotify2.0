@@ -33,14 +33,26 @@ function Modal({closeModal, translateY}: any) {
         <Ionicons
           name="close-circle-outline"
           size={35}
-          color={Colors.Light.accent}></Ionicons>
+          color={Colors.Light.accentGreen}></Ionicons>
       </TouchableOpacity>
+
+      <Text style={styles.title}>Dodaj obavestenje</Text>
+
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} placeholder="Obaveštenje" />
+
+      <TextInput
+          placeholder="Naslov obavestenja"
+          placeholderTextColor={Colors.Light.lightText}
+          autoCapitalize="none"
+          style={[
+            styles.input,
+          ]}
+        />
         <TextInput
           style={[styles.input, {textAlignVertical: 'top'}]}
           placeholder="Tekst obaveštenja"
           numberOfLines={4}
+          placeholderTextColor={Colors.Light.lightText}
         />
         <TouchableOpacity
           style={styles.send}
@@ -157,22 +169,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 60,
   },
+  title:{
+    fontFamily:'Mulish',
+    fontSize:22,
+    textAlign:'center',
+    marginBottom:20,
+  },
   closeModal: {
     position: 'absolute',
-    right: 5,
-    top: 5,
+    right: 10,
+    top: 10,
 
     width: 35,
   },
   inputContainer: {
     flex: 1,
     gap: 10,
-  },
-  input: {
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 5,
-    fontSize: 15,
   },
   overlay: {
     flex: 1,
@@ -188,12 +200,43 @@ const styles = StyleSheet.create({
   },
   send: {
     backgroundColor: Colors.Light.accent,
-    padding: 5,
-    borderRadius: 5,
+
+    marginTop:20,
+    padding: 20,
+
+    width: '80%',
+
+    alignSelf: 'center',
+    alignItems: 'center',
+
+    borderRadius: 30,
   },
   sendText: {
     color: Colors.Light.white,
     fontSize: 18,
     textAlign: 'center',
+    fontFamily:'Mulish',
+  },
+  input: {
+    fontSize: 17,
+    fontFamily: 'Mulish',
+
+    backgroundColor: Colors.Light.textInputBackground,
+    color: Colors.Light.textPrimary,
+
+    padding: 15,
+    width: '85%',
+
+    alignSelf: 'center',
+
+    borderRadius: 10,
+
+    borderWidth: 1,
+    borderColor: Colors.Light.lightText,
+
+    elevation: 13,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
   },
 });
