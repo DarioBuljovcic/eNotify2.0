@@ -2,7 +2,7 @@ import {StyleSheet, Text, View, Image, Animated} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import {format} from 'date-fns';
-import {NotificationType} from '../../components/Types/indexTypes';
+import {NotificationType, Navigation} from '../../components/Types/indexTypes';
 import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState, useRef} from 'react';
 import storage from '@react-native-firebase/storage';
@@ -21,7 +21,7 @@ type Icon = {
 };
 
 export default function Obavestenje({route}: any) {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [images, setImages] = useState<Images[]>([]);
   const animationValue = useRef(new Animated.Value(-110)).current;
@@ -208,7 +208,16 @@ export default function Obavestenje({route}: any) {
             </Text>
           </View>
           <Text style={styles.body}>{notification.Text}</Text>
-
+          <TouchableOpacity
+            style={styles.seen}
+            onPress={() =>
+              navigation.navigate('NotificationViewrs', {
+                Seen: notification.Seen,
+                Class: notification.Class,
+              })
+            }>
+            <Ionicons name={'eye-outline'} size={24} color={'black'}></Ionicons>
+          </TouchableOpacity>
           {images && renderImages()}
         </>
       )}
@@ -307,5 +316,10 @@ const styles = StyleSheet.create({
   messageText: {
     fontSize: 18,
     color: Colors.Light.textSecondary,
+  },
+  seen: {
+    backgroundColor: 'white',
+    width: 30,
+    height: 30,
   },
 });

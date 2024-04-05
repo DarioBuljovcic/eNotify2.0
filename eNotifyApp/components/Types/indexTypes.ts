@@ -5,6 +5,7 @@ import { Timestamp } from "firebase/firestore";
 
 
 
+
 //Navigation
 export type Navigation = {
     About : undefined,
@@ -18,6 +19,7 @@ export type Navigation = {
     RasporedV2:undefined,
     RasporedV3:undefined,
     UserScreen:undefined,
+    NotificationViewrs:undefined
 }
 export type NotificationData={
   Notification:NotificationType;
@@ -55,7 +57,15 @@ export type User = {
   Role: string,
   LogOut:boolean,
 }
-
+export type Class = {
+  [key: string]: string;
+  Class: string ;
+  ponedeljak: string;
+  utorak: string;
+  sreda: string;
+  cetvrtak: string;
+  petak: string;
+}
 
 //Colors
 export type Color = {

@@ -14,6 +14,7 @@ import {Navigation} from './components/Types/indexTypes';
 import LinearGradient from 'react-native-linear-gradient';
 import About from './screens/All/About';
 import NavigationScreen from './screens/All/NavigationScreen';
+import NotificationViewrs from './screens/Professor/NotificationViewrs';
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -217,6 +218,31 @@ function App(): React.JSX.Element {
                 style={{flex: 1}}
               />
             ),
+          })}
+        />
+        <Stack.Screen
+          name="NotificationViewrs"
+          component={NotificationViewrs}
+          options={() => ({
+            headerBackVisible: false,
+            title: 'Pogledali',
+            tabBarActiveTintColor: Colors.Light.whiteText,
+            tabBarInactiveTintColor: Colors.Light.whiteText,
+            tabBarLabelStyle: {
+              fontSize: 12,
+              fontFamily: 'Mulish',
+            },
+            headerStyle: {
+              backgroundColor: Colors.Light.accent,
+              height: 80,
+              elevation: 0,
+            },
+            headerTintColor: Colors.Light.whiteText,
+            headerTitleStyle: {
+              fontSize: 30,
+              fontFamily: 'Mulish',
+            },
+            headerTitleAlign: 'left',
           })}
         />
         <Stack.Screen

@@ -93,9 +93,7 @@ export default function NotificationLoader({navigation}: any) {
               userId && item.Seen.includes(userId)
                 ? {display: 'none'}
                 : styles.newObavestenje
-            }>
-            
-          </View>
+            }></View>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
         </TouchableOpacity>
@@ -119,9 +117,7 @@ export default function NotificationLoader({navigation}: any) {
                 userId && item.Seen.includes(userId)
                   ? {display: 'none'}
                   : styles.newObavestenje
-              }>
-              
-            </View>
+              }></View>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
           </TouchableOpacity>
