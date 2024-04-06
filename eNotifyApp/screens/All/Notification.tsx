@@ -23,6 +23,7 @@ type Icon = {
 export default function Obavestenje({route}: any) {
   const navigation: any = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
+  const [role, setRole] = useState('');
   const [images, setImages] = useState<Images[]>([]);
   const animationValue = useRef(new Animated.Value(-110)).current;
   const [message, setMessage] = useState('Slika je uspešno skinuta!');
@@ -73,13 +74,19 @@ export default function Obavestenje({route}: any) {
       }
       setImages(imgUrls);
     };
-    const setSeen = async () => {};
     if (!notification) getNotification();
   });
   useEffect(() => {
-    if (!notification) navigation.setOptions({title: ''});
+    if (!notification) {
+      getRole();
+      navigation.setOptions({title: ''});
+    }
   });
 
+  const getRole = async () => {
+    const data = await AsyncStorage.getItem('Role');
+    if (data) setRole(data);
+  };
   const downloadImage = async (imageUrl: string, fileName: string) => {
     try {
       const downloadDest = `${RNFS.DownloadDirectoryPath}/${fileName}`;
@@ -208,16 +215,22 @@ export default function Obavestenje({route}: any) {
             </Text>
           </View>
           <Text style={styles.body}>{notification.Text}</Text>
-          <TouchableOpacity
-            style={styles.seen}
-            onPress={() =>
-              navigation.navigate('NotificationViewrs', {
-                Seen: notification.Seen,
-                Class: notification.Class,
-              })
-            }>
-            <Ionicons name={'eye-outline'} size={24} color={'black'}></Ionicons>
-          </TouchableOpacity>
+          {role === 'Professor' && (
+            <TouchableOpacity
+              style={styles.seen}
+              onPress={() =>
+                navigation.navigate('NotificationViewrs', {
+                  Seen: notification.Seen,
+                  Class: notification.Class,
+                })
+              }>
+              <Ionicons
+                name={'eye-outline'}
+                size={24}
+                color={'black'}></Ionicons>
+            </TouchableOpacity>
+          )}
+
           {images && renderImages()}
         </>
       )}

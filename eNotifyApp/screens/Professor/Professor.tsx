@@ -274,19 +274,35 @@ const styles = StyleSheet.create({
     pointerEvents: 'none',
   },
   dropdown: {
+    fontSize: 17,
+    fontFamily: 'Mulish',
+
+    backgroundColor: Colors.Light.textInputBackground,
+    color: Colors.Light.textPrimary,
+
+    padding: 15,
     margin: 16,
     height: 50,
-    borderColor: 'gray',
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
+    width: '85%',
+
+    alignSelf: 'center',
+
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.Light.lightText,
+
+    elevation: 13,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
   },
   placeholderStyle: {
     fontSize: 16,
   },
   selectedTextStyle: {
-    fontSize: 16,
-    color: 'black',
+    fontSize: 17,
+    fontFamily: 'Mulish',
+    color: Colors.Light.textPrimary,
   },
   inputSearchStyle: {
     height: 40,
@@ -324,7 +340,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
 
     borderRadius: 10,
-
     borderWidth: 1,
     borderColor: Colors.Light.lightText,
 
