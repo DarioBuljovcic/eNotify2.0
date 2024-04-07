@@ -93,9 +93,9 @@ const RegistrationScreen = ({
       </View>
       <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
         <LinearGradient
-          start={{x: 0.8, y: 0}}
+          start={{x: 1.3, y: 0}}
           end={{x: 0, y: 0}}
-          colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+          colors={['#C6E2F5', '#2077F9']}
           style={styles.confirmBtn}>
           <Text style={styles.confirmTxt}>Registruj se</Text>
         </LinearGradient>

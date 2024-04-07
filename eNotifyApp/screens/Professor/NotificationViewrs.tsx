@@ -73,18 +73,18 @@ const screenHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.Light.accent,
+
     borderWidth: 0,
-    marginTop: 0,
+    marginTop: -40,
     width: screenWidth,
     height: screenHeight,
+    zIndex: 10,
   },
   list: {
     flex: 1,
     alignItems: 'center',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    marginTop: 10,
     backgroundColor: Colors.Light.appBackground,
     overflow: 'hidden',
     elevation: 2,

@@ -92,13 +92,12 @@ function Modal({closeModal, translateY}: any) {
             color={Colors.Light.accentGreen}></Ionicons>
         </TouchableOpacity>
 
-        <Text style={styles.title}>Dodaj obavestenje</Text>
+        <Text style={styles.title}>Dodaj obaveštenje</Text>
 
         <View style={styles.inputContainer}>
           <TextInput
-            placeholder="Naslov obavestenja"
+            placeholder="Naslov obaveštenja"
             placeholderTextColor={Colors.Light.lightText}
-            autoCapitalize="none"
             style={styles.input}
             value={tittleValue}
             onChangeText={e => setTittleValue(e)}
@@ -106,6 +105,7 @@ function Modal({closeModal, translateY}: any) {
           <TextInput
             style={[styles.input, {textAlignVertical: 'top'}]}
             placeholder="Tekst obaveštenja"
+            placeholderTextColor={Colors.Light.lightText}
             numberOfLines={4}
             value={textValue}
             onChangeText={e => setTextValue(e)}
@@ -128,6 +128,7 @@ function Modal({closeModal, translateY}: any) {
             labelField={'Class'}
             valueField={'Class'}
             keyboardAvoiding={true}
+            itemTextStyle={styles.itemTextStyle}
           />
           <TouchableOpacity
             style={styles.send}
@@ -223,6 +224,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10,
+    zIndex: 110,
 
     borderRadius: 50,
 
@@ -232,7 +234,7 @@ const styles = StyleSheet.create({
   modal: {
     position: 'absolute',
     bottom: 0,
-    zIndex: 100,
+    zIndex: 120,
 
     backgroundColor: 'white',
     borderTopLeftRadius: 10,
@@ -249,6 +251,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'center',
     marginBottom: 20,
+    color: Colors.Light.textPrimary,
   },
   closeModal: {
     position: 'absolute',
@@ -264,11 +267,11 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     position: 'absolute',
-    top: -100,
+    top: -200,
 
     height: screenHeight,
     width: screenWidth,
-    zIndex: 10,
+    zIndex: 115,
     backgroundColor: '#333333',
     opacity: 0.6,
     pointerEvents: 'none',
@@ -298,6 +301,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: Colors.Light.lightText,
   },
   selectedTextStyle: {
     fontSize: 17,
@@ -307,6 +311,10 @@ const styles = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color: Colors.Light.lightText,
+  },
+  itemTextStyle: {
+    color: Colors.Light.textPrimary,
   },
   send: {
     backgroundColor: Colors.Light.accent,

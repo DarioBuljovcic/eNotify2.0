@@ -18,7 +18,9 @@ export default function About() {
 const styles = StyleSheet.create({
   aboutContainer: {
     width: '100%',
-    padding:20,
+    padding: 20,
+
+    backgroundColor: 'red',
   },
   aboutLine: {
     backgroundColor: Colors.Light.textPrimary,

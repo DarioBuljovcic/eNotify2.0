@@ -80,7 +80,7 @@ const App = () => {
           <LinearGradient
             start={{x: 0.8, y: 0}}
             end={{x: 0, y: 0}}
-            colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+            colors={['#C6E2F5', '#2077F9']}
             style={styles.displayDay}
             key={day + count}>
             <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
@@ -139,11 +139,13 @@ const App = () => {
   });
 
   return (
-    <>
-      <ScrollView contentContainerStyle={styles.flatList} ref={scrollViewRef}>
-        {raspored && renderRaspored(raspored)}
-      </ScrollView>
-    </>
+    <View style={{marginTop: -35, zIndex: 100}}>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.flatList} ref={scrollViewRef}>
+          {raspored && renderRaspored(raspored)}
+        </ScrollView>
+      </View>
+    </View>
   );
 };
 
@@ -153,6 +155,12 @@ const cellWidth = 320;
 const cellHeight = 70;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.Light.appBackground,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    overflow: 'hidden',
+  },
   flatList: {
     display: 'flex',
     justifyContent: 'center',
@@ -171,12 +179,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.Light.accentGreen,
-    borderWidth: 0.5,
     padding: 5,
   },
   displayDayText: {
-    fontSize: 20,
+    fontSize: 25,
     color: 'white',
     fontFamily: 'Mulish',
   },

@@ -5,6 +5,7 @@ import {
   Animated,
   KeyboardAvoidingView,
   Platform,
+  Dimensions,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Student from '../Student/Student';
@@ -17,6 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {NavigationScreenProps} from '../../components/Types/indexTypes';
 import {Button, Text} from 'react-native-elements';
 import Professor from '../Professor/Professor';
+import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 
 const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const [role, setRole] = useState('');
@@ -118,24 +120,48 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             fontFamily: 'Mulish',
           },
           headerStyle: {
-            backgroundColor: Colors.Light.accent,
-            height: 80,
+            height: 200,
             elevation: 0,
           },
           headerTintColor: Colors.Light.whiteText,
           headerTitleStyle: {
-            fontSize: 30,
+            fontSize: 35,
             fontFamily: 'Mulish',
           },
           headerTitleAlign: 'left',
-          //   tabBarBackground: () => (
-          //     <LinearGradient
-          //       start={{x: 0.8, y: 0}}
-          //       end={{x: 0, y: 0}}
-          //       colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-          //       style={{flex: 1}}
-          //     />
-          //   ),
+          // width="390" height="234"
+
+          headerBackground: () => (
+            <View>
+              <Svg
+                style={{position: 'absolute', top: -1}}
+                width={Dimensions.get('window').width}
+                height="200"
+                fill="none"
+                viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
+                <G clip-path="url(#a)">
+                  <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
+                  <Path
+                    fill="#206AF9"
+                    d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
+                  />
+                  <Path
+                    fill="#205DF9"
+                    d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
+                  />
+                  <Path
+                    fill="#2050F9"
+                    d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
+                  />
+                </G>
+                <Defs>
+                  <ClipPath id="a">
+                    <Path fill="#fff" d="M0 0h390v234H0z" />
+                  </ClipPath>
+                </Defs>
+              </Svg>
+            </View>
+          ),
         })}>
         <Tab.Screen
           name="Obavestenja"
@@ -228,24 +254,46 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
               fontFamily: 'Mulish',
             },
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 80,
+              height: 200,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 30,
+              fontSize: 35,
               fontFamily: 'Mulish',
             },
             headerTitleAlign: 'left',
-            //   tabBarBackground: () => (
-            //     <LinearGradient
-            //       start={{x: 0.8, y: 0}}
-            //       end={{x: 0, y: 0}}
-            //       colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-            //       style={{flex: 1}}
-            //     />
-            //   ),
+            headerBackground: () => (
+              <View>
+                <Svg
+                  style={{position: 'absolute', top: -1}}
+                  width={Dimensions.get('window').width}
+                  height="200"
+                  fill="none"
+                  viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
+                  <G clip-path="url(#a)">
+                    <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
+                    <Path
+                      fill="#206AF9"
+                      d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
+                    />
+                    <Path
+                      fill="#205DF9"
+                      d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
+                    />
+                    <Path
+                      fill="#2050F9"
+                      d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
+                    />
+                  </G>
+                  <Defs>
+                    <ClipPath id="a">
+                      <Path fill="#fff" d="M0 0h390v234H0z" />
+                    </ClipPath>
+                  </Defs>
+                </Svg>
+              </View>
+            ),
           })}>
           <Tab.Screen
             name="Obavestenja"

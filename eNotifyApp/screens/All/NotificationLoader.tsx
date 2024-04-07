@@ -145,17 +145,16 @@ export default function NotificationLoader({navigation}: any) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.Light.accent,
     borderWidth: 0,
-    marginTop: 0,
+    marginTop: -35,
+    zIndex: 100,
   },
   list: {
     flex: 1,
     alignItems: 'center',
-    width: '80%',
+    width: '100%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    marginTop: 10,
     backgroundColor: Colors.Light.appBackground,
     overflow: 'hidden',
     elevation: 2,

@@ -53,7 +53,6 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             onPress={() => navigation.navigate('About')}>
             <Text style={styles.optionText}>O aplikaciji</Text>
           </TouchableOpacity>
-          
         </View>
       </View>
     </View>
@@ -63,8 +62,12 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.Light.appBackground,
     alignItems: 'center',
+    backgroundColor: Colors.Light.appBackground,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    marginTop: -35,
+    zIndex: 10,
   },
   containerSize: {
     width: '80%',

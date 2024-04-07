@@ -214,7 +214,6 @@ export default function Obavestenje({route}: any) {
               {format(notification.Date.toDate(), 'dd.MM.yyyy')}
             </Text>
           </View>
-          <Text style={styles.body}>{notification.Text}</Text>
           {role === 'Professor' && (
             <TouchableOpacity
               style={styles.seen}
@@ -230,6 +229,7 @@ export default function Obavestenje({route}: any) {
                 color={'black'}></Ionicons>
             </TouchableOpacity>
           )}
+          <Text style={styles.body}>{notification.Text}</Text>
 
           {images && renderImages()}
         </>
@@ -241,9 +241,14 @@ export default function Obavestenje({route}: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    zIndex: 10,
+    marginTop: -35,
+    backgroundColor: Colors.Light.appBackground,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
   },
   body: {
-    marginTop: 10,
+    marginTop: 25,
     fontSize: 18,
     color: Colors.Light.textPrimary,
     marginHorizontal: 15,
@@ -320,6 +325,8 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 50,
     position: 'absolute',
+    top: '-100%',
+
     backgroundColor: Colors.Light.textInputBackground,
     zIndex: 10,
 
@@ -331,8 +338,9 @@ const styles = StyleSheet.create({
     color: Colors.Light.textSecondary,
   },
   seen: {
-    backgroundColor: 'white',
     width: 30,
     height: 30,
+    position: 'absolute',
+    right: 10,
   },
 });

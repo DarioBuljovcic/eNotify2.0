@@ -12,7 +12,7 @@ const Colors: Theme = {
     white: 'white',
     black: 'black',
 
-    accent: '#2192ff',
+    accent:'#2077F9', //'#2192ff',
     accentGreen: '#00B981',
     appBackground: '#f8f9fa',
     textInputBackground:'#ffffff',
