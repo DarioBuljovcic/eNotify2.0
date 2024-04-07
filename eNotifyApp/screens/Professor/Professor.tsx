@@ -23,6 +23,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import firestore from '@react-native-firebase/firestore';
 import {Timestamp} from 'firebase/firestore';
 import {Dropdown} from 'react-native-element-dropdown';
+import axios from 'axios';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -60,6 +61,17 @@ function Modal({closeModal, translateY}: any) {
         Date: new Date(),
         Seen: '',
       };
+      const sendData = async () => {
+        try {
+          const response = await axios.post(
+            'https://enotifyserver2.netlify.app/.netlify/functions/api/data',
+            data,
+          );
+        } catch (error) {
+          console.error('Error sending data:', error);
+        }
+      };
+      sendData();
       firestore().collection('Notifications').add(data);
       setTextValue('');
       setTittleValue('');

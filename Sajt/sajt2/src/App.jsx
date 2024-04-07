@@ -30,7 +30,7 @@ function App() {
     console.log(text);
   }, [text]);
   return (
-    <div class='allContainer'>
+    <div class="allContainer">
       <Header setOptionText={(o) => setSelectedOption(o)} />
       <div className="rightContainer">
         <div className="display">

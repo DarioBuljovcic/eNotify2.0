@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
 import LanguageText from '../Text';
 import {UserScreenTabProps} from '../../components/Types/indexTypes';
+import {LinearGradient} from 'react-native-linear-gradient';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [role, setRole] = useState('');
@@ -37,9 +38,16 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     <View style={styles.container}>
       <View style={styles.containerSize}>
         <View style={styles.userInfo}>
-          <View style={styles.imgBorder}>
+          <LinearGradient
+            start={{x: 0.1, y: 0}}
+            end={{x: 2.1, y: 0.2}}
+            colors={['#C6E2F5', '#2077F9']}
+            style={styles.imgBorder}>
             <Image source={imgSource} style={styles.userImage} />
-          </View>
+          </LinearGradient>
+          {/* <View style={styles.imgBorder}>
+            
+          </View> */}
 
           <Text style={styles.nameText}>{name}</Text>
           <Text style={styles.gradeText}>{grade}</Text>
@@ -81,7 +89,7 @@ const styles = StyleSheet.create({
     width: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 5,
+    borderWidth: 1,
     borderColor: Colors.Light.textPrimary,
     borderRadius: 150,
     padding: 5,
@@ -93,17 +101,17 @@ const styles = StyleSheet.create({
   nameText: {
     marginTop: 15,
     color: Colors.Light.textPrimary,
-    fontSize: 20,
+    fontSize: 25,
     fontFamily: 'Mulish-Light',
   },
   gradeText: {
     color: Colors.Light.lightText,
-    fontSize: 13,
+    fontSize: 16,
     fontFamily: 'Mulish-Light',
   },
   roleText: {
     color: Colors.Light.lightText,
-    fontSize: 13,
+    fontSize: 16,
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
   },
