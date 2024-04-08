@@ -47,7 +47,8 @@ export type NotificationType ={
   Type:string,
   Files: string,
   Date: Timestamp,
-  Seen: string
+  Seen: string,
+  From:string,
 }
 export type User = {
   UserID: string,
