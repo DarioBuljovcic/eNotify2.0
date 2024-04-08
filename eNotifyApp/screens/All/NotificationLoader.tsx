@@ -137,6 +137,7 @@ export default function NotificationLoader({navigation}: any) {
           <TouchableOpacity
             style={styles.obavestenje}
             activeOpacity={0.5}
+            key={item.NotificationId}
             onPress={() => {
               navigation.navigate('Notification', {id: item.NotificationId});
             }}>
@@ -146,8 +147,17 @@ export default function NotificationLoader({navigation}: any) {
                   ? {display: 'none'}
                   : styles.newObavestenje
               }></View>
-            <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
-            <Text style={styles.obavestenjeBody}>{item.Text}</Text>
+            <LinearGradient
+              start={{x: 1.3, y: 0}}
+              end={{x: 0, y: 0}}
+              colors={['#C6E2F5', '#2077F9']}
+              style={styles.initialsContainer}>
+              <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
+            </LinearGradient>
+            <View>
+              <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
+              <Text style={styles.obavestenjeBody}>{item.Text}</Text>
+            </View>
           </TouchableOpacity>
         </View>
       );
