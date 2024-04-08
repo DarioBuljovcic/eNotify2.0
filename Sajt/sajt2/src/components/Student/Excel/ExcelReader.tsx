@@ -3,6 +3,7 @@ import "../../ExcelCss/excel.css";
 import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import * as XLSX from "xlsx";
+import axios from "axios";
 
 interface ExcelData {
   [key: string]: any;
@@ -10,6 +11,7 @@ interface ExcelData {
 type ExcelItem = {
   Name: string;
   Surname: string;
+  Email: string;
   Class: string;
   Role: string;
 };
@@ -47,17 +49,30 @@ const FileUploadForm = () => {
           const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
           for (let item of data) {
             const name = item.Name + " " + item.Surname;
-            const email = item.Name + item.Surname + "@gmail.com";
             try {
-              // Insert data
+              const userID = generatePassword(7);
               const data: Data = {
                 Name: name,
-                Email: email,
+                Email: item.Email,
                 Class: item.Class,
                 Role: item.Role,
-                UserID: generatePassword(7),
+                UserID: userID,
               };
-              console.log(data);
+              axios
+                .post(
+                  "http://localhost:9000/.netlify/functions/api/send-email",
+                  {
+                    to: item.Email,
+                    subject: "Vaš kod",
+                    text: userID,
+                  }
+                )
+                .then((response) => {
+                  console.log(response.data);
+                })
+                .catch((error) => {
+                  console.error("Error sending email:", error);
+                });
               await addDoc(collection(db, "Users"), data);
             } catch (error) {
               console.error(error);
@@ -70,6 +85,7 @@ const FileUploadForm = () => {
     }
   };
   const insertFile = (e) => {
+    console.log("halooo");
     const file = e.target.files[0];
     handleFile(file);
   };
@@ -132,7 +148,6 @@ const FileUploadForm = () => {
       });
 
       form?.addEventListener("drop", (e: any) => {
-        console.log("hello");
         const files = e.dataTransfer.files;
         if (files.length == 0) return;
         handleFile(files[0]);

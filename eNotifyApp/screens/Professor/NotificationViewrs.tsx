@@ -23,7 +23,12 @@ export default function NotificationViewrs({route}: {route: any}) {
       stud.docs.forEach(s => {
         data.push(s.data() as User);
       });
-      setStudents([...data]);
+
+      setStudents(
+        [...data].sort((a, b) =>
+          a.Name.split(' ')[1].localeCompare(b.Name.split(' ')[1]),
+        ),
+      );
     };
     if (students.length == 0) getData();
     if (students.length != 0) setLoading(true);

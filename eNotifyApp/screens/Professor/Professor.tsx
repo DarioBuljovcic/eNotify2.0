@@ -51,7 +51,6 @@ function Modal({closeModal, translateY}: any) {
 
   const AddNotifaciton = () => {
     if (textValue !== '' && tittleValue !== '') {
-      console.log(textValue);
       const data: NotificationType = {
         NotificationId: generateID(7),
         Tittle: tittleValue,
@@ -88,7 +87,6 @@ function Modal({closeModal, translateY}: any) {
       let classes: Class[] = [];
       data.docs.forEach(doc => {
         classes.push(doc.data());
-        console.log(doc.data());
       });
       setRazredi(classes);
     };

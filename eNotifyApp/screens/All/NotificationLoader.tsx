@@ -85,6 +85,8 @@ export default function NotificationLoader({navigation}: any) {
         if (secondLetter === 'j' || secondLetter === 'ž') {
           const twoLetterCombo = firstLetter + secondLetter;
           initials += twoLetterCombo;
+        } else {
+          initials += firstLetter;
         }
       } else {
         initials += firstLetter;
@@ -97,35 +99,39 @@ export default function NotificationLoader({navigation}: any) {
   const renderObavestenje = ({item}: {item: NotificationType}) => {
     let dateNew: string;
 
+    const display = (
+      <TouchableOpacity
+        style={styles.obavestenje}
+        activeOpacity={0.5}
+        key={item.NotificationId}
+        onPress={() => {
+          navigation.navigate('Notification', {id: item.NotificationId});
+        }}>
+        <View
+          style={
+            userId && item.Seen.includes(userId)
+              ? {display: 'none'}
+              : styles.newObavestenje
+          }></View>
+        <LinearGradient
+          start={{x: 1.3, y: 0}}
+          end={{x: 0, y: 0}}
+          colors={['#C6E2F5', '#2077F9']}
+          style={styles.initialsContainer}>
+          <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
+        </LinearGradient>
+        <View>
+          <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
+          <Text style={styles.obavestenjeBody} numberOfLines={2}>
+            {item.Text}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+
     dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
     if (dateNew === date) {
-      return (
-        <TouchableOpacity
-          style={styles.obavestenje}
-          activeOpacity={0.5}
-          key={item.NotificationId}
-          onPress={() => {
-            navigation.navigate('Notification', {id: item.NotificationId});
-          }}>
-          <View
-            style={
-              userId && item.Seen.includes(userId)
-                ? {display: 'none'}
-                : styles.newObavestenje
-            }></View>
-          <LinearGradient
-            start={{x: 1.3, y: 0}}
-            end={{x: 0, y: 0}}
-            colors={['#C6E2F5', '#2077F9']}
-            style={styles.initialsContainer}>
-            <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
-          </LinearGradient>
-          <View>
-            <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
-            <Text style={styles.obavestenjeBody}>{item.Text}</Text>
-          </View>
-        </TouchableOpacity>
-      );
+      return display;
     } else {
       date = dateNew;
 
@@ -134,31 +140,7 @@ export default function NotificationLoader({navigation}: any) {
           <View style={styles.datum}>
             <Text style={styles.datumText}>{date}</Text>
           </View>
-          <TouchableOpacity
-            style={styles.obavestenje}
-            activeOpacity={0.5}
-            key={item.NotificationId}
-            onPress={() => {
-              navigation.navigate('Notification', {id: item.NotificationId});
-            }}>
-            <View
-              style={
-                userId && item.Seen.includes(userId)
-                  ? {display: 'none'}
-                  : styles.newObavestenje
-              }></View>
-            <LinearGradient
-              start={{x: 1.3, y: 0}}
-              end={{x: 0, y: 0}}
-              colors={['#C6E2F5', '#2077F9']}
-              style={styles.initialsContainer}>
-              <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
-            </LinearGradient>
-            <View>
-              <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
-              <Text style={styles.obavestenjeBody}>{item.Text}</Text>
-            </View>
-          </TouchableOpacity>
+          {display}
         </View>
       );
     }
@@ -228,7 +210,7 @@ const styles = StyleSheet.create({
   initialsContainer: {
     aspectRatio: 1 / 1,
     height: '85%',
-    backgroundColor: 'red',
+
     borderRadius: 50,
     marginRight: 10,
     justifyContent: 'center',
@@ -243,11 +225,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Colors.Light.textPrimary,
     fontFamily: 'Mulish-Light',
+    maxWidth: screenWidth / 1.5,
   },
   obavestenjeBody: {
     flexShrink: 1,
     color: Colors.Light.textSecondary,
     fontFamily: 'Mulish-Light',
+    maxWidth: screenWidth / 1.5,
   },
   newObavestenje: {
     display: 'flex',

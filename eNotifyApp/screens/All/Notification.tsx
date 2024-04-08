@@ -25,7 +25,7 @@ export default function Obavestenje({route}: any) {
   const [notification, setNotification] = useState<NotificationType>();
   const [role, setRole] = useState('');
   const [images, setImages] = useState<Images[]>([]);
-  const animationValue = useRef(new Animated.Value(-110)).current;
+  const animationValue = useRef(new Animated.Value(-250)).current;
   const [message, setMessage] = useState('Slika je uspešno skinuta!');
   const [icon, setIcon] = useState<Icon>({
     name: 'checkmark-circle-outline',
@@ -35,12 +35,12 @@ export default function Obavestenje({route}: any) {
   const startAnimation = () => {
     Animated.sequence([
       Animated.timing(animationValue, {
-        toValue: -50,
+        toValue: -150,
         duration: 200,
         useNativeDriver: true,
       }),
       Animated.timing(animationValue, {
-        toValue: -110,
+        toValue: -250,
         duration: 200,
         useNativeDriver: true,
         delay: 2000,
@@ -78,6 +78,7 @@ export default function Obavestenje({route}: any) {
   });
   useEffect(() => {
     if (!notification) {
+      animationValue.setValue(-250);
       getRole();
       navigation.setOptions({title: ''});
     }
@@ -255,7 +256,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish',
   },
   infoContainer: {
-    marginTop:10,
+    marginTop: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: 'row',
@@ -326,11 +327,9 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 50,
     position: 'absolute',
-    top: '-100%',
 
     backgroundColor: Colors.Light.textInputBackground,
     zIndex: 10,
-
     borderWidth: 0.5,
     borderRadius: 10,
   },

@@ -47,7 +47,6 @@ const App = () => {
         .collection('Classes')
         .where('Class', '==', studentClass)
         .get();
-      console.log(snapshot.docs[0].data());
       setLoading(true);
       setRaspored(snapshot.docs[0].data() as Data);
     };

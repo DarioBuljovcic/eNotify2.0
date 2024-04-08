@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import axios from "axios";
 
 type Data = {
   Class: string;
@@ -35,6 +36,18 @@ function InsertOne({ Successful }) {
         Role: "Student",
         UserID: generatePassword(7),
       };
+      axios
+        .post("http://localhost:9000/.netlify/functions/api/send-email", {
+          to: Ime.current.value + Prezime.current.value + "@gmail.com",
+          subject: "Hello",
+          text: "Send",
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+        });
       await addDoc(collection(db, "Users"), dataToInsert);
     }
   }

@@ -48,7 +48,6 @@ const App = () => {
         .collection('Classes')
         .where('Class', '==', studentClass)
         .get();
-      console.log(snapshot.docs[0].data());
       setLoading(true);
       setRaspored(snapshot.docs[0].data() as Data);
     };
@@ -138,33 +137,31 @@ const App = () => {
 
   return (
     <>
-      <View >
+      <View>
         <LinearGradient
-        start={{ x: 0.8, y: 0 }}
-        end={{ x: 0, y: 0 }}
-        colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-        style={styles.days}
-        >
-        <View style={styles.displayDay}>
-          <Text style={styles.displayDayText}>{studentClass}</Text>
-        </View>
-        <View style={styles.displayDay}>
-          <Text style={styles.displayDayText}>Ponedeljak</Text>
-        </View>
-        <View style={styles.displayDay}>
-          <Text style={styles.displayDayText}>Utorak</Text>
-        </View>
-        <View style={styles.displayDay}>
-          <Text style={styles.displayDayText}>Sreda</Text>
-        </View>
-        <View style={styles.displayDay}>
-          <Text style={styles.displayDayText}>Četvrtak</Text>
-        </View>
-        <View style={styles.displayDay}>
-          <Text style={styles.displayDayText}>Petak</Text>
-        </View>
+          start={{x: 0.8, y: 0}}
+          end={{x: 0, y: 0}}
+          colors={[Colors.Light.accent, Colors.Light.accentGreen]}
+          style={styles.days}>
+          <View style={styles.displayDay}>
+            <Text style={styles.displayDayText}>{studentClass}</Text>
+          </View>
+          <View style={styles.displayDay}>
+            <Text style={styles.displayDayText}>Ponedeljak</Text>
+          </View>
+          <View style={styles.displayDay}>
+            <Text style={styles.displayDayText}>Utorak</Text>
+          </View>
+          <View style={styles.displayDay}>
+            <Text style={styles.displayDayText}>Sreda</Text>
+          </View>
+          <View style={styles.displayDay}>
+            <Text style={styles.displayDayText}>Četvrtak</Text>
+          </View>
+          <View style={styles.displayDay}>
+            <Text style={styles.displayDayText}>Petak</Text>
+          </View>
         </LinearGradient>
-        
       </View>
       <ScrollView contentContainerStyle={styles.flatList}>
         {raspored && renderRaspored(raspored)}
@@ -200,7 +197,7 @@ const styles = StyleSheet.create({
   },
   displayDayText: {
     fontSize: 11,
-    color:Colors.Light.whiteText,
+    color: Colors.Light.whiteText,
   },
   day: {
     display: 'flex',
@@ -214,7 +211,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.Light.notificationBG,
     borderWidth: 0.5,
-    borderColor:Colors.Light.lightText,
+    borderColor: Colors.Light.lightText,
     padding: 5,
   },
   prazanCas: {
@@ -244,11 +241,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     borderWidth: 0.5,
-    borderColor:'white',
+    borderColor: 'white',
   },
   vremeText: {
     fontSize: 12,
-    color:Colors.Light.whiteText,
+    color: Colors.Light.whiteText,
     fontFamily: 'Mulish',
   },
 });

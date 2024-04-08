@@ -79,22 +79,19 @@ const App = () => {
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
-          <View
-            style={styles.displayDay}
-            key={day + count}>
+          <View style={styles.displayDay} key={day + count}>
             <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
           </View>,
         );
         row[day].split(':/:').forEach((c: string, index) => {
           count++;
           const classes = c.split(',');
-          console.log(classes, classes.length);
           if (classes.length === 1) {
             const element = classes[0];
             if (!classes.includes('none')) {
               const [ClassName, Professor, Classroom] = element.split('|');
               tableItem.push(
-                <View style={styles.casContainer} key={day + index}>
+                <View style={styles.casContainer} key={day + count + index}>
                   <Text style={styles.time} key={vreme[index]}>
                     {vreme[index]}
                   </Text>
@@ -116,8 +113,12 @@ const App = () => {
                 tableItemSmall.push(
                   <View
                     style={styles.casContainerSmall}
-                    key={day + (num + index)}>
-                    <View style={styles.casSmall}>
+                    key={day + (num + index + count)}>
+                    <View
+                      style={[
+                        styles.casSmall,
+                        {width: cellWidth / classes.length},
+                      ]}>
                       <Text style={styles.casUcionicaSmall}>{Classroom}</Text>
                       <Text style={styles.casTextSmall} numberOfLines={2}>
                         {ClassName}
@@ -232,7 +233,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    marginVertical: 5,
     paddingBottom: 30,
   },
   days: {
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
-    backgroundColor:Colors.Light.accent,
+    backgroundColor: Colors.Light.accent,
   },
   displayDayText: {
     fontSize: 25,
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   casSmall: {
     position: 'relative',
     height: cellHeight,
-    width: cellWidth/3,
+    width: cellWidth / 3,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.Light.lightText,
   },
   casUcionicaSmall: {
-    fontSize:11,
+    fontSize: 11,
     position: 'absolute',
     top: 0,
     right: 5,
