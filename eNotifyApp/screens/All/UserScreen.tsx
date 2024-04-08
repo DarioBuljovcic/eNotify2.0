@@ -45,12 +45,12 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             style={styles.imgBorder}>
             <Image source={imgSource} style={styles.userImage} />
           </LinearGradient>
-          {/* <View style={styles.imgBorder}>
-            
-          </View> */}
+          
 
           <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.gradeText}>{grade}</Text>
+          <Text style={styles.gradeText}>
+            {role == 'Professor' ? '' : grade}  
+          </Text>
           <Text style={styles.roleText}>
             {role == 'Professor' ? 'Profesor' : 'Student'}
           </Text>
@@ -89,8 +89,6 @@ const styles = StyleSheet.create({
     width: 150,
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: Colors.Light.textPrimary,
     borderRadius: 150,
     padding: 5,
   },

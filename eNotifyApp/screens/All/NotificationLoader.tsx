@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
 import {NotificationType} from '../../components/Types/indexTypes';
+import LinearGradient from 'react-native-linear-gradient';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -74,6 +75,24 @@ export default function NotificationLoader({navigation}: any) {
     }
   }, [studentClass, userId]);
 
+  const getInitials = (name: string) => {
+    const words = name.split(' ');
+    let initials = '';
+    for (const word of words) {
+      const firstLetter = word.charAt(0).toUpperCase();
+      if (firstLetter === 'L' || firstLetter === 'N' || firstLetter === 'D') {
+        const secondLetter = word.charAt(1);
+        if (secondLetter === 'j' || secondLetter === 'ž') {
+          const twoLetterCombo = firstLetter + secondLetter;
+          initials += twoLetterCombo;
+        }
+      } else {
+        initials += firstLetter;
+      }
+    }
+    return initials;
+  };
+
   let date: string;
   const renderObavestenje = ({item}: {item: NotificationType}) => {
     let dateNew: string;
@@ -94,9 +113,17 @@ export default function NotificationLoader({navigation}: any) {
                 ? {display: 'none'}
                 : styles.newObavestenje
             }></View>
-          <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
-          <Text style={styles.obavestenjeBody}>{item.Text}</Text>
-          <Text style={styles.obavestenjeBody}>{item.From}</Text>
+          <LinearGradient
+            start={{x: 1.3, y: 0}}
+            end={{x: 0, y: 0}}
+            colors={['#C6E2F5', '#2077F9']}
+            style={styles.initialsContainer}>
+            <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
+          </LinearGradient>
+          <View>
+            <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
+            <Text style={styles.obavestenjeBody}>{item.Text}</Text>
+          </View>
         </TouchableOpacity>
       );
     } else {
@@ -121,7 +148,6 @@ export default function NotificationLoader({navigation}: any) {
               }></View>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
-            <Text style={styles.obavestenjeBody}>{item.From}</Text>
           </TouchableOpacity>
         </View>
       );
@@ -174,6 +200,8 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   obavestenje: {
+    alignItems: 'center',
+    flexDirection: 'row',
     height: 100,
     width: '90%',
     marginTop: 5,
@@ -186,6 +214,20 @@ const styles = StyleSheet.create({
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
+  },
+  initialsContainer: {
+    aspectRatio: 1 / 1,
+    height: '85%',
+    backgroundColor: 'red',
+    borderRadius: 50,
+    marginRight: 10,
+    justifyContent: 'center',
+  },
+  initialsText: {
+    textAlign: 'center',
+    color: Colors.Light.whiteText,
+    fontFamily: 'Mulish',
+    fontSize: 30,
   },
   obavestenjeTitle: {
     fontSize: 20,
