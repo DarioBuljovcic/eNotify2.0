@@ -161,7 +161,7 @@ export default function Professor({
   navigation,
 }: ProfessorTabProps | ProfessorProps) {
   const [visible, setVisible] = useState(false);
-  const translateY = useRef(new Animated.Value(600)).current;
+  const translateY = useRef(new Animated.Value(800)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
   const animateOpen = () => {
@@ -181,7 +181,7 @@ export default function Professor({
   const animateClose = () => {
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: 600, // Change this value to change how far the circle moves up
+        toValue: 800, // Change this value to change how far the circle moves up
         duration: 300, // Adjust duration as needed
         useNativeDriver: true,
       }),
