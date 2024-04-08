@@ -1,14 +1,74 @@
+///Ponedeljak///
+none,Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203
+:/:Računarski Sistemi|Danijel Mandić|K226,Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203
+:/:Računarski Sistemi|Danijel Mandić|K226,Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203
+:/:Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203,Računarski Sistemi|Danijel Mandić|K226
+:/:Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203,Računarski Sistemi|Danijel Mandić|K226
+:/:Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203,Zaštita računarskih sistema|Šolak Zoran|K224
+:/:none,none,Zaštita računarskih sistema|Šolak Zoran|K224
 
-none:/:none:/:Računarski Sistemi|Danijel Mandić|K226:/:Računarski Sistemi|Danijel Mandić|K226:/:Veb Programiranje|Jasmina Stričević|K202:/:Veb Programiranje|Jasmina Stričević|K202
-Fizičko vaspitanje|Srđan Dakić|Sala:/:ČOS|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Engleski jezik|Vera Janjatović|U206:/:Engleski jezik|Vera Janjatović|U206
+
+///Utorak///
+Fizičko vaspitanje|Srđan Dakić|Sala
+:/:ČOS|Aleksandra Tanasin|U206
+:/:Matematika|Aleksandra Tanasin|U206
+:/:Matematika|Aleksandra Tanasin|U206
+:/:Engleski jezik|Vera Janjatović|U206
+:/:Engleski jezik|Vera Janjatović|U206
+:/:Pravoslavna veronauka|Dukanović Nada|US08
+
+
+
+///Sreda///
+PIT|/|K202
+:/:PIT|/|K202
+:/:PIT|/|K202
+:/:PIT|/|K202
+:/:PIT|/|K202
+:/:PIT|/|K202
+:/:Računarske mreže i internet servisi|Danijel Mandić|U209
+:/:Srpski jezik i književnost|Ljiljana Stjiepović|U209
+
+
+
+
+///Cetvrtak
+Izabrana poglavlja matematike|Aleksandra Tanasin|U206,Preduzetništvo|Traparić Zoran|UP12
+:/:Izabrana poglavlja matematike|Aleksandra Tanasin|U206,Preduzetništvo|Traparić Zoran|UP12
+:/:Matematika|Aleksandra Tanasin|U206
+:/:Sprski jezik i književnost|Ljiljana Stjiepović|U206
+:/:Sprski jezik i književnost|Ljiljana Stjiepović|U206
+:/:Preduzetništvo|Sonja Maravić|U134,Upravljanje Projektima|Jasmina Stričević|U206
+:/:Preduzetništvo|Sonja Maravić|U134,Upravljanje Projektima|Jasmina Stričević|U206
+:/:Građansko vaspitanje|Zagorka|US06
+
+
+
+none
+:/:none
+:/:Fizičko vaspitanje|Srđan Dakić|Sala
+:/:Programiranje|Nikola Krmpotić|K203,Zaštita računarskih sistema|Šolak Zoran|K224,Veb Programiranje|Jasmina Stričević|K202
+:/:Programiranje|Nikola Krmpotić|K203,Zaštita računarskih sistema|Šolak Zoran|K224,Veb Programiranje|Jasmina Stričević|K202
+:/:Programiranje|Nikola Krmpotić|K203,Računarski Sistemi|Danijel Mandić|K226,Veb Programiranje|Jasmina Stričević|K202
+:/:Zaštita računarskih sistema|Šolak Zoran|K224,Računarski Sistemi|Danijel Mandić|K226,none
+:/:Zaštita računarskih sistema|Šolak Zoran|K224,none,none
+
+
+////Ponedeljak////
+none,Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203:/:Računarski Sistemi|Danijel Mandić|K226,Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203:/:Računarski Sistemi|Danijel Mandić|K226,Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203:/:Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203,Računarski Sistemi|Danijel Mandić|K226:/:Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203,Računarski Sistemi|Danijel Mandić|K226:/:Veb Programiranje|Jasmina Stričević|K202,Programiranje|Nikola Krmpotić|K203,Zaštita računarskih sistema|Šolak Zoran|K224:/:none,none,Zaštita računarskih sistema|Šolak Zoran|K224
+
+////Utorak////
+Fizičko vaspitanje|Srđan Dakić|Sala:/:ČOS|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Engleski jezik|Vera Janjatović|U206:/:Engleski jezik|Vera Janjatović|U206:/:Pravoslavna veronauka|Dukanović Nada|US08
+
+////Sreda////
 PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:Računarske mreže i internet servisi|Danijel Mandić|U209:/:Srpski jezik i književnost|Ljiljana Stjiepović|U209
-Izabrana poglavlja matematike|Aleksandra Tanasin|U206:/:Izabrana poglavlja matematike|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Sprski jezik i književnost|Ljiljana Stjiepović|U206:/:Sprski jezik i književnost|Ljiljana Stjiepović|U206:/:Preduzetništvo|Sonja Maravić|U134:/:Preduzetništvo|Sonja Maravić|U134
-none:/:none:/:Fizičko vaspitanje|Srđan Dakić|Sala:/:Programiranje|Nikola Krmpotić|K203:/:Programiranje|Nikola Krmpotić|K203:/:Programiranje|Nikola Krmpotić|K203:/:Zaštita računarskih sistema|Danijel Mandić|K224:/:Zaštita računarskih sistema|Danijel Mandić|K224
+
+////Cetvrtak////
+Izabrana poglavlja matematike|Aleksandra Tanasin|U206,Preduzetništvo|Traparić Zoran|UP12:/:Izabrana poglavlja matematike|Aleksandra Tanasin|U206,Preduzetništvo|Traparić Zoran|UP12:/:Matematika|Aleksandra Tanasin|U206:/:Sprski jezik i književnost|Ljiljana Stjiepović|U206:/:Sprski jezik i književnost|Ljiljana Stjiepović|U206:/:Preduzetništvo|Sonja Maravić|U134,Upravljanje Projektima|Jasmina Stričević|U206:/:Preduzetništvo|Sonja Maravić|U134,Upravljanje Projektima|Jasmina Stričević|U206:/:Građansko vaspitanje|Zagorka|US06
+
+////Petak////
+none:/:none:/:Fizičko vaspitanje|Srđan Dakić|Sala:/:Programiranje|Nikola Krmpotić|K203,Zaštita računarskih sistema|Šolak Zoran|K224,Veb Programiranje|Jasmina Stričević|K202:/:Programiranje|Nikola Krmpotić|K203,Zaštita računarskih sistema|Šolak Zoran|K224,Veb Programiranje|Jasmina Stričević|K202:/:Programiranje|Nikola Krmpotić|K203,Računarski Sistemi|Danijel Mandić|K226,Veb Programiranje|Jasmina Stričević|K202:/:Zaštita računarskih sistema|Šolak Zoran|K224,Računarski Sistemi|Danijel Mandić|K226,none:/:Zaštita računarskih sistema|Šolak Zoran|K224,none,none
 
 
 
-none:/:none:/:Számítógépes Rendszerek|Danijel Mandić|K226:/:Számítógépes Rendszerek|Danijel Mandić|K226:/:Webfejlesztés|Jasmina Stričević|K202:/:Webfejlesztés|Jasmina Stričević|K202 
-Fizikai nevelés|Srđan Dakić|Tornaterem:/:Számítógépes Operációs Rendszerek|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Angol Nyelv|Vera Janjatović|U206:/:Angol Nyelv|Vera Janjatović|U206
-PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:PIT|/|K202:/:Számítógép Hálózatok és Internet Szolgáltatások|Danijel Mandić|U209:/:Szerb Nyelv és Irodalom|Ljiljana Stjiepović|U209
-Kiválasztott Matematikai Fejezetek|Aleksandra Tanasin|U206:/:Kiválasztott Matematikai Fejezetek|Aleksandra Tanasin|U206:/:Matematika|Aleksandra Tanasin|U206:/:Szerb Nyelv és Irodalom|Ljiljana Stjiepović|U206:/:Szerb Nyelv és Irodalom|Ljiljana Stjiepović|U206:/:Vállalkozás|Sonja Maravić|U134:/:Vállalkozás|Sonja Maravić|U134
-Fizikai nevelés|Srđan Dakić|Tornaterem:/:Programozás|Nikola Krmpotić|K203:/:Programozás|Nikola Krmpotić|K203:/:Programozás|Nikola Krmpotić|K203:/:Számítógép Biztonság|Danijel Mandić|K224:/:Számítógép Biztonság|Danijel Mandić|K224
+

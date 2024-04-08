@@ -120,16 +120,6 @@ function App(): React.JSX.Element {
             },
             headerBackground: () => (
               <View>
-                {/* <Svg
-                  viewBox="0 0 1440 320"
-                  height={100}
-                  width={}
-                  style={{position: 'absolute', top: 80, right: 0}}>
-                  <Path
-                    fill={Colors.Light.accent}
-                    fill-opacity="1"
-                    d="M0,160L40,165.3C80,171,160,181,240,160C320,139,400,85,480,74.7C560,64,640,96,720,117.3C800,139,880,149,960,170.7C1040,192,1120,224,1200,245.3C1280,267,1360,277,1400,282.7L1440,288L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"></Path>
-                </Svg> */}
                 <Svg
                   width={Dimensions.get('window').width}
                   height="250"

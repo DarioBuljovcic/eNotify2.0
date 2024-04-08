@@ -22,6 +22,8 @@ const App = () => {
   const [raspored, setRaspored] = useState<Data>();
   const [loading, setLoading] = useState(false);
   const [studentClass, getClass] = useState('');
+  const [stopPosition, setStopPosition] = useState(0);
+  const [snap, setSnap] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const days = ['ponedeljak', 'utorak', 'sreda', 'cetvrtak', 'petak'];
   const dayDisplay = ['Ponedeljak', 'Utorak', 'Sreda', 'Četvrtak', 'Petak'];
@@ -61,7 +63,6 @@ const App = () => {
         .collection('Classes')
         .where('Class', '==', studentClass)
         .get();
-      setLoading(true);
       setRaspored(snapshot.docs[0].data() as Data);
     };
     nabaviRazrede();
@@ -74,6 +75,7 @@ const App = () => {
       let tableItem: any = [];
       let row: Data = item;
       let maxLength = 0;
+
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
@@ -86,26 +88,84 @@ const App = () => {
             <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
           </LinearGradient>,
         );
-        row[day].split(':/:').forEach((element: string, index) => {
+        row[day].split(':/:').forEach((c: string, index) => {
           count++;
-
-          if (!element.includes('none')) {
-            const [ClassName, Professor, Classroom] = element.split('|');
+          const classes = c.split(',');
+          console.log(classes, classes.length);
+          if (classes.length === 1) {
+            const element = classes[0];
+            if (!classes.includes('none')) {
+              const [ClassName, Professor, Classroom] = element.split('|');
+              tableItem.push(
+                <View style={styles.casContainer} key={day + index}>
+                  <Text style={styles.time} key={vreme[index]}>
+                    {vreme[index]}
+                  </Text>
+                  <View style={styles.cas}>
+                    <Text style={styles.casUcionica}>{Classroom}</Text>
+                    <Text style={styles.casText} numberOfLines={1}>
+                      {ClassName}
+                    </Text>
+                    <Text style={styles.casProf}>{Professor}</Text>
+                  </View>
+                </View>,
+              );
+            }
+          } else {
+            let tableItemSmall: any = [];
+            classes.forEach((element: string, num) => {
+              if (!element.includes('none')) {
+                const [ClassName, Professor, Classroom] = element.split('|');
+                tableItemSmall.push(
+                  <View
+                    style={styles.casContainerSmall}
+                    key={day + (num + index)}>
+                    <View style={styles.casSmall}>
+                      <Text style={styles.casUcionicaSmall}>{Classroom}</Text>
+                      <Text style={styles.casTextSmall} numberOfLines={2}>
+                        {ClassName}
+                      </Text>
+                      <Text style={styles.casProfSmall} numberOfLines={1}>
+                        {Professor}
+                      </Text>
+                    </View>
+                  </View>,
+                );
+              } else {
+                tableItemSmall.push(
+                  <View
+                    style={styles.casContainerSmall}
+                    key={day + (num + index)}>
+                    <View
+                      style={[
+                        styles.casSmall,
+                        {
+                          backgroundColor: 'transparent',
+                          borderColor: 'transparent',
+                        },
+                      ]}></View>
+                  </View>,
+                );
+              }
+            });
             tableItem.push(
-              <View style={styles.casContainer} key={day + count}>
+              <View style={{display: 'flex', flexDirection: 'row'}}>
                 <Text style={styles.time} key={vreme[index]}>
                   {vreme[index]}
                 </Text>
-                <View style={styles.cas} key={day + count}>
-                  <Text style={styles.casUcionica}>{Classroom}</Text>
-                  <Text style={styles.casText} numberOfLines={1}>
-                    {ClassName}
-                  </Text>
-                  <Text style={styles.casProf}>{Professor}</Text>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: 10,
+                    width: cellWidth,
+                  }}>
+                  {tableItemSmall}
                 </View>
               </View>,
             );
           }
+
           count > maxLength ? (maxLength = count) : null;
         });
         table.push(<View style={styles.day}>{tableItem}</View>);
@@ -121,8 +181,7 @@ const App = () => {
     if (!raspored) getData();
   }, [studentClass]);
   useEffect(() => {
-    //scroll to day
-    if (raspored) {
+    if (raspored && !loading) {
       const n = new Date().getDay() - 1;
       let scrollHeight = 0;
       for (let i = 0; i < n; i++) {
@@ -130,18 +189,30 @@ const App = () => {
           .split(':/:')
           .filter(day => day != 'none').length;
       }
-      if (scrollViewRef.current)
+      if (scrollViewRef.current) {
+        setStopPosition(
+          Math.max(
+            scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * n,
+            0,
+          ),
+        );
         scrollViewRef.current.scrollTo({
           y: scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * n,
           animated: true,
         });
+      }
     }
   });
 
   return (
     <View style={{marginTop: -35, zIndex: 100}}>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.flatList} ref={scrollViewRef}>
+        <ScrollView
+          contentContainerStyle={styles.flatList}
+          ref={scrollViewRef}
+          snapToOffsets={[stopPosition]}
+          snapToStart={false}
+          snapToEnd={false}>
           {raspored && renderRaspored(raspored)}
         </ScrollView>
       </View>
@@ -152,7 +223,7 @@ const App = () => {
 export default App;
 const overlaySize = 200;
 const cellWidth = 320;
-const cellHeight = 70;
+const cellHeight = 90;
 
 const styles = StyleSheet.create({
   container: {
@@ -233,6 +304,41 @@ const styles = StyleSheet.create({
     padding: 10,
     height: cellHeight,
     textAlignVertical: 'center',
+    color: Colors.Light.textSecondary,
+  },
+  casContainerSmall: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  casSmall: {
+    position: 'relative',
+    height: cellHeight,
+    width: 100,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.Light.notificationBG,
+    borderWidth: 0.5,
+    padding: 5,
+    borderRadius: 10,
+    borderColor: 'black',
+  },
+  casUcionicaSmall: {
+    position: 'absolute',
+    top: 0,
+    right: 5,
+    color: Colors.Light.textSecondary,
+  },
+  casTextSmall: {
+    fontSize: 15,
+    color: Colors.Light.textPrimary,
+    textAlign: 'center',
+    fontFamily: 'Mulish',
+    maxWidth: cellWidth / 1.6,
+    fontWeight: '600',
+  },
+  casProfSmall: {
+    fontSize: 11,
     color: Colors.Light.textSecondary,
   },
 });

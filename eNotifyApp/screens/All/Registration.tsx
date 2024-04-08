@@ -72,7 +72,7 @@ const RegistrationScreen = ({
   };
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{zIndex: 10}}>
         <Text style={styles.incorrectText}>
           {isCorrect ? '' : 'Niste uneli dobar kod'}
         </Text>

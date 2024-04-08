@@ -21,9 +21,9 @@ import NotificationLoader from '../All/NotificationLoader';
 import Colors from '../../components/Constants/Color';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firestore from '@react-native-firebase/firestore';
-import {Timestamp} from 'firebase/firestore';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -41,6 +41,7 @@ const generateID = (length: number) => {
 
 function Modal({closeModal, translateY}: any) {
   const [razredi, setRazredi] = useState<Class[]>([]);
+  const [naziv, setNaziv] = useState('');
 
   const [tittleValue, setTittleValue] = useState('');
   const [textValue, setTextValue] = useState('');
@@ -60,6 +61,7 @@ function Modal({closeModal, translateY}: any) {
         Files: '',
         Date: new Date(),
         Seen: '',
+        From: naziv,
       };
       const sendData = async () => {
         try {
@@ -81,6 +83,8 @@ function Modal({closeModal, translateY}: any) {
   useEffect(() => {
     const getData = async () => {
       const data = await firestore().collection('Classes').get();
+      const name = await AsyncStorage.getItem('Name');
+      if (name) setNaziv(name);
       let classes: Class[] = [];
       data.docs.forEach(doc => {
         classes.push(doc.data());

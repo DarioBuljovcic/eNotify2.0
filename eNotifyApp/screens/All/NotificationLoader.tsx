@@ -96,6 +96,7 @@ export default function NotificationLoader({navigation}: any) {
             }></View>
           <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
           <Text style={styles.obavestenjeBody}>{item.Text}</Text>
+          <Text style={styles.obavestenjeBody}>{item.From}</Text>
         </TouchableOpacity>
       );
     } else {
@@ -120,6 +121,7 @@ export default function NotificationLoader({navigation}: any) {
               }></View>
             <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
             <Text style={styles.obavestenjeBody}>{item.Text}</Text>
+            <Text style={styles.obavestenjeBody}>{item.From}</Text>
           </TouchableOpacity>
         </View>
       );
