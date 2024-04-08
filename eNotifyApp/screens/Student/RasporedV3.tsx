@@ -79,14 +79,11 @@ const App = () => {
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
-          <LinearGradient
-            start={{x: 0.8, y: 0}}
-            end={{x: 0, y: 0}}
-            colors={['#C6E2F5', '#2077F9']}
+          <View
             style={styles.displayDay}
             key={day + count}>
             <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
-          </LinearGradient>,
+          </View>,
         );
         row[day].split(':/:').forEach((c: string, index) => {
           count++;
@@ -157,7 +154,6 @@ const App = () => {
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    gap: 10,
                     width: cellWidth,
                   }}>
                   {tableItemSmall}
@@ -251,6 +247,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
+    backgroundColor:Colors.Light.accent,
   },
   displayDayText: {
     fontSize: 25,
@@ -262,7 +259,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     width: screenWidth,
-    gap: 10,
     paddingBottom: 10,
   },
   casContainer: {
@@ -278,26 +274,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.Light.notificationBG,
     borderWidth: 0.5,
-    padding: 5,
-    borderRadius: 10,
-    borderColor: 'black',
+    borderColor: Colors.Light.lightText,
   },
   casUcionica: {
     position: 'absolute',
     top: 0,
     right: 5,
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish',
   },
   casText: {
     fontSize: 18,
     color: Colors.Light.textPrimary,
     textAlign: 'center',
-    fontFamily: 'Mulish',
+    fontFamily: 'Mulish-Light',
     maxWidth: cellWidth / 1.6,
   },
   casProf: {
     fontSize: 13,
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish',
   },
   time: {
     textAlign: 'left',
@@ -305,6 +301,7 @@ const styles = StyleSheet.create({
     height: cellHeight,
     textAlignVertical: 'center',
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish',
   },
   casContainerSmall: {
     display: 'flex',
@@ -313,24 +310,25 @@ const styles = StyleSheet.create({
   casSmall: {
     position: 'relative',
     height: cellHeight,
-    width: 100,
+    width: cellWidth/3,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.Light.notificationBG,
     borderWidth: 0.5,
     padding: 5,
-    borderRadius: 10,
-    borderColor: 'black',
+    borderColor: Colors.Light.lightText,
   },
   casUcionicaSmall: {
+    fontSize:11,
     position: 'absolute',
     top: 0,
     right: 5,
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish',
   },
   casTextSmall: {
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.Light.textPrimary,
     textAlign: 'center',
     fontFamily: 'Mulish',
@@ -338,7 +336,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   casProfSmall: {
-    fontSize: 11,
+    fontFamily: 'Mulish',
+    fontSize: 10,
     color: Colors.Light.textSecondary,
   },
 });

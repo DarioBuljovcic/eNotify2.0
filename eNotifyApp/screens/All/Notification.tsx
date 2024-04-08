@@ -225,12 +225,12 @@ export default function Obavestenje({route}: any) {
               }>
               <Ionicons
                 name={'eye-outline'}
-                size={24}
-                color={'black'}></Ionicons>
+                size={28}
+                color={Colors.Light.textSecondary}></Ionicons>
             </TouchableOpacity>
           )}
           <Text style={styles.body}>{notification.Text}</Text>
-
+          {/* TODO scrolable */}
           {images && renderImages()}
         </>
       )}
@@ -248,30 +248,31 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
   },
   body: {
-    marginTop: 25,
+    marginTop: 40,
     fontSize: 18,
     color: Colors.Light.textPrimary,
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },
   infoContainer: {
+    marginTop:10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: 'row',
     borderColor: Colors.Light.textSecondary,
     borderRadius: 0,
-    borderBottomWidth: 1.5,
+    borderBottomWidth: 0.8,
     marginHorizontal: 10,
   },
   date: {
     flex: 1,
     textAlign: 'right',
-    color: Colors.Light.textPrimary,
+    color: Colors.Light.textSecondary,
     fontFamily: 'Mulish',
   },
   class: {
     flex: 1,
-    color: Colors.Light.textPrimary,
+    color: Colors.Light.textSecondary,
     fontFamily: 'Mulish',
   },
   imageContainer: {
@@ -341,6 +342,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     position: 'absolute',
-    right: 10,
+    right: 15,
+    top: 10,
   },
 });
