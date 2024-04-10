@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {Text, View, StyleSheet, Dimensions, ScrollView, useColorScheme} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
@@ -19,6 +19,8 @@ type Data = {
 };
 const screenWidth = Dimensions.get('window').width;
 const App = () => {
+  const isDarkMode = useColorScheme()==='dark';
+
   const [raspored, setRaspored] = useState<Data>();
   const [loading, setLoading] = useState(false);
   const [studentClass, getClass] = useState('');
@@ -148,7 +150,7 @@ const App = () => {
             });
             tableItem.push(
               <View style={{display: 'flex', flexDirection: 'row'}}>
-                <Text style={styles.time} key={vreme[index]}>
+                <Text style={isDarkMode?styles.timeDark:styles.time} key={vreme[index]}>
                   {vreme[index]}
                 </Text>
                 <View
@@ -203,7 +205,7 @@ const App = () => {
 
   return (
     <View style={{marginTop: -35, zIndex: 100}}>
-      <View style={styles.container}>
+      <View style={isDarkMode?styles.containerDark:styles.container}>
         <ScrollView
           contentContainerStyle={styles.flatList}
           ref={scrollViewRef}
@@ -225,6 +227,12 @@ const cellHeight = 90;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.Light.appBackground,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    overflow: 'hidden',
+  },
+  containerDark: {
+    backgroundColor: Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: 'hidden',
@@ -301,6 +309,14 @@ const styles = StyleSheet.create({
     height: cellHeight,
     textAlignVertical: 'center',
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish',
+  },
+  timeDark:{
+    textAlign: 'left',
+    padding: 10,
+    height: cellHeight,
+    textAlignVertical: 'center',
+    color: Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   casContainerSmall: {

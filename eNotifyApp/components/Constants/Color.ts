@@ -6,7 +6,6 @@ const Colors: Theme = {
     secondary: '#e0f4ff',
     notificationBG: 'white',
     headerBG: '#65C8FF',
-    textSecondary: '#3d3d3d',
     headerText: 'white',
 
     headerFirst:'#206AF9',
@@ -22,6 +21,7 @@ const Colors: Theme = {
     textInputBackground:'#ffffff',
 
     textPrimary: '#252525',
+    textSecondary: '#3d3d3d',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
     hyperlinkText: '#0055cc',
@@ -31,7 +31,6 @@ const Colors: Theme = {
     secondary: '#e0f4ff',
     notificationBG: '#0D2136',
     headerBG: '#65C8FF',
-    textSecondary: '#adb5bd',
     headerText: 'white',
 
     headerFirst:'#0D3055',
@@ -44,9 +43,10 @@ const Colors: Theme = {
     accent: '#0F365F',
     accentGreen: '#AAC9F9',
     appBackground: '#031525',
-    textInputBackground:'#e5e5e5',
+    textInputBackground:'#0D2136',
 
-    textPrimary: '#696969',
+    textPrimary: '#adb5bd',
+    textSecondary: '#adb5bd',
     lightText: '#7b8288',
     whiteText: '#ffffff',
     hyperlinkText: '#0055cc',
