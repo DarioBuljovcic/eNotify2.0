@@ -1,4 +1,4 @@
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, StyleSheet, View, useColorScheme} from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
 import {ProfessorTabProps, User} from '../../components/Types/indexTypes';
 import {Text} from 'react-native-elements';
@@ -8,6 +8,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function NotificationViewrs({route}: {route: any}) {
+  const isDarkMode = useColorScheme()==='dark';
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const studentsViewd: string = route.params.Seen.split(',');
@@ -37,8 +38,8 @@ export default function NotificationViewrs({route}: {route: any}) {
   const renderObavestenje = ({item}: {item: User}) => {
     if (studentsViewd.includes(item.UserID)) {
       return (
-        <View style={styles.studentContainer}>
-          <Text style={styles.studentSeen}>{item.Name}</Text>
+        <View style={isDarkMode?styles.studentContainerDark:styles.studentContainer}>
+          <Text style={isDarkMode?styles.studentSeenDark:styles.studentSeen}>{item.Name}</Text>
           <Ionicons
             name={'checkmark-done-outline'}
             size={24}
@@ -47,8 +48,8 @@ export default function NotificationViewrs({route}: {route: any}) {
       );
     } else {
       return (
-        <View style={styles.studentContainer}>
-          <Text style={styles.studentNotSeen}>{item.Name}</Text>
+        <View style={isDarkMode?styles.studentContainerDark:styles.studentContainer}>
+          <Text style={isDarkMode?styles.studentNotSeenDark:styles.studentNotSeen}>{item.Name}</Text>
           <Ionicons
             name={'checkmark-done-outline'}
             size={24}
@@ -60,7 +61,7 @@ export default function NotificationViewrs({route}: {route: any}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.list}>
+      <View style={isDarkMode?styles.listDark:styles.list}>
         <FlatList
           style={styles.flatList}
           data={students}
@@ -97,6 +98,18 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
+  listDark: {
+    flex: 1,
+    alignItems: 'center',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: Colors.Dark.appBackground,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
   flatList: {
     width: screenWidth,
   },
@@ -114,10 +127,30 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
+  studentContainerDark: {
+    height: 40,
+    width: '90%',
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: screenWidth * 0.05,
+    padding: 10,
+    backgroundColor: Colors.Dark.notificationBG,
+    borderRadius: 10,
+    elevation: 3,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
   studentSeen: {
-    color: 'black',
+    color: Colors.Light.textSecondary,
+  },
+  studentSeenDark: {
+    color: Colors.Dark.textSecondary,
   },
   studentNotSeen: {
-    color: 'gray',
+    color: Colors.Light.textSecondary,
+  },
+  studentNotSeenDark: {
+    color: Colors.Dark.textSecondary,
   },
 });

@@ -1,5 +1,5 @@
 import Colors from '../../components/Constants/Color';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, useColorScheme} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
@@ -8,6 +8,8 @@ import {UserScreenTabProps} from '../../components/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
+  const isDarkMode = useColorScheme()==='dark';
+
   const [role, setRole] = useState('');
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');

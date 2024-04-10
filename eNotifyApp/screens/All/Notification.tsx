@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, Animated} from 'react-native';
+import {StyleSheet, Text, View, Image, Animated, useColorScheme} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import {format} from 'date-fns';
@@ -21,6 +21,8 @@ type Icon = {
 };
 
 export default function Obavestenje({route}: any) {
+  const isDarkMode = useColorScheme()==='dark';
+
   const navigation: any = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [role, setRole] = useState('');
@@ -159,7 +161,7 @@ export default function Obavestenje({route}: any) {
               downloadImage(image.imageUrl, image.imageName);
               //requestStoragePermission();
             }}>
-            <View style={styles.imageButton}>
+            <View style={isDarkMode?styles.imageButtonDark:styles.imageButton}>
               <Image
                 key={index}
                 source={{uri: image.imageUrl}}
@@ -167,7 +169,7 @@ export default function Obavestenje({route}: any) {
               />
               <View style={styles.txtContainer}>
                 <Text style={styles.txtImageName}>{image.imageName}</Text>
-                <Text style={styles.txtClick}>Click to Download</Text>
+                <Text style={isDarkMode?styles.txtClickDark:styles.txtClick}>Click to Download</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -197,21 +199,21 @@ export default function Obavestenje({route}: any) {
         studentClass = notification?.Class;
         break;
     }
-    return <Text style={styles.class}>{studentClass}</Text>;
+    return <Text style={isDarkMode?styles.classDark:styles.class}>{studentClass}</Text>;
   };
 
   return (
-    <View style={styles.container}>
+    <View style={isDarkMode?styles.containerDark:styles.container}>
       <Animated.View
         style={[styles.message, {transform: [{translateY: animationValue}]}]}>
         <Ionicons name={icon.name} size={24} color={icon.color}></Ionicons>
-        <Text style={styles.messageText}>{message}</Text>
+        <Text style={isDarkMode?styles.messageTextDark:styles.messageText}>{message}</Text>
       </Animated.View>
       {notification && (
         <>
-          <View style={styles.infoContainer}>
+          <View style={isDarkMode?styles.infoContainerDark:styles.infoContainer}>
             {true && renderClass()}
-            <Text style={styles.date}>
+            <Text style={isDarkMode?styles.dateDark:styles.date}>
               {format(notification.Date.toDate(), 'dd.MM.yyyy')}
             </Text>
           </View>
@@ -227,10 +229,11 @@ export default function Obavestenje({route}: any) {
               <Ionicons
                 name={'eye-outline'}
                 size={28}
-                color={Colors.Light.textSecondary}></Ionicons>
+                color={isDarkMode?Colors.Dark.textSecondary:Colors.Light.textSecondary}></Ionicons>
             </TouchableOpacity>
           )}
-          <Text style={styles.body}>{notification.Text}</Text>
+          <Text style={isDarkMode?styles.bodyDark:styles.body}>{notification.Text}</Text>
+          <Text style={isDarkMode?styles.senderDark:styles.sender}>{notification.From}</Text>
           {/* TODO scrolable */}
           {images && renderImages()}
         </>
@@ -248,10 +251,25 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },
+  containerDark:{
+    flex: 1,
+    zIndex: 10,
+    marginTop: -35,
+    backgroundColor: Colors.Dark.appBackground,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+  },
   body: {
     marginTop: 40,
     fontSize: 18,
     color: Colors.Light.textPrimary,
+    marginHorizontal: 15,
+    fontFamily: 'Mulish',
+  },
+  bodyDark: {
+    marginTop: 40,
+    fontSize: 18,
+    color: Colors.Dark.textSecondary,
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },
@@ -265,15 +283,36 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.8,
     marginHorizontal: 10,
   },
+  infoContainerDark: {
+    marginTop: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    borderColor: Colors.Dark.textSecondary,
+    borderRadius: 0,
+    borderBottomWidth: 0.8,
+    marginHorizontal: 10,
+  },
   date: {
     flex: 1,
     textAlign: 'right',
     color: Colors.Light.textSecondary,
     fontFamily: 'Mulish',
   },
+  dateDark:{
+    flex: 1,
+    textAlign: 'right',
+    color: Colors.Dark.textSecondary,
+    fontFamily: 'Mulish',
+  },
   class: {
     flex: 1,
     color: Colors.Light.textSecondary,
+    fontFamily: 'Mulish',
+  },
+  classDark: {
+    flex: 1,
+    color: Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   imageContainer: {
@@ -284,6 +323,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   imageButton: {
+    backgroundColor: Colors.Light.textInputBackground,
+    borderRadius: 10,
+    padding: 10,
+    flexDirection: 'row',
+
+    elevation: 3,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
+  imageButtonDark: {
     backgroundColor: Colors.Light.textInputBackground,
     borderRadius: 10,
     padding: 10,
@@ -314,6 +364,11 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: 'Mulish',
   },
+  txtClickDark: {
+    color: Colors.Dark.lightText,
+    fontSize: 11,
+    fontFamily: 'Mulish',
+  },
   message: {
     flex: 1,
     display: 'flex',
@@ -333,9 +388,32 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 10,
   },
+  messageDark: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 5,
+
+    alignSelf: 'center',
+
+    width: '90%',
+    height: 50,
+    position: 'absolute',
+
+    backgroundColor: Colors.Dark.appBackground,
+    zIndex: 10,
+    borderWidth: 0.5,
+    borderRadius: 10,
+  },
   messageText: {
     fontSize: 18,
     color: Colors.Light.textSecondary,
+  },
+  messageTextDark: {
+    fontSize: 18,
+    color: Colors.Dark.textSecondary,
   },
   seen: {
     width: 30,
@@ -343,5 +421,19 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15,
     top: 10,
+  },
+  sender:{
+    marginTop: 5,
+    fontSize: 12,
+    color: Colors.Light.lightText,
+    marginHorizontal: 15,
+    fontFamily: 'Mulish',
+  },
+  senderDark:{
+    marginTop: 5,
+    fontSize: 12,
+    color: Colors.Dark.lightText,
+    marginHorizontal: 15,
+    fontFamily: 'Mulish',
   },
 });
