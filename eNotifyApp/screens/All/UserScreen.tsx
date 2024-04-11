@@ -1,5 +1,5 @@
 import Colors from '../../components/Constants/Color';
-import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, useColorScheme} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
@@ -8,6 +8,8 @@ import {UserScreenTabProps} from '../../components/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
+  const isDarkMode = useColorScheme()==='dark';
+
   const [role, setRole] = useState('');
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
@@ -35,7 +37,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={isDarkMode?styles.containerDark:styles.container}>
       <View style={styles.containerSize}>
         <View style={styles.userInfo}>
           <LinearGradient
@@ -47,7 +49,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
           </LinearGradient>
           
 
-          <Text style={styles.nameText}>{name}</Text>
+          <Text style={isDarkMode?styles.nameTextDark:styles.nameText}>{name}</Text>
           <Text style={styles.gradeText}>
             {role == 'Professor' ? '' : grade}  
           </Text>
@@ -56,10 +58,10 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
           </Text>
 
           <TouchableOpacity
-            style={styles.option}
+            style={isDarkMode?styles.optionDark:styles.option}
             activeOpacity={0.5}
             onPress={() => navigation.navigate('About')}>
-            <Text style={styles.optionText}>O aplikaciji</Text>
+            <Text style={isDarkMode?styles.optionTextDark:styles.optionText}>O aplikaciji</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -72,6 +74,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: Colors.Light.appBackground,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    marginTop: -35,
+    zIndex: 10,
+  },
+  containerDark: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     marginTop: -35,
@@ -99,6 +110,12 @@ const styles = StyleSheet.create({
   nameText: {
     marginTop: 15,
     color: Colors.Light.textPrimary,
+    fontSize: 25,
+    fontFamily: 'Mulish-Light',
+  },
+  nameTextDark:{
+    marginTop: 15,
+    color: Colors.Dark.textPrimary,
     fontSize: 25,
     fontFamily: 'Mulish-Light',
   },
@@ -131,10 +148,33 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
+  optionDark: {
+    height: 70,
+    width: '100%',
+
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+
+    backgroundColor: Colors.Dark.textInputBackground,
+    marginVertical: 10,
+    borderRadius: 10,
+
+    elevation: 3,
+    shadowColor: Colors.Dark.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
   optionText: {
     fontSize: 17,
     flex: 1,
     color: Colors.Light.textPrimary,
+    fontFamily: 'Mulish-Light',
+  },
+  optionTextDark: {
+    fontSize: 17,
+    flex: 1,
+    color: Colors.Dark.textPrimary,
     fontFamily: 'Mulish-Light',
   },
 });

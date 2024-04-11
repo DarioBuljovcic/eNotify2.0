@@ -78,6 +78,10 @@ export type Color = {
     textSecondary: string,
     headerText: string,
 
+    headerFirst:string,
+    headerSecond:string,
+    headerThird:string,
+
     white: string,
     black: string,
 

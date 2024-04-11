@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Keyboard,
+  useColorScheme,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -40,6 +41,8 @@ const generateID = (length: number) => {
 };
 
 function Modal({closeModal, translateY}: any) {
+  const isDarkMode = useColorScheme() === 'dark';
+
   const [razredi, setRazredi] = useState<Class[]>([]);
   const [naziv, setNaziv] = useState('');
 
@@ -95,7 +98,7 @@ function Modal({closeModal, translateY}: any) {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <Animated.View style={[styles.modal, {transform: [{translateY}]}]}>
+      <Animated.View style={[isDarkMode?styles.modalDark:styles.modal, {transform: [{translateY}]}]}>
         <TouchableOpacity
           style={styles.closeModal}
           activeOpacity={1}
@@ -106,29 +109,30 @@ function Modal({closeModal, translateY}: any) {
             color={Colors.Light.accentGreen}></Ionicons>
         </TouchableOpacity>
 
-        <Text style={styles.title}>Dodaj obaveštenje</Text>
+        <Text style={isDarkMode?styles.titleDark:styles.title}>Dodaj obaveštenje</Text>
 
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Naslov obaveštenja"
-            placeholderTextColor={Colors.Light.lightText}
-            style={styles.input}
+            placeholderTextColor={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
+            style={isDarkMode?styles.inputDark:styles.input}
             value={tittleValue}
             onChangeText={e => setTittleValue(e)}
           />
           <TextInput
-            style={[styles.input, {textAlignVertical: 'top'}]}
+            style={[isDarkMode?styles.inputDark:styles.input, {textAlignVertical: 'top'}]}
             placeholder="Tekst obaveštenja"
-            placeholderTextColor={Colors.Light.lightText}
+            placeholderTextColor={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
             numberOfLines={4}
             value={textValue}
             onChangeText={e => setTextValue(e)}
           />
           <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
+            style={isDarkMode?styles.dropdownDark:styles.dropdown}
+            placeholderStyle={isDarkMode?styles.placeholderStyleDark:styles.placeholderStyle}
+            itemContainerStyle={isDarkMode?styles.itemContainerDark:styles.itemContainer}
+            selectedTextStyle={isDarkMode?styles.selectedTextStyleDark:styles.selectedTextStyle}
+            inputSearchStyle={isDarkMode?styles.inputSearchStyleDark:styles.inputSearchStyle}
             data={razredi}
             search
             placeholder={!isFocus ? 'Select an item' : '...'}
@@ -142,7 +146,7 @@ function Modal({closeModal, translateY}: any) {
             labelField={'Class'}
             valueField={'Class'}
             keyboardAvoiding={true}
-            itemTextStyle={styles.itemTextStyle}
+            itemTextStyle={isDarkMode?styles.itemTextStyleDark:styles.itemTextStyle}
           />
           <TouchableOpacity
             style={styles.send}
@@ -250,7 +254,22 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 120,
 
-    backgroundColor: 'white',
+    backgroundColor: Colors.Light.appBackground,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+
+    width: '100%',
+    height: '120%',
+
+    paddingHorizontal: 5,
+    paddingVertical: 60,
+  },
+  modalDark:{
+    position: 'absolute',
+    bottom: 0,
+    zIndex: 120,
+
+    backgroundColor: Colors.Dark.appBackground,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
 
@@ -266,6 +285,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: Colors.Light.textPrimary,
+  },
+  titleDark: {
+    fontFamily: 'Mulish',
+    fontSize: 22,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: Colors.Dark.textPrimary,
   },
   closeModal: {
     position: 'absolute',
@@ -313,6 +339,29 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
+  dropdownDark: {
+    fontSize: 17,
+    fontFamily: 'Mulish',
+
+    backgroundColor: Colors.Dark.textInputBackground,
+    color: Colors.Dark.textPrimary,
+
+    padding: 15,
+    margin: 16,
+    height: 50,
+    width: '85%',
+
+    alignSelf: 'center',
+
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.Dark.lightText,
+
+    elevation: 13,
+    shadowColor: Colors.Dark.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
   placeholderStyle: {
     fontSize: 16,
     color: Colors.Light.lightText,
@@ -329,6 +378,29 @@ const styles = StyleSheet.create({
   },
   itemTextStyle: {
     color: Colors.Light.textPrimary,
+  },
+  placeholderStyleDark: {
+    fontSize: 16,
+    color: Colors.Dark.lightText,
+  },
+  selectedTextStyleDark: {
+    fontSize: 17,
+    fontFamily: 'Mulish',
+    color: Colors.Dark.textPrimary,
+  },
+  inputSearchStyleDark: {
+    height: 40,
+    fontSize: 16,
+    color: Colors.Dark.lightText,
+  },
+  itemTextStyleDark: {
+    color: Colors.Dark.textPrimary,
+  },
+  itemContainer:{
+    backgroundColor:Colors.Light.notificationBG,
+  },
+  itemContainerDark:{
+    backgroundColor:Colors.Dark.notificationBG,
   },
   send: {
     backgroundColor: Colors.Light.accent,
@@ -364,6 +436,27 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: Colors.Light.lightText,
+
+    elevation: 13,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
+  inputDark:{
+    fontSize: 17,
+    fontFamily: 'Mulish',
+
+    backgroundColor: Colors.Dark.textInputBackground,
+    color: Colors.Dark.textPrimary,
+
+    padding: 15,
+    width: '85%',
+
+    alignSelf: 'center',
+
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.Dark.lightText,
 
     elevation: 13,
     shadowColor: Colors.Light.black,

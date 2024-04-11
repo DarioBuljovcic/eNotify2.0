@@ -5,7 +5,7 @@ import {
   ActivityIndicator,
   View,
   Dimensions,
-  Appearance,
+  useColorScheme,
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
@@ -88,6 +88,7 @@ const linking = {
 
 Appearance.setColorScheme('dark');
 function App(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
   const [unseenNotify, setUnseenNotify] = useState(0);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {});
@@ -128,7 +129,7 @@ function App(): React.JSX.Element {
                   fill="none"
                   viewBox={`0 0 ${Dimensions.get('window').width} 250`}>
                   <Path
-                    fill={Colors.Light.accent}
+                    fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
                     d="M0 0h410v220.645c-55 48.855-136.5 8.855-165 0S86.5 148 0 220.645V0Z"
                   />
                 </Svg>
@@ -218,34 +219,55 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             title: 'Notifikacija',
             headerStyle: {
-              height: 200,
+              height: 150,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 35,
               fontFamily: 'Mulish-Light',
+              marginBottom: 25,
+            },
+            headerLeftContainerStyle: {
+              marginBottom: 25,
             },
             headerBackground: () => (
               <View>
                 <Svg
                   style={{position: 'absolute', top: -1}}
                   width={Dimensions.get('window').width}
-                  height="200"
+                  height="150"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
                   <G clip-path="url(#a)">
-                    <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
                     <Path
-                      fill="#206AF9"
+                      fill={
+                        isDarkMode ? Colors.Dark.accent : Colors.Light.accent
+                      }
+                      d="M0 0h390v234H0z"
+                    />
+                    <Path
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerFirst
+                          : Colors.Light.headerFirst
+                      }
                       d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#205DF9"
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerSecond
+                          : Colors.Light.headerSecond
+                      }
                       d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#2050F9"
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerThird
+                          : Colors.Light.headerThird
+                      }
                       d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                   </G>
@@ -273,13 +295,17 @@ function App(): React.JSX.Element {
             },
             headerStyle: {
               backgroundColor: Colors.Light.accent,
-              height: 200,
+              height: 150,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 35,
               fontFamily: 'Mulish',
+              marginBottom: 25,
+            },
+            headerLeftContainerStyle: {
+              marginBottom: 25,
             },
             headerTitleAlign: 'left',
             headerBackground: () => (
@@ -287,21 +313,38 @@ function App(): React.JSX.Element {
                 <Svg
                   style={{position: 'absolute', top: -1}}
                   width={Dimensions.get('window').width}
-                  height="200"
+                  height="150"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
                   <G clip-path="url(#a)">
-                    <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
                     <Path
-                      fill="#206AF9"
+                      fill={
+                        isDarkMode ? Colors.Dark.accent : Colors.Light.accent
+                      }
+                      d="M0 0h390v234H0z"
+                    />
+                    <Path
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerFirst
+                          : Colors.Light.headerFirst
+                      }
                       d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#205DF9"
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerSecond
+                          : Colors.Light.headerSecond
+                      }
                       d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#2050F9"
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerThird
+                          : Colors.Light.headerThird
+                      }
                       d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                   </G>
@@ -322,34 +365,55 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             title: 'O aplikaciji',
             headerStyle: {
-              height: 200,
+              height: 150,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 35,
               fontFamily: 'Mulish-Light',
+              marginBottom: 25,
+            },
+            headerLeftContainerStyle: {
+              marginBottom: 25,
             },
             headerBackground: () => (
               <View>
                 <Svg
                   style={{position: 'absolute', top: -1}}
                   width={Dimensions.get('window').width}
-                  height="200"
+                  height="150"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
                   <G clip-path="url(#a)">
-                    <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
                     <Path
-                      fill="#206AF9"
+                      fill={
+                        isDarkMode ? Colors.Dark.accent : Colors.Light.accent
+                      }
+                      d="M0 0h390v234H0z"
+                    />
+                    <Path
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerFirst
+                          : Colors.Light.headerFirst
+                      }
                       d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#205DF9"
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerSecond
+                          : Colors.Light.headerSecond
+                      }
                       d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#2050F9"
+                      fill={
+                        isDarkMode
+                          ? Colors.Dark.headerThird
+                          : Colors.Light.headerThird
+                      }
                       d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                   </G>

@@ -1,4 +1,4 @@
-import {View, Text, Alert, StyleSheet} from 'react-native';
+import {View, Text, Alert, StyleSheet, useColorScheme} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
@@ -21,6 +21,9 @@ const RegistrationScreen = ({
 }: {
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>;
 }) => {
+
+   const  isDarkMode = useColorScheme()==='dark';
+
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
@@ -71,14 +74,14 @@ const RegistrationScreen = ({
       });
   };
   return (
-    <View style={styles.container}>
+    <View style={isDarkMode?styles.containerDark:styles.container}>
       <View style={{zIndex: 10}}>
         <Text style={styles.incorrectText}>
           {isCorrect ? '' : 'Niste uneli dobar kod'}
         </Text>
         <TextInput
           placeholder="Unesite vas identifikacioni kod"
-          placeholderTextColor={Colors.Light.lightText}
+          placeholderTextColor={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
           autoCapitalize="none"
           onChangeText={text => {
             setValue(text);
@@ -86,8 +89,8 @@ const RegistrationScreen = ({
           }}
           value={value}
           style={[
-            styles.input,
-            {borderColor: isCorrect ? Colors.Light.lightText : 'red'},
+            isDarkMode?styles.inputDark:styles.input,
+            {borderColor: isCorrect ? (isDarkMode?Colors.Dark.lightText:Colors.Light.lightText) : 'red'},
           ]}
         />
       </View>
@@ -95,9 +98,9 @@ const RegistrationScreen = ({
         <LinearGradient
           start={{x: 1.3, y: 0}}
           end={{x: 0, y: 0}}
-          colors={['#C6E2F5', '#2077F9']}
-          style={styles.confirmBtn}>
-          <Text style={styles.confirmTxt}>Registruj se</Text>
+          colors={isDarkMode?[Colors.Dark.accent, Colors.Dark.accent]:['#C6E2F5', '#2077F9']}
+          style={isDarkMode?styles.confirmBtnDark:styles.confirmBtn}>
+          <Text style={isDarkMode?styles.confirmTxtDark:styles.confirmTxt}>Registruj se</Text>
         </LinearGradient>
       </TouchableOpacity>
     </View>
@@ -168,6 +171,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
   },
+  containerDark: {
+    backgroundColor: Colors.Dark.appBackground,
+
+    flex: 1,
+    gap: 20,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
   incorrectText: {
     color: 'red',
 
@@ -199,8 +210,42 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
+  inputDark:{
+    fontSize: 17,
+    fontFamily: 'Mulish',
+
+    backgroundColor: Colors.Dark.textInputBackground,
+    color: Colors.Dark.textPrimary,
+
+    padding: 15,
+    width: '80%',
+
+    alignSelf: 'center',
+
+    borderRadius: 10,
+
+    borderWidth: 1,
+    borderColor: Colors.Dark.lightText,
+
+    elevation: 13,
+    shadowColor: Colors.Dark.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
   confirmBtn: {
     backgroundColor: Colors.Light.accent,
+
+    padding: 20,
+
+    width: '50%',
+
+    alignSelf: 'center',
+    alignItems: 'center',
+
+    borderRadius: 50,
+  },
+  confirmBtnDark:{
+    backgroundColor: Colors.Dark.accent,
 
     padding: 20,
 
@@ -215,6 +260,12 @@ const styles = StyleSheet.create({
     fontSize: 17,
 
     color: Colors.Light.whiteText,
+    fontFamily: 'Mulish',
+  },
+  confirmTxtDark: {
+    fontSize: 17,
+
+    color: Colors.Dark.whiteText,
     fontFamily: 'Mulish',
   },
 });

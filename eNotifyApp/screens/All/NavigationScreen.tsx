@@ -6,6 +6,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  useColorScheme,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Student from '../Student/Student';
@@ -21,6 +22,8 @@ import Professor from '../Professor/Professor';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 
 const NavigationScreen = ({navigation}: NavigationScreenProps) => {
+  const isDarkMode = useColorScheme()==='dark';
+
   const [role, setRole] = useState('');
   const [pressed, setPressed] = useState('');
 
@@ -79,90 +82,89 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
     //check role (Student)
     return (
       <Tab.Navigator
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName: string = '';
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName: string = '';
 
-            if (route.name === 'Obavestenja') {
-              iconName = focused ? 'notifications' : 'notifications-outline';
-            } else if (route.name === 'Raspored') {
-              iconName = focused ? 'calendar' : 'calendar-outline';
-            } else if (route.name === 'Moj Nalog') {
-              iconName = focused ? 'people' : 'people-outline';
-            }
-            size = 30;
-            // You can return any component that you like here!
-            return (
+          if (route.name === 'Obavestenja') {
+            iconName = focused ? 'notifications' : 'notifications-outline';
+          } else if (route.name === 'Raspored') {
+            iconName = focused ? 'calendar' : 'calendar-outline';
+          } else if (route.name === 'Moj Nalog') {
+            iconName = focused ? 'people' : 'people-outline';
+          }
+          size = 30;
+          // You can return any component that you like here!
+          return (
+            <Animated.View
+              style={
+                focused
+                  ? [isDarkMode?styles.tabButtonDark:styles.tabButton, {transform: [{translateY}]}]
+                  : null
+              }>
               <Animated.View
                 style={
                   focused
-                    ? [styles.tabButton, {transform: [{translateY}]}]
+                    ? [
+                        styles.tabBackground,
+                        {backgroundColor, transform: [{scale}]},
+                      ]
                     : null
-                }>
-                <Animated.View
-                  style={
-                    focused
-                      ? [
-                          styles.tabBackground,
-                          {backgroundColor, transform: [{scale}]},
-                        ]
-                      : null
-                  }></Animated.View>
-                <Ionicons name={iconName} size={size} color={color} />
-              </Animated.View>
-            );
-          },
-          tabBarActiveTintColor: Colors.Light.whiteText,
-          tabBarInactiveTintColor: Colors.Light.whiteText,
-          tabBarStyle: styles.tabBar,
-          tabBarLabelStyle: {
-            fontSize: 12,
-            fontFamily: 'Mulish',
-          },
-          headerStyle: {
-            height: 200,
-            elevation: 0,
-          },
-          headerTintColor: Colors.Light.whiteText,
-          headerTitleStyle: {
-            fontSize: 35,
-            fontFamily: 'Mulish',
-          },
-          headerTitleAlign: 'left',
-          // width="390" height="234"
-
-          headerBackground: () => (
-            <View>
-              <Svg
-                style={{position: 'absolute', top: -1}}
-                width={Dimensions.get('window').width}
-                height="200"
-                fill="none"
-                viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
-                <G clip-path="url(#a)">
-                  <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
-                  <Path
-                    fill="#206AF9"
-                    d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
-                  />
-                  <Path
-                    fill="#205DF9"
-                    d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                  />
-                  <Path
-                    fill="#2050F9"
-                    d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                  />
-                </G>
-                <Defs>
-                  <ClipPath id="a">
-                    <Path fill="#fff" d="M0 0h390v234H0z" />
-                  </ClipPath>
-                </Defs>
-              </Svg>
-            </View>
-          ),
-        })}>
+                }></Animated.View>
+              <Ionicons name={iconName} size={size} color={color} />
+            </Animated.View>
+          );
+        },
+        tabBarActiveTintColor: Colors.Light.whiteText,
+        tabBarInactiveTintColor: Colors.Light.whiteText,
+        tabBarStyle: isDarkMode?styles.tabBarDark:styles.tabBar,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontFamily: 'Mulish',
+        },
+        headerStyle: {
+          height: 150,
+          elevation: 0,
+        },
+        headerTintColor: Colors.Light.whiteText,
+        headerTitleStyle: {
+          fontSize: 35,
+          fontFamily: 'Mulish',
+          marginBottom:25,
+        },
+        headerTitleAlign: 'left',
+        headerBackground: () => (
+          <View>
+            <Svg
+              style={{position: 'absolute', top: -1}}
+              width={Dimensions.get('window').width}
+              height="150"
+              fill="none"
+              viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
+              <G clip-path="url(#a)">
+                <Path fill={isDarkMode? Colors.Dark.accent:Colors.Light.accent} d="M0 0h390v234H0z" />
+                <Path
+                  fill={isDarkMode? Colors.Dark.headerFirst:Colors.Light.headerFirst}
+                  d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
+                />
+                <Path
+                  fill={isDarkMode? Colors.Dark.headerSecond:Colors.Light.headerSecond}
+                  d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
+                />
+                <Path
+                  fill={isDarkMode? Colors.Dark.headerThird:Colors.Light.headerThird}
+                  d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
+                />
+              </G>
+              <Defs>
+                <ClipPath id="a">
+                  <Path fill="#fff" d="M0 0h390v234H0z" />
+                </ClipPath>
+              </Defs>
+            </Svg>
+          </View>
+        ),
+      })}>
         <Tab.Screen
           name="Obavestenja"
           component={Student}
@@ -230,7 +232,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
                 <Animated.View
                   style={
                     focused
-                      ? [styles.tabButton, {transform: [{translateY}]}]
+                      ? [isDarkMode?styles.tabButtonDark:styles.tabButton, {transform: [{translateY}]}]
                       : null
                   }>
                   <Animated.View
@@ -248,19 +250,20 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             },
             tabBarActiveTintColor: Colors.Light.whiteText,
             tabBarInactiveTintColor: Colors.Light.whiteText,
-            tabBarStyle: styles.tabBar,
+            tabBarStyle: isDarkMode?styles.tabBarDark:styles.tabBar,
             tabBarLabelStyle: {
               fontSize: 12,
               fontFamily: 'Mulish',
             },
             headerStyle: {
-              height: 200,
+              height: 150,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 35,
               fontFamily: 'Mulish',
+              marginBottom:25,
             },
             headerTitleAlign: 'left',
             headerBackground: () => (
@@ -268,21 +271,21 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
                 <Svg
                   style={{position: 'absolute', top: -1}}
                   width={Dimensions.get('window').width}
-                  height="200"
+                  height="150"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 200`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
                   <G clip-path="url(#a)">
-                    <Path fill={Colors.Light.accent} d="M0 0h390v234H0z" />
+                    <Path fill={isDarkMode? Colors.Dark.accent:Colors.Light.accent} d="M0 0h390v234H0z" />
                     <Path
-                      fill="#206AF9"
+                      fill={isDarkMode? Colors.Dark.headerFirst:Colors.Light.headerFirst}
                       d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#205DF9"
+                      fill={isDarkMode? Colors.Dark.headerSecond:Colors.Light.headerSecond}
                       d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                     <Path
-                      fill="#2050F9"
+                      fill={isDarkMode? Colors.Dark.headerThird:Colors.Light.headerThird}
                       d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
                     />
                   </G>
@@ -352,6 +355,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 10,
   },
+  tabBarDark:{
+    backgroundColor: Colors.Dark.accent,
+    height: 70,
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
   tabButton: {
     width: 60,
     height: 60,
@@ -363,10 +372,20 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: Colors.Light.accent,
   },
+  tabButtonDark: {
+    width: 60,
+    height: 60,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    borderRadius: 30,
+    backgroundColor: Colors.Dark.accent,
+  },
   tabBackground: {
     width: 45,
     height: 45,
-    backgroundColor: 'blue',
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 30,

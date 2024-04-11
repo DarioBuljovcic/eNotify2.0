@@ -18,6 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 const screenWidth = Dimensions.get('window').width;
 
 export default function NotificationLoader({navigation}: any) {
+  const isDarkMode = useColorScheme() === 'dark';
+
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(false);
   const [studentClass, setClass] = useState('');
@@ -102,7 +104,7 @@ export default function NotificationLoader({navigation}: any) {
 
     const display = (
       <TouchableOpacity
-        style={styles.obavestenje}
+        style={isDarkMode ? styles.obavestenjeDark : styles.obavestenje}
         activeOpacity={0.5}
         key={item.NotificationId}
         onPress={() => {
@@ -117,13 +119,26 @@ export default function NotificationLoader({navigation}: any) {
         <LinearGradient
           start={{x: 1.3, y: 0}}
           end={{x: 0, y: 0}}
-          colors={['#C6E2F5', '#2077F9']}
+          colors={
+            isDarkMode
+              ? [Colors.Dark.accent, Colors.Dark.accent]
+              : ['#C6E2F5', '#2077F9']
+          }
           style={styles.initialsContainer}>
           <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
         </LinearGradient>
         <View>
-          <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
-          <Text style={styles.obavestenjeBody} numberOfLines={2}>
+          <Text
+            style={
+              isDarkMode ? styles.obavestenjeTitleDark : styles.obavestenjeTitle
+            }>
+            {item.Tittle}
+          </Text>
+          <Text
+            style={
+              isDarkMode ? styles.obavestenjeBodyDark : styles.obavestenjeBody
+            }
+            numberOfLines={2}>
             {item.Text}
           </Text>
         </View>
@@ -139,7 +154,9 @@ export default function NotificationLoader({navigation}: any) {
       return (
         <View key={item.NotificationId}>
           <View style={styles.datum}>
-            <Text style={styles.datumText}>{date}</Text>
+            <Text style={isDarkMode ? styles.datumTextDark : styles.datumText}>
+              {date}
+            </Text>
           </View>
           {display}
         </View>
@@ -150,7 +167,7 @@ export default function NotificationLoader({navigation}: any) {
   return (
     <View style={styles.container}>
       {loading && (
-        <View style={styles.list}>
+        <View style={isDarkMode ? styles.listDark : styles.list}>
           <FlatList
             style={styles.flatList}
             data={notifications.sort((a, b) => Number(b.Date) - Number(a.Date))}
@@ -186,6 +203,19 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
+  listDark: {
+    flex: 1,
+    alignItems: 'center',
+    width: '100%',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    backgroundColor: Colors.Dark.appBackground,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
   background: {
     width: '100%',
     height: '100%',
@@ -208,6 +238,22 @@ const styles = StyleSheet.create({
       Appearance.getColorScheme() == 'light'
         ? Colors.Light.notificationBG
         : Colors.Dark.notificationBG,
+    borderRadius: 10,
+    elevation: 3,
+    shadowColor: Colors.Light.black,
+    shadowOffset: {width: 2, height: 5},
+    shadowRadius: 1,
+  },
+  obavestenjeDark: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 100,
+    width: '90%',
+    marginTop: 5,
+    marginBottom: 10,
+    marginLeft: screenWidth * 0.05,
+    padding: 10,
+    backgroundColor: Colors.Dark.notificationBG,
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
@@ -240,12 +286,24 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish-Light',
     maxWidth: screenWidth / 1.5,
   },
+  obavestenjeTitleDark: {
+    fontSize: 20,
+    color: Colors.Dark.textSecondary,
+    fontFamily: 'Mulish-Light',
+    maxWidth: screenWidth / 1.5,
+  },
   obavestenjeBody: {
     flexShrink: 1,
     color:
       Appearance.getColorScheme() == 'light'
         ? Colors.Light.textPrimary
         : Colors.Dark.textPrimary,
+    fontFamily: 'Mulish-Light',
+    maxWidth: screenWidth / 1.5,
+  },
+  obavestenjeBodyDark: {
+    flexShrink: 1,
+    color: Colors.Dark.textSecondary,
     fontFamily: 'Mulish-Light',
     maxWidth: screenWidth / 1.5,
   },
@@ -275,7 +333,12 @@ const styles = StyleSheet.create({
     color: Colors.Light.textPrimary,
     fontSize: 13,
     marginTop: 5,
-    opacity: 0.6,
+    fontFamily: 'Mulish-Light',
+  },
+  datumTextDark: {
+    color: Colors.Dark.textPrimary,
+    fontSize: 13,
+    marginTop: 5,
     fontFamily: 'Mulish-Light',
   },
 });
