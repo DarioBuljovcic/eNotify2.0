@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Appearance,
+  useColorScheme,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
 import {format} from 'date-fns';

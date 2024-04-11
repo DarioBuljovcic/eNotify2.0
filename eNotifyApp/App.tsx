@@ -86,7 +86,6 @@ const linking = {
   },
 };
 
-Appearance.setColorScheme('dark');
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const [unseenNotify, setUnseenNotify] = useState(0);
