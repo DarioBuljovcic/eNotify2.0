@@ -119,7 +119,7 @@ export default function NotificationLoader({navigation}: any) {
         <LinearGradient
           start={{x: 1.3, y: 0}}
           end={{x: 0, y: 0}}
-          colors={isDarkMode?['#355E89','#061b2d']:['#C6E2F5', '#2077F9']}
+          colors={isDarkMode?[Colors.Dark.accent,Colors.Dark.accent]:['#C6E2F5', '#2077F9']}
           style={styles.initialsContainer}>
           <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
         </LinearGradient>

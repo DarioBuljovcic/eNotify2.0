@@ -128,7 +128,7 @@ function App(): React.JSX.Element {
                   fill="none"
                   viewBox={`0 0 ${Dimensions.get('window').width} 250`}>
                   <Path
-                    fill={Colors.Light.accent}
+                    fill={isDarkMode?Colors.Dark.accent:Colors.Light.accent}
                     d="M0 0h410v220.645c-55 48.855-136.5 8.855-165 0S86.5 148 0 220.645V0Z"
                   />
                 </Svg>
