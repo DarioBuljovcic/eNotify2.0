@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   View,
   Dimensions,
+  Appearance,
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
@@ -85,6 +86,7 @@ const linking = {
   },
 };
 
+Appearance.setColorScheme('dark');
 function App(): React.JSX.Element {
   const [unseenNotify, setUnseenNotify] = useState(0);
   useEffect(() => {

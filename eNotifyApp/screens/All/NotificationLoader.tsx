@@ -5,6 +5,7 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  Appearance,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
 import {format} from 'date-fns';
@@ -175,7 +176,10 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor: Colors.Light.appBackground,
+    backgroundColor:
+      Appearance.getColorScheme() == 'light'
+        ? Colors.Light.appBackground
+        : Colors.Dark.appBackground,
     overflow: 'hidden',
     elevation: 2,
     shadowColor: Colors.Light.black,
@@ -200,7 +204,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
-    backgroundColor: Colors.Light.notificationBG,
+    backgroundColor:
+      Appearance.getColorScheme() == 'light'
+        ? Colors.Light.notificationBG
+        : Colors.Dark.notificationBG,
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
@@ -217,19 +224,28 @@ const styles = StyleSheet.create({
   },
   initialsText: {
     textAlign: 'center',
-    color: Colors.Light.whiteText,
+    color:
+      Appearance.getColorScheme() == 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     fontFamily: 'Mulish',
     fontSize: 30,
   },
   obavestenjeTitle: {
     fontSize: 20,
-    color: Colors.Light.textPrimary,
+    color:
+      Appearance.getColorScheme() == 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     fontFamily: 'Mulish-Light',
     maxWidth: screenWidth / 1.5,
   },
   obavestenjeBody: {
     flexShrink: 1,
-    color: Colors.Light.textSecondary,
+    color:
+      Appearance.getColorScheme() == 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     fontFamily: 'Mulish-Light',
     maxWidth: screenWidth / 1.5,
   },

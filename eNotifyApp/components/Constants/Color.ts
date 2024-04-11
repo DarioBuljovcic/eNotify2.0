@@ -25,7 +25,7 @@ const Colors: Theme = {
   Dark:{
     primary: '#ACE1FF',
     secondary: '#e0f4ff',
-    notificationBG: 'white',
+    notificationBG: '#0d2136',
     headerBG: '#65C8FF',
     textSecondary: '#3d3d3d',
     headerText: 'white',
@@ -35,10 +35,10 @@ const Colors: Theme = {
 
     accent: '#2192ff',
     accentGreen: '#00B981',
-    appBackground: '#ffffff',
+    appBackground: '#031525',
     textInputBackground:'#e5e5e5',
 
-    textPrimary: '#252525',
+    textPrimary: 'white',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
     hyperlinkText: '#0055cc',

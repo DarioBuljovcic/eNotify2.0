@@ -1,10 +1,15 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Appearance,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
-import LinearGradient from 'react-native-linear-gradient';
-import Professor from './../Professor/Professor';
 
 type Data = {
   [key: string]: string;
@@ -189,12 +194,12 @@ const App = () => {
       if (scrollViewRef.current) {
         setStopPosition(
           Math.max(
-            scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * n,
+            scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * (n - 1),
             0,
           ),
         );
         scrollViewRef.current.scrollTo({
-          y: scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * n,
+          y: scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * (n - 1),
           animated: true,
         });
       }
