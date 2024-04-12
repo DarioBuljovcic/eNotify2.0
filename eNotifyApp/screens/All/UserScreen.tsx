@@ -1,5 +1,5 @@
 import Colors from '../../components/Constants/Color';
-import {StyleSheet, View, TouchableOpacity, useColorScheme} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, Appearance} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
@@ -8,8 +8,6 @@ import {UserScreenTabProps} from '../../components/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
-  const isDarkMode = useColorScheme()==='dark';
-
   const [role, setRole] = useState('');
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
@@ -37,31 +35,30 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   }
 
   return (
-    <View style={isDarkMode?styles.containerDark:styles.container}>
+    <View style={styles.container}>
       <View style={styles.containerSize}>
         <View style={styles.userInfo}>
           <LinearGradient
             start={{x: 0.1, y: 0}}
-            end={{x: 2.1, y: 0.2}}
-            colors={['#C6E2F5', '#2077F9']}
+            end={{x: 1, y: -0.8}}
+            colors={['#355E89', '#031525']}
             style={styles.imgBorder}>
             <Image source={imgSource} style={styles.userImage} />
           </LinearGradient>
-          
 
-          <Text style={isDarkMode?styles.nameTextDark:styles.nameText}>{name}</Text>
+          <Text style={styles.nameText}>{name}</Text>
           <Text style={styles.gradeText}>
-            {role == 'Professor' ? '' : grade}  
+            {role == 'Professor' ? '' : grade}
           </Text>
           <Text style={styles.roleText}>
             {role == 'Professor' ? 'Profesor' : 'Student'}
           </Text>
 
           <TouchableOpacity
-            style={isDarkMode?styles.optionDark:styles.option}
+            style={styles.option}
             activeOpacity={0.5}
             onPress={() => navigation.navigate('About')}>
-            <Text style={isDarkMode?styles.optionTextDark:styles.optionText}>O aplikaciji</Text>
+            <Text style={styles.optionText}>O aplikaciji</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -73,16 +70,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: Colors.Light.appBackground,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    marginTop: -35,
-    zIndex: 10,
-  },
-  containerDark: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: Colors.Dark.appBackground,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.appBackground
+        : Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     marginTop: -35,
@@ -109,23 +100,26 @@ const styles = StyleSheet.create({
   },
   nameText: {
     marginTop: 15,
-    color: Colors.Light.textPrimary,
-    fontSize: 25,
-    fontFamily: 'Mulish-Light',
-  },
-  nameTextDark:{
-    marginTop: 15,
-    color: Colors.Dark.textPrimary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     fontSize: 25,
     fontFamily: 'Mulish-Light',
   },
   gradeText: {
-    color: Colors.Light.lightText,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
     fontSize: 16,
     fontFamily: 'Mulish-Light',
   },
   roleText: {
-    color: Colors.Light.lightText,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
     fontSize: 16,
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
@@ -139,7 +133,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
 
-    backgroundColor: Colors.Light.textInputBackground,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textInputBackground
+        : Colors.Dark.textInputBackground,
     marginVertical: 10,
     borderRadius: 10,
 
@@ -148,33 +145,14 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
-  optionDark: {
-    height: 70,
-    width: '100%',
 
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-
-    backgroundColor: Colors.Dark.textInputBackground,
-    marginVertical: 10,
-    borderRadius: 10,
-
-    elevation: 3,
-    shadowColor: Colors.Dark.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
-  },
   optionText: {
     fontSize: 17,
     flex: 1,
-    color: Colors.Light.textPrimary,
-    fontFamily: 'Mulish-Light',
-  },
-  optionTextDark: {
-    fontSize: 17,
-    flex: 1,
-    color: Colors.Dark.textPrimary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     fontFamily: 'Mulish-Light',
   },
 });

@@ -8,7 +8,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function NotificationViewrs({route}: {route: any}) {
-  const isDarkMode = useColorScheme()==='dark';
+  const isDarkMode = useColorScheme() === 'dark';
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const studentsViewd: string = route.params.Seen.split(',');
@@ -38,8 +38,14 @@ export default function NotificationViewrs({route}: {route: any}) {
   const renderObavestenje = ({item}: {item: User}) => {
     if (studentsViewd.includes(item.UserID)) {
       return (
-        <View style={isDarkMode?styles.studentContainerDark:styles.studentContainer}>
-          <Text style={isDarkMode?styles.studentSeenDark:styles.studentSeen}>{item.Name}</Text>
+        <View
+          style={
+            isDarkMode ? styles.studentContainerDark : styles.studentContainer
+          }>
+          <Text
+            style={isDarkMode ? styles.studentSeenDark : styles.studentSeen}>
+            {item.Name}
+          </Text>
           <Ionicons
             name={'checkmark-done-outline'}
             size={24}
@@ -48,8 +54,16 @@ export default function NotificationViewrs({route}: {route: any}) {
       );
     } else {
       return (
-        <View style={isDarkMode?styles.studentContainerDark:styles.studentContainer}>
-          <Text style={isDarkMode?styles.studentNotSeenDark:styles.studentNotSeen}>{item.Name}</Text>
+        <View
+          style={
+            isDarkMode ? styles.studentContainerDark : styles.studentContainer
+          }>
+          <Text
+            style={
+              isDarkMode ? styles.studentNotSeenDark : styles.studentNotSeen
+            }>
+            {item.Name}
+          </Text>
           <Ionicons
             name={'checkmark-done-outline'}
             size={24}
@@ -61,7 +75,7 @@ export default function NotificationViewrs({route}: {route: any}) {
 
   return (
     <View style={styles.container}>
-      <View style={isDarkMode?styles.listDark:styles.list}>
+      <View style={isDarkMode ? styles.listDark : styles.list}>
         <FlatList
           style={styles.flatList}
           data={students}

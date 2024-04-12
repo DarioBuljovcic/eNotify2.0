@@ -1,4 +1,13 @@
-import {StyleSheet, Text, View, Image, Animated, useColorScheme} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Animated,
+  useColorScheme,
+  Appearance,
+  PermissionsAndroid,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
 import {format} from 'date-fns';
@@ -21,8 +30,6 @@ type Icon = {
 };
 
 export default function Obavestenje({route}: any) {
-  const isDarkMode = useColorScheme()==='dark';
-
   const navigation: any = useNavigation();
   const [notification, setNotification] = useState<NotificationType>();
   const [role, setRole] = useState('');
@@ -37,7 +44,7 @@ export default function Obavestenje({route}: any) {
   const startAnimation = () => {
     Animated.sequence([
       Animated.timing(animationValue, {
-        toValue: -150,
+        toValue: -100,
         duration: 200,
         useNativeDriver: true,
       }),
@@ -83,6 +90,7 @@ export default function Obavestenje({route}: any) {
       animationValue.setValue(-250);
       getRole();
       navigation.setOptions({title: ''});
+      requestStoragePermission();
     }
   });
 
@@ -126,28 +134,28 @@ export default function Obavestenje({route}: any) {
   };
 
   //request premission ne radi ali idalje mozes dodavati slike jer ne koristimo ovo ali trebamo popraviti :D
-  // const requestStoragePermission = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-  //       {
-  //         title: 'Storage Permission Required',
-  //         message: 'This app needs access to your storage to download files.',
-  //         buttonPositive: 'OK',
-  //       },
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       console.log('Storage permission granted');
-  //       return true;
-  //     } else {
-  //       console.log('Storage permission denied');
-  //       return false;
-  //     }
-  //   } catch (error) {
-  //     console.error('Error requesting storage permission:', error);
-  //     return false;
-  //   }
-  // };
+  const requestStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission Required',
+          message: 'This app needs access to your storage to download files.',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Storage permission granted');
+        return true;
+      } else {
+        console.log('Storage permission denied');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error requesting storage permission:', error);
+      return false;
+    }
+  };
 
   //funkcija za prikazivanje slike -- trebas malo dorediti style i dodati na klik da se moze skinuti
   const renderImages = () => {
@@ -161,7 +169,7 @@ export default function Obavestenje({route}: any) {
               downloadImage(image.imageUrl, image.imageName);
               //requestStoragePermission();
             }}>
-            <View style={isDarkMode?styles.imageButtonDark:styles.imageButton}>
+            <View style={styles.imageButton}>
               <Image
                 key={index}
                 source={{uri: image.imageUrl}}
@@ -169,7 +177,7 @@ export default function Obavestenje({route}: any) {
               />
               <View style={styles.txtContainer}>
                 <Text style={styles.txtImageName}>{image.imageName}</Text>
-                <Text style={isDarkMode?styles.txtClickDark:styles.txtClick}>Click to Download</Text>
+                <Text style={styles.txtClick}>Click to Download</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -199,21 +207,21 @@ export default function Obavestenje({route}: any) {
         studentClass = notification?.Class;
         break;
     }
-    return <Text style={isDarkMode?styles.classDark:styles.class}>{studentClass}</Text>;
+    return <Text style={styles.class}>{studentClass}</Text>;
   };
 
   return (
-    <View style={isDarkMode?styles.containerDark:styles.container}>
+    <View style={styles.container}>
       <Animated.View
         style={[styles.message, {transform: [{translateY: animationValue}]}]}>
         <Ionicons name={icon.name} size={24} color={icon.color}></Ionicons>
-        <Text style={isDarkMode?styles.messageTextDark:styles.messageText}>{message}</Text>
+        <Text style={styles.messageText}>{message}</Text>
       </Animated.View>
       {notification && (
         <>
-          <View style={isDarkMode?styles.infoContainerDark:styles.infoContainer}>
+          <View style={styles.infoContainer}>
             {true && renderClass()}
-            <Text style={isDarkMode?styles.dateDark:styles.date}>
+            <Text style={styles.date}>
               {format(notification.Date.toDate(), 'dd.MM.yyyy')}
             </Text>
           </View>
@@ -229,11 +237,15 @@ export default function Obavestenje({route}: any) {
               <Ionicons
                 name={'eye-outline'}
                 size={28}
-                color={isDarkMode?Colors.Dark.textSecondary:Colors.Light.textSecondary}></Ionicons>
+                color={
+                  Appearance.getColorScheme() === 'light'
+                    ? Colors.Light.textSecondary
+                    : Colors.Dark.textSecondary
+                }></Ionicons>
             </TouchableOpacity>
           )}
-          <Text style={isDarkMode?styles.bodyDark:styles.body}>{notification.Text}</Text>
-          <Text style={isDarkMode?styles.senderDark:styles.sender}>{notification.From}</Text>
+          <Text style={styles.body}>{notification.Text}</Text>
+          <Text style={styles.sender}>{notification.From}</Text>
           {/* TODO scrolable */}
           {images && renderImages()}
         </>
@@ -247,72 +259,54 @@ const styles = StyleSheet.create({
     flex: 1,
     zIndex: 10,
     marginTop: -35,
-    backgroundColor: Colors.Light.appBackground,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.appBackground
+        : Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },
-  containerDark:{
-    flex: 1,
-    zIndex: 10,
-    marginTop: -35,
-    backgroundColor: Colors.Dark.appBackground,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-  },
+
   body: {
     marginTop: 40,
     fontSize: 18,
-    color: Colors.Light.textPrimary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },
-  bodyDark: {
-    marginTop: 40,
-    fontSize: 18,
-    color: Colors.Dark.textSecondary,
-    marginHorizontal: 15,
-    fontFamily: 'Mulish',
-  },
+
   infoContainer: {
     marginTop: 10,
     paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: 'row',
-    borderColor: Colors.Light.textSecondary,
+    borderColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     borderRadius: 0,
     borderBottomWidth: 0.8,
     marginHorizontal: 10,
   },
-  infoContainerDark: {
-    marginTop: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    borderColor: Colors.Dark.textSecondary,
-    borderRadius: 0,
-    borderBottomWidth: 0.8,
-    marginHorizontal: 10,
-  },
+
   date: {
     flex: 1,
     textAlign: 'right',
-    color: Colors.Light.textSecondary,
-    fontFamily: 'Mulish',
-  },
-  dateDark:{
-    flex: 1,
-    textAlign: 'right',
-    color: Colors.Dark.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   class: {
     flex: 1,
-    color: Colors.Light.textSecondary,
-    fontFamily: 'Mulish',
-  },
-  classDark: {
-    flex: 1,
-    color: Colors.Dark.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   imageContainer: {
@@ -323,18 +317,10 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   imageButton: {
-    backgroundColor: Colors.Light.textInputBackground,
-    borderRadius: 10,
-    padding: 10,
-    flexDirection: 'row',
-
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
-  },
-  imageButtonDark: {
-    backgroundColor: Colors.Light.textInputBackground,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textInputBackground
+        : Colors.Dark.textInputBackground,
     borderRadius: 10,
     padding: 10,
     flexDirection: 'row',
@@ -349,26 +335,31 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: Colors.Light.lightText,
+    borderColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
   },
   txtContainer: {
     marginLeft: 10,
   },
   txtImageName: {
-    color: Colors.Light.hyperlinkText,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.hyperlinkText
+        : Colors.Dark.hyperlinkText,
     fontSize: 14,
     fontFamily: 'Mulish',
   },
   txtClick: {
-    color: Colors.Light.lightText,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
     fontSize: 11,
     fontFamily: 'Mulish',
   },
-  txtClickDark: {
-    color: Colors.Dark.lightText,
-    fontSize: 11,
-    fontFamily: 'Mulish',
-  },
+
   message: {
     flex: 1,
     display: 'flex',
@@ -383,38 +374,23 @@ const styles = StyleSheet.create({
     height: 50,
     position: 'absolute',
 
-    backgroundColor: Colors.Light.textInputBackground,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textInputBackground
+        : Colors.Dark.textInputBackground,
     zIndex: 10,
     borderWidth: 0.5,
     borderRadius: 10,
   },
-  messageDark: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 5,
 
-    alignSelf: 'center',
-
-    width: '90%',
-    height: 50,
-    position: 'absolute',
-
-    backgroundColor: Colors.Dark.appBackground,
-    zIndex: 10,
-    borderWidth: 0.5,
-    borderRadius: 10,
-  },
   messageText: {
     fontSize: 18,
-    color: Colors.Light.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
   },
-  messageTextDark: {
-    fontSize: 18,
-    color: Colors.Dark.textSecondary,
-  },
+
   seen: {
     width: 30,
     height: 30,
@@ -422,17 +398,13 @@ const styles = StyleSheet.create({
     right: 15,
     top: 10,
   },
-  sender:{
+  sender: {
     marginTop: 5,
     fontSize: 12,
-    color: Colors.Light.lightText,
-    marginHorizontal: 15,
-    fontFamily: 'Mulish',
-  },
-  senderDark:{
-    marginTop: 5,
-    fontSize: 12,
-    color: Colors.Dark.lightText,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },

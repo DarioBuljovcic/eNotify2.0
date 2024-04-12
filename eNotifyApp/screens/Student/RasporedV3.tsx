@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  useColorScheme,
+  Appearance,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
@@ -24,8 +24,6 @@ type Data = {
 };
 const screenWidth = Dimensions.get('window').width;
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   const [raspored, setRaspored] = useState<Data>();
   const [loading, setLoading] = useState(false);
   const [studentClass, getClass] = useState('');
@@ -86,9 +84,7 @@ const App = () => {
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
-          <View
-            style={isDarkMode ? styles.displayDayDark : styles.displayDay}
-            key={day + count}>
+          <View style={styles.displayDay} key={day + count}>
             <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
           </View>,
         );
@@ -101,27 +97,15 @@ const App = () => {
               const [ClassName, Professor, Classroom] = element.split('|');
               tableItem.push(
                 <View style={styles.casContainer} key={day + count + index}>
-                  <Text
-                    style={isDarkMode ? styles.timeDark : styles.time}
-                    key={vreme[index]}>
+                  <Text style={styles.time} key={vreme[index]}>
                     {vreme[index]}
                   </Text>
-                  <View style={isDarkMode ? styles.casDark : styles.cas}>
-                    <Text
-                      style={
-                        isDarkMode ? styles.casUcionicaDark : styles.casUcionica
-                      }>
-                      {Classroom}
-                    </Text>
-                    <Text
-                      style={isDarkMode ? styles.casTextDark : styles.casText}
-                      numberOfLines={1}>
+                  <View style={styles.cas}>
+                    <Text style={styles.casUcionica}>{Classroom}</Text>
+                    <Text style={styles.casText} numberOfLines={1}>
                       {ClassName}
                     </Text>
-                    <Text
-                      style={isDarkMode ? styles.casProfDark : styles.casProf}>
-                      {Professor}
-                    </Text>
+                    <Text style={styles.casProf}>{Professor}</Text>
                   </View>
                 </View>,
               );
@@ -137,33 +121,14 @@ const App = () => {
                     key={day + (num + index + count)}>
                     <View
                       style={[
-                        isDarkMode ? styles.casSmallDark : styles.casSmall,
+                        styles.casSmall,
                         {width: cellWidth / classes.length},
                       ]}>
-                      <Text
-                        style={
-                          isDarkMode
-                            ? styles.casUcionicaSmallDark
-                            : styles.casUcionicaSmall
-                        }>
-                        {Classroom}
-                      </Text>
-                      <Text
-                        style={
-                          isDarkMode
-                            ? styles.casTextSmallDark
-                            : styles.casTextSmall
-                        }
-                        numberOfLines={2}>
+                      <Text style={styles.casUcionicaSmall}>{Classroom}</Text>
+                      <Text style={styles.casTextSmall} numberOfLines={2}>
                         {ClassName}
                       </Text>
-                      <Text
-                        style={
-                          isDarkMode
-                            ? styles.casProfSmallDark
-                            : styles.casProfSmall
-                        }
-                        numberOfLines={1}>
+                      <Text style={styles.casProfSmall} numberOfLines={1}>
                         {Professor}
                       </Text>
                     </View>
@@ -176,7 +141,7 @@ const App = () => {
                     key={day + (num + index)}>
                     <View
                       style={[
-                        isDarkMode ? styles.casSmallDark : styles.casSmall,
+                        styles.casSmall,
                         {
                           backgroundColor: 'transparent',
                           borderColor: 'transparent',
@@ -188,9 +153,7 @@ const App = () => {
             });
             tableItem.push(
               <View style={{display: 'flex', flexDirection: 'row'}}>
-                <Text
-                  style={isDarkMode ? styles.timeDark : styles.time}
-                  key={vreme[index]}>
+                <Text style={styles.time} key={vreme[index]}>
                   {vreme[index]}
                 </Text>
                 <View
@@ -231,12 +194,12 @@ const App = () => {
       if (scrollViewRef.current) {
         setStopPosition(
           Math.max(
-            scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * (n - 1),
+            scrollHeight * (cellHeight + 1.5) + (cellHeight - 20) * n,
             0,
           ),
         );
         scrollViewRef.current.scrollTo({
-          y: scrollHeight * (cellHeight + 11.5) + (cellHeight - 20) * (n - 1),
+          y: scrollHeight * (cellHeight + 1.5) + (cellHeight - 20) * n,
           animated: true,
         });
       }
@@ -245,7 +208,7 @@ const App = () => {
 
   return (
     <View style={{marginTop: -35, zIndex: 100}}>
-      <View style={isDarkMode ? styles.containerDark : styles.container}>
+      <View style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.flatList}
           ref={scrollViewRef}
@@ -266,13 +229,10 @@ const cellHeight = 90;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.Light.appBackground,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    overflow: 'hidden',
-  },
-  containerDark: {
-    backgroundColor: Colors.Dark.appBackground,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.appBackground
+        : Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: 'hidden',
@@ -295,20 +255,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
-    backgroundColor: Colors.Light.accent,
-  },
-  displayDayDark: {
-    height: cellHeight - 20,
-    width: screenWidth,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    backgroundColor: Colors.Dark.accent,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.accent
+        : Colors.Dark.accent,
   },
   displayDayText: {
     fontSize: 25,
-    color: Colors.Light.white,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.white
+        : Colors.Dark.white,
     fontFamily: 'Mulish',
   },
   day: {
@@ -329,57 +286,42 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.Light.notificationBG,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.notificationBG
+        : Colors.Dark.notificationBG,
     borderWidth: 0.5,
-    borderColor: Colors.Light.lightText,
-  },
-  casDark: {
-    position: 'relative',
-    height: cellHeight,
-    width: cellWidth,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.Dark.notificationBG,
-    borderWidth: 0.5,
-    borderColor: Colors.Dark.lightText,
+    borderColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
   },
   casUcionica: {
     position: 'absolute',
     top: 0,
     right: 5,
-    color: Colors.Light.textSecondary,
-    fontFamily: 'Mulish',
-  },
-  casUcionicaDark: {
-    position: 'absolute',
-    top: 0,
-    right: 5,
-    color: Colors.Dark.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   casText: {
     fontSize: 18,
-    color: Colors.Light.textPrimary,
-    textAlign: 'center',
-    fontFamily: 'Mulish-Light',
-    maxWidth: cellWidth / 1.6,
-  },
-  casTextDark: {
-    fontSize: 18,
-    color: Colors.Dark.textPrimary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textPrimary
+        : Colors.Dark.textPrimary,
     textAlign: 'center',
     fontFamily: 'Mulish-Light',
     maxWidth: cellWidth / 1.6,
   },
   casProf: {
     fontSize: 13,
-    color: Colors.Light.textSecondary,
-    fontFamily: 'Mulish',
-  },
-  casProfDark: {
-    fontSize: 13,
-    color: Colors.Dark.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   time: {
@@ -387,15 +329,10 @@ const styles = StyleSheet.create({
     padding: 10,
     height: cellHeight,
     textAlignVertical: 'center',
-    color: Colors.Light.textSecondary,
-    fontFamily: 'Mulish',
-  },
-  timeDark: {
-    textAlign: 'left',
-    padding: 10,
-    height: cellHeight,
-    textAlignVertical: 'center',
-    color: Colors.Dark.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   casContainerSmall: {
@@ -409,63 +346,47 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.Light.notificationBG,
+    backgroundColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.notificationBG
+        : Colors.Dark.notificationBG,
     borderWidth: 0.5,
     padding: 5,
-    borderColor: Colors.Light.lightText,
-  },
-  casSmallDark: {
-    position: 'relative',
-    height: cellHeight,
-    width: cellWidth / 3,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.Dark.notificationBG,
-    borderWidth: 0.5,
-    padding: 5,
-    borderColor: Colors.Dark.lightText,
+    borderColor:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.lightText
+        : Colors.Dark.lightText,
   },
   casUcionicaSmall: {
     fontSize: 11,
     position: 'absolute',
     top: 0,
     right: 5,
-    color: Colors.Light.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
-  casUcionicaSmallDark: {
-    fontSize: 11,
-    position: 'absolute',
-    top: 0,
-    right: 5,
-    color: Colors.Dark.textSecondary,
-    fontFamily: 'Mulish',
-  },
+
   casTextSmall: {
     fontSize: 14,
-    color: Colors.Light.textPrimary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
     textAlign: 'center',
     fontFamily: 'Mulish',
     maxWidth: cellWidth / 1.6,
     fontWeight: '600',
   },
-  casTextSmallDark: {
-    fontSize: 14,
-    color: Colors.Dark.textPrimary,
-    textAlign: 'center',
-    fontFamily: 'Mulish',
-    maxWidth: cellWidth / 1.6,
-    fontWeight: '600',
-  },
+
   casProfSmall: {
     fontFamily: 'Mulish',
     fontSize: 10,
-    color: Colors.Light.textSecondary,
-  },
-  casProfSmallDark: {
-    fontFamily: 'Mulish',
-    fontSize: 10,
-    color: Colors.Dark.textSecondary,
+    color:
+      Appearance.getColorScheme() === 'light'
+        ? Colors.Light.textSecondary
+        : Colors.Dark.textSecondary,
   },
 });

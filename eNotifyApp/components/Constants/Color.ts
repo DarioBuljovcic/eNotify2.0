@@ -29,7 +29,7 @@ const Colors: Theme = {
   Dark:{
     primary: '#ACE1FF',
     secondary: '#e0f4ff',
-    notificationBG: 'white',
+    notificationBG: '#0D2136',
     headerBG: '#65C8FF',
     headerText: 'white',
 

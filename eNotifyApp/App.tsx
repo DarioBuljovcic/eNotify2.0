@@ -151,14 +151,6 @@ function App(): React.JSX.Element {
               fontSize: 23,
               fontFamily: 'Mulish-Light',
             },
-            headerBackground: () => (
-              <LinearGradient
-                start={{x: 0.8, y: 0}}
-                end={{x: 0, y: 0}}
-                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-                style={{flex: 1}}
-              />
-            ),
           })}
         />
         <Stack.Screen
@@ -176,14 +168,6 @@ function App(): React.JSX.Element {
               fontSize: 23,
               fontFamily: 'Mulish-Light',
             },
-            headerBackground: () => (
-              <LinearGradient
-                start={{x: 0.8, y: 0}}
-                end={{x: 0, y: 0}}
-                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-                style={{flex: 1}}
-              />
-            ),
           })}
         />
         <Stack.Screen
@@ -201,14 +185,6 @@ function App(): React.JSX.Element {
               fontSize: 23,
               fontFamily: 'Mulish-Light',
             },
-            headerBackground: () => (
-              <LinearGradient
-                start={{x: 0.8, y: 0}}
-                end={{x: 0, y: 0}}
-                colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-                style={{flex: 1}}
-              />
-            ),
           })}
         />
         <Stack.Screen
@@ -234,10 +210,10 @@ function App(): React.JSX.Element {
               <View>
                 <Svg
                   style={{position: 'absolute', top: -1}}
-                  width={Dimensions.get('window').width}
-                  height="150"
+                  width={Dimensions.get('window').width + 10}
+                  height="160"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
                   <G clip-path="url(#a)">
                     <Path
                       fill={
@@ -311,10 +287,10 @@ function App(): React.JSX.Element {
               <View>
                 <Svg
                   style={{position: 'absolute', top: -1}}
-                  width={Dimensions.get('window').width}
-                  height="150"
+                  width={Dimensions.get('window').width + 10}
+                  height="160"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
                   <G clip-path="url(#a)">
                     <Path
                       fill={
@@ -380,10 +356,10 @@ function App(): React.JSX.Element {
               <View>
                 <Svg
                   style={{position: 'absolute', top: -1}}
-                  width={Dimensions.get('window').width}
-                  height="150"
+                  width={Dimensions.get('window').width + 10}
+                  height="160"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 150`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
                   <G clip-path="url(#a)">
                     <Path
                       fill={

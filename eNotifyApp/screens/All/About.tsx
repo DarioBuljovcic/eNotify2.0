@@ -3,10 +3,11 @@ import Colors from '../../components/Constants/Color';
 // import { LinearGradient } from "expo-linear-gradient";
 
 export default function About() {
-  const isDarkMode = useColorScheme()==='dark';
+  const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={isDarkMode?styles.aboutContainerDark:styles.aboutContainer}>
-      <Text style={isDarkMode?styles.aboutTextDark:styles.aboutText}>
+    <View
+      style={isDarkMode ? styles.aboutContainerDark : styles.aboutContainer}>
+      <Text style={isDarkMode ? styles.aboutTextDark : styles.aboutText}>
         "eNotify" je moćan alat za efikasno obaveštavanje učenika o važnim
         događajima, aktivnostima i informacijama u vezi sa njihovom školom. Ova
         aplikacija omogućava školama da lako komuniciraju sa svojim učenicima
@@ -55,11 +56,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     fontFamily: 'Mulish',
   },
-  aboutTextDark:{
+  aboutTextDark: {
     fontSize: 16,
     color: Colors.Dark.textPrimary,
     marginTop: 5,
     marginHorizontal: 5,
     fontFamily: 'Mulish',
-  }
+  },
 });
