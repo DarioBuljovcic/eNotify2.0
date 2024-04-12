@@ -1,17 +1,31 @@
 import Colors from '../../components/Constants/Color';
-import {StyleSheet, View, TouchableOpacity, Appearance} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Appearance,
+  Animated,
+  useColorScheme,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
 import LanguageText from '../Text';
 import {UserScreenTabProps} from '../../components/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
+  const isDarkMode = useColorScheme() === 'dark';
   const [role, setRole] = useState('');
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
   const [language, setLanguage] = useState('');
+  const rotationValue = useRef(new Animated.Value(0)).current;
+  const rotate = rotationValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
 
   useEffect(() => {
     const saveUser = async () => {
@@ -22,10 +36,19 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     };
     saveUser();
   });
+  const changeMode = () => {
+    const rotateAnimation = Animated.timing(rotationValue, {
+      toValue: Appearance.getColorScheme() === 'dark' ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    });
+    Appearance.setColorScheme(
+      Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
+    );
+    rotateAnimation.start();
+  };
 
-  //set image source
   let imgSource;
-
   if (role == 'Student') {
     imgSource = require('../../assets/images/graduation.png');
   } else if (role == 'Professor') {
@@ -35,30 +58,104 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: isDarkMode
+            ? Colors.Dark.appBackground
+            : Colors.Light.appBackground,
+        },
+      ]}>
       <View style={styles.containerSize}>
+        <TouchableOpacity
+          style={[
+            styles.modeChange,
+            {
+              borderColor: isDarkMode
+                ? Colors.Dark.accentGreen
+                : Colors.Light.accentGreen,
+            },
+          ]}
+          onPress={() => changeMode()}>
+          <Animated.View style={[styles.modeRotate, {transform: [{rotate}]}]}>
+            <Ionicons
+              name={'moon-outline'}
+              size={35}
+              color={Colors.Dark.accentGreen}
+            />
+            <Ionicons
+              name={'sunny-outline'}
+              size={35}
+              color={Colors.Light.accentGreen}
+            />
+          </Animated.View>
+        </TouchableOpacity>
         <View style={styles.userInfo}>
           <LinearGradient
             start={{x: 0.1, y: 0}}
             end={{x: 1, y: -0.8}}
-            colors={['#355E89', '#031525']}
+            colors={isDarkMode ? ['#355E89', '#031525'] : ['blue', 'white']}
             style={styles.imgBorder}>
             <Image source={imgSource} style={styles.userImage} />
           </LinearGradient>
 
-          <Text style={styles.nameText}>{name}</Text>
-          <Text style={styles.gradeText}>
+          <Text
+            style={[
+              styles.nameText,
+              {
+                color: isDarkMode
+                  ? Colors.Dark.textPrimary
+                  : Colors.Light.textPrimary,
+              },
+            ]}>
+            {name}
+          </Text>
+          <Text
+            style={[
+              styles.gradeText,
+              {
+                color: isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText,
+              },
+            ]}>
             {role == 'Professor' ? '' : grade}
           </Text>
-          <Text style={styles.roleText}>
+          <Text
+            style={[
+              styles.roleText,
+              {
+                color: isDarkMode
+                  ? Colors.Dark.textSecondary
+                  : Colors.Light.textSecondary,
+              },
+            ]}>
             {role == 'Professor' ? 'Profesor' : 'Student'}
           </Text>
 
           <TouchableOpacity
-            style={styles.option}
+            style={[
+              styles.option,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.notificationBG
+                  : Colors.Light.notificationBG,
+              },
+            ]}
             activeOpacity={0.5}
             onPress={() => navigation.navigate('About')}>
-            <Text style={styles.optionText}>O aplikaciji</Text>
+            <Text
+              style={[
+                styles.optionText,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              O aplikaciji
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -70,10 +167,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.appBackground
-        : Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     marginTop: -35,
@@ -100,26 +193,14 @@ const styles = StyleSheet.create({
   },
   nameText: {
     marginTop: 15,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
     fontSize: 25,
     fontFamily: 'Mulish-Light',
   },
   gradeText: {
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
     fontSize: 16,
     fontFamily: 'Mulish-Light',
   },
   roleText: {
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
     fontSize: 16,
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
@@ -133,10 +214,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
 
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textInputBackground
-        : Colors.Dark.textInputBackground,
     marginVertical: 10,
     borderRadius: 10,
 
@@ -149,11 +226,27 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: 17,
     flex: 1,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
     fontFamily: 'Mulish-Light',
+  },
+  modeChange: {
+    width: 45,
+    aspectRatio: 1 / 1,
+    display: 'flex',
+    justifyContent: 'center',
+    paddingLeft: 2,
+    borderRadius: 25,
+    overflow: 'hidden',
+    borderWidth: 3,
+    position: 'absolute',
+    top: -20,
+    right: -20,
+  },
+  modeRotate: {
+    display: 'flex',
+    gap: 4.5,
+    flexDirection: 'row',
+
+    transformOrigin: 'right',
   },
 });
 

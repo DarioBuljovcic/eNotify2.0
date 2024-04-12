@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   useColorScheme,
+  LogBox,
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
@@ -87,6 +88,7 @@ const linking = {
 };
 
 function App(): React.JSX.Element {
+  LogBox.ignoreAllLogs();
   const isDarkMode = useColorScheme() === 'dark';
   const [unseenNotify, setUnseenNotify] = useState(0);
   useEffect(() => {
