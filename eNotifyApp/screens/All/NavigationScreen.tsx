@@ -102,7 +102,15 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
               <Animated.View
                 style={
                   focused
-                    ? [styles.tabButton, {transform: [{translateY}]}]
+                    ? [
+                        styles.tabButton,
+                        {
+                          backgroundColor: isDarkMode
+                            ? Colors.Dark.accent
+                            : Colors.Light.accent,
+                        },
+                        {transform: [{translateY}]},
+                      ]
                     : null
                 }>
                 <Animated.View
@@ -120,7 +128,14 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           },
           tabBarActiveTintColor: Colors.Light.whiteText,
           tabBarInactiveTintColor: Colors.Light.whiteText,
-          tabBarStyle: styles.tabBar,
+          tabBarStyle: [
+            styles.tabBar,
+            {
+              backgroundColor: isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent,
+            },
+          ],
           tabBarLabelStyle: {
             fontSize: 12,
             fontFamily: 'Mulish',

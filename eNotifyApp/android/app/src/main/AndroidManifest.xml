@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
       android:name=".MainApplication"
@@ -25,6 +26,10 @@
         </intent-filter>
         <intent-filter>
           <data android:scheme="eNotify" android:host="enotify" />
+          <action android:name="android.intent.action.VIEW" />
+          <action android:name="android.intent.action.DOWNLOAD" />
+          <category android:name="android.intent.category.DEFAULT" />
+          <data android:mimeType="*/*" />
         </intent-filter>
       </activity>
     </application>

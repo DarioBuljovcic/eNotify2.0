@@ -96,7 +96,9 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
           <LinearGradient
             start={{x: 0.1, y: 0}}
             end={{x: 1, y: -0.8}}
-            colors={isDarkMode ? ['#355E89', '#031525'] : ['blue', 'white']}
+            colors={
+              isDarkMode ? ['#355E89', '#031525'] : ['#2077F9', '#C6E2F5']
+            }
             style={styles.imgBorder}>
             <Image source={imgSource} style={styles.userImage} />
           </LinearGradient>
