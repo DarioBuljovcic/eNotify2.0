@@ -42,7 +42,7 @@ const generateID = (length: number) => {
 };
 
 function Modal({closeModal, translateY}: any) {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'light';
 
   const [razredi, setRazredi] = useState<Class[]>([]);
   const [naziv, setNaziv] = useState('');
@@ -99,7 +99,16 @@ function Modal({closeModal, translateY}: any) {
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <Animated.View style={[styles.modal, {transform: [{translateY}]}]}>
+      <Animated.View
+        style={[
+          styles.modal,
+          {
+            backgroundColor: isDarkMode
+              ? Colors.Light.appBackground
+              : Colors.Dark.appBackground,
+          },
+          {transform: [{translateY}]},
+        ]}>
         <TouchableOpacity
           style={styles.closeModal}
           activeOpacity={1}
@@ -110,18 +119,55 @@ function Modal({closeModal, translateY}: any) {
             color={Colors.Light.accentGreen}></Ionicons>
         </TouchableOpacity>
 
-        <Text style={styles.title}>Dodaj obaveštenje</Text>
+        <Text
+          style={[
+            styles.title,
+            {
+              color: isDarkMode
+                ? Colors.Light.textPrimary
+                : Colors.Dark.textPrimary,
+            },
+          ]}>
+          Dodaj obaveštenje
+        </Text>
 
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Naslov obaveštenja"
             placeholderTextColor={Colors.Light.lightText}
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Light.textInputBackground
+                  : Colors.Dark.textInputBackground,
+                color: isDarkMode
+                  ? Colors.Light.textPrimary
+                  : Colors.Dark.textPrimary,
+                borderColor: isDarkMode
+                  ? Colors.Light.lightText
+                  : Colors.Dark.lightText,
+              },
+            ]}
             value={tittleValue}
             onChangeText={e => setTittleValue(e)}
           />
           <TextInput
-            style={[styles.input, {textAlignVertical: 'top'}]}
+            style={[
+              styles.input,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Light.textInputBackground
+                  : Colors.Dark.textInputBackground,
+                color: isDarkMode
+                  ? Colors.Light.textPrimary
+                  : Colors.Dark.textPrimary,
+                borderColor: isDarkMode
+                  ? Colors.Light.lightText
+                  : Colors.Dark.lightText,
+              },
+              {textAlignVertical: 'top'},
+            ]}
             placeholder="Tekst obaveštenja"
             placeholderTextColor={Colors.Light.lightText}
             numberOfLines={4}
@@ -129,13 +175,53 @@ function Modal({closeModal, translateY}: any) {
             onChangeText={e => setTextValue(e)}
           />
           <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            itemContainerStyle={styles.itemContainer}
-            selectedTextStyle={styles.selectedTextStyle}
-            containerStyle={styles.dropdownSearch}
-            inputSearchStyle={styles.inputSearchStyle}
-            itemTextStyle={styles.itemTextStyle}
+            style={[
+              styles.dropdown,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Light.textInputBackground
+                  : Colors.Dark.textInputBackground,
+              },
+            ]}
+            placeholderStyle={[
+              styles.placeholderStyle,
+              {
+                color: isDarkMode
+                  ? Colors.Light.lightText
+                  : Colors.Dark.lightText,
+              },
+            ]}
+            itemContainerStyle={{
+              backgroundColor: isDarkMode
+                ? Colors.Light.notificationBG
+                : Colors.Dark.notificationBG,
+            }}
+            selectedTextStyle={[
+              styles.selectedTextStyle,
+              {
+                color: isDarkMode
+                  ? Colors.Light.lightText
+                  : Colors.Dark.lightText,
+              },
+            ]}
+            containerStyle={{
+              backgroundColor: isDarkMode
+                ? Colors.Light.notificationBG
+                : Colors.Dark.notificationBG,
+            }}
+            inputSearchStyle={[
+              styles.inputSearchStyle,
+              {
+                color: isDarkMode
+                  ? Colors.Light.lightText
+                  : Colors.Dark.lightText,
+              },
+            ]}
+            itemTextStyle={{
+              color: isDarkMode
+                ? Colors.Light.textPrimary
+                : Colors.Dark.textPrimary,
+            }}
             data={razredi}
             search
             placeholder={!isFocus ? 'Select an item' : '...'}
@@ -151,9 +237,16 @@ function Modal({closeModal, translateY}: any) {
             keyboardAvoiding={true}
           />
           <TouchableOpacity
-            style={styles.send}
+            style={[
+              styles.send,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Light.accent
+                  : Colors.Dark.accent,
+              },
+            ]}
             onPress={() => AddNotifaciton()}>
-            <Text style={styles.sendText}>Pošalji</Text>
+            <Text style={[styles.sendText]}>Pošalji</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -164,6 +257,7 @@ function Modal({closeModal, translateY}: any) {
 export default function Professor({
   navigation,
 }: ProfessorTabProps | ProfessorProps) {
+  const isDarkMode = useColorScheme() === 'light';
   const [visible, setVisible] = useState(false);
   const translateY = useRef(new Animated.Value(800)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -213,7 +307,14 @@ export default function Professor({
         <View style={styles.container}>
           <NotificationLoader navigation={navigation} />
           <TouchableOpacity
-            style={styles.add}
+            style={[
+              styles.add,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Light.accentGreen
+                  : Colors.Dark.accentGreen,
+              },
+            ]}
             activeOpacity={0.9}
             onPress={openModal}>
             <Ionicons
@@ -239,10 +340,6 @@ const styles = StyleSheet.create({
   add: {
     width: 70,
     height: 70,
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.accentGreen
-        : Colors.Dark.accentGreen,
 
     position: 'absolute',
     bottom: 10,
@@ -259,10 +356,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 120,
 
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.appBackground
-        : Colors.Dark.appBackground,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
 
@@ -278,10 +371,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     textAlign: 'center',
     marginBottom: 20,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
   },
 
   closeModal: {
@@ -311,15 +400,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Mulish',
 
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textInputBackground
-        : Colors.Dark.textInputBackground,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
-
     padding: 15,
     margin: 16,
     height: 50,
@@ -339,51 +419,17 @@ const styles = StyleSheet.create({
 
   placeholderStyle: {
     fontSize: 16,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
   },
   selectedTextStyle: {
     fontSize: 17,
     fontFamily: 'Mulish',
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
   },
-  dropdownSearch: {
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.notificationBG
-        : Colors.Dark.notificationBG,
-  },
-  itemTextStyle: {
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
-  },
-  itemContainer: {
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.notificationBG
-        : Colors.Dark.notificationBG,
-  },
-  send: {
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.accent
-        : Colors.Dark.accent,
 
+  send: {
     marginTop: 20,
     padding: 20,
 
@@ -404,15 +450,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Mulish',
 
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textInputBackground
-        : Colors.Dark.textInputBackground,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
-
     padding: 15,
     width: '85%',
 
@@ -420,10 +457,6 @@ const styles = StyleSheet.create({
 
     borderRadius: 10,
     borderWidth: 1,
-    borderColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
 
     elevation: 13,
     shadowColor: Colors.Light.black,

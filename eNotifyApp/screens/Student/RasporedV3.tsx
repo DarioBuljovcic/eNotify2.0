@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   Appearance,
+  useColorScheme,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
@@ -23,7 +24,9 @@ type Data = {
   [key: number]: string;
 };
 const screenWidth = Dimensions.get('window').width;
+
 const App = () => {
+  const isDarkMode = useColorScheme() === 'light';
   const [raspored, setRaspored] = useState<Data>();
   const [loading, setLoading] = useState(false);
   const [studentClass, getClass] = useState('');
@@ -84,8 +87,25 @@ const App = () => {
       days.forEach((day, index) => {
         let count = 0;
         tableItem.push(
-          <View style={styles.displayDay} key={day + count}>
-            <Text style={styles.displayDayText}>{dayDisplay[index]}</Text>
+          <View
+            style={[
+              styles.displayDay,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Light.accent
+                  : Colors.Dark.accent,
+              },
+            ]}
+            key={day + count}>
+            <Text
+              style={[
+                styles.displayDayText,
+                {
+                  color: isDarkMode ? Colors.Light.white : Colors.Dark.white,
+                },
+              ]}>
+              {dayDisplay[index]}
+            </Text>
           </View>,
         );
         row[day].split(':/:').forEach((c: string, index) => {
@@ -97,15 +117,64 @@ const App = () => {
               const [ClassName, Professor, Classroom] = element.split('|');
               tableItem.push(
                 <View style={styles.casContainer} key={day + count + index}>
-                  <Text style={styles.time} key={vreme[index]}>
+                  <Text
+                    style={[
+                      styles.time,
+                      {
+                        color: isDarkMode
+                          ? Colors.Light.textSecondary
+                          : Colors.Dark.textSecondary,
+                      },
+                    ]}
+                    key={vreme[index]}>
                     {vreme[index]}
                   </Text>
-                  <View style={styles.cas}>
-                    <Text style={styles.casUcionica}>{Classroom}</Text>
-                    <Text style={styles.casText} numberOfLines={1}>
+                  <View
+                    style={[
+                      styles.cas,
+                      {
+                        backgroundColor: isDarkMode
+                          ? Colors.Light.notificationBG
+                          : Colors.Dark.notificationBG,
+                        borderColor: isDarkMode
+                          ? Colors.Light.lightText
+                          : Colors.Dark.lightText,
+                      },
+                    ]}>
+                    <Text
+                      style={[
+                        styles.casUcionica,
+                        {
+                          color: isDarkMode
+                            ? Colors.Light.textSecondary
+                            : Colors.Dark.textSecondary,
+                        },
+                      ]}>
+                      {Classroom}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.casText,
+                        {
+                          color: isDarkMode
+                            ? Colors.Light.textPrimary
+                            : Colors.Dark.textPrimary,
+                        },
+                      ]}
+                      numberOfLines={1}>
                       {ClassName}
                     </Text>
-                    <Text style={styles.casProf}>{Professor}</Text>
+                    <Text
+                      style={[
+                        styles.casProf,
+                        {
+                          color: isDarkMode
+                            ? Colors.Light.textSecondary
+                            : Colors.Dark.textSecondary,
+                        },
+                      ]}>
+                      {Professor}
+                    </Text>
                   </View>
                 </View>,
               );
@@ -122,13 +191,51 @@ const App = () => {
                     <View
                       style={[
                         styles.casSmall,
+                        {
+                          backgroundColor: isDarkMode
+                            ? Colors.Light.notificationBG
+                            : Colors.Dark.notificationBG,
+                          borderColor: isDarkMode
+                            ? Colors.Light.lightText
+                            : Colors.Dark.lightText,
+                        },
                         {width: cellWidth / classes.length},
                       ]}>
-                      <Text style={styles.casUcionicaSmall}>{Classroom}</Text>
-                      <Text style={styles.casTextSmall} numberOfLines={2}>
+                      <Text
+                        style={[
+                          styles.casUcionicaSmall,
+                          {
+                            color: isDarkMode
+                              ? Colors.Light.textSecondary
+                              : Colors.Dark.textSecondary,
+                          },
+                        ]}>
+                        {Classroom}
+                      </Text>
+
+                      <Text
+                        style={[
+                          styles.casTextSmall,
+                          {
+                            color: isDarkMode
+                              ? Colors.Light.textPrimary
+                              : Colors.Dark.textPrimary,
+                          },
+                        ]}
+                        numberOfLines={2}>
                         {ClassName}
                       </Text>
-                      <Text style={styles.casProfSmall} numberOfLines={1}>
+
+                      <Text
+                        style={[
+                          styles.casProfSmall,
+                          {
+                            color: isDarkMode
+                              ? Colors.Light.textSecondary
+                              : Colors.Dark.textSecondary,
+                          },
+                        ]}
+                        numberOfLines={1}>
                         {Professor}
                       </Text>
                     </View>
@@ -153,7 +260,16 @@ const App = () => {
             });
             tableItem.push(
               <View style={{display: 'flex', flexDirection: 'row'}}>
-                <Text style={styles.time} key={vreme[index]}>
+                <Text
+                  style={[
+                    styles.time,
+                    {
+                      color: isDarkMode
+                        ? Colors.Light.textSecondary
+                        : Colors.Dark.textSecondary,
+                    },
+                  ]}
+                  key={vreme[index]}>
                   {vreme[index]}
                 </Text>
                 <View
@@ -208,7 +324,15 @@ const App = () => {
 
   return (
     <View style={{marginTop: -35, zIndex: 100}}>
-      <View style={styles.container}>
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: isDarkMode
+              ? Colors.Light.appBackground
+              : Colors.Dark.appBackground,
+          },
+        ]}>
         <ScrollView
           contentContainerStyle={styles.flatList}
           ref={scrollViewRef}
@@ -229,10 +353,6 @@ const cellHeight = 90;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.appBackground
-        : Colors.Dark.appBackground,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     overflow: 'hidden',
@@ -255,17 +375,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.accent
-        : Colors.Dark.accent,
   },
   displayDayText: {
     fontSize: 25,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.white
-        : Colors.Dark.white,
+
     fontFamily: 'Mulish',
   },
   day: {
@@ -286,42 +399,24 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.notificationBG
-        : Colors.Dark.notificationBG,
     borderWidth: 0.5,
-    borderColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
   },
   casUcionica: {
     position: 'absolute',
     top: 0,
     right: 5,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
+
     fontFamily: 'Mulish',
   },
   casText: {
     fontSize: 18,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
+
     textAlign: 'center',
     fontFamily: 'Mulish-Light',
     maxWidth: cellWidth / 1.6,
   },
   casProf: {
     fontSize: 13,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
     fontFamily: 'Mulish',
   },
   time: {
@@ -329,10 +424,7 @@ const styles = StyleSheet.create({
     padding: 10,
     height: cellHeight,
     textAlignVertical: 'center',
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
+
     fontFamily: 'Mulish',
   },
   casContainerSmall: {
@@ -346,35 +438,21 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.notificationBG
-        : Colors.Dark.notificationBG,
     borderWidth: 0.5,
     padding: 5,
-    borderColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.lightText
-        : Colors.Dark.lightText,
   },
   casUcionicaSmall: {
     fontSize: 11,
     position: 'absolute',
     top: 0,
     right: 5,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
+
     fontFamily: 'Mulish',
   },
 
   casTextSmall: {
     fontSize: 14,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
+
     textAlign: 'center',
     fontFamily: 'Mulish',
     maxWidth: cellWidth / 1.6,
@@ -384,9 +462,5 @@ const styles = StyleSheet.create({
   casProfSmall: {
     fontFamily: 'Mulish',
     fontSize: 10,
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
   },
 });

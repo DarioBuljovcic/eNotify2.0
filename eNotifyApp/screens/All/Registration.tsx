@@ -21,8 +21,7 @@ const RegistrationScreen = ({
 }: {
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>;
 }) => {
-
-   const  isDarkMode = useColorScheme()==='dark';
+  const isDarkMode = useColorScheme() === 'dark';
 
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
@@ -74,14 +73,16 @@ const RegistrationScreen = ({
       });
   };
   return (
-    <View style={isDarkMode?styles.containerDark:styles.container}>
+    <View style={isDarkMode ? styles.containerDark : styles.container}>
       <View style={{zIndex: 10}}>
         <Text style={styles.incorrectText}>
           {isCorrect ? '' : 'Niste uneli dobar kod'}
         </Text>
         <TextInput
           placeholder="Unesite vas identifikacioni kod"
-          placeholderTextColor={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
+          placeholderTextColor={
+            isDarkMode ? Colors.Dark.lightText : Colors.Light.lightText
+          }
           autoCapitalize="none"
           onChangeText={text => {
             setValue(text);
@@ -89,8 +90,14 @@ const RegistrationScreen = ({
           }}
           value={value}
           style={[
-            isDarkMode?styles.inputDark:styles.input,
-            {borderColor: isCorrect ? (isDarkMode?Colors.Dark.lightText:Colors.Light.lightText) : 'red'},
+            isDarkMode ? styles.inputDark : styles.input,
+            {
+              borderColor: isCorrect
+                ? isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText
+                : 'red',
+            },
           ]}
         />
       </View>
@@ -98,9 +105,15 @@ const RegistrationScreen = ({
         <LinearGradient
           start={{x: 1.3, y: 0}}
           end={{x: 0, y: 0}}
-          colors={isDarkMode?[Colors.Dark.accent, Colors.Dark.accent]:['#C6E2F5', '#2077F9']}
-          style={isDarkMode?styles.confirmBtnDark:styles.confirmBtn}>
-          <Text style={isDarkMode?styles.confirmTxtDark:styles.confirmTxt}>Registruj se</Text>
+          colors={
+            isDarkMode
+              ? [Colors.Dark.accent, Colors.Dark.accent]
+              : ['#C6E2F5', '#2077F9']
+          }
+          style={isDarkMode ? styles.confirmBtnDark : styles.confirmBtn}>
+          <Text style={isDarkMode ? styles.confirmTxtDark : styles.confirmTxt}>
+            Registruj se
+          </Text>
         </LinearGradient>
       </TouchableOpacity>
     </View>
@@ -210,7 +223,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
-  inputDark:{
+  inputDark: {
     fontSize: 17,
     fontFamily: 'Mulish',
 
@@ -244,7 +257,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 50,
   },
-  confirmBtnDark:{
+  confirmBtnDark: {
     backgroundColor: Colors.Dark.accent,
 
     padding: 20,

@@ -15,12 +15,12 @@ import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
 import {NotificationType} from '../../components/Types/indexTypes';
 import LinearGradient from 'react-native-linear-gradient';
+import app from './../../../Sajt/sajt2/src/lib/firebase';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function NotificationLoader({navigation}: any) {
-  console.log(Appearance.getColorScheme() === 'dark');
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'light';
 
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [loading, setLoading] = useState(false);
@@ -106,7 +106,14 @@ export default function NotificationLoader({navigation}: any) {
 
     const display = (
       <TouchableOpacity
-        style={styles.obavestenje}
+        style={[
+          styles.obavestenje,
+          {
+            backgroundColor: isDarkMode
+              ? Colors.Light.notificationBG
+              : Colors.Dark.notificationBG,
+          },
+        ]}
         activeOpacity={0.5}
         key={item.NotificationId}
         onPress={() => {
@@ -116,22 +123,60 @@ export default function NotificationLoader({navigation}: any) {
           style={
             userId && item.Seen.includes(userId)
               ? {display: 'none'}
-              : styles.newObavestenje
+              : [
+                  styles.newObavestenje,
+                  {
+                    backgroundColor: isDarkMode
+                      ? Colors.Light.accentGreen
+                      : Colors.Dark.accentGreen,
+                  },
+                ]
           }></View>
+
         <LinearGradient
           start={{x: 1.3, y: 0}}
           end={{x: 0, y: 0}}
           colors={
             isDarkMode
-              ? [Colors.Dark.accent, Colors.Dark.accent]
-              : ['#C6E2F5', '#2077F9']
+              ? ['#C6E2F5', '#2077F9']
+              : [Colors.Dark.accent, Colors.Dark.appBackground]
           }
           style={styles.initialsContainer}>
-          <Text style={styles.initialsText}>{getInitials(item.From)}</Text>
+          <Text
+            style={[
+              styles.initialsText,
+              {
+                color: isDarkMode
+                  ? Colors.Light.white
+                  : Colors.Dark.textPrimary,
+              },
+            ]}>
+            {getInitials(item.From)}
+          </Text>
         </LinearGradient>
         <View>
-          <Text style={styles.obavestenjeTitle}>{item.Tittle}</Text>
-          <Text style={styles.obavestenjeBody} numberOfLines={2}>
+          <Text
+            style={[
+              styles.obavestenjeTitle,
+              {
+                color: isDarkMode
+                  ? Colors.Light.textPrimary
+                  : Colors.Dark.textPrimary,
+              },
+            ]}>
+            {item.Tittle}
+          </Text>
+
+          <Text
+            style={[
+              styles.obavestenjeBody,
+              {
+                color: isDarkMode
+                  ? Colors.Light.textPrimary
+                  : Colors.Dark.textPrimary,
+              },
+            ]}
+            numberOfLines={2}>
             {item.Text}
           </Text>
         </View>
@@ -147,7 +192,17 @@ export default function NotificationLoader({navigation}: any) {
       return (
         <View key={item.NotificationId}>
           <View style={styles.datum}>
-            <Text style={styles.datumText}>{date}</Text>
+            <Text
+              style={[
+                styles.datumText,
+                {
+                  color: isDarkMode
+                    ? Colors.Light.textPrimary
+                    : Colors.Dark.textPrimary,
+                },
+              ]}>
+              {date}
+            </Text>
           </View>
           {display}
         </View>
@@ -158,7 +213,15 @@ export default function NotificationLoader({navigation}: any) {
   return (
     <View style={styles.container}>
       {loading && (
-        <View style={styles.list}>
+        <View
+          style={[
+            styles.list,
+            {
+              backgroundColor: isDarkMode
+                ? Colors.Light.appBackground
+                : Colors.Dark.appBackground,
+            },
+          ]}>
           <FlatList
             style={styles.flatList}
             data={notifications.sort((a, b) => Number(b.Date) - Number(a.Date))}
@@ -184,10 +247,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor:
-      Appearance.getColorScheme() == 'light'
-        ? Colors.Light.appBackground
-        : Colors.Dark.appBackground,
+
     overflow: 'hidden',
     elevation: 2,
     shadowColor: Colors.Light.black,
@@ -212,10 +272,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.notificationBG
-        : Colors.Dark.notificationBG,
+
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
@@ -232,28 +289,19 @@ const styles = StyleSheet.create({
   },
   initialsText: {
     textAlign: 'center',
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
+
     fontFamily: 'Mulish',
     fontSize: 30,
   },
   obavestenjeTitle: {
     fontSize: 20,
-    color:
-      Appearance.getColorScheme() == 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
+
     fontFamily: 'Mulish-Light',
     maxWidth: screenWidth / 1.5,
   },
   obavestenjeBody: {
     flexShrink: 1,
-    color:
-      Appearance.getColorScheme() == 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
+
     fontFamily: 'Mulish-Light',
     maxWidth: screenWidth / 1.5,
   },
@@ -269,11 +317,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -5,
     right: -5,
-
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.accentGreen
-        : Colors.Dark.accentGreen,
   },
   newObavestenjeText: {
     color: 'white',
@@ -283,10 +326,6 @@ const styles = StyleSheet.create({
     marginLeft: screenWidth * 0.06,
   },
   datumText: {
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textPrimary
-        : Colors.Dark.textPrimary,
     fontSize: 13,
     marginTop: 5,
     fontFamily: 'Mulish-Light',

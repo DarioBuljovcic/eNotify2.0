@@ -14,7 +14,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function NotificationViewrs({route}: {route: any}) {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'light';
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const studentsViewd: string = route.params.Seen.split(',');
@@ -44,8 +44,23 @@ export default function NotificationViewrs({route}: {route: any}) {
   const renderObavestenje = ({item}: {item: User}) => {
     if (studentsViewd.includes(item.UserID)) {
       return (
-        <View style={styles.studentContainer}>
-          <Text style={styles.studentSeen}>{item.Name}</Text>
+        <View
+          style={[
+            styles.studentContainer,
+            {
+              backgroundColor: isDarkMode
+                ? Colors.Light.notificationBG
+                : Colors.Dark.notificationBG,
+            },
+          ]}>
+          <Text
+            style={{
+              color: isDarkMode
+                ? Colors.Light.textSecondary
+                : Colors.Dark.textSecondary,
+            }}>
+            {item.Name}
+          </Text>
           <Ionicons
             name={'checkmark-done-outline'}
             size={24}
@@ -54,8 +69,23 @@ export default function NotificationViewrs({route}: {route: any}) {
       );
     } else {
       return (
-        <View style={styles.studentContainer}>
-          <Text style={styles.studentNotSeen}>{item.Name}</Text>
+        <View
+          style={[
+            styles.studentContainer,
+            {
+              backgroundColor: isDarkMode
+                ? Colors.Light.notificationBG
+                : Colors.Dark.notificationBG,
+            },
+          ]}>
+          <Text
+            style={{
+              color: isDarkMode
+                ? Colors.Light.textSecondary
+                : Colors.Dark.textSecondary,
+            }}>
+            {item.Name}
+          </Text>
           <Ionicons
             name={'checkmark-done-outline'}
             size={24}
@@ -67,7 +97,15 @@ export default function NotificationViewrs({route}: {route: any}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.list}>
+      <View
+        style={[
+          styles.list,
+          {
+            backgroundColor: isDarkMode
+              ? Colors.Light.appBackground
+              : Colors.Dark.appBackground,
+          },
+        ]}>
         <FlatList
           style={styles.flatList}
           data={students}
@@ -97,10 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.appBackground
-        : Colors.Dark.appBackground,
+
     overflow: 'hidden',
     elevation: 2,
     shadowColor: Colors.Light.black,
@@ -118,28 +153,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
-    backgroundColor:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.notificationBG
-        : Colors.Dark.notificationBG,
+
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
-  },
-
-  studentSeen: {
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
-  },
-
-  studentNotSeen: {
-    color:
-      Appearance.getColorScheme() === 'light'
-        ? Colors.Light.textSecondary
-        : Colors.Dark.textSecondary,
   },
 });

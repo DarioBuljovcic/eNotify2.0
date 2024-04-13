@@ -33,10 +33,9 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const scale = useRef(new Animated.Value(0)).current;
   const backgroundColor = bgColor.interpolate({
     inputRange: [0, 1],
-    outputRange:
-      Appearance.getColorScheme() === 'dark'
-        ? [Colors.Dark.accent, Colors.Dark.accentGreen]
-        : [Colors.Light.accent, Colors.Light.accentGreen], // Change these colors as needed
+    outputRange: isDarkMode
+      ? [Colors.Dark.accent, Colors.Dark.accentGreen]
+      : [Colors.Light.accent, Colors.Light.accentGreen], // Change these colors as needed
   });
 
   useEffect(() => {
@@ -251,7 +250,15 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
                 <Animated.View
                   style={
                     focused
-                      ? [styles.tabButton, {transform: [{translateY}]}]
+                      ? [
+                          styles.tabButton,
+                          {
+                            backgroundColor: isDarkMode
+                              ? Colors.Dark.accent
+                              : Colors.Light.accent,
+                          },
+                          {transform: [{translateY}]},
+                        ]
                       : null
                   }>
                   <Animated.View
@@ -269,7 +276,14 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             },
             tabBarActiveTintColor: Colors.Light.whiteText,
             tabBarInactiveTintColor: Colors.Light.whiteText,
-            tabBarStyle: styles.tabBar,
+            tabBarStyle: [
+              styles.tabBar,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.accent
+                  : Colors.Light.accent,
+              },
+            ],
             tabBarLabelStyle: {
               fontSize: 12,
               fontFamily: 'Mulish',
@@ -386,10 +400,6 @@ const styles = StyleSheet.create({
     height: 20,
   },
   tabBar: {
-    backgroundColor:
-      Appearance.getColorScheme() === 'dark'
-        ? Colors.Dark.accent
-        : Colors.Light.accent,
     height: 70,
     paddingBottom: 10,
     paddingTop: 10,
@@ -403,10 +413,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 30,
-    backgroundColor:
-      Appearance.getColorScheme() === 'dark'
-        ? Colors.Dark.accent
-        : Colors.Light.accent,
   },
   tabBackground: {
     width: 45,

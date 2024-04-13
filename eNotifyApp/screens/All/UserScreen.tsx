@@ -36,15 +36,16 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     };
     saveUser();
   });
-  const changeMode = () => {
-    const rotateAnimation = Animated.timing(rotationValue, {
-      toValue: Appearance.getColorScheme() === 'dark' ? 1 : 0,
-      duration: 300,
-      useNativeDriver: true,
-    });
+  const changeMode = async () => {
     Appearance.setColorScheme(
       Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
     );
+    const rotateAnimation = Animated.timing(rotationValue, {
+      toValue: Appearance.getColorScheme() === 'dark' ? 1 : 0,
+      duration: 800,
+      useNativeDriver: true,
+    });
+
     rotateAnimation.start();
   };
 
