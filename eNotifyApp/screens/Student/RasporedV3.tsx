@@ -310,12 +310,12 @@ const App = () => {
       if (scrollViewRef.current) {
         setStopPosition(
           Math.max(
-            scrollHeight * (cellHeight + 1.5) + (cellHeight - 20) * n,
+            scrollHeight * (cellHeight + 1.5) + (cellHeight - 10) * n,
             0,
           ),
         );
         scrollViewRef.current.scrollTo({
-          y: scrollHeight * (cellHeight + 1.5) + (cellHeight - 20) * n,
+          y: scrollHeight * (cellHeight + 1.5) + (cellHeight - 10) * n,
           animated: true,
         });
       }
@@ -348,7 +348,7 @@ const App = () => {
 
 export default App;
 const overlaySize = 200;
-const cellWidth = 320;
+const cellWidth = (screenWidth * 8) / 10;
 const cellHeight = 90;
 
 const styles = StyleSheet.create({
@@ -375,6 +375,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
+    marginBottom: 10,
   },
   displayDayText: {
     fontSize: 25,

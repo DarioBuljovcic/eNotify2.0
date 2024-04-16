@@ -26,6 +26,7 @@ type inputData = {
   Tittle: string | undefined;
   Type: string;
   Seen: string;
+  From: string;
 };
 type File = {
   name: string;
@@ -127,15 +128,16 @@ function MainPage({ Successful }) {
         Tittle: tittleRef.current.value.toString(),
         Type: `T${files.length > 0 ? "F" : ""}`,
         Seen: "",
+        From: "Uprava škole",
       };
 
       const sendData = async () => {
         try {
           console.log(dataToInsert.Class);
-          const response = await axios.post(
-            "https://enotifyserver2.netlify.app/.netlify/functions/api/data",
-            dataToInsert
-          );
+          // const response = await axios.post(
+          //   "https://enotifyserver2.netlify.app/.netlify/functions/api/data",
+          //   dataToInsert
+          // );
         } catch (error) {
           console.error("Error sending data:", error);
         }

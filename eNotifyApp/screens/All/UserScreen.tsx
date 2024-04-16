@@ -21,7 +21,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
   const [language, setLanguage] = useState('');
-  const rotationValue = useRef(new Animated.Value(0)).current;
+  const rotationValue = useRef(new Animated.Value(isDarkMode ? 0 : 1)).current;
   const rotate = rotationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
@@ -38,6 +38,10 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   });
   const changeMode = async () => {
     Appearance.setColorScheme(
+      Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
+    );
+    AsyncStorage.setItem(
+      'Mode',
       Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
     );
     const rotateAnimation = Animated.timing(rotationValue, {

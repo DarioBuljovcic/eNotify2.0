@@ -5,7 +5,6 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-  Appearance,
   useColorScheme,
 } from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
@@ -15,70 +14,75 @@ import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
 import {NotificationType} from '../../components/Types/indexTypes';
 import LinearGradient from 'react-native-linear-gradient';
-import app from './../../../Sajt/sajt2/src/lib/firebase';
+import ClassSelection from '../Professor/ClassSelection';
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function NotificationLoader({navigation}: any) {
+export default function NotificationLoader({navigation, prof, razredi}: any) {
   const isDarkMode = useColorScheme() === 'light';
 
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
-  const [loading, setLoading] = useState(false);
   const [studentClass, setClass] = useState('');
   const [userId, setUserId] = useState('');
+  const [professor, setProfessor] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
 
-  const getId = async () => {
+  const getRazredAndId = async () => {
+    const name = prof ? await AsyncStorage.getItem('Name') : 'notProf';
     const value = await AsyncStorage.getItem('UserId');
-    if (value !== null) {
+    const raz = await AsyncStorage.getItem('Class');
+    if (value !== null && name !== null && raz !== null) {
       setUserId(value);
+      setProfessor(name);
+      setClass(raz.slice(0, 4));
     }
   };
 
-  const getRazred = async () => {
-    try {
-      const value = await AsyncStorage.getItem('Class');
-      if (value !== null) {
-        setClass(value.slice(0, 4));
-        return value;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
   //uzimanje podataka iz baze
   const getData = () => {
-    firestore()
-      .collection('Notifications')
-      .where('Class', 'in', [
-        studentClass,
-        subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
-        'Svi',
-      ])
-      .onSnapshot(snapshot => {
-        const data: NotificationType[] = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...(doc.data() as NotificationType), // Here, we assert that the document data conforms to the User interface
-        }));
-        setNotifications(data);
-      });
+    if (!prof) {
+      firestore()
+        .collection('Notifications')
+        .where('Class', 'in', [
+          studentClass,
+          subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
+          'Svi',
+        ])
+        .onSnapshot(snapshot => {
+          const data: NotificationType[] = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...(doc.data() as NotificationType), // Here, we assert that the document data conforms to the User interface
+          }));
+          console.log(data);
+          setNotifications(
+            data.sort((a, b) => Number(b.Date) - Number(a.Date)),
+          );
+        });
+    } else {
+      firestore()
+        .collection('Notifications')
+        .where('Class', 'in', [studentClass])
+        .where('From', '==', professor)
+        .onSnapshot(snapshot => {
+          const data: NotificationType[] = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...(doc.data() as NotificationType), // Here, we assert that the document data conforms to the User interface
+          }));
+          setNotifications(
+            data.sort((a, b) => Number(b.Date) - Number(a.Date)),
+          );
+        });
+    }
   };
-
-  useEffect(() => {
-    if (loading) date = '';
-  }, [notifications]);
 
   useEffect(() => {
     if (studentClass == '' && userId == '') {
-      getRazred();
-      getId();
+      getRazredAndId();
     }
-    if (studentClass != '' && userId !== '') {
-      date = '';
+    if (studentClass != '' && userId !== '' && professor !== '') {
       getData();
-      setLoading(true);
     }
-  }, [studentClass, userId]);
+  }, [studentClass, userId, professor]);
 
   const getInitials = (name: string) => {
     const words = name.split(' ');
@@ -101,9 +105,14 @@ export default function NotificationLoader({navigation}: any) {
   };
 
   let date: string;
-  const renderObavestenje = ({item}: {item: NotificationType}) => {
+  const renderObavestenje = ({
+    item,
+    index,
+  }: {
+    item: NotificationType;
+    index: number;
+  }) => {
     let dateNew: string;
-
     const display = (
       <TouchableOpacity
         style={[
@@ -183,12 +192,13 @@ export default function NotificationLoader({navigation}: any) {
       </TouchableOpacity>
     );
 
+    index === 0 ? (date = '') : null;
     dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
+
     if (dateNew === date) {
       return display;
     } else {
       date = dateNew;
-
       return (
         <View key={item.NotificationId}>
           <View style={styles.datum}>
@@ -212,7 +222,7 @@ export default function NotificationLoader({navigation}: any) {
 
   return (
     <View style={styles.container}>
-      {loading && (
+      {notifications && (
         <View
           style={[
             styles.list,
@@ -222,12 +232,15 @@ export default function NotificationLoader({navigation}: any) {
                 : Colors.Dark.appBackground,
             },
           ]}>
+          {prof && <ClassSelection razredi={razredi} />}
           <FlatList
-            style={styles.flatList}
-            data={notifications.sort((a, b) => Number(b.Date) - Number(a.Date))}
+            style={[styles.flatList]}
+            data={notifications}
             renderItem={renderObavestenje}
             keyExtractor={obavestenje => obavestenje.NotificationId}
+            initialNumToRender={7}
             showsVerticalScrollIndicator={false}
+            updateCellsBatchingPeriod={50}
           />
         </View>
       )}
@@ -243,7 +256,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    alignItems: 'center',
+
     width: '100%',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -253,6 +266,7 @@ const styles = StyleSheet.create({
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
+    display: 'flex',
   },
   background: {
     width: '100%',

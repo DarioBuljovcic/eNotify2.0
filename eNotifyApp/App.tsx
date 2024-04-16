@@ -7,6 +7,7 @@ import {
   Dimensions,
   useColorScheme,
   LogBox,
+  Appearance,
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
@@ -24,6 +25,13 @@ import About from './screens/All/About';
 import NavigationScreen from './screens/All/NavigationScreen';
 import NotificationViewrs from './screens/Professor/NotificationViewrs';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const getMode = async () => {
+  const mode = await AsyncStorage.getItem('Mode');
+  Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
+};
+getMode();
 
 const Stack = createStackNavigator<Navigation>();
 const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
@@ -116,6 +124,7 @@ function App(): React.JSX.Element {
             headerLeft: () => null,
             headerStyle: {
               height: 100,
+              elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
@@ -123,12 +132,12 @@ function App(): React.JSX.Element {
               fontFamily: 'Mulish-Light',
             },
             headerBackground: () => (
-              <View>
+              <View style={{position: 'absolute', top: -1, zIndex: -11}}>
                 <Svg
-                  width={Dimensions.get('window').width}
+                  width={Dimensions.get('window').width + 10}
                   height="250"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 250`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 250`}>
                   <Path
                     fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
                     d="M0 0h410v220.645c-55 48.855-136.5 8.855-165 0S86.5 148 0 220.645V0Z"

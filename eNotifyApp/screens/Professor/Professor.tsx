@@ -26,6 +26,7 @@ import firestore from '@react-native-firebase/firestore';
 import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ClassSelection from './ClassSelection';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -41,11 +42,18 @@ const generateID = (length: number) => {
   return ID;
 };
 
-function Modal({closeModal, translateY}: any) {
+function Modal({
+  closeModal,
+  translateY,
+  razredi,
+  naziv,
+}: {
+  closeModal: any;
+  translateY: any;
+  razredi: Class[];
+  naziv: string;
+}) {
   const isDarkMode = useColorScheme() === 'light';
-
-  const [razredi, setRazredi] = useState<Class[]>([]);
-  const [naziv, setNaziv] = useState('');
 
   const [tittleValue, setTittleValue] = useState('');
   const [textValue, setTextValue] = useState('');
@@ -83,19 +91,6 @@ function Modal({closeModal, translateY}: any) {
       setSelectedClass('');
     }
   };
-  useEffect(() => {
-    const getData = async () => {
-      const data = await firestore().collection('Classes').get();
-      const name = await AsyncStorage.getItem('Name');
-      if (name) setNaziv(name);
-      let classes: Class[] = [];
-      data.docs.forEach(doc => {
-        classes.push(doc.data());
-      });
-      setRazredi(classes);
-    };
-    if (razredi.length === 0) getData();
-  });
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -261,6 +256,8 @@ export default function Professor({
   const [visible, setVisible] = useState(false);
   const translateY = useRef(new Animated.Value(800)).current;
   const opacity = useRef(new Animated.Value(0)).current;
+  const [razredi, setRazredi] = useState<Class[]>([]);
+  const [naziv, setNaziv] = useState('');
 
   const animateOpen = () => {
     Animated.parallel([
@@ -299,13 +296,30 @@ export default function Professor({
     animateClose();
     setVisible(false);
   };
+  useEffect(() => {
+    const getData = async () => {
+      const data = await firestore().collection('Classes').get();
+      const name = await AsyncStorage.getItem('Name');
+      if (name) setNaziv(name);
+      let classes: Class[] = [];
+      data.docs.forEach(doc => {
+        classes.push(doc.data());
+      });
+      setRazredi(classes);
+    };
+    if (razredi.length === 0) getData();
+  });
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <>
         <Animated.View style={[styles.overlay, {opacity}]}></Animated.View>
         <View style={styles.container}>
-          <NotificationLoader navigation={navigation} />
+          <NotificationLoader
+            navigation={navigation}
+            prof={true}
+            razredi={razredi}
+          />
           <TouchableOpacity
             style={[
               styles.add,
@@ -324,7 +338,12 @@ export default function Professor({
             />
           </TouchableOpacity>
 
-          <Modal closeModal={closeModal} translateY={translateY} />
+          <Modal
+            closeModal={closeModal}
+            translateY={translateY}
+            razredi={razredi}
+            naziv={naziv}
+          />
         </View>
       </>
     </TouchableWithoutFeedback>

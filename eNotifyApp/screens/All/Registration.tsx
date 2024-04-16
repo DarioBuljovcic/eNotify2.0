@@ -1,5 +1,14 @@
-import {View, Text, Alert, StyleSheet, useColorScheme} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Alert,
+  StyleSheet,
+  useColorScheme,
+  Animated,
+  Dimensions,
+  useAnimatedValue,
+} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import {
@@ -13,8 +22,12 @@ import {PermissionsAndroid} from 'react-native';
 import Colors from '../../components/Constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Circle, Svg} from 'react-native-svg';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+);
 
 const RegistrationScreen = ({
   navigation,
@@ -28,16 +41,18 @@ const RegistrationScreen = ({
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
 
   const saveUser = async (user: User) => {
-    await AsyncStorage.setItem('Role', user.Role);
-    await AsyncStorage.setItem('Class', user.Class);
-    await AsyncStorage.setItem('Name', user.Name);
-    await AsyncStorage.setItem('UserId', value);
-    await messaging().subscribeToTopic('Svi');
-    await messaging().subscribeToTopic(
-      subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
-    );
-    await messaging().subscribeToTopic(user.Class);
-    await firestore()
+    AsyncStorage.setItem('Role', user.Role);
+    AsyncStorage.setItem('Class', user.Class);
+    AsyncStorage.setItem('Name', user.Name);
+    AsyncStorage.setItem('UserId', value);
+    user.Role === 'Professor' ? null : messaging().subscribeToTopic('Svi');
+    user.Role === 'Professor'
+      ? null
+      : messaging().subscribeToTopic(
+          subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
+        );
+    messaging().subscribeToTopic(user.Class);
+    firestore()
       .collection('Users')
       .where('UserID', '==', user.UserID)
       .get()
@@ -73,50 +88,61 @@ const RegistrationScreen = ({
       });
   };
   return (
-    <View style={isDarkMode ? styles.containerDark : styles.container}>
-      <View style={{zIndex: 10}}>
-        <Text style={styles.incorrectText}>
-          {isCorrect ? '' : 'Niste uneli dobar kod'}
-        </Text>
-        <TextInput
-          placeholder="Unesite vas identifikacioni kod"
-          placeholderTextColor={
-            isDarkMode ? Colors.Dark.lightText : Colors.Light.lightText
-          }
-          autoCapitalize="none"
-          onChangeText={text => {
-            setValue(text);
-            setIsCorrect(true);
-          }}
-          value={value}
-          style={[
-            isDarkMode ? styles.inputDark : styles.input,
-            {
-              borderColor: isCorrect
-                ? isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.lightText
-                : 'red',
-            },
-          ]}
-        />
-      </View>
-      <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
-        <LinearGradient
-          start={{x: 1.3, y: 0}}
-          end={{x: 0, y: 0}}
-          colors={
-            isDarkMode
-              ? [Colors.Dark.accent, Colors.Dark.accent]
-              : ['#C6E2F5', '#2077F9']
-          }
-          style={isDarkMode ? styles.confirmBtnDark : styles.confirmBtn}>
-          <Text style={isDarkMode ? styles.confirmTxtDark : styles.confirmTxt}>
-            Registruj se
+    <>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.incorrectText}>
+            {isCorrect ? '' : 'Niste uneli dobar kod'}
           </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
+          <TextInput
+            placeholder="Unesite vas identifikacioni kod"
+            placeholderTextColor={
+              isDarkMode ? Colors.Dark.lightText : Colors.Light.lightText
+            }
+            autoCapitalize="none"
+            onChangeText={text => {
+              setValue(text);
+              setIsCorrect(true);
+            }}
+            value={value}
+            style={[
+              isDarkMode ? styles.inputDark : styles.input,
+
+              {
+                borderColor: isCorrect
+                  ? isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.lightText
+                  : 'red',
+              },
+            ]}
+          />
+        </View>
+        <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
+          <LinearGradient
+            start={{x: 1.3, y: 0}}
+            end={{x: 0, y: 0}}
+            colors={
+              isDarkMode
+                ? [Colors.Dark.accent, Colors.Dark.accent]
+                : ['#C6E2F5', '#2077F9']
+            }
+            style={isDarkMode ? styles.confirmBtnDark : styles.confirmBtn}>
+            <Text
+              style={isDarkMode ? styles.confirmTxtDark : styles.confirmTxt}>
+              Registruj se
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={[
+          isDarkMode
+            ? {backgroundColor: Colors.Dark.appBackground}
+            : {backgroundColor: Colors.Light.appBackground},
+          {width: '100%', height: '100%', zIndex: 0},
+        ]}></View>
+    </>
   );
 };
 const checkStat = async () => {
@@ -153,6 +179,7 @@ const LoadingScreen = (
 
     if (razred !== null) {
       navigation.navigate('NavigationScreen');
+      return false;
     } else {
       return true;
     }
@@ -165,28 +192,81 @@ const LoadingScreen = (
   return naziv === true ? getRazred() : true;
 };
 
+const AnimatedCircle = Animated.createAnimatedComponent(Circle);
+
 const Registration = ({navigation}: RegistrationProps) => {
-  // AsyncStorage.removeItem('Role');
-  // AsyncStorage.removeItem('Class');
-  // AsyncStorage.removeItem('Name');
-  // AsyncStorage.removeItem('UserId');
-  if (LoadingScreen(navigation)) {
+  const isDarkMode = useColorScheme() === 'dark';
+  const animationValue = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(animationValue, {
+          toValue: 1200,
+          duration: 6000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(animationValue, {
+          toValue: 0,
+          duration: 6000,
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  });
+
+  if (LoadingScreen(navigation) === true) {
     return <RegistrationScreen navigation={navigation} />;
+  } else {
+    return (
+      <>
+        <View style={styles.container}>
+          <Text style={styles.loadingText}>Loading</Text>
+          <Svg>
+            <Circle
+              fill="none"
+              cx={screenWidth / 2}
+              cy={screenHeight / 2 - R}
+              r={R}
+              stroke={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
+              strokeWidth={25}
+            />
+            <AnimatedCircle
+              fill="none"
+              cx={screenWidth / 2}
+              cy={screenHeight / 2 - R}
+              r={R}
+              stroke={
+                isDarkMode ? Colors.Dark.accentGreen : Colors.Light.accentGreen
+              }
+              strokeWidth={13}
+              strokeDasharray={loadWidth}
+              strokeDashoffset={animationValue}
+              strokeLinecap="round"
+            />
+          </Svg>
+        </View>
+        <View
+          style={[
+            isDarkMode
+              ? {backgroundColor: Colors.Dark.appBackground}
+              : {backgroundColor: Colors.Light.appBackground},
+            {width: '100%', height: '100%', zIndex: 0},
+          ]}></View>
+      </>
+    );
   }
 };
 
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+const loadWidth = 600;
+const R = loadWidth / (2 * Math.PI);
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.Light.appBackground,
-
-    flex: 1,
-    gap: 20,
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  containerDark: {
-    backgroundColor: Colors.Dark.appBackground,
-
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    zIndex: 100,
     flex: 1,
     gap: 20,
     alignContent: 'center',
@@ -280,6 +360,13 @@ const styles = StyleSheet.create({
 
     color: Colors.Dark.whiteText,
     fontFamily: 'Mulish',
+  },
+  loadingText: {
+    fontSize: 36,
+    position: 'absolute',
+    top: screenHeight / 2 - R - 30,
+    alignSelf: 'center',
+    zIndex: 100,
   },
 });
 
