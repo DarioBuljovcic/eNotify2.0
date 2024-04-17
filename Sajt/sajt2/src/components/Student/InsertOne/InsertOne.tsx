@@ -9,12 +9,14 @@ type Data = {
   Name: string;
   Role: string;
   UserID: string;
+  LogOut: boolean;
 };
 
 function InsertOne({ Successful }) {
   const Ime = useRef<HTMLInputElement>(null);
   const Prezime = useRef<HTMLInputElement>(null);
   const StudentClass = useRef<HTMLInputElement>(null);
+  const Email = useRef<HTMLInputElement>(null);
 
   const generatePassword = (length: number) => {
     const charset =
@@ -28,19 +30,26 @@ function InsertOne({ Successful }) {
   };
 
   async function createUser() {
-    if (Ime.current && Prezime.current && StudentClass.current) {
+    if (
+      Ime.current &&
+      Prezime.current &&
+      Email.current &&
+      StudentClass.current
+    ) {
+      const UserID = generatePassword(7);
       const dataToInsert: Data = {
         Class: StudentClass.current.value,
-        Email: Ime.current.value + Prezime.current.value + "@gmail.com",
+        Email: Email.current.value,
         Name: `${Ime.current.value} ${Prezime.current.value}`,
         Role: "Student",
-        UserID: generatePassword(7),
+        UserID: UserID,
+        LogOut: true,
       };
       axios
         .post("http://localhost:9000/.netlify/functions/api/send-email", {
-          to: Ime.current.value + Prezime.current.value + "@gmail.com",
-          subject: "Hello",
-          text: "Send",
+          to: Email.current.value,
+          subject: "Vaš kod",
+          text: UserID,
         })
         .then((response) => {
           console.log(response.data);
@@ -64,15 +73,19 @@ function InsertOne({ Successful }) {
       <div className="forma">
         <span className="inputContainer">
           <label htmlFor="inputField">Ime učenika</label>
-          <input ref={Ime} type="text" placeholder="Luka " />
+          <input ref={Ime} type="text" placeholder="Ime " />
         </span>
         <span className="inputContainer">
           <label htmlFor="inputField">Prezime učenika</label>
-          <input ref={Prezime} type="text" placeholder="Jovanović" />
+          <input ref={Prezime} type="text" placeholder="Prezime" />
+        </span>
+        <span className="inputContainer">
+          <label htmlFor="inputField">Email učenika</label>
+          <input ref={Email} type="text" placeholder="Email" />
         </span>
         <span className="inputContainer">
           <label htmlFor="inputField">Razred učenika</label>
-          <input ref={StudentClass} type="text" placeholder="3ITS" />
+          <input ref={StudentClass} type="text" placeholder="Razred" />
         </span>
         <div className="razredi-options"></div>
 

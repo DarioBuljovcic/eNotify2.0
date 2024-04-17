@@ -23,6 +23,7 @@ import Colors from '../../components/Constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Circle, Svg} from 'react-native-svg';
+import Loading from './Loading';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -169,10 +170,11 @@ const checkStat = async () => {
 const LoadingScreen = (
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>,
 ) => {
-  const [naziv, setNaziv] = useState(false);
+  const [naziv, setNaziv] = useState('wait');
   const uzmiNaziv = async () => {
     const value = await AsyncStorage.getItem('Name');
-    if (value !== null) setNaziv(true);
+    if (value !== null) setNaziv('yes');
+    else setNaziv('no');
   };
   const getRazred = async () => {
     const razred = await AsyncStorage.getItem('Class');
@@ -186,10 +188,12 @@ const LoadingScreen = (
   };
   const check = async () => {
     await checkStat();
-    uzmiNaziv();
+    await uzmiNaziv();
   };
   check();
-  return naziv === true ? getRazred() : true;
+  if (naziv === 'yes') getRazred();
+  else if (naziv === 'no') return true;
+  else return false;
 };
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -217,43 +221,7 @@ const Registration = ({navigation}: RegistrationProps) => {
   if (LoadingScreen(navigation) === true) {
     return <RegistrationScreen navigation={navigation} />;
   } else {
-    return (
-      <>
-        <View style={styles.container}>
-          <Text style={styles.loadingText}>Loading</Text>
-          <Svg>
-            <Circle
-              fill="none"
-              cx={screenWidth / 2}
-              cy={screenHeight / 2 - R}
-              r={R}
-              stroke={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
-              strokeWidth={25}
-            />
-            <AnimatedCircle
-              fill="none"
-              cx={screenWidth / 2}
-              cy={screenHeight / 2 - R}
-              r={R}
-              stroke={
-                isDarkMode ? Colors.Dark.accentGreen : Colors.Light.accentGreen
-              }
-              strokeWidth={13}
-              strokeDasharray={loadWidth}
-              strokeDashoffset={animationValue}
-              strokeLinecap="round"
-            />
-          </Svg>
-        </View>
-        <View
-          style={[
-            isDarkMode
-              ? {backgroundColor: Colors.Dark.appBackground}
-              : {backgroundColor: Colors.Light.appBackground},
-            {width: '100%', height: '100%', zIndex: 0},
-          ]}></View>
-      </>
-    );
+    return <Loading />;
   }
 };
 

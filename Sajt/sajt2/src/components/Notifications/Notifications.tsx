@@ -134,10 +134,10 @@ function MainPage({ Successful }) {
       const sendData = async () => {
         try {
           console.log(dataToInsert.Class);
-          // const response = await axios.post(
-          //   "https://enotifyserver2.netlify.app/.netlify/functions/api/data",
-          //   dataToInsert
-          // );
+          const response = await axios.post(
+            "https://enotifyserver2.netlify.app/.netlify/functions/api/data",
+            dataToInsert
+          );
         } catch (error) {
           console.error("Error sending data:", error);
         }
@@ -150,7 +150,7 @@ function MainPage({ Successful }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const q = query(collection(db, "Classes")); // Change 'your_collection' to the name of your Firestore collection
+        const q = query(collection(db, "Classes"));
         const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(q);
 
         const fetchedData: SelectOption[] = [];

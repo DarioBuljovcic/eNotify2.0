@@ -43,17 +43,22 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     if (!prof) {
       firestore()
         .collection('Notifications')
-        .where('Class', 'in', [
-          studentClass,
-          subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
-          'Svi',
-        ])
+        .where(
+          firestore.Filter.or(
+            firestore.Filter('Class', 'array-contains', studentClass),
+            firestore.Filter(
+              'Class',
+              '==',
+              subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
+            ),
+            firestore.Filter('Class', '==', 'Svi'),
+          ),
+        )
         .onSnapshot(snapshot => {
           const data: NotificationType[] = snapshot.docs.map(doc => ({
             id: doc.id,
-            ...(doc.data() as NotificationType), // Here, we assert that the document data conforms to the User interface
+            ...(doc.data() as NotificationType),
           }));
-          console.log(data);
           setNotifications(
             data.sort((a, b) => Number(b.Date) - Number(a.Date)),
           );

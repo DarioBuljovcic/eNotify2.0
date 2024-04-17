@@ -11,6 +11,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
+import Loading from '../All/Loading';
 
 type Data = {
   [key: string]: string;
@@ -339,6 +340,7 @@ const App = () => {
           snapToOffsets={[stopPosition]}
           snapToStart={false}
           snapToEnd={false}>
+          {!raspored && <Loading />}
           {raspored && renderRaspored(raspored)}
         </ScrollView>
       </View>
@@ -362,6 +364,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
     paddingBottom: 30,
+    minHeight: Dimensions.get('window').height,
   },
   days: {
     display: 'flex',

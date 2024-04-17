@@ -21,6 +21,7 @@ type Data = {
   Email: string;
   Role: string;
   UserID: string;
+  LogOut: boolean;
 };
 
 const FileUploadForm = () => {
@@ -57,6 +58,7 @@ const FileUploadForm = () => {
                 Class: item.Class,
                 Role: item.Role,
                 UserID: userID,
+                LogOut: true,
               };
               axios
                 .post(
