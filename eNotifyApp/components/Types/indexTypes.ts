@@ -43,7 +43,7 @@ export type NotificationType ={
   NotificationId:string,
   Tittle: string,
   Text:string,
-  Class: string,
+  Class: string | string[],
   Type:string,
   Files: string,
   Date: Timestamp,

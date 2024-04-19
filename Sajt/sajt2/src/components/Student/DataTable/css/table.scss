@@ -1,3 +1,4 @@
+@import "../../../Colors/colors.scss";
 ::-webkit-scrollbar {
     height: 10px;
 }
@@ -14,4 +15,104 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+body {
+    .filterBtn {
+        background-color: transparent;
+        border: 2px solid rgb(54, 54, 54);
+        width: fit-content;
+        border-radius: 5px;
+        display: flex;
+        place-items: center;
+        transition: border-color 0.2s;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    .containerTable {
+        max-width: 800px;
+        max-height: 600px;
+        position: relative;
+        border: 2px solid rgb(54, 54, 54);
+        .dataTable {
+            max-width: 800px;
+            max-height: 600px;
+            overflow-y: scroll;
+        }
+        .btn {
+            background-color: transparent;
+            border: 2px solid rgb(54, 54, 54);
+            border-radius: 5px;
+            display: flex;
+            place-items: center;
+            transition: border-color 0.2s;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .deleteBtn {
+            &:hover {
+                border-color: rgba(240, 81, 81, 0.589);
+            }
+        }
+        .logOutBtn {
+            &:hover {
+                border-color: rgba(81, 131, 240, 0.589);
+            }
+        }
+        .editBtn {
+            &:hover {
+                border-color: rgba(243, 142, 48, 0.589);
+            }
+        }
+        .rdt_Table {
+            z-index: 20;
+        }
+
+        .editContainer {
+            z-index: 10;
+
+            position: absolute;
+            left: 200px;
+            right: 0px;
+
+            display: grid;
+            gap: 10px;
+
+            background-color: #ffffff;
+
+            width: 200px;
+            padding: 10px 15px;
+
+            border-radius: 15px;
+            border: 2px solid rgb(54, 54, 54);
+
+            transition: left 0.8s ease-in-out;
+
+            input {
+                padding: 0.3em;
+                border: 0.1em solid $borderColor;
+                border-radius: 0.25em;
+                outline: 0;
+                transition: 0.2s;
+
+                &:focus,
+                &:active {
+                    border: 0.1em solid $selectBorder;
+                }
+                &:hover {
+                    cursor: pointer;
+                    background-color: #eeeeee;
+                }
+            }
+            &.editOn {
+                left: -250px;
+            }
+            &.searchOn {
+                left: 820px;
+            }
+            .saveEdit {
+                cursor: pointer;
+            }
+        }
+    }
 }

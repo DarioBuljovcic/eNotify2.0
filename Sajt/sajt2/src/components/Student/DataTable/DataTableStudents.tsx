@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { db } from "../../../lib/firebase.js";
 import {
@@ -8,8 +8,16 @@ import {
   getDocs,
   updateDoc,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 import "./css/table.css";
+import { IonIcon } from "@ionic/react";
+import {
+  logOutOutline,
+  trashBinOutline,
+  createOutline,
+  optionsOutline,
+} from "ionicons/icons";
 
 export type User = {
   [key: number]: string;
@@ -25,7 +33,29 @@ export default function DataTableStudents() {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(true);
+  const [editOn, setEditOn] = useState(false);
+  const [searchOn, setSearchOn] = useState(false);
+  const [editUser, setEditUser] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [studentClass, setClass] = useState("");
 
+  const Edit = ({ row }: { row: User }) => {
+    const update = async () => {
+      setEditOn(true);
+      setEditUser(row.UserID);
+      setName(row.Name);
+      setEmail(row.Email);
+      setClass(row.Class);
+
+      getData();
+    };
+    return (
+      <button onClick={() => update()} className="editBtn btn">
+        <IonIcon icon={createOutline} size="small"></IonIcon>
+      </button>
+    );
+  };
   const LogOut = ({ row }: { row: User }) => {
     const update = async () => {
       const querySnapshot = await getDocs(
@@ -35,7 +65,26 @@ export default function DataTableStudents() {
       await updateDoc(querySnapshot.docs[0].ref, { ["LogOut"]: true });
       getData();
     };
-    return <button onClick={() => update()}>Izbaci učenika</button>;
+    return (
+      <button onClick={() => update()} className="logOutBtn btn">
+        <IonIcon icon={logOutOutline} size="small"></IonIcon>
+      </button>
+    );
+  };
+  const Delete = ({ row }: { row: User }) => {
+    const update = async () => {
+      const querySnapshot = await getDocs(
+        query(collection(db, "Users"), where("UserID", "==", row.UserID))
+      );
+
+      await deleteDoc(querySnapshot.docs[0].ref);
+      getData();
+    };
+    return (
+      <button onClick={() => update()} className="deleteBtn btn">
+        <IonIcon icon={trashBinOutline} size="small" color={"danger"}></IonIcon>
+      </button>
+    );
   };
   const UserStatus = ({ row }: { row: User }) => {
     return (
@@ -44,11 +93,23 @@ export default function DataTableStudents() {
       </div>
     );
   };
+  const SaveUser = async () => {
+    const querySnapshot = await getDocs(
+      query(collection(db, "Users"), where("UserID", "==", editUser))
+    );
+
+    await updateDoc(querySnapshot.docs[0].ref, {
+      ["Naziv"]: name,
+      ["Email"]: email,
+      ["Class"]: studentClass,
+    });
+    getData();
+  };
   const columns: TableColumn<User>[] = [
     {
       name: "Korisniči Broj",
       selector: (row: User) => row.UserID || "",
-      width: "200px",
+      width: "150px",
       sortable: true,
     },
     {
@@ -56,6 +117,12 @@ export default function DataTableStudents() {
       selector: (row: User) => row.Name || "",
       sortable: true,
       width: "200px",
+    },
+    {
+      name: "Email",
+      selector: (row: User) => row.Email || "",
+      sortable: true,
+      width: "250px",
     },
     {
       name: "Razred",
@@ -71,14 +138,39 @@ export default function DataTableStudents() {
       sortable: true,
     },
     {
+      name: "Izmena učenika",
+      selector: (row: User) => row.UserID || "",
+      cell: (row: User) => <Edit row={row} />,
+      width: "140px",
+      sortable: true,
+    },
+    {
       name: "Izbaci učenika",
       selector: (row: User) => row.LogOut || "",
       cell: (row: User) => <LogOut row={row} />,
-      width: "200px",
+      width: "130px",
+      sortable: true,
+    },
+    {
+      name: "Brisanje učenika",
+      selector: (row: User) => row.UserID || "",
+      cell: (row: User) => <Delete row={row} />,
+      width: "140px",
       sortable: true,
     },
   ];
+  const Search = async () => {
+    const newData: User[] = [];
 
+    // where(),
+    onSnapshot(query(collection(db, "Users")), (querySnapshot) => {
+      newData.length = 0;
+      querySnapshot.forEach((doc) => {
+        newData.push(doc.data() as User);
+      });
+      setData([...newData]);
+    });
+  };
   const getData = async () => {
     const newData: User[] = [];
 
@@ -87,7 +179,6 @@ export default function DataTableStudents() {
       querySnapshot.forEach((doc) => {
         newData.push(doc.data() as User);
       });
-      console.log(newData[3].UserID, newData[3].LogOut);
       setData([...newData]);
     });
   };
@@ -103,20 +194,93 @@ export default function DataTableStudents() {
     }
   });
   useEffect(() => {
-    if (!loading) console.log(data[3].UserID);
-  }, [data]);
+    const handlePressOutside = (event) => {
+      // Check if the click occurred outside the box
+      if (
+        !event.target.closest(".editBox") &&
+        !event.target.closest(".containerTable")
+      ) {
+        setEditOn(false);
+      }
+      if (
+        !event.target.closest(".filterBox") &&
+        !event.target.closest(".containerTable") &&
+        !event.target.closest(".filterBtn")
+      ) {
+        setSearchOn(false);
+      }
+    };
+
+    // Attach event listener to detect clicks on the document
+    document.addEventListener("mousedown", handlePressOutside);
+
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener("mousedown", handlePressOutside);
+    };
+  }, []);
 
   return (
     <>
-      {/* {!loading && ( */}
-      <DataTable
-        columns={columns}
-        data={data}
-        pagination
-        progressPending={pending}
-        defaultSortFieldId={1}
-      />
-      {/* )} */}
+      <button
+        onClick={() => setSearchOn((prev) => !prev)}
+        className="btn filterBtn"
+      >
+        <IonIcon icon={optionsOutline} size="large"></IonIcon>
+      </button>
+      <div className="containerTable">
+        <div className={`editContainer editBox ${editOn ? "editOn" : ""}`}>
+          <label htmlFor="inputIme">Naziv</label>
+          <input
+            type="text"
+            placeholder="Ime"
+            value={name}
+            onChange={(o) => setName(o.target.value)}
+          />
+          <label htmlFor="inputEmail">Email</label>
+          <input
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(o) => setEmail(o.target.value)}
+          />
+          <label htmlFor="inputRazred">Razred</label>
+          <input
+            type="text"
+            placeholder="Razred"
+            value={studentClass}
+            onChange={(o) => setClass(o.target.value)}
+          />
+          <button className="btn saveEdit" onClick={() => SaveUser()}>
+            Izmeni
+          </button>
+        </div>
+        <div
+          className={`editContainer filterBox ${searchOn ? "searchOn" : ""}`}
+        >
+          <label htmlFor="inputIme">Naziv</label>
+          <input type="text" />
+          <label htmlFor="inputIme">Email</label>
+          <input type="text" />
+          <label htmlFor="inputIme">Razred</label>
+          <input type="text" />
+          <button className="btn saveEdit" onClick={() => Search()}>
+            Filtriraj
+          </button>
+          <button className="btn saveEdit" onClick={() => getData()}>
+            Očisti
+          </button>
+        </div>
+        <div className="dataTable">
+          <DataTable
+            columns={columns}
+            data={data}
+            pagination
+            progressPending={pending}
+            defaultSortFieldId={1}
+          />
+        </div>
+      </div>
     </>
   );
 }

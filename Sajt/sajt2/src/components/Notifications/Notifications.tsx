@@ -19,7 +19,7 @@ type SelectOption = {
 };
 type inputData = {
   NotificationId: string;
-  Class: string;
+  Class: string[];
   Date: Date;
   Files: string | undefined;
   Text: string | undefined;
@@ -121,7 +121,7 @@ function MainPage({ Successful }) {
       });
       const dataToInsert: inputData = {
         NotificationId: generatePassword(7),
-        Class: razred ? razred.join("|") : selectedClasses.join("|"),
+        Class: razred,
         Date: new Date(),
         Files: files.length > 0 ? `${files.map((f) => f.name)}` : ``,
         Text: text,
@@ -133,11 +133,11 @@ function MainPage({ Successful }) {
 
       const sendData = async () => {
         try {
-          console.log(dataToInsert.Class);
           const response = await axios.post(
-            "https://enotifyserver2.netlify.app/.netlify/functions/api/data",
+            "http://localhost:9000/.netlify/functions/api/data",
             dataToInsert
           );
+          console.log(response);
         } catch (error) {
           console.error("Error sending data:", error);
         }

@@ -23,7 +23,7 @@ export default function NotificationViewrs({route}: {route: any}) {
     const getData = async () => {
       const stud = await firestore()
         .collection('Users')
-        .where('Class', '==', route.params.Class)
+        .where('Class', '==', route.params.Class[0])
         .where('Role', '==', 'Student')
         .get();
       let data: User[] = [];

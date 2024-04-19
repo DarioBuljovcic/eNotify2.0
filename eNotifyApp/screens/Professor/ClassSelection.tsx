@@ -11,14 +11,21 @@ import {
 } from 'react-native';
 import Colors from '../../components/Constants/Color';
 
-export default function ClassSelection({razredi}: {razredi: Class[]}) {
+export default function ClassSelection({
+  razredi,
+  profClass,
+  setProfClass,
+}: {
+  razredi: Class[];
+  profClass: string;
+  setProfClass: any;
+}) {
   const isDarkMode = useColorScheme() === 'dark';
-  const [selected, setSelected] = useState('');
 
   const renderClasses = ({item}: {item: Class}) => {
     return (
       <TouchableOpacity
-        onPress={() => setSelected(item.Class)}
+        onPress={() => setProfClass(item.Class)}
         style={[
           styles.class,
           {
@@ -29,7 +36,7 @@ export default function ClassSelection({razredi}: {razredi: Class[]}) {
               ? Colors.Dark.textSecondary
               : Colors.Light.textSecondary,
           },
-          item.Class === selected
+          item.Class === profClass
             ? {
                 backgroundColor: isDarkMode
                   ? Colors.Dark.accent
@@ -47,7 +54,7 @@ export default function ClassSelection({razredi}: {razredi: Class[]}) {
                 ? Colors.Dark.textPrimary
                 : Colors.Light.textPrimary,
             },
-            item.Class === selected
+            item.Class === profClass
               ? {
                   color: isDarkMode
                     ? Colors.Dark.textPrimary

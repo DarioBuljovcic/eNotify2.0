@@ -25,6 +25,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
   const [studentClass, setClass] = useState('');
   const [userId, setUserId] = useState('');
   const [professor, setProfessor] = useState('');
+  const [profClass, setProfClass] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
 
   const getRazredAndId = async () => {
@@ -35,24 +36,31 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
       setUserId(value);
       setProfessor(name);
       setClass(raz.slice(0, 4));
+      prof ? setProfClass(raz.slice(0, 4)) : null;
     }
   };
 
   //uzimanje podataka iz baze
+  // firestore.Filter.or(
+  //   firestore.Filter('Class', 'array-contains', studentClass),
+  //   firestore.Filter(
+  //     'Class',
+  //     'array-contains',
+  //     subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
+  //   ),
+  //   firestore.Filter('Class', 'array-contains', 'Svi'),
+  // ),
   const getData = () => {
     if (!prof) {
+      console.log(studentClass);
       firestore()
         .collection('Notifications')
         .where(
-          firestore.Filter.or(
-            firestore.Filter('Class', 'array-contains', studentClass),
-            firestore.Filter(
-              'Class',
-              '==',
-              subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
-            ),
-            firestore.Filter('Class', '==', 'Svi'),
-          ),
+          firestore.Filter('Class', 'array-contains-any', [
+            studentClass,
+            subscriptions[parseInt(studentClass.slice(0, 1)[0]) - 1],
+            'Svi',
+          ]),
         )
         .onSnapshot(snapshot => {
           const data: NotificationType[] = snapshot.docs.map(doc => ({
@@ -66,7 +74,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     } else {
       firestore()
         .collection('Notifications')
-        .where('Class', 'in', [studentClass])
+        .where(firestore.Filter('Class', 'array-contains', profClass))
         .where('From', '==', professor)
         .onSnapshot(snapshot => {
           const data: NotificationType[] = snapshot.docs.map(doc => ({
@@ -87,7 +95,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     if (studentClass != '' && userId !== '' && professor !== '') {
       getData();
     }
-  }, [studentClass, userId, professor]);
+  }, [studentClass, userId, professor, profClass]);
 
   const getInitials = (name: string) => {
     const words = name.split(' ');
@@ -237,7 +245,13 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                 : Colors.Dark.appBackground,
             },
           ]}>
-          {prof && <ClassSelection razredi={razredi} />}
+          {prof && (
+            <ClassSelection
+              razredi={razredi}
+              setProfClass={(o: any) => setProfClass(o)}
+              profClass={profClass}
+            />
+          )}
           <FlatList
             style={[styles.flatList]}
             data={notifications}

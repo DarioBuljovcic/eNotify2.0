@@ -28,7 +28,8 @@ router.get("/", (req, res) => {
 });
 router.post("/data", (req, res) => {
   const data = req.body; // Data sent from the client
-  data.Class.split("|").forEach((studentClass) => {
+  data.Class.forEach((studentClass) => {
+    console.log(studentClass);
     const message = {
       notification: {
         title: data.Tittle,

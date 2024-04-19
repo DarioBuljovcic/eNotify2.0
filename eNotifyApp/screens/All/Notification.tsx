@@ -7,6 +7,8 @@ import {
   useColorScheme,
   Appearance,
   PermissionsAndroid,
+  Platform,
+  Dimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../components/Constants/Color';
@@ -45,7 +47,7 @@ export default function Obavestenje({route}: any) {
   const startAnimation = () => {
     Animated.sequence([
       Animated.timing(animationValue, {
-        toValue: -100,
+        toValue: -130,
         duration: 200,
         useNativeDriver: true,
       }),
@@ -101,7 +103,12 @@ export default function Obavestenje({route}: any) {
   };
   const downloadImage = async (imageUrl: string, fileName: string) => {
     try {
-      const downloadDest = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+      const extention = fileName.split('.')[fileName.split('.').length - 1];
+      const directory =
+        extention === 'img'
+          ? RNFS.PicturesDirectoryPath
+          : RNFS.DownloadDirectoryPath;
+      const downloadDest = `${directory}/${fileName}`;
       const options = {
         fromUrl: imageUrl,
         toFile: downloadDest,
@@ -111,7 +118,11 @@ export default function Obavestenje({route}: any) {
         RNFS.downloadFile(options)
           .promise.then(result => {
             if (result.statusCode === 200) {
-              setMessage('Slika je uspešno skinuta!');
+              setMessage(
+                extention === 'img'
+                  ? 'Slika je uspešno skinuta!'
+                  : 'Fajl je uspešno skinut!',
+              );
               setIcon({name: 'checkmark-circle-outline', color: 'green'});
               startAnimation();
             } else {
@@ -125,7 +136,9 @@ export default function Obavestenje({route}: any) {
             console.error('Error downloading file:', error);
           });
       } else {
-        setMessage('Slika je već skinuta!');
+        setMessage(
+          extention === 'img' ? 'Slika je već skinuta!' : 'Fajl je već skinut!',
+        );
         setIcon({name: 'alert-circle-outline', color: 'red'});
         startAnimation();
       }
@@ -158,7 +171,34 @@ export default function Obavestenje({route}: any) {
     }
   };
 
-  //funkcija za prikazivanje slike -- trebas malo dorediti style i dodati na klik da se moze skinuti
+  const [shownImage, setShownImage] = useState<Images>({
+    imageUrl: '',
+    imageName: '',
+  });
+  const [shown, setShown] = useState(false);
+  const opacity = useRef(new Animated.Value(0)).current;
+  const openImage = (image: any) => {
+    setShownImage(image);
+    setShown(true);
+    Animated.sequence([
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+  const closeImage = () => {
+    Animated.sequence([
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  //funkcija za prikazivanje slike --
   const renderImages = () => {
     return (
       <View style={styles.imageContainer}>
@@ -167,8 +207,8 @@ export default function Obavestenje({route}: any) {
             key={index}
             activeOpacity={0.8}
             onPress={() => {
-              downloadImage(image.imageUrl, image.imageName);
-              //requestStoragePermission();
+              openImage(image);
+              // downloadImage(image.imageUrl, image.imageName);
             }}>
             <View
               style={[
@@ -179,18 +219,20 @@ export default function Obavestenje({route}: any) {
                     : Colors.Dark.textInputBackground,
                 },
               ]}>
-              <Image
-                key={index}
-                source={{uri: image.imageUrl}}
-                style={[
-                  styles.image,
-                  {
-                    borderColor: isDarkMode
-                      ? Colors.Light.lightText
-                      : Colors.Dark.lightText,
-                  },
-                ]}
-              />
+              <View>
+                <Image
+                  key={index}
+                  source={{uri: image.imageUrl}}
+                  style={[
+                    styles.image,
+                    {
+                      borderColor: isDarkMode
+                        ? Colors.Light.lightText
+                        : Colors.Dark.lightText,
+                    },
+                  ]}
+                />
+              </View>
               <View style={styles.txtContainer}>
                 <Text
                   style={[
@@ -259,15 +301,34 @@ export default function Obavestenje({route}: any) {
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor: isDarkMode
-            ? Colors.Light.appBackground
-            : Colors.Dark.appBackground,
-        },
-      ]}>
+    <>
+      <Animated.View
+        style={[styles.modal, {opacity}, {display: shown ? 'flex' : 'none'}]}>
+        <TouchableOpacity
+          style={styles.closeImage}
+          onPress={() => {
+            closeImage();
+            setTimeout(() => {
+              setShown(false);
+            }, 300);
+          }}>
+          <Ionicons
+            size={40}
+            color={Colors.Dark.white}
+            name="close-outline"></Ionicons>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.downloadImage}
+          onPress={() =>
+            downloadImage(shownImage.imageUrl, shownImage.imageName)
+          }>
+          <Ionicons
+            size={35}
+            color={Colors.Dark.white}
+            name="download-outline"></Ionicons>
+        </TouchableOpacity>
+        <Image source={{uri: shownImage?.imageUrl}} style={styles.modalImage} />
+      </Animated.View>
       <Animated.View
         style={[
           styles.message,
@@ -291,76 +352,86 @@ export default function Obavestenje({route}: any) {
           {message}
         </Text>
       </Animated.View>
-      {notification && (
-        <>
-          <View
-            style={[
-              styles.infoContainer,
-              {
-                borderColor: isDarkMode
-                  ? Colors.Light.textSecondary
-                  : Colors.Dark.textSecondary,
-              },
-            ]}>
-            {true && renderClass()}
-            <Text
+      <View
+        style={[
+          styles.container,
+          {
+            backgroundColor: isDarkMode
+              ? Colors.Light.appBackground
+              : Colors.Dark.appBackground,
+          },
+        ]}>
+        {notification && (
+          <>
+            <View
               style={[
-                styles.date,
+                styles.infoContainer,
                 {
-                  color: isDarkMode
+                  borderColor: isDarkMode
                     ? Colors.Light.textSecondary
                     : Colors.Dark.textSecondary,
                 },
               ]}>
-              {format(notification.Date.toDate(), 'dd.MM.yyyy')}
+              {true && renderClass()}
+              <Text
+                style={[
+                  styles.date,
+                  {
+                    color: isDarkMode
+                      ? Colors.Light.textSecondary
+                      : Colors.Dark.textSecondary,
+                  },
+                ]}>
+                {format(notification.Date.toDate(), 'dd.MM.yyyy')}
+              </Text>
+            </View>
+            {role === 'Professor' && (
+              <TouchableOpacity
+                style={styles.seen}
+                onPress={() =>
+                  navigation.navigate('NotificationViewrs', {
+                    Seen: notification.Seen,
+                    Class: notification.Class,
+                  })
+                }>
+                <Ionicons
+                  name={'eye-outline'}
+                  size={28}
+                  color={
+                    isDarkMode
+                      ? Colors.Light.textSecondary
+                      : Colors.Dark.textSecondary
+                  }></Ionicons>
+              </TouchableOpacity>
+            )}
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: isDarkMode
+                    ? Colors.Light.textPrimary
+                    : Colors.Dark.textPrimary,
+                },
+              ]}>
+              {notification.Text}
             </Text>
-          </View>
-          {role === 'Professor' && (
-            <TouchableOpacity
-              style={styles.seen}
-              onPress={() =>
-                navigation.navigate('NotificationViewrs', {
-                  Seen: notification.Seen,
-                  Class: notification.Class,
-                })
-              }>
-              <Ionicons
-                name={'eye-outline'}
-                size={28}
-                color={
-                  isDarkMode
-                    ? Colors.Light.textSecondary
-                    : Colors.Dark.textSecondary
-                }></Ionicons>
-            </TouchableOpacity>
-          )}
-          <Text
-            style={[
-              styles.body,
-              {
-                color: isDarkMode
-                  ? Colors.Light.textPrimary
-                  : Colors.Dark.textPrimary,
-              },
-            ]}>
-            {notification.Text}
-          </Text>
-          <Text
-            style={[
-              styles.sender,
-              {
-                color: isDarkMode
-                  ? Colors.Light.lightText
-                  : Colors.Dark.lightText,
-              },
-            ]}>
-            {notification.From}
-          </Text>
-          {/* TODO scrolable */}
-          {images && renderImages()}
-        </>
-      )}
-    </View>
+            <Text
+              style={[
+                styles.sender,
+                {
+                  color: isDarkMode
+                    ? Colors.Light.lightText
+                    : Colors.Dark.lightText,
+                },
+              ]}>
+              {notification.From}
+            </Text>
+            {/* TODO scrolable */}
+            {images && renderImages()}
+          </>
+        )}
+      </View>
+    </>
   );
 }
 
@@ -408,22 +479,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     width: '100%',
-    gap: 10,
     padding: 10,
+    gap: 10,
   },
   imageButton: {
     borderRadius: 10,
     padding: 10,
-    flexDirection: 'row',
 
+    flexDirection: 'row',
     elevation: 3,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
   image: {
-    width: 70,
     height: 70,
+    width: 70,
     borderRadius: 10,
     borderWidth: 1,
   },
@@ -453,7 +524,7 @@ const styles = StyleSheet.create({
     height: 50,
     position: 'absolute',
 
-    zIndex: 10,
+    zIndex: 120,
     borderWidth: 0.5,
     borderRadius: 10,
   },
@@ -475,5 +546,42 @@ const styles = StyleSheet.create({
 
     marginHorizontal: 15,
     fontFamily: 'Mulish',
+  },
+  modal: {
+    zIndex: 110,
+
+    position: 'absolute',
+    top: -160,
+    left: 0,
+
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height + 10,
+
+    backgroundColor: 'rgba(000, 0, 0, 0.8)',
+
+    padding: 20,
+  },
+  closeImage: {
+    position: 'absolute',
+    top: 0,
+    right: -10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  downloadImage: {
+    position: 'absolute',
+    top: 0,
+    right: 40,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  modalImage: {
+    height: '90%',
+    width: '95%',
+    alignSelf: 'center',
+    top: '10%',
+    borderRadius: 10,
   },
 });

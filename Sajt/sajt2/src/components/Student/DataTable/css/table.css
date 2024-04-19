@@ -14,4 +14,87 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+body .filterBtn {
+  background-color: transparent;
+  border: 2px solid rgb(54, 54, 54);
+  width: -moz-fit-content;
+  width: fit-content;
+  border-radius: 5px;
+  display: flex;
+  place-items: center;
+  transition: border-color 0.2s;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+body .containerTable {
+  max-width: 800px;
+  max-height: 600px;
+  position: relative;
+  border: 2px solid rgb(54, 54, 54);
+}
+body .containerTable .dataTable {
+  max-width: 800px;
+  max-height: 600px;
+  overflow-y: scroll;
+}
+body .containerTable .btn {
+  background-color: transparent;
+  border: 2px solid rgb(54, 54, 54);
+  border-radius: 5px;
+  display: flex;
+  place-items: center;
+  transition: border-color 0.2s;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+body .containerTable .deleteBtn:hover {
+  border-color: rgba(240, 81, 81, 0.589);
+}
+body .containerTable .logOutBtn:hover {
+  border-color: rgba(81, 131, 240, 0.589);
+}
+body .containerTable .editBtn:hover {
+  border-color: rgba(243, 142, 48, 0.589);
+}
+body .containerTable .rdt_Table {
+  z-index: 20;
+}
+body .containerTable .editContainer {
+  z-index: 10;
+  position: absolute;
+  left: 200px;
+  right: 0px;
+  display: grid;
+  gap: 10px;
+  background-color: #ffffff;
+  width: 200px;
+  padding: 10px 15px;
+  border-radius: 15px;
+  border: 2px solid rgb(54, 54, 54);
+  transition: left 0.8s ease-in-out;
+}
+body .containerTable .editContainer input {
+  padding: 0.3em;
+  border: 0.1em solid #adb5bd;
+  border-radius: 0.25em;
+  outline: 0;
+  transition: 0.2s;
+}
+body .containerTable .editContainer input:focus, body .containerTable .editContainer input:active {
+  border: 0.1em solid #212529;
+}
+body .containerTable .editContainer input:hover {
+  cursor: pointer;
+  background-color: #eeeeee;
+}
+body .containerTable .editContainer.editOn {
+  left: -250px;
+}
+body .containerTable .editContainer.searchOn {
+  left: 820px;
+}
+body .containerTable .editContainer .saveEdit {
+  cursor: pointer;
 }/*# sourceMappingURL=table.css.map */

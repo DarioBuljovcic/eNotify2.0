@@ -67,7 +67,7 @@ function Modal({
         NotificationId: generateID(7),
         Tittle: tittleValue,
         Text: textValue,
-        Class: selectedClass,
+        Class: [selectedClass],
         Type: 'T',
         Files: '',
         Date: new Date(),
@@ -77,7 +77,7 @@ function Modal({
       const sendData = async () => {
         try {
           const response = await axios.post(
-            'https://enotifyserver2.netlify.app/.netlify/functions/api/data',
+            'http://localhost:9000/.netlify/functions/api/data',
             data,
           );
         } catch (error) {

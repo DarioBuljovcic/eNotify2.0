@@ -71,4 +71,23 @@ none:/:none:/:Fizičko vaspitanje|Srđan Dakić|Sala:/:Programiranje|Nikola Krmp
 
 
 
+//////
+/1ITS/
+//////
+none:/:none:/:none:/:none:/:none:/:none:/:none:/:Likovna Kultura|Ristic Silvija|U137:/:Osnove elektrotehnike|Bajic  Silvia|U116:/:Osnove elektrotehnike|Bajic  Silvia|U116:/:Hemija|Mladan i Danijela|U116:/:Racunarska grafika i multimedija|Sekošan Valentina|K202,Praktična nastava|Vučinić Marjan|MP19:/:Racunarska grafika i multimedija|Sekošan Valentina|K202,Praktična nastava|Vučinić Marjan|MP19:/:none,Praktična nastava|Vučinić Marjan|MP19:/:Katolička veronauka|?|U116
 
+
+
+none:/:none:/:none:/:none:/:none:/:none:/:none:/:Osnove elektrotehnike|Bajic Silvia|LP27:/:Vukovic Dejan|Fizicko vaspitanje|SF02:/:Geografija|Milka Avramović|U116:/:Matematika|Radoslava Srdenovic|U116:/:Geografija|Milka Avramović|U116
+
+
+
+none:/:none:/:none:/:none:/:none:/:none:/:Pravoslavna veronauka|Dukanović|U105:/:Programiranje|Jasmina Stricevic|K202,Racunarska grafika i multimedija|Sekošan Valentina|K202:/:Programiranje|Jasmina Stricevic|K202,Racunarska grafika i multimedija|Sekošan Valentina|K202:/:Srpski jezik i književnost|Snežana Beric|U116:/:Srpski jezik i književnost|Snežana Beric|U116:/:Fizika|Jović Jelena|U116:/:Istorija|Aradski I Z|U116:/:Istorija|Aradski I Z|U116
+
+
+
+none:/:none:/:none:/:none:/:none:/:none:/:Srpski jezik i književnost|Snežana Beric|U116:/:Osnove elektrotehnike|Bajic  Silvia|U116:/:Matematika|Radoslava Srdenovic|U116:/:Matematika|Radoslava Srdenovic|U116:/:Racunarstvo i informatika|Sekošan Dorina|K226,Programiranje|Jasmina Stricevic|K202:/:Racunarstvo i informatika|Sekošan Dorina|K226,Programiranje|Jasmina Stricevic|K202:/:Praktična nastava|Vučinić Marjan,Racunarstvo i informatika|Sekošan Dorina|K226:/:Praktična nastava|Vučinić Marjan,Racunarstvo i informatika|Sekošan Dorina|K226:/:Praktična nastava|Vučinić Marjan,none
+
+
+
+none:/:none:/:none:/:none:/:none:/:Građansko vaspitanje|?|U106:/:Fizicko vaspitanje|Vukovic Dejan|SF01:/:ČOS|Jasmina Stričević|U116:/:Engleski jezik|Vasić Milica|U116:/:Engleski jezik|Vasić Milica|U116:/:Hemija|Mladan i Danijela|U116:/:Fizika|Jović Jelena|U116

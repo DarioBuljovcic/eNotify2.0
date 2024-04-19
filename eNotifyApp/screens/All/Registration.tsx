@@ -46,13 +46,15 @@ const RegistrationScreen = ({
     AsyncStorage.setItem('Class', user.Class);
     AsyncStorage.setItem('Name', user.Name);
     AsyncStorage.setItem('UserId', value);
-    user.Role === 'Professor' ? null : messaging().subscribeToTopic('Svi');
-    user.Role === 'Professor'
-      ? null
-      : messaging().subscribeToTopic(
-          subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
-        );
-    messaging().subscribeToTopic(user.Class);
+    messaging().subscribeToTopic('Svi');
+    if (user.Role !== 'Professor') {
+      messaging().subscribeToTopic(
+        subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
+      );
+      messaging().subscribeToTopic(user.Class);
+      console.log(user.Class);
+    }
+
     firestore()
       .collection('Users')
       .where('UserID', '==', user.UserID)
@@ -76,7 +78,9 @@ const RegistrationScreen = ({
           const saveAll = async () => {
             setIsCorrect(true);
             const user: User = querySnapshot.docs[0].data() as User;
+
             await saveUser(user);
+
             navigation.navigate('NavigationScreen');
           };
           saveAll();
@@ -217,7 +221,10 @@ const Registration = ({navigation}: RegistrationProps) => {
       ]),
     ).start();
   });
-
+  // AsyncStorage.removeItem('Role');
+  // AsyncStorage.removeItem('Class');
+  // AsyncStorage.removeItem('Name');
+  // AsyncStorage.removeItem('UserId');
   if (LoadingScreen(navigation) === true) {
     return <RegistrationScreen navigation={navigation} />;
   } else {
