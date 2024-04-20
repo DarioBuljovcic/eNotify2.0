@@ -62,8 +62,8 @@ export default function NotificationViewrs({route}: {route: any}) {
             {item.Name}
           </Text>
           <Ionicons
-            name={'checkmark-done-outline'}
-            size={24}
+            name={'checkmark-circle'}
+            size={21}
             color={'green'}></Ionicons>
         </View>
       );
@@ -87,8 +87,8 @@ export default function NotificationViewrs({route}: {route: any}) {
             {item.Name}
           </Text>
           <Ionicons
-            name={'checkmark-done-outline'}
-            size={24}
+            name={'checkmark-circle-outline'}
+            size={21}
             color={'gray'}></Ionicons>
         </View>
       );
@@ -153,11 +153,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
+    flexDirection:'row',
+    justifyContent:'space-between',
 
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
+
   },
 });
