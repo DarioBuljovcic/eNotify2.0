@@ -33,8 +33,13 @@ export default function DataTableStudents() {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(true);
+
   const [editOn, setEditOn] = useState(false);
   const [searchOn, setSearchOn] = useState(false);
+
+  const [filter, setFilter] = useState(0);
+  const [filterInput, setFilterInput] = useState("");
+
   const [editUser, setEditUser] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -161,9 +166,20 @@ export default function DataTableStudents() {
   ];
   const Search = async () => {
     const newData: User[] = [];
-
-    // where(),
-    onSnapshot(query(collection(db, "Users")), (querySnapshot) => {
+    const getQuery = () => {
+      switch (filter) {
+        case 0:
+          return where("Naziv", "==", filterInput);
+        case 1:
+          return where("Email", "==", filterInput);
+        case 2:
+          return where("Class", "==", filterInput);
+        default:
+          return where("Naziv", "==", "");
+      }
+    };
+    setFilterInput("");
+    onSnapshot(query(collection(db, "Users"), getQuery()), (querySnapshot) => {
       newData.length = 0;
       querySnapshot.forEach((doc) => {
         newData.push(doc.data() as User);
@@ -258,18 +274,53 @@ export default function DataTableStudents() {
         <div
           className={`editContainer filterBox ${searchOn ? "searchOn" : ""}`}
         >
-          <label htmlFor="inputIme">Naziv</label>
-          <input type="text" />
-          <label htmlFor="inputIme">Email</label>
-          <input type="text" />
-          <label htmlFor="inputIme">Razred</label>
-          <input type="text" />
-          <button className="btn saveEdit" onClick={() => Search()}>
-            Filtriraj
-          </button>
-          <button className="btn saveEdit" onClick={() => getData()}>
-            Očisti
-          </button>
+          <div className="filters">
+            <button
+              className={`filtersBtn ${filter === 0 ? "selected" : ""}`}
+              onClick={() => {
+                setFilter(0);
+                setFilterInput("");
+              }}
+            >
+              Naziv
+            </button>
+
+            <button
+              className={`filtersBtn ${filter === 1 ? "selected" : ""}`}
+              onClick={() => {
+                setFilter(1);
+                setFilterInput("");
+              }}
+            >
+              Email
+            </button>
+
+            <button
+              className={`filtersBtn ${filter === 2 ? "selected" : ""}`}
+              onClick={() => {
+                setFilter(2);
+                setFilterInput("");
+              }}
+            >
+              Razred
+            </button>
+          </div>
+          <input
+            type="text"
+            placeholder={`${
+              filter === 0 ? "Naziv" : filter === 1 ? "Email" : "Razred"
+            }`}
+            value={filterInput}
+            onChange={(o) => setFilterInput(o.target.value)}
+          />
+          <div className="filterButtons">
+            <button className="btn saveEdit" onClick={() => Search()}>
+              Filtriraj
+            </button>
+            <button className="btn saveEdit" onClick={() => getData()}>
+              Očisti
+            </button>
+          </div>
         </div>
         <div className="dataTable">
           <DataTable

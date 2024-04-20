@@ -16,7 +16,11 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-
+@property --background {
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
 body {
     .filterBtn {
         background-color: transparent;
@@ -66,6 +70,7 @@ body {
         }
         .rdt_Table {
             z-index: 20;
+            min-height: 300px;
         }
 
         .editContainer {
@@ -112,6 +117,39 @@ body {
             }
             .saveEdit {
                 cursor: pointer;
+            }
+        }
+        .filterBox {
+            display: grid;
+            gap: 2em;
+            .filters {
+                display: flex;
+                gap: 10px;
+                .filtersBtn {
+                    border: 0px;
+                    padding: 5px;
+                    background-color: transparent;
+                    position: relative;
+                    cursor: pointer;
+                    font-size: 1em;
+                    &::after {
+                        position: absolute;
+                        content: "";
+                        width: 0%;
+                        height: 2px;
+                        left: 0;
+                        bottom: 0px;
+                        background-color: #212529;
+                        transition: width 0.5s;
+                    }
+                    &.selected::after {
+                        width: 100%;
+                    }
+                }
+            }
+            .filterButtons {
+                display: grid;
+                gap: 0.5em;
             }
         }
     }
