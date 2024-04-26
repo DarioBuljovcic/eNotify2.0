@@ -62,7 +62,7 @@ const FileUploadForm = () => {
               };
               axios
                 .post(
-                  "http://localhost:9000/.netlify/functions/api/send-email",
+                  "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
                   {
                     to: item.Email,
                     subject: "Vaš kod",

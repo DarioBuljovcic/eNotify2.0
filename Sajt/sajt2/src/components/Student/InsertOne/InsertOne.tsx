@@ -46,11 +46,14 @@ function InsertOne({ Successful }) {
         LogOut: true,
       };
       axios
-        .post("http://localhost:9000/.netlify/functions/api/send-email", {
-          to: Email.current.value,
-          subject: "Vaš kod",
-          text: UserID,
-        })
+        .post(
+          "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
+          {
+            to: Email.current.value,
+            subject: "Vaš kod",
+            text: UserID,
+          }
+        )
         .then((response) => {
           console.log(response.data);
         })
