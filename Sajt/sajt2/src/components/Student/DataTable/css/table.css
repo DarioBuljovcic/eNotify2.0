@@ -16,11 +16,6 @@
   background: #555;
 }
 
-@property --background {
-  syntax: "<length-percentage>";
-  inherits: false;
-  initial-value: 0%;
-}
 body .filterBtn {
   background-color: transparent;
   border: 2px solid rgb(54, 54, 54);
@@ -99,7 +94,7 @@ body .containerTable .editContainer.editOn {
   left: -250px;
 }
 body .containerTable .editContainer.searchOn {
-  left: 820px;
+  left: 720px;
 }
 body .containerTable .editContainer .saveEdit {
   cursor: pointer;

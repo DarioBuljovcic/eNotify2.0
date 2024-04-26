@@ -29,11 +29,13 @@ html {
             width: 100%;
             .display {
                 margin-inline: 2em;
-                display: grid;
+                display: flex;
+                flex-direction: column;
                 gap: 2em;
-                max-width: 800px;
+                width: 700px;
+                min-height: 500px;
                 justify-self: center;
-                min-width: 480px;
+
                 .optionText {
                     font-size: 2em;
                     font-family: "Source Sans 3";

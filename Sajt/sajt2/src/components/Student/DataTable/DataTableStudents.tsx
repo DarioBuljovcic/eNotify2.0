@@ -9,6 +9,7 @@ import {
   updateDoc,
   where,
   deleteDoc,
+  and,
 } from "firebase/firestore";
 import "./css/table.css";
 import { IonIcon } from "@ionic/react";
@@ -169,16 +170,15 @@ export default function DataTableStudents() {
     const getQuery = () => {
       switch (filter) {
         case 0:
-          return where("Naziv", "==", filterInput);
+          return where("Name", "==", filterInput);
         case 1:
           return where("Email", "==", filterInput);
         case 2:
           return where("Class", "==", filterInput);
         default:
-          return where("Naziv", "==", "");
+          return where("", "==", "");
       }
     };
-    setFilterInput("");
     onSnapshot(query(collection(db, "Users"), getQuery()), (querySnapshot) => {
       newData.length = 0;
       querySnapshot.forEach((doc) => {
@@ -186,6 +186,7 @@ export default function DataTableStudents() {
       });
       setData([...newData]);
     });
+    setFilterInput("");
   };
   const getData = async () => {
     const newData: User[] = [];

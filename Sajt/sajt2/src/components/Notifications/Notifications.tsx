@@ -137,7 +137,6 @@ function MainPage({ Successful }) {
             "http://localhost:9000/.netlify/functions/api/data",
             dataToInsert
           );
-          console.log(response);
         } catch (error) {
           console.error("Error sending data:", error);
         }

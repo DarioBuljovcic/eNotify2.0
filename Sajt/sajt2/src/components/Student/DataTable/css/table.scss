@@ -16,11 +16,6 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-@property --background {
-    syntax: "<length-percentage>";
-    inherits: false;
-    initial-value: 0%;
-}
 body {
     .filterBtn {
         background-color: transparent;
@@ -113,7 +108,7 @@ body {
                 left: -250px;
             }
             &.searchOn {
-                left: 820px;
+                left: 720px;
             }
             .saveEdit {
                 cursor: pointer;

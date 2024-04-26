@@ -22,6 +22,16 @@ type Data = {
   Role: string;
   UserID: string;
 };
+function extractXlsContent(html) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
+  const table = doc.querySelectorAll("table")[1];
+  const trs = doc.querySelectorAll("tr");
+  const array = Array.from(trs).slice(6);
+  console.log(array[0].outerHTML);
+
+  return table ? table.innerHTML : "";
+}
 
 const FileUploadForm = () => {
   const [isAdvancedUpload, setIsAdvancedUpload] = useState(false);
@@ -37,58 +47,76 @@ const FileUploadForm = () => {
     }
     return password;
   };
+
   const handleFile = async (file: File) => {
     if (file) {
       const reader = new FileReader();
-      reader.onload = async (event) => {
+      reader.onload = async (event: any) => {
         if (event.target) {
-          const binaryString = event.target.result as string;
-          const workbook = XLSX.read(binaryString, { type: "binary" });
-          const sheetName = workbook.SheetNames[0];
-          const sheet = workbook.Sheets[sheetName];
-          const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
-          for (let item of data) {
-            const name = item.Name + " " + item.Surname;
-            try {
-              const userID = generatePassword(7);
-              const data: Data = {
-                Name: name,
-                Email: item.Email,
-                Class: item.Class,
-                Role: item.Role,
-                UserID: userID,
-              };
-              // axios
-              //   .post(
-              //     "http://localhost:9000/.netlify/functions/api/send-email",
-              //     {
-              //       to: item.Email,
-              //       subject: "Vaš kod",
-              //       text: userID,
-              //     }
-              //   )
-              //   .then((response) => {
-              //     console.log(response.data);
-              //   })
-              //   .catch((error) => {
-              //     console.error("Error sending email:", error);
-              //   });
-              // await addDoc(collection(db, "Users"), data);
-            } catch (error) {
-              console.error(error);
-            }
-            console.log("aloo");
-          }
+          const blob = new Blob([event.target.result], {
+            type: "application/json",
+          });
+          const text = await blob.text();
+
+          const binaryString = extractXlsContent(text);
+          console.log(binaryString);
+          // function parseHtmlToJson(htmlContent: any) {
+          //   const parser = new DOMParser();
+          //   const doc = parser.parseFromString(htmlContent, "text/html");
+          //   const data = doc.querySelector("body").innerHTML.split("\n");
+
+          //   const days = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak"];
+          // }
+          // parseHtmlToJson(text);
+
+          // const workbook = XLSX.read(binaryString, { type: "binary" });
+          // const sheetName = workbook.SheetNames[0];
+          // const sheet = workbook.Sheets[sheetName];
+          // const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
+          // for (let item of data) {
+          //   const name = item.Name + " " + item.Surname;
+          //   try {
+          //     const userID = generatePassword(7);
+          //     const data: Data = {
+          //       Name: name,
+          //       Email: item.Email,
+          //       Class: item.Class,
+          //       Role: item.Role,
+          //       UserID: userID,
+          //     };
+          //     // axios
+          //     //   .post(
+          //     //     "http://localhost:9000/.netlify/functions/api/send-email",
+          //     //     {
+          //     //       to: item.Email,
+          //     //       subject: "Vaš kod",
+          //     //       text: userID,
+          //     //     }
+          //     //   )
+          //     //   .then((response) => {
+          //     //     console.log(response.data);
+          //     //   })
+          //     //   .catch((error) => {
+          //     //     console.error("Error sending email:", error);
+          //     //   });
+          //     // await addDoc(collection(db, "Users"), data);
+          //   } catch (error) {
+          //     console.error(error);
+          //   }
+          //   console.log("aloo");
+          // }
         }
       };
       reader.readAsBinaryString(file);
     }
   };
+
   const insertFile = (e) => {
     console.log("halooo");
     const file = e.target.files[0];
     handleFile(file);
   };
+
   useEffect(() => {
     const checkAdvancedUpload = () => {
       const div = document.createElement("div");
@@ -106,6 +134,7 @@ const FileUploadForm = () => {
 
     checkAdvancedUpload();
   }, []);
+
   useEffect(() => {
     const form = document.querySelector(".box");
     if (isAdvancedUpload) {
