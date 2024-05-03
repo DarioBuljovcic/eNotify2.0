@@ -7,15 +7,17 @@ import {
   Animated,
   useColorScheme,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
 import LanguageText from '../Text';
 import {UserScreenTabProps} from '../../components/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
+  const {t,i18n} = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const [role, setRole] = useState('');
   const [name, setName] = useState('');
@@ -60,6 +62,63 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     imgSource = require('../../assets/images/open-book.png');
   } else {
     imgSource = require('../../assets/images/graduation.png');
+  }
+
+  const changeLanguage = () => {
+    if(i18n.language==='sr')
+      i18n.changeLanguage('en');
+    else
+      i18n.changeLanguage('sr');
+
+  }
+
+  const renderLanguage = () => {
+    if(i18n.language==='sr'){
+      return(
+        <Text
+              style={[
+                styles.optionTextLanguage,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              srpski
+            </Text>
+      )
+    }
+    else if (i18n.language==='en'){
+      return(
+        <Text
+              style={[
+                styles.optionTextLanguage,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              english
+            </Text>
+      )
+    }
+    else if (i18n.language==='hu'){
+      return(
+        <Text
+              style={[
+                styles.optionTextLanguage,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              madjar
+            </Text>
+      )
+    }
+
   }
 
   return (
@@ -164,6 +223,37 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               O aplikaciji
             </Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.notificationBG
+                  : Colors.Light.notificationBG,
+              },
+            ]}
+            activeOpacity={0.5}
+            onPress={changeLanguage}>
+            <Text
+              style={[
+                styles.optionText,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              {t('test')}
+            </Text>
+            {renderLanguage()}
+            <Ionicons 
+              name={'language'}
+              size={30}
+              color={isDarkMode
+                ? Colors.Dark.textSecondary
+                : Colors.Light.textSecondary}/>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -234,6 +324,12 @@ const styles = StyleSheet.create({
     fontSize: 17,
     flex: 1,
     fontFamily: 'Mulish-Light',
+  },
+  optionTextLanguage: {
+    fontSize: 12,
+    fontFamily: 'Mulish-Light',
+    textAlign:'right',
+    marginRight:15,
   },
   modeChange: {
     width: 45,
