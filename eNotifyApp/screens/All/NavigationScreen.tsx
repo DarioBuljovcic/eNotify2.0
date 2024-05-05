@@ -24,7 +24,7 @@ import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 
 const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
-
+  
   const [role, setRole] = useState('');
   const [pressed, setPressed] = useState('');
 
@@ -201,6 +201,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         <Tab.Screen
           name="Obavestenja"
           component={Student}
+          
           listeners={{
             tabPress: e => {
               if (pressed !== 'Obavestenja') {
@@ -214,6 +215,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         <Tab.Screen
           name="Raspored"
           component={RasporedV3}
+          
           listeners={{
             tabPress: e => {
               if (pressed !== 'Raspored') {
@@ -227,6 +229,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         <Tab.Screen
           name="Moj Nalog"
           component={UserScreen}
+          
           listeners={{
             tabPress: () => {
               if (pressed !== 'Moj Nalog') {

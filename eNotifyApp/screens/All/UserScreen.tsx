@@ -6,6 +6,7 @@ import {
   Appearance,
   Animated,
   useColorScheme,
+  Dimensions,
 } from 'react-native';
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +16,7 @@ import {UserScreenTabProps} from '../../components/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
+import { color } from 'react-native-elements/dist/helpers';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
   const {t,i18n} = useTranslation();
@@ -23,11 +25,13 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [name, setName] = useState('');
   const [grade, setGrade] = useState('');
   const [language, setLanguage] = useState('');
+  const [languageModal, setLanguageModal] = useState(false);
   const rotationValue = useRef(new Animated.Value(isDarkMode ? 0 : 1)).current;
   const rotate = rotationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
+  
 
   useEffect(() => {
     const saveUser = async () => {
@@ -64,12 +68,15 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     imgSource = require('../../assets/images/graduation.png');
   }
 
-  const changeLanguage = () => {
-    if(i18n.language==='sr')
-      i18n.changeLanguage('en');
-    else
+  const changeLanguage = (prop:string) => {
+    if(prop==='sr')
       i18n.changeLanguage('sr');
+    else if(prop==='hu')
+      i18n.changeLanguage('hu');
+    else if(prop==='en')
+      i18n.changeLanguage('en');
 
+    setLanguageModal(false);
   }
 
   const renderLanguage = () => {
@@ -197,7 +204,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                   : Colors.Light.textSecondary,
               },
             ]}>
-            {role == 'Professor' ? 'Profesor' : 'Student'}
+            {role == 'Professor' ? t('proffesor') : t('student')}
           </Text>
 
           <TouchableOpacity
@@ -220,7 +227,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                     : Colors.Light.textSecondary,
                 },
               ]}>
-              O aplikaciji
+              {t('about') }
             </Text>
           </TouchableOpacity>
 
@@ -234,7 +241,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               },
             ]}
             activeOpacity={0.5}
-            onPress={changeLanguage}>
+            onPress={()=>setLanguageModal(true)}>
             <Text
               style={[
                 styles.optionText,
@@ -244,7 +251,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                     : Colors.Light.textSecondary,
                 },
               ]}>
-              {t('test')}
+              {t('language')}
             </Text>
             {renderLanguage()}
             <Ionicons 
@@ -256,6 +263,22 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
           </TouchableOpacity>
         </View>
       </View>
+      {languageModal?
+        <TouchableOpacity style={styles.modalBackground} onPress={()=>setLanguageModal(false)} activeOpacity={1}>
+          <View style={styles.modal}>
+            <TouchableOpacity style={[styles.languageOption,{borderBottomWidth:1},{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground},{borderColor:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}]} activeOpacity={1} onPress={()=>changeLanguage('sr')}>
+              <Text style={[styles.languageOptionText,{color: i18n.language==='sr'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>Srpski</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.languageOption,{borderBottomWidth:1},{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground},{borderColor:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}]} activeOpacity={1} onPress={()=>changeLanguage('hu')}>
+              <Text style={[styles.languageOptionText,{color: i18n.language==='hu'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>Madjarski</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.languageOption,{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground}]} activeOpacity={1} onPress={()=>changeLanguage('en')}>
+              <Text style={[styles.languageOptionText,{color: i18n.language==='en'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>Engleski</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+        :null
+      }
     </View>
   );
 };
@@ -301,6 +324,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
+    textTransform:'capitalize',
   },
 
   option: {
@@ -324,6 +348,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     flex: 1,
     fontFamily: 'Mulish-Light',
+    textTransform:'capitalize'
   },
   optionTextLanguage: {
     fontSize: 12,
@@ -350,6 +375,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
 
     transformOrigin: 'right',
+  },
+  modalBackground:{
+    position:'absolute',
+    top:-120,
+    width:Dimensions.get('screen').width,
+    height:Dimensions.get('screen').height,
+    justifyContent:'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modal:{
+    alignSelf:'center',
+    width:250,
+    height:150,
+    backgroundColor:Colors.Light.textInputBackground,
+    borderRadius:20,
+    overflow:'hidden',
+  },
+  languageOption:{
+    height:150/3,
+    justifyContent:'center'
+  },
+  languageOptionText:{
+    marginLeft:10,
+    fontSize:14,
+    color:Colors.Light.textPrimary,
+    fontFamily:'Mulish'
   },
 });
 

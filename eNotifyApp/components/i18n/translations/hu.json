@@ -1,3 +1,7 @@
 {
-    "test":"hungary"
+    "test": "tesztelés",
+    "proffesor": "professzor",
+    "student": "diák",
+    "about": "ról",
+    "language": "nyelv"
 }
