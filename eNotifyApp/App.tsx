@@ -26,6 +26,8 @@ import NavigationScreen from './screens/All/NavigationScreen';
 import NotificationViewrs from './screens/Professor/NotificationViewrs';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text } from 'react-native-elements';
+import { useTranslation } from 'react-i18next';
 
 const getMode = async () => {
   const mode = await AsyncStorage.getItem('Mode');
@@ -98,6 +100,7 @@ const linking = {
 function App(): React.JSX.Element {
   LogBox.ignoreAllLogs();
   const isDarkMode = useColorScheme() === 'dark';
+  const {t} = useTranslation();
   const [unseenNotify, setUnseenNotify] = useState(0);
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {});
@@ -210,9 +213,10 @@ function App(): React.JSX.Element {
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 35,
+              fontSize: 25,
               fontFamily: 'Mulish-Light',
               marginBottom: 25,
+              width:'100%',
             },
             headerLeftContainerStyle: {
               marginBottom: 25,
@@ -349,7 +353,7 @@ function App(): React.JSX.Element {
           component={About}
           options={() => ({
             headerBackVisible: false,
-            title: 'O aplikaciji',
+            title: t('about'),
             headerStyle: {
               height: 150,
               elevation: 0,
@@ -359,6 +363,7 @@ function App(): React.JSX.Element {
               fontSize: 35,
               fontFamily: 'Mulish-Light',
               marginBottom: 25,
+              textTransform:'capitalize',
             },
             headerLeftContainerStyle: {
               marginBottom: 25,

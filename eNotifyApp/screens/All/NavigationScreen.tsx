@@ -21,10 +21,13 @@ import {NavigationScreenProps} from '../../components/Types/indexTypes';
 import {Button, Text} from 'react-native-elements';
 import Professor from '../Professor/Professor';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
+import { useTranslation } from 'react-i18next';
 
 const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
   
+  const {t} = useTranslation();
+
   const [role, setRole] = useState('');
   const [pressed, setPressed] = useState('');
 
@@ -139,6 +142,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           tabBarLabelStyle: {
             fontSize: 12,
             fontFamily: 'Mulish',
+            textTransform:'capitalize',
           },
           headerStyle: {
             height: 150,
@@ -149,6 +153,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             fontSize: 35,
             fontFamily: 'Mulish',
             marginBottom: 25,
+            textTransform:'capitalize',
           },
           headerTitleAlign: 'left',
           headerBackground: () => (
@@ -201,6 +206,10 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         <Tab.Screen
           name="Obavestenja"
           component={Student}
+          options={{
+            tabBarLabel:t('notification'),
+            headerTitle:t('notification'),
+          }}
           
           listeners={{
             tabPress: e => {
@@ -215,6 +224,10 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         <Tab.Screen
           name="Raspored"
           component={RasporedV3}
+          options={{
+            tabBarLabel:t('timetable'),
+            headerTitle:t('timetable'),
+          }}
           
           listeners={{
             tabPress: e => {
@@ -229,6 +242,10 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         <Tab.Screen
           name="Moj Nalog"
           component={UserScreen}
+          options={{
+            tabBarLabel:t('account'),
+            headerTitle:t('account'),
+          }}
           
           listeners={{
             tabPress: () => {
@@ -305,6 +322,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             tabBarLabelStyle: {
               fontSize: 12,
               fontFamily: 'Mulish',
+              textTransform:'capitalize',
             },
             headerStyle: {
               height: 150,
@@ -315,6 +333,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
               fontSize: 35,
               fontFamily: 'Mulish',
               marginBottom: 25,
+              textTransform:'capitalize',
             },
             headerTitleAlign: 'left',
             headerBackground: () => (
@@ -369,6 +388,10 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           <Tab.Screen
             name="Obavestenja"
             component={Professor}
+            options={{
+              tabBarLabel:t('notification'),
+              headerTitle:t('notification'),
+            }}
             listeners={{
               tabPress: e => {
                 if (pressed !== 'Obavestenja') {
@@ -382,6 +405,10 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           <Tab.Screen
             name="Raspored"
             component={RasporedV3}
+            options={{
+              tabBarLabel:t('timetable'),
+              headerTitle:t('timetable'),
+            }}
             listeners={{
               tabPress: e => {
                 if (pressed !== 'Raspored') {
@@ -395,6 +422,10 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           <Tab.Screen
             name="Moj Nalog"
             component={UserScreen}
+            options={{
+              tabBarLabel:t('account'),
+              headerTitle:t('account'),
+            }}
             listeners={{
               tabPress: () => {
                 if (pressed !== 'Moj Nalog') {

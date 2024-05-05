@@ -1,7 +1,19 @@
 {
     "test":"testing",
+    "english": "english",
+    "serbian": "serbian",
+    "hungarian": "hungarian",
     "proffesor":"proffesor",
     "student":"student",
     "about":"about",
-    "language":"language"
+    "language":"language",
+    "notification":"notification",
+    "timetable":"timetable",
+    "account":"account",
+    "monday": "monday",
+    "tuesday": "tuesday",
+    "wednesday": "wednesday",
+    "thursday": "thursday",
+    "friday": "friday",
+    "about text": "eNotify is a powerful tool for efficiently informing students about important events, activities, and information related to their school. This application enables schools to easily communicate with their students through fast, reliable, and personalized notifications."
 }

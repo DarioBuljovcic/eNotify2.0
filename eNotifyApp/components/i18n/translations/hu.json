@@ -1,7 +1,19 @@
 {
     "test": "tesztelés",
+    "english": "angol",
+    "serbian": "szerb",
+    "hungarian": "magyar",
     "proffesor": "professzor",
     "student": "diák",
     "about": "ról",
-    "language": "nyelv"
+    "language": "nyelv",
+    "notification": "értesítés",
+    "timetable": "időbeosztás",
+    "account": "fiók",
+    "monday": "hétfő",
+    "tuesday": "kedd",
+    "wednesday": "szerda",
+    "thursday": "csütörtök",
+    "friday": "péntek",
+    "about text": "Az eNotify egy hatékony eszköz az iskolai fontos események, tevékenységek és információk hatékony közlésére a diákokkal. Ez az alkalmazás lehetővé teszi az iskoláknak, hogy könnyedén kommunikáljanak a diákjaikkal gyors, megbízható és személyre szabott értesítések révén."
 }

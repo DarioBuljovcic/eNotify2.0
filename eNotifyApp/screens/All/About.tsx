@@ -1,9 +1,11 @@
 import {Appearance, StyleSheet, Text, View, useColorScheme} from 'react-native';
 import Colors from '../../components/Constants/Color';
+import { useTranslation } from 'react-i18next';
 // import { LinearGradient } from "expo-linear-gradient";
 
 export default function About() {
   const isDarkMode = useColorScheme() === 'light';
+  const {t}=useTranslation();
   return (
     <View
       style={[
@@ -24,10 +26,7 @@ export default function About() {
                 : Colors.Dark.textPrimary,
           },
         ]}>
-        "eNotify" je moćan alat za efikasno obaveštavanje učenika o važnim
-        događajima, aktivnostima i informacijama u vezi sa njihovom školom. Ova
-        aplikacija omogućava školama da lako komuniciraju sa svojim učenicima
-        putem brzih, pouzdanih i personalizovanih obaveštenja.
+        {t('about text')}
       </Text>
     </View>
   );

@@ -91,7 +91,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                     : Colors.Light.textSecondary,
                 },
               ]}>
-              srpski
+              {t('serbian')}
             </Text>
       )
     }
@@ -100,13 +100,13 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
         <Text
               style={[
                 styles.optionTextLanguage,
-                {
+                { 
                   color: isDarkMode
                     ? Colors.Dark.textSecondary
                     : Colors.Light.textSecondary,
                 },
               ]}>
-              english
+              {t('english')}
             </Text>
       )
     }
@@ -121,7 +121,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                     : Colors.Light.textSecondary,
                 },
               ]}>
-              madjar
+              {t('hungarian')}
             </Text>
       )
     }
@@ -267,13 +267,13 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
         <TouchableOpacity style={styles.modalBackground} onPress={()=>setLanguageModal(false)} activeOpacity={1}>
           <View style={styles.modal}>
             <TouchableOpacity style={[styles.languageOption,{borderBottomWidth:1},{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground},{borderColor:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}]} activeOpacity={1} onPress={()=>changeLanguage('sr')}>
-              <Text style={[styles.languageOptionText,{color: i18n.language==='sr'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>Srpski</Text>
+              <Text style={[styles.languageOptionText,{color: i18n.language==='sr'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>{t('serbian')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.languageOption,{borderBottomWidth:1},{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground},{borderColor:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}]} activeOpacity={1} onPress={()=>changeLanguage('hu')}>
-              <Text style={[styles.languageOptionText,{color: i18n.language==='hu'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>Madjarski</Text>
+              <Text style={[styles.languageOptionText,{color: i18n.language==='hu'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>{t('hungarian')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.languageOption,{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground}]} activeOpacity={1} onPress={()=>changeLanguage('en')}>
-              <Text style={[styles.languageOptionText,{color: i18n.language==='en'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>Engleski</Text>
+              <Text style={[styles.languageOptionText,{color: i18n.language==='en'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>{t('english')}</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -400,7 +400,8 @@ const styles = StyleSheet.create({
     marginLeft:10,
     fontSize:14,
     color:Colors.Light.textPrimary,
-    fontFamily:'Mulish'
+    fontFamily:'Mulish',
+    textTransform:'capitalize',
   },
 });
 
