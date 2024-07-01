@@ -52,7 +52,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     );
     const rotateAnimation = Animated.timing(rotationValue, {
       toValue: Appearance.getColorScheme() === 'dark' ? 1 : 0,
-      duration: 800,
+      duration: 500,
       useNativeDriver: true,
     });
 
@@ -139,29 +139,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
         },
       ]}>
       <View style={styles.containerSize}>
-        <TouchableOpacity
-          style={[
-            styles.modeChange,
-            {
-              borderColor: isDarkMode
-                ? Colors.Dark.accentGreen
-                : Colors.Light.accentGreen,
-            },
-          ]}
-          onPress={() => changeMode()}>
-          <Animated.View style={[styles.modeRotate, {transform: [{rotate}]}]}>
-            <Ionicons
-              name={'moon-outline'}
-              size={35}
-              color={Colors.Dark.accentGreen}
-            />
-            <Ionicons
-              name={'sunny-outline'}
-              size={35}
-              color={Colors.Light.accentGreen}
-            />
-          </Animated.View>
-        </TouchableOpacity>
+
         <View style={styles.userInfo}>
           <LinearGradient
             start={{x: 0.1, y: 0}}
@@ -260,6 +238,55 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               color={isDarkMode
                 ? Colors.Dark.textSecondary
                 : Colors.Light.textSecondary}/>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.notificationBG
+                  : Colors.Light.notificationBG,
+              },
+            ]}
+            activeOpacity={0.5}
+            onPress={() => changeMode()}>
+            <Text
+              style={[
+                styles.optionText,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              {t('dark mode') }
+            </Text>
+
+            <TouchableOpacity
+              style={[
+                styles.modeChange,
+                {
+                  borderColor: isDarkMode
+                    ? Colors.Dark.accentGreen
+                    : Colors.Light.accentGreen,
+                },
+              ]}
+              onPress={() => changeMode()}>
+              <Animated.View style={[styles.modeRotate, {transform: [{rotate}]}]}>
+                <Ionicons
+                  name={'moon-outline'}
+                  size={35}
+                  color={Colors.Dark.textSecondary}
+                />
+                <Ionicons
+                  name={'sunny-outline'}
+                  size={35}
+                  color={Colors.Light.textSecondary}
+                />
+              </Animated.View>
+            </TouchableOpacity>
+
           </TouchableOpacity>
         </View>
       </View>
@@ -361,17 +388,12 @@ const styles = StyleSheet.create({
     aspectRatio: 1 / 1,
     display: 'flex',
     justifyContent: 'center',
-    paddingLeft: 2,
     borderRadius: 25,
     overflow: 'hidden',
-    borderWidth: 3,
-    position: 'absolute',
-    top: -20,
-    right: -20,
   },
   modeRotate: {
     display: 'flex',
-    gap: 4.5,
+    gap: 20,
     flexDirection: 'row',
 
     transformOrigin: 'right',
