@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import ExcelReader from "./Excel/ExcelReader.tsx";
+import ExcelReader from "./Excel/ExcelReader";
 import "./css/student.css";
-import InsertOne from "./InsertOne/InsertOne.tsx";
+import InsertOne from "./InsertOne/InsertOne";
 
-export default function Users({ Successful }) {
+export default function Users() {
   const [inputType, setInputType] = useState(1);
 
   function displayOption() {
@@ -11,7 +11,7 @@ export default function Users({ Successful }) {
       case 1:
         return <ExcelReader />;
       case 2:
-        return <InsertOne Successful={Successful} />;
+        return <InsertOne />;
     }
   }
 

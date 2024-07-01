@@ -2,9 +2,11 @@
 
 .textAreaContainer {
     position: relative;
+
     .input {
         display: none;
     }
+
     .addFiles {
         position: absolute;
         cursor: pointer;
@@ -13,48 +15,61 @@
         border-radius: 50%;
         aspect-ratio: 1/1;
         width: 1.4em;
-        left: calc(100% - 0.8em);
-        top: -0.3em;
+        left: calc(100%);
+        top: -0.5em;
         opacity: 0;
         transition:
             opacity 0.2s,
             top 0.2s;
+
         &:hover {
-            top: -0.5em;
+            top: -0.8em;
         }
     }
+
     .textarea {
-        width: calc(100% - 1em);
         color: #666666;
-        padding: 0.5em;
-        border-radius: 0.5vw;
-        border: 2px solid $borderColor;
+        // border: 2px solid $borderColor;
         outline: none;
         font-family: "Heebo", sans-serif;
-        font-weight: 500;
-        font-size: 16px;
         line-height: 1.4;
-        height: 100px;
+        height: 120px;
         transition: all 0.2s;
         resize: none;
+        position: relative;
+        display: inline-block;
+        width: calc(100%);
+
+        padding: .5em;
+        border: 1px solid $borderColor;
+        border-radius: 4px;
+        background-color: #fff;
+        cursor: pointer;
+        text-align: left;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        font-size: 1.2rem;
 
         &:hover {
             cursor: pointer;
             background-color: #eeeeee;
         }
+
         &:focus {
             cursor: text;
             color: #333333;
             background-color: white;
             border-color: $selectBorder;
         }
-        &:focus ~ .addFiles {
+
+        &:focus~.addFiles {
             opacity: 1;
         }
     }
+
     .selectedFiles:has(.file) {
         opacity: 1;
     }
+
     .selectedFiles {
         max-height: 100px;
         overflow-y: scroll;
@@ -68,9 +83,11 @@
             border-bottom: 1px solid $selectBorder;
             padding-block: 0.2em;
             position: relative;
+
             span {
                 font-weight: 600;
             }
+
             .delete {
                 position: absolute;
                 font-size: 1.2em;

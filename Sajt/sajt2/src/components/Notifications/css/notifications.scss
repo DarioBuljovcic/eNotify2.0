@@ -8,34 +8,61 @@
     .forma {
         display: grid;
         gap: 1em;
+
         .inputContainer {
             display: grid;
+            width: 20em;
+
+            .textAreaContainer {
+                input {
+                    display: none;
+                }
+            }
+
+            label {
+                font-size: 1.2rem;
+                margin-bottom: .5em;
+            }
+
             input {
-                padding: 0.3em;
-                border: 0.1em solid $borderColor;
-                border-radius: 0.25em;
-                font-size: 1em;
-                outline: 0;
-                transition: 0.2s;
+                position: relative;
+                display: inline-block;
+                width: calc(100%);
+
+                padding: .5em;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                cursor: pointer;
+                text-align: left;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+                font-size: 1.2rem;
+
                 &:focus,
                 &:active {
                     border: 0.1em solid $selectBorder;
+                    background-color: #eeeeee;
                 }
+
                 &:hover {
                     cursor: pointer;
                     background-color: #eeeeee;
                 }
             }
+
         }
 
         .razredi-options {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 1em;
+
             .radio-list {
                 display: flex;
                 justify-content: center;
                 gap: 1.2em;
                 position: relative;
+
                 .razredi-btn {
                     border: 0.15em solid $borderColor;
                     border-radius: 0.25em;
@@ -51,6 +78,7 @@
                         background-color: #eeeeee;
                     }
                 }
+
                 .selectedOption {
                     border: 0.15em solid $selectBorder;
                 }
@@ -65,6 +93,8 @@
             transition: 0.2s;
             cursor: pointer;
             text-align: center;
+            font-size: 1.2rem;
+            width: calc(100% + 1em);
 
             &:hover {
                 border: 0.15em solid $selectBorder;

@@ -15,16 +15,16 @@ function App() {
     "Dodavanje Učenika",
     0,
   ]);
-  const [text, setText] = useState("");
+
 
   const displayOption = () => {
     switch (selectedOption[1]) {
       case 0:
-        return <Student Successful={(text) => setText(text)} />;
+        return <Student />;
       case 1:
         return <DataTableStudents />;
       case 2:
-        return <Notifications Successful={(text) => setText(text)} />;
+        return <Notifications />;
       case 3:
         return <DataTableNotifications />;
       case 4:
@@ -38,9 +38,7 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
+  
   return (
     <div class="allContainer">
       <Header setOptionText={(o) => setSelectedOption(o)} />
@@ -48,12 +46,7 @@ function App() {
         <div className="display">
           <div className="optionText">{selectedOption[0]}</div>
           {selectedOption && displayOption()}
-          <div className={`successful ${text ? "open" : ""}`}>
-            <div>{text}</div>
-            <button className="closeSuccessful" onClick={() => setText("")}>
-              &times;
-            </button>
-          </div>
+          
         </div>
       </div>
     </div>

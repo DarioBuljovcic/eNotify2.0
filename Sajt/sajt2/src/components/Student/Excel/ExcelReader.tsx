@@ -86,7 +86,7 @@ const FileUploadForm = () => {
       reader.readAsBinaryString(file);
     }
   };
-  const insertFile = (e) => {
+  const insertFile = (e:any) => {
     console.log("halooo");
     const file = e.target.files[0];
     handleFile(file);

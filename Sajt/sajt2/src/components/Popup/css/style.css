@@ -1,0 +1,72 @@
+/* src/components/ConfirmationDialog.scss */
+.confirmation-dialog-overlay {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.confirmation-dialog-overlay .confirmation-dialog {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.confirmation-dialog-overlay .confirmation-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+.confirmation-dialog-overlay .confirmation-dialog p {
+  margin: 10px 0;
+}
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons {
+  margin-top: 10px;
+}
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons .confirm-button,
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons .cancel-button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons .confirm-button:focus,
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons .cancel-button:focus {
+  outline: none;
+}
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons .confirm-button {
+  background: #4caf50;
+}
+.confirmation-dialog-overlay .confirmation-dialog .confirmation-dialog-buttons .cancel-button {
+  background: #f44336;
+}
+.confirmation-dialog-overlay .confirmation-dialog.enter {
+  opacity: 1;
+  transform: scale(1);
+}
+.confirmation-dialog-overlay .confirmation-dialog.exit {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.confirmation-dialog-overlay.enter {
+  opacity: 1;
+  transform: scale(1);
+}
+.confirmation-dialog-overlay.exit {
+  opacity: 0;
+}
+.confirmation-dialog-overlay.hidden {
+  display: none;
+}/*# sourceMappingURL=style.css.map */

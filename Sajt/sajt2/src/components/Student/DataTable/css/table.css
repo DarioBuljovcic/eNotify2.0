@@ -131,4 +131,22 @@ body .containerTable .filterBox .filters .filtersBtn.selected::after {
 body .containerTable .filterBox .filterButtons {
   display: grid;
   gap: 0.5em;
+}
+body .containerTable .multyFilter {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  display: flex;
+  gap: 20px;
+}
+body .containerTable .multyFilter button {
+  font-size: 1em;
+  padding: 0.25em 0.5em;
+  border-radius: 4px;
+  border: 1px solid red;
+  cursor: pointer;
+}
+body .containerTable .multyFilter button.red {
+  background-color: rgba(251, 39, 39, 0.817);
+  color: white;
 }/*# sourceMappingURL=table.css.map */

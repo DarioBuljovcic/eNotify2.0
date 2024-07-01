@@ -12,28 +12,33 @@
   border-radius: 50%;
   aspect-ratio: 1/1;
   width: 1.4em;
-  left: calc(100% - 0.8em);
-  top: -0.3em;
+  left: 100%;
+  top: -0.5em;
   opacity: 0;
   transition: opacity 0.2s, top 0.2s;
 }
 .textAreaContainer .addFiles:hover {
-  top: -0.5em;
+  top: -0.8em;
 }
 .textAreaContainer .textarea {
-  width: calc(100% - 1em);
   color: #666666;
-  padding: 0.5em;
-  border-radius: 0.5vw;
-  border: 2px solid #adb5bd;
   outline: none;
   font-family: "Heebo", sans-serif;
-  font-weight: 500;
-  font-size: 16px;
   line-height: 1.4;
-  height: 100px;
+  height: 120px;
   transition: all 0.2s;
   resize: none;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding: 0.5em;
+  border: 1px solid #adb5bd;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  font-size: 1.2rem;
 }
 .textAreaContainer .textarea:hover {
   cursor: pointer;
