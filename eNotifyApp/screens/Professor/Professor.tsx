@@ -27,6 +27,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ClassSelection from './ClassSelection';
+import { Input } from 'react-native-elements';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -41,7 +42,6 @@ const generateID = (length: number) => {
   }
   return ID;
 };
-
 function Modal({
   closeModal,
   translateY,
@@ -91,6 +91,10 @@ function Modal({
       setSelectedClass('');
     }
   };
+
+  const AddFile = ()=> {
+    console.log('add file');
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -219,7 +223,7 @@ function Modal({
             }}
             data={razredi}
             search
-            placeholder={!isFocus ? 'Select an item' : '...'}
+            placeholder={!isFocus ? 'Izaberite razred...' : '...'}
             value={selectedClass}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
@@ -231,6 +235,21 @@ function Modal({
             valueField={'Class'}
             keyboardAvoiding={true}
           />
+          
+          <TouchableOpacity 
+            style={[styles.addFile,{borderColor: isDarkMode? Colors.Dark.lightText:Colors.Light.lightText}]}
+            activeOpacity={0.5}
+            onPress={()=> AddFile()}
+          >
+            <Ionicons 
+              name='cloud-outline' 
+              size={50} 
+              color={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
+              />
+              <Text style={{color:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}}>Dodaj file</Text>
+              
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={[
               styles.send,
@@ -253,11 +272,12 @@ export default function Professor({
   navigation,
 }: ProfessorTabProps | ProfessorProps) {
   const isDarkMode = useColorScheme() === 'light';
-  const [visible, setVisible] = useState(false);
+  
   const translateY = useRef(new Animated.Value(800)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [razredi, setRazredi] = useState<Class[]>([]);
   const [naziv, setNaziv] = useState('');
+  const [visible, setVisible] = useState(false);
 
   const animateOpen = () => {
     Animated.parallel([
@@ -372,7 +392,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: 'absolute',
-    bottom: 0,
+    bottom: '-10%',
     zIndex: 120,
 
     borderTopLeftRadius: 10,
@@ -481,5 +501,15 @@ const styles = StyleSheet.create({
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
+  },
+  addFile:{
+    height:'27%',
+    width:'85%',
+    alignSelf: 'center',
+    borderRadius:15,
+    borderWidth:2,
+    borderStyle:'dashed',
+    alignItems:'center',
+    justifyContent:'center'
   },
 });

@@ -140,6 +140,7 @@ const RegistrationScreen = ({
           </LinearGradient>
         </TouchableOpacity>
       </View>
+
       <View
         style={[
           isDarkMode
@@ -236,6 +237,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const loadWidth = 600;
 const R = loadWidth / (2 * Math.PI);
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',

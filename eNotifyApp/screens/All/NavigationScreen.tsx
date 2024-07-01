@@ -10,6 +10,7 @@ import {
   Appearance,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Student from '../Student/Student';
 import React, {useEffect, useState, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -89,6 +90,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
     return (
       <Tab.Navigator
         screenOptions={({route}) => ({
+          
           tabBarIcon: ({focused, color, size}) => {
             let iconName: string = '';
 
@@ -202,7 +204,8 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
               </Svg>
             </View>
           ),
-        })}>
+        })}
+        >
         <Tab.Screen
           name="Obavestenja"
           component={Student}

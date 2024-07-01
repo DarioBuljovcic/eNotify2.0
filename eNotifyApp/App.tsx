@@ -137,10 +137,10 @@ function App(): React.JSX.Element {
             headerBackground: () => (
               <View style={{position: 'absolute', top: -1, zIndex: -11}}>
                 <Svg
-                  width={Dimensions.get('window').width + 10}
-                  height="250"
+                  width={Dimensions.get('window').width+100}
+                  height="350"
                   fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 250`}>
+                  viewBox={`0 0 ${Dimensions.get('window').width+100} 350`}>
                   <Path
                     fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
                     d="M0 0h410v220.645c-55 48.855-136.5 8.855-165 0S86.5 148 0 220.645V0Z"
