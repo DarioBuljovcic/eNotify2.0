@@ -29,6 +29,9 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
   PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 );
+PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+);
 
 const RegistrationScreen = ({
   navigation,
@@ -68,7 +71,7 @@ const RegistrationScreen = ({
         });
       });
   };
-  //Email and Password
+  
   const Login = () => {
     const query = firestore().collection('Users').where('UserID', '==', value);
     query

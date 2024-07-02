@@ -8,6 +8,7 @@ import {
   useColorScheme,
   LogBox,
   Appearance,
+  PermissionsAndroid,
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
@@ -28,6 +29,14 @@ import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Text } from 'react-native-elements';
 import { useTranslation } from 'react-i18next';
+
+PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+);
+PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+);
 
 const getMode = async () => {
   const mode = await AsyncStorage.getItem('Mode');
