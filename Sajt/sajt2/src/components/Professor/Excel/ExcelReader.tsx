@@ -29,6 +29,7 @@ const FileUploadForm = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState("")
 
+
   const generatePassword = (length: number) => {
     // Define the length of the password
     const charset =
@@ -51,7 +52,6 @@ const FileUploadForm = () => {
           const sheet = workbook.Sheets[sheetName];
           const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
           for (let item of data) {
-            console.log(item);
             const name = item.Name + " " + item.Surname;
             try {
               const userID = generatePassword(7);
@@ -59,12 +59,13 @@ const FileUploadForm = () => {
                 Name: name,
                 Email: item.Email,
                 Class: item.Class,
-                Role: 'Student',
+                Role: 'Professor',
                 UserID: userID,
                 LogOut: true,
               };
-              
               setIsOpen(true);
+              
+
               axios
                 .post(
                   "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -75,7 +76,6 @@ const FileUploadForm = () => {
                   }
                 )
                 .then((response) => {
-                  
                   console.log(response.data);
                 })
                 .catch((error) => {
@@ -84,8 +84,8 @@ const FileUploadForm = () => {
               await addDoc(collection(db, "Users"), data);
               setMessage("Učenici su uspešno dodati");
             } catch (error) {
-              setMessage("Došlo je do greške");
               console.error(error);
+              setMessage("Došlo je do greške");
             }
           }
         }

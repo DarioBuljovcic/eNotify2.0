@@ -45,6 +45,7 @@ function MainPage() {
   const [text, setText] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [isOpen, setIsOpen] = useState(false)
+  const [message, setMessage] = useState("")
 
   const grupno = [
     { Class: "Svi razredi", id: "0" },
@@ -147,7 +148,14 @@ function MainPage() {
         }
       };
       sendData();
-      await addDoc(collection(db, "Notifications"), dataToInsert);
+      try {
+        await addDoc(collection(db, "Notifications"), dataToInsert);
+        
+        setMessage("Uspešno poslata notifikacija");
+      } catch (error) {
+        setMessage("Došlo je do greške");
+      }
+      setIsOpen(true);
     }
   }
 
@@ -175,7 +183,7 @@ function MainPage() {
 
   return (
     <div className="formaContainer">
-      <Popup onCancel={()=>setIsOpen(false)} onConfirm={()=>setIsOpen(false)} isOpen={isOpen} message={"Uspešno poslata notifikacija" } showBtns={false}/>
+      <Popup onCancel={()=>setIsOpen(false)} onConfirm={()=>setIsOpen(false)} isOpen={isOpen} message={ message} showBtns={false}/>
       <div className="forma">
         <span className="inputContainer">
           <label htmlFor="inputField">Naslov obaveštenja</label>

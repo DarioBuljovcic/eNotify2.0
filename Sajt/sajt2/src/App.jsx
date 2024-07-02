@@ -9,6 +9,8 @@ import Schedule from "./components/Schedule/Schedule.tsx";
 import ExcelReaderSchedule from "./components/Schedule/Excel/ExcelReaderSchedule.tsx";
 import { useEffect, useState } from "react";
 import "./css/App.css";
+import Professor from "./components/Professor/Professor";
+import DataTableProfessor from "./components/Professor/DataTable/DataTableProfessor";
 
 function App() {
   const [selectedOption, setSelectedOption] = useState([
@@ -24,16 +26,20 @@ function App() {
       case 1:
         return <DataTableStudents />;
       case 2:
-        return <Notifications />;
+        return <Professor />;
       case 3:
-        return <DataTableNotifications />;
+        return <DataTableProfessor />;
       case 4:
-        return <ExcelReaderClasses />;
+        return <Notifications />;
       case 5:
-        return <Classes />;
+        return <DataTableNotifications />;
       case 6:
-        return <ExcelReaderSchedule />;
+        return <ExcelReaderClasses />;
       case 7:
+        return <Classes />;
+      case 8:
+        return <ExcelReaderSchedule />;
+      case 9:
         return <Schedule />;
     }
   };

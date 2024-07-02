@@ -19,8 +19,8 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onConfirm,
   onCancel,
   isOpen,
-  confirmText = "Yes",
-  cancelText = "No",
+  confirmText = "Da",
+  cancelText = "Ne",
   showBtns = true
 }) => {
   const [animationClass, setAnimationClass] = useState<string>('exit');
