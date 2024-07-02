@@ -11,6 +11,7 @@ import {
   Keyboard,
   useColorScheme,
   Appearance,
+  Platform,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -28,6 +29,10 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ClassSelection from './ClassSelection';
 import { Input } from 'react-native-elements';
+import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
+
+import { utils } from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -61,8 +66,11 @@ function Modal({
   const [selectedClass, setSelectedClass] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 
-  const AddNotifaciton = () => {
+  const AddNotifaciton = async() => {
     if (textValue !== '' && tittleValue !== '') {
+
+
+
       const data: NotificationType = {
         NotificationId: generateID(7),
         Tittle: tittleValue,
@@ -74,6 +82,7 @@ function Modal({
         Seen: '',
         From: naziv,
       };
+
       const sendData = async () => {
         try {
           const response = await axios.post(
@@ -84,16 +93,48 @@ function Modal({
           console.error('Error sending data:', error);
         }
       };
+
       sendData();
+
       firestore().collection('Notifications').add(data);
+
       setTextValue('');
       setTittleValue('');
       setSelectedClass('');
     }
   };
+  const [selectedFile, setSelectedFile] = useState<DocumentPickerResponse | null>(null);
+  const AddFile = async()=> {
+    try {
+      const file = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      //const path = await normalizePath(file.uri)
 
-  const AddFile = ()=> {
-    console.log('add file');
+      setSelectedFile(file[0]);
+
+      await console.log(selectedFile?.name);
+      
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('User cancelled file selection');
+      } else {
+        console.log('Error selecting file:', error);
+      }
+    }
+  }
+
+  const normalizePath = async({path}:any)=>{
+    if(Platform.OS==='ios'||Platform.OS==='android'){
+      const filePrefix = 'file://';
+      if(path.startsWith(filePrefix)){
+        path = path.substring(filePrefix.length);
+        try{
+          path=decodeURI(path);
+        }catch(e){}
+      }
+    }
+    return path;
   }
 
   return (
@@ -236,17 +277,18 @@ function Modal({
             keyboardAvoiding={true}
           />
           
+          
           <TouchableOpacity 
             style={[styles.addFile,{borderColor: isDarkMode? Colors.Dark.lightText:Colors.Light.lightText}]}
             activeOpacity={0.5}
             onPress={()=> AddFile()}
           >
             <Ionicons 
-              name='cloud-outline' 
+              name={selectedFile==null?'cloud-outline':'document-text-outline'}
               size={50} 
               color={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
               />
-              <Text style={{color:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}}>Dodaj file</Text>
+              <Text style={{color:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}}>{selectedFile===null?'Dodaj file':selectedFile.name}</Text>
               
           </TouchableOpacity>
 
