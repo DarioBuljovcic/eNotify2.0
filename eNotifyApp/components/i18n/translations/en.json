@@ -16,5 +16,12 @@
     "thursday": "thursday",
     "friday": "friday",
     "about text": "eNotify is a powerful tool for efficiently informing students about important events, activities, and information related to their school. This application enables schools to easily communicate with their students through fast, reliable, and personalized notifications.",
-    "dark mode":"Dark mode"
+    "dark mode":"Dark mode",
+    "Notification title":"Notification title",
+    "add notification":"Add notification",
+    "notification text":"Notification text",
+    "choose grade":"Choose grade...",
+    "add file":"Add file",
+    "send":"Send"
+
 }
