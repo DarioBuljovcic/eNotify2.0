@@ -9,38 +9,42 @@ import Schedule from "./components/Schedule/Schedule.tsx";
 import ExcelReaderSchedule from "./components/Schedule/Excel/ExcelReaderSchedule.tsx";
 import { useEffect, useState } from "react";
 import "./css/App.css";
+import Professor from "./components/Professor/Professor";
+import DataTableProfessor from "./components/Professor/DataTable/DataTableProfessor";
 
 function App() {
   const [selectedOption, setSelectedOption] = useState([
     "Dodavanje Učenika",
     0,
   ]);
-  const [text, setText] = useState("");
+
 
   const displayOption = () => {
     switch (selectedOption[1]) {
       case 0:
-        return <Student Successful={(text) => setText(text)} />;
+        return <Student />;
       case 1:
         return <DataTableStudents />;
       case 2:
-        return <Notifications Successful={(text) => setText(text)} />;
+        return <Professor />;
       case 3:
-        return <DataTableNotifications />;
+        return <DataTableProfessor />;
       case 4:
-        return <ExcelReaderClasses />;
+        return <Notifications />;
       case 5:
-        return <Classes />;
+        return <DataTableNotifications />;
       case 6:
-        return <ExcelReaderSchedule />;
+        return <ExcelReaderClasses />;
       case 7:
+        return <Classes />;
+      case 8:
+        return <ExcelReaderSchedule />;
+      case 9:
         return <Schedule />;
     }
   };
 
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
+  
   return (
     <div class="allContainer">
       <Header setOptionText={(o) => setSelectedOption(o)} />
@@ -48,12 +52,7 @@ function App() {
         <div className="display">
           <div className="optionText">{selectedOption[0]}</div>
           {selectedOption && displayOption()}
-          <div className={`successful ${text ? "open" : ""}`}>
-            <div>{text}</div>
-            <button className="closeSuccessful" onClick={() => setText("")}>
-              &times;
-            </button>
-          </div>
+          
         </div>
       </div>
     </div>

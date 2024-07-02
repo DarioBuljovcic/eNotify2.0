@@ -3,7 +3,7 @@ import ExcelReader from "./Excel/ExcelReader";
 import "./css/student.css";
 import InsertOne from "./InsertOne/InsertOne";
 
-export default function Users() {
+export default function Professor() {
   const [inputType, setInputType] = useState(1);
 
   function displayOption() {

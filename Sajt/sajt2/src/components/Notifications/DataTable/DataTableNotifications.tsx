@@ -13,6 +13,8 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import "./css/table.css";
+import { IonIcon } from "@ionic/react";
+import { trashBinOutline } from "ionicons/icons";
 
 type inputData = {
   NotificationId: string;
@@ -84,17 +86,12 @@ export default function DataTableNotifications() {
     <div style={{ width: "400px", textWrap: "wrap" }}>{row.Text}</div>
   );
   const DeleteButton = ({ row }: { row: inputData }) => (
-    <div
-      style={{
-        width: "50px",
-        color: "red",
-        fontSize: "25px",
-        cursor: "pointer",
-      }}
+    <button
       onClick={() => DeleteNotification(row.NotificationId)}
+      className="deleteBtn btn"
     >
-      &times;
-    </div>
+      <IonIcon icon={trashBinOutline} size="small" color={"danger"}></IonIcon>
+    </button>
   );
   const getData = async () => {
     const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
@@ -116,13 +113,17 @@ export default function DataTableNotifications() {
   return (
     <>
       {!loading && (
-        <DataTable
-          columns={columns}
-          data={data}
-          pagination
-          progressPending={pending}
-          defaultSortFieldId={1}
-        />
+        <div className="containerTable">
+          <div className="dataTable">
+            <DataTable
+              columns={columns}
+              data={data}
+              pagination
+              progressPending={pending}
+              defaultSortFieldId={1}  
+            />
+          </div>
+        </div>
       )}
     </>
   );

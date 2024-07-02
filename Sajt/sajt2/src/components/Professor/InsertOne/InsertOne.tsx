@@ -5,8 +5,6 @@ import axios from "axios";
 import { Select } from "../Select/Select";
 import Popup from "../../Popup/Popup"
 
-
-
 type Data = {
   Class: string;
   Email: string;
@@ -28,6 +26,7 @@ function InsertOne() {
   const [selectedOption, setSelectedOption] = useState<UserClass>({Class:''});
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState("")
+  
 
   const generatePassword = (length: number) => {
     const charset =
@@ -52,11 +51,12 @@ function InsertOne() {
         Class: selectedOption.Class,
         Email: Email.current.value,
         Name: `${Ime.current.value} ${Prezime.current.value}`,
-        Role: "Student",
+        Role: "Professor",
         UserID: UserID,
         LogOut: true,
       };
       setIsOpen(true);
+      
       axios
         .post(
           "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -74,11 +74,11 @@ function InsertOne() {
         });
         try {
           await addDoc(collection(db, "Users"), dataToInsert);
-          setMessage("Uspešno je dodat učenik");
+          setMessage("Uspešno je dodat profesor");
         } catch (error) {
           setMessage("Došlo je do greške");
         }
-      await addDoc(collection(db, "Users"), dataToInsert);
+      
     }
   }
   function emptyInsert() {
@@ -109,19 +109,19 @@ function InsertOne() {
       <Popup onConfirm={()=>setIsOpen(false)} onCancel={()=>setIsOpen(false)} isOpen={isOpen} showBtns={false} message={message}/>
       <div className="forma">
         <span className="inputContainer">
-          <label htmlFor="inputField">Ime učenika</label>
+          <label htmlFor="inputField">Ime profesora</label>
           <input ref={Ime} type="text" placeholder="Ime " />
         </span>
         <span className="inputContainer">
-          <label htmlFor="inputField">Prezime učenika</label>
+          <label htmlFor="inputField">Prezime profesora</label>
           <input ref={Prezime} type="text" placeholder="Prezime" />
         </span>
         <span className="inputContainer">
-          <label htmlFor="inputField">Email učenika</label>
+          <label htmlFor="inputField">Email profesora</label>
           <input ref={Email} type="text" placeholder="Email" />
         </span>
         <span className="inputContainer">
-          <label htmlFor="inputField">Razred učenika</label>
+          <label htmlFor="inputField">Razred profesora</label>
           {/* <input ref={StudentClass} type="text" placeholder="Razred" /> */}
           <Select
             options={options}

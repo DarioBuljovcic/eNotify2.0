@@ -78,9 +78,8 @@ const RegistrationScreen = ({
           const saveAll = async () => {
             setIsCorrect(true);
             const user: User = querySnapshot.docs[0].data() as User;
-
             await saveUser(user);
-
+            
             navigation.navigate('NavigationScreen');
           };
           saveAll();

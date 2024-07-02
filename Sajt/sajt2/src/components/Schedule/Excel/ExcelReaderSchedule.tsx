@@ -22,7 +22,7 @@ type Data = {
   Role: string;
   UserID: string;
 };
-function extractXlsContent(html) {
+function extractXlsContent(html:any) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
   const table = doc.querySelectorAll("table")[1];
@@ -111,7 +111,7 @@ const FileUploadForm = () => {
     }
   };
 
-  const insertFile = (e) => {
+  const insertFile = (e:any) => {
     console.log("halooo");
     const file = e.target.files[0];
     handleFile(file);

@@ -32,7 +32,7 @@ export type User = {
   LogOut: boolean;
 };
 
-export default function DataTableStudents() {
+export default function DataTableProfessor() {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(true);
@@ -217,7 +217,7 @@ export default function DataTableStudents() {
   const getData = async () => {
     const newData: User[] = [];
 
-    onSnapshot(query(collection(db, "Users"),where("Role", "==", "Student"),orderBy("Class"), ), (querySnapshot) => {
+    onSnapshot(query(collection(db, "Users"),where("Role", "==", "Professor"),orderBy("Class"), ), (querySnapshot) => {
       newData.length = 0;
       querySnapshot.forEach((doc) => {
         newData.push(doc.data() as User);
@@ -400,8 +400,7 @@ export default function DataTableStudents() {
             data={data}
             pagination
             progressPending={pending}
-            defaultSortFieldId={5}
-            
+            defaultSortFieldId={5} 
           />
         </div>
       </div>

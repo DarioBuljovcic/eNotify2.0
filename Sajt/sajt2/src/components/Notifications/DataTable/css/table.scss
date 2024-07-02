@@ -15,3 +15,21 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+body {
+
+
+    .containerTable {
+        max-width: 800px;
+        max-height: 800px;
+        position: relative;
+        border: 2px solid rgb(54, 54, 54);
+
+        .dataTable {
+            max-width: 800px;
+            max-height: 800px;
+
+        }
+
+    }
+}
