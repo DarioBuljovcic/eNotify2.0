@@ -1,7 +1,11 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { db } from "../../../lib/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, query } from "firebase/firestore";
 import axios from "axios";
+import { Select } from "../Select/Select";
+import Popup from "../../Popup/Popup"
+
+
 
 type Data = {
   Class: string;
@@ -11,12 +15,19 @@ type Data = {
   UserID: string;
   LogOut: boolean;
 };
+export type UserClass = {
+  [key: number]: string;
+  Class: string;
+};
 
-function InsertOne({ Successful }) {
+function InsertOne() {
   const Ime = useRef<HTMLInputElement>(null);
   const Prezime = useRef<HTMLInputElement>(null);
-  const StudentClass = useRef<HTMLInputElement>(null);
   const Email = useRef<HTMLInputElement>(null);
+  const [options, setOptions] = useState<UserClass[]>([]);
+  const [selectedOption, setSelectedOption] = useState<UserClass>({Class:''});
+  const [isOpen, setIsOpen] = useState(false)
+  const [message, setMessage] = useState("")
 
   const generatePassword = (length: number) => {
     const charset =
@@ -34,17 +45,18 @@ function InsertOne({ Successful }) {
       Ime.current &&
       Prezime.current &&
       Email.current &&
-      StudentClass.current
+      selectedOption.Class!=""
     ) {
       const UserID = generatePassword(7);
       const dataToInsert: Data = {
-        Class: StudentClass.current.value,
+        Class: selectedOption.Class,
         Email: Email.current.value,
         Name: `${Ime.current.value} ${Prezime.current.value}`,
         Role: "Student",
         UserID: UserID,
         LogOut: true,
       };
+      setIsOpen(true);
       axios
         .post(
           "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -60,19 +72,41 @@ function InsertOne({ Successful }) {
         .catch((error) => {
           console.error("Error sending email:", error);
         });
+        try {
+          await addDoc(collection(db, "Users"), dataToInsert);
+          setMessage("Uspešno je dodat učenik");
+        } catch (error) {
+          setMessage("Došlo je do greške");
+        }
       await addDoc(collection(db, "Users"), dataToInsert);
     }
   }
   function emptyInsert() {
-    if (Ime.current && Prezime.current && StudentClass.current) {
+    if (Ime.current && Prezime.current && selectedOption.Class!="") {
       Ime.current.value = "";
       Prezime.current.value = "";
-      StudentClass.current.value = "";
+      setSelectedOption({Class:''})
     }
   }
+  useEffect(() => {
+    const getData = async () => {
+      const newData: UserClass[] = [];
+  
+      onSnapshot(query(collection(db, "Classes")), (querySnapshot) => {
+      newData.length = 0;
+      querySnapshot.forEach((doc) => {
+          newData.push(doc.data() as UserClass);
+      });
+      setOptions([...newData]);
+      });
+  };
+  getData();
 
+    getData();
+  }, []);
   return (
     <div className="formaContainer">
+      <Popup onConfirm={()=>setIsOpen(false)} onCancel={()=>setIsOpen(false)} isOpen={isOpen} showBtns={false} message={message}/>
       <div className="forma">
         <span className="inputContainer">
           <label htmlFor="inputField">Ime učenika</label>
@@ -88,7 +122,12 @@ function InsertOne({ Successful }) {
         </span>
         <span className="inputContainer">
           <label htmlFor="inputField">Razred učenika</label>
-          <input ref={StudentClass} type="text" placeholder="Razred" />
+          {/* <input ref={StudentClass} type="text" placeholder="Razred" /> */}
+          <Select
+            options={options}
+            value={selectedOption}
+            onChange={(o:UserClass) => setSelectedOption(o)}
+          />
         </span>
         <div className="razredi-options"></div>
 
@@ -98,7 +137,6 @@ function InsertOne({ Successful }) {
           onClick={() => {
             createUser();
             emptyInsert();
-            Successful("Korisnik je dodat!");
           }}
         >
           Unesi

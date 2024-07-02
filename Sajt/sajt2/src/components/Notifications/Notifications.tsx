@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Select } from "./Select/Select.tsx";
+import { Select } from "./Select/Select";
 import {
   collection,
   getDocs,
@@ -10,9 +10,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../../lib/firebase.js";
 import "./css/notifications.css";
-import TextArea from "./TextArea/TextArea.tsx";
+import TextArea from "./TextArea/TextArea";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
+import Popup from "../Popup/Popup"
 
 type SelectOption = {
   Class: string;
@@ -33,13 +34,18 @@ type File = {
 };
 const storage = getStorage();
 
-function MainPage({ Successful }) {
+
+
+
+function MainPage() {
   const [classes, setClasses] = useState<SelectOption[]>([]);
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [selectedOption, setSelectedOption] = useState("option1");
   const [selectData, setSelectData] = useState<SelectOption[]>([]);
   const [text, setText] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [isOpen, setIsOpen] = useState(false)
+  const [message, setMessage] = useState("")
 
   const grupno = [
     { Class: "Svi razredi", id: "0" },
@@ -142,7 +148,14 @@ function MainPage({ Successful }) {
         }
       };
       sendData();
-      await addDoc(collection(db, "Notifications"), dataToInsert);
+      try {
+        await addDoc(collection(db, "Notifications"), dataToInsert);
+        
+        setMessage("Uspešno poslata notifikacija");
+      } catch (error) {
+        setMessage("Došlo je do greške");
+      }
+      setIsOpen(true);
     }
   }
 
@@ -170,6 +183,7 @@ function MainPage({ Successful }) {
 
   return (
     <div className="formaContainer">
+      <Popup onCancel={()=>setIsOpen(false)} onConfirm={()=>setIsOpen(false)} isOpen={isOpen} message={ message} showBtns={false}/>
       <div className="forma">
         <span className="inputContainer">
           <label htmlFor="inputField">Naslov obaveštenja</label>
@@ -179,11 +193,14 @@ function MainPage({ Successful }) {
           <label htmlFor="inputField">Tekst obaveštenja</label>
           <TextArea
             setText={(o) => setText(o)}
-            setFiles={(o) => setFiles(o)}
+            setFiles={(o:any) => setFiles(o)}
             text={text}
           />
         </span>
-        <div className="razredi-options">
+        
+        {classes.length > 0 && (
+          <span className="inputContainer">
+          <div className="razredi-options">
           <span>Razredi:</span>
           <div className="radio-list">
             <button
@@ -204,12 +221,14 @@ function MainPage({ Successful }) {
             </button>
           </div>
         </div>
-        {classes.length > 0 && (
+          {/* <input ref={StudentClass} type="text" placeholder="Razred" /> */}
           <Select
             options={selectData}
             value={options}
             onChange={(o) => setOptions(o)}
           />
+        </span>
+          
         )}
 
         <button
@@ -218,7 +237,7 @@ function MainPage({ Successful }) {
           onClick={() => {
             sendNotification();
             emptyInsert();
-            Successful("Obaveštenje je poslato!");
+            setIsOpen(true);
           }}
         >
           Pošalji

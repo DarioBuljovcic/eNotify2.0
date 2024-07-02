@@ -29,6 +29,9 @@ PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
   PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
 );
+PermissionsAndroid.request(
+  PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+);
 
 const RegistrationScreen = ({
   navigation,
@@ -68,7 +71,7 @@ const RegistrationScreen = ({
         });
       });
   };
-  //Email and Password
+  
   const Login = () => {
     const query = firestore().collection('Users').where('UserID', '==', value);
     query
@@ -78,9 +81,8 @@ const RegistrationScreen = ({
           const saveAll = async () => {
             setIsCorrect(true);
             const user: User = querySnapshot.docs[0].data() as User;
-
             await saveUser(user);
-
+            
             navigation.navigate('NavigationScreen');
           };
           saveAll();
@@ -140,6 +142,7 @@ const RegistrationScreen = ({
           </LinearGradient>
         </TouchableOpacity>
       </View>
+
       <View
         style={[
           isDarkMode
@@ -236,6 +239,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const loadWidth = 600;
 const R = loadWidth / (2 * Math.PI);
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',

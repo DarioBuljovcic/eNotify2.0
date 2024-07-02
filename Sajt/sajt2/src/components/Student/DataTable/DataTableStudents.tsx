@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import DataTable, { TableColumn } from "react-data-table-component";
 import { db } from "../../../lib/firebase.js";
 import {
@@ -10,6 +10,7 @@ import {
   where,
   deleteDoc,
   and,
+  orderBy,
 } from "firebase/firestore";
 import "./css/table.css";
 import { IonIcon } from "@ionic/react";
@@ -19,6 +20,7 @@ import {
   createOutline,
   optionsOutline,
 } from "ionicons/icons";
+import Popup from "../../Popup/Popup"
 
 export type User = {
   [key: number]: string;
@@ -45,6 +47,9 @@ export default function DataTableStudents() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [studentClass, setClass] = useState("");
+
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([])
+  const [isOpen, setIsOpen] = useState(false)
 
   const Edit = ({ row }: { row: User }) => {
     const update = async () => {
@@ -111,7 +116,27 @@ export default function DataTableStudents() {
     });
     getData();
   };
+  const SelectUser = ({UserID}:{UserID:string})=>{
+    const Select = (e:ChangeEvent<HTMLInputElement>)=>{
+      if(e.target.checked){
+        setSelectedStudents([...selectedStudents,UserID]);
+      }else if(e.target.checked===false){
+        setSelectedStudents([...selectedStudents.filter(f => f!==UserID)]);
+      }
+      console.log(selectedStudents)
+    }
+    return (
+     <input type="checkbox" onChange={Select} checked={selectedStudents.includes(UserID)}/>
+    )
+  }
   const columns: TableColumn<User>[] = [
+    {
+      name: "Izaberi",
+      selector: (row: User) => row.UserID || "",
+      cell:(row: User) => <SelectUser UserID={row.UserID}/>,
+      width: "100px",
+      sortable: true,
+    },
     {
       name: "Korisniči Broj",
       selector: (row: User) => row.UserID || "",
@@ -170,7 +195,7 @@ export default function DataTableStudents() {
     const getQuery = () => {
       switch (filter) {
         case 0:
-          return where("Name", "==", filterInput);
+          return where("Name", "==", filterInput) ;
         case 1:
           return where("Email", "==", filterInput);
         case 2:
@@ -179,11 +204,12 @@ export default function DataTableStudents() {
           return where("", "==", "");
       }
     };
-    onSnapshot(query(collection(db, "Users"), getQuery()), (querySnapshot) => {
+    onSnapshot(query(collection(db, "Users"), getQuery(), where("Role", "==", "Student")), (querySnapshot) => {
       newData.length = 0;
       querySnapshot.forEach((doc) => {
         newData.push(doc.data() as User);
       });
+      console.log(newData)
       setData([...newData]);
     });
     setFilterInput("");
@@ -191,14 +217,54 @@ export default function DataTableStudents() {
   const getData = async () => {
     const newData: User[] = [];
 
-    onSnapshot(query(collection(db, "Users")), (querySnapshot) => {
+    onSnapshot(query(collection(db, "Users"),where("Role", "==", "Student"),orderBy("Class"), ), (querySnapshot) => {
       newData.length = 0;
       querySnapshot.forEach((doc) => {
         newData.push(doc.data() as User);
       });
+      console.log(newData)
       setData([...newData]);
     });
   };
+  const deleteUsers = async ()=>{
+    console.log("hello")
+    selectedStudents.forEach(async (stud) => {
+      const querySnapshot = await getDocs(
+        query(collection(db, "Users"), where("UserID", "==", stud))
+      );
+
+      await deleteDoc(querySnapshot.docs[0].ref);
+    });
+    setSelectedStudents([]);
+    getData();
+    
+  }
+  const nextYear = async ()=>{
+    console.log("eeee");
+    selectedStudents.forEach(async (stud) => {
+      const querySnapshot = await getDocs(
+        query(collection(db, "Users"), where("UserID", "==", stud))
+      );
+      const className=querySnapshot.docs[0].data().Class;
+      const num = parseInt(className.substring(0,1))+1;
+      const newClass = num + className.substring(1,className.length)
+      
+      if(num===5)
+        await deleteDoc(querySnapshot.docs[0].ref);
+      else{
+        await updateDoc(querySnapshot.docs[0].ref, {
+            Class: newClass
+          });
+      }
+    });
+    setSelectedStudents([]);
+    getData();
+    
+  }
+  const Confirm = ()=>{
+    deleteUsers();
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     if (loading) {
@@ -211,7 +277,7 @@ export default function DataTableStudents() {
     }
   });
   useEffect(() => {
-    const handlePressOutside = (event) => {
+    const handlePressOutside = (event:any) => {
       // Check if the click occurred outside the box
       if (
         !event.target.closest(".editBox") &&
@@ -239,6 +305,7 @@ export default function DataTableStudents() {
 
   return (
     <>
+      <Popup onCancel={()=>setIsOpen(false)} onConfirm={()=>Confirm()} isOpen={isOpen} message={"Da li ste sigurni da zelite da obrišete?" } showBtns={true}/>
       <button
         onClick={() => setSearchOn((prev) => !prev)}
         className="btn filterBtn"
@@ -323,13 +390,18 @@ export default function DataTableStudents() {
             </button>
           </div>
         </div>
+        <div className="multyFilter">
+          <button className="red" onClick={()=>setIsOpen(true)}>Izbriši učenike</button>
+          <button onClick={()=>nextYear()}>Povećaj razred</button>
+        </div>
         <div className="dataTable">
           <DataTable
             columns={columns}
             data={data}
             pagination
             progressPending={pending}
-            defaultSortFieldId={1}
+            defaultSortFieldId={5}
+            
           />
         </div>
       </div>

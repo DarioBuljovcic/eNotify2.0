@@ -11,6 +11,8 @@ import {
   Keyboard,
   useColorScheme,
   Appearance,
+  Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -27,9 +29,16 @@ import {Dropdown} from 'react-native-element-dropdown';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ClassSelection from './ClassSelection';
+import { Input } from 'react-native-elements';
+import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
+
+import { utils } from '@react-native-firebase/app';
+import storage from '@react-native-firebase/storage';
+import { useTranslation } from 'react-i18next';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+
 
 const generateID = (length: number) => {
   const charset =
@@ -41,7 +50,6 @@ const generateID = (length: number) => {
   }
   return ID;
 };
-
 function Modal({
   closeModal,
   translateY,
@@ -61,37 +69,89 @@ function Modal({
   const [selectedClass, setSelectedClass] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 
-  const AddNotifaciton = () => {
-    if (textValue !== '' && tittleValue !== '') {
-      const data: NotificationType = {
-        NotificationId: generateID(7),
-        Tittle: tittleValue,
-        Text: textValue,
-        Class: [selectedClass],
-        Type: 'T',
-        Files: '',
-        Date: new Date(),
-        Seen: '',
-        From: naziv,
-      };
-      const sendData = async () => {
-        try {
-          const response = await axios.post(
-            'http://localhost:9000/.netlify/functions/api/data',
-            data,
-          );
-        } catch (error) {
-          console.error('Error sending data:', error);
-        }
-      };
-      sendData();
-      firestore().collection('Notifications').add(data);
-      setTextValue('');
-      setTittleValue('');
-      setSelectedClass('');
+  const AddNotifaciton = async() => {
+    if (textValue !== '' && tittleValue !== '' && selectedFile?.name!==null && selectedFile?.fileCopyUri!==null) {
+          const reference = storage().ref(selectedFile?.name);
+          const pathToFile = `file://${decodeURIComponent(selectedFile.fileCopyUri)}`;
+          console.log(pathToFile);
+          await reference.putFile(pathToFile);
+          const data: NotificationType = {
+            NotificationId: generateID(7),
+            Tittle: tittleValue,
+            Text: textValue,
+            Class: [selectedClass],
+            Type: 'T',
+            Files: selectedFile.name,
+            Date: new Date(),
+            Seen: '',
+            From: naziv,
+          };
+          const sendData = async () => {
+            try {
+              const response = await axios.post(
+                'http://localhost:9000/.netlify/functions/api/data',
+                data,
+              );
+            } catch (error) {
+              console.error('Error sending data:', error);
+            }
+          };
+    
+          sendData();
+    
+          firestore().collection('Notifications').add(data);
+    
+          setTextValue('');
+          setTittleValue('');
+          setSelectedClass('');
     }
   };
+  const [selectedFile, setSelectedFile] = useState<DocumentPickerResponse | null>(null);
+  const AddFile = async()=> {
+    try {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'External Storage Permission',
+          message: 'This app needs access to your external storage to read files.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+        copyTo: 'documentDirectory',
+      }).then(async (file)=>{
+        setSelectedFile(file[0]);
+      })
+      //const path = await normalizePath(file.uri)
 
+      
+     
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('User cancelled file selection');
+      } else {
+        console.log('Error selecting file:', error);
+      }
+    }
+  }
+
+  const normalizePath = async({path}:any)=>{
+    if(Platform.OS==='ios'||Platform.OS==='android'){
+      const filePrefix = 'file://';
+      if(path.startsWith(filePrefix)){
+        path = path.substring(filePrefix.length);
+        try{
+          path=decodeURI(path);
+        }catch(e){}
+      }
+    }
+    return path;
+  }
+
+  const {t,i18n} = useTranslation();
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Animated.View
@@ -123,12 +183,12 @@ function Modal({
                 : Colors.Dark.textPrimary,
             },
           ]}>
-          Dodaj obaveštenje
+          {t('add notification')}
         </Text>
 
         <View style={styles.inputContainer}>
           <TextInput
-            placeholder="Naslov obaveštenja"
+            placeholder={t('Notification title')}
             placeholderTextColor={Colors.Light.lightText}
             style={[
               styles.input,
@@ -163,7 +223,7 @@ function Modal({
               },
               {textAlignVertical: 'top'},
             ]}
-            placeholder="Tekst obaveštenja"
+            placeholder={t('notification text')}
             placeholderTextColor={Colors.Light.lightText}
             numberOfLines={4}
             value={textValue}
@@ -219,7 +279,7 @@ function Modal({
             }}
             data={razredi}
             search
-            placeholder={!isFocus ? 'Select an item' : '...'}
+            placeholder={!isFocus ? t('choose grade') : '...'}
             value={selectedClass}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
@@ -231,6 +291,22 @@ function Modal({
             valueField={'Class'}
             keyboardAvoiding={true}
           />
+          
+          
+          <TouchableOpacity 
+            style={[styles.addFile,{borderColor: isDarkMode? Colors.Dark.lightText:Colors.Light.lightText}]}
+            activeOpacity={0.5}
+            onPress={()=> AddFile()}
+          >
+            <Ionicons 
+              name={selectedFile==null?'cloud-outline':'document-text-outline'}
+              size={50} 
+              color={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
+              />
+              <Text style={{color:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}}>{selectedFile===null?t('add file'):selectedFile.name}</Text>
+              
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={[
               styles.send,
@@ -241,7 +317,7 @@ function Modal({
               },
             ]}
             onPress={() => AddNotifaciton()}>
-            <Text style={[styles.sendText]}>Pošalji</Text>
+            <Text style={[styles.sendText]}>{t('send')}</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
@@ -253,11 +329,12 @@ export default function Professor({
   navigation,
 }: ProfessorTabProps | ProfessorProps) {
   const isDarkMode = useColorScheme() === 'light';
-  const [visible, setVisible] = useState(false);
+  
   const translateY = useRef(new Animated.Value(800)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [razredi, setRazredi] = useState<Class[]>([]);
   const [naziv, setNaziv] = useState('');
+  const [visible, setVisible] = useState(false);
 
   const animateOpen = () => {
     Animated.parallel([
@@ -372,7 +449,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     position: 'absolute',
-    bottom: 0,
+    bottom: '-10%',
     zIndex: 120,
 
     borderTopLeftRadius: 10,
@@ -481,5 +558,15 @@ const styles = StyleSheet.create({
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
+  },
+  addFile:{
+    height:'27%',
+    width:'85%',
+    alignSelf: 'center',
+    borderRadius:15,
+    borderWidth:2,
+    borderStyle:'dashed',
+    alignItems:'center',
+    justifyContent:'center'
   },
 });

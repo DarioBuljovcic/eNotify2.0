@@ -3,7 +3,7 @@ import "./css/textArea.css";
 
 // Require Editor CSS files.
 
-export default function TextArea({ text, setText, setFiles }) {
+export default function TextArea({ text, setText, setFiles }:{text:string,setText:(o:string)=>void,setFiles:any}) {
   const [files, setFileNames] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -17,14 +17,14 @@ export default function TextArea({ text, setText, setFiles }) {
     for (let i = 0; i < inputFiles.length; i++) {
       console.log(inputFiles[i]);
       setFileNames((prevFiles) => [...prevFiles, inputFiles[i].name]);
-      setFiles((prevFiles) => [...prevFiles, inputFiles[i]]);
+      setFiles((prevFiles:any) => [...prevFiles, inputFiles[i]]);
     }
   };
-  const handleDelete = (indexes) => {
+  const handleDelete = (indexes:any) => {
     setFileNames((prevFiles) =>
       prevFiles.filter((_, index) => index !== indexes)
     );
-    setFiles((prevFiles) => prevFiles.filter((_, index) => index !== indexes));
+    setFiles((prevFiles:any) => prevFiles.filter((_:any, index:number) => index !== indexes));
   };
   const displayFileNames = () => {
     return (
@@ -41,7 +41,7 @@ export default function TextArea({ text, setText, setFiles }) {
       </div>
     );
   };
-  const handleTextAreaChange = (event) => {
+  const handleTextAreaChange = (event:any) => {
     setText(event.target.value);
   };
 

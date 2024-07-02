@@ -4,6 +4,7 @@ import { db } from "../../../lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import * as XLSX from "xlsx";
 import axios from "axios";
+import Popup from "../../Popup/Popup"
 
 interface ExcelData {
   [key: string]: any;
@@ -13,7 +14,6 @@ type ExcelItem = {
   Surname: string;
   Email: string;
   Class: string;
-  Role: string;
 };
 type Data = {
   Name: string;
@@ -26,6 +26,8 @@ type Data = {
 
 const FileUploadForm = () => {
   const [isAdvancedUpload, setIsAdvancedUpload] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [message, setMessage] = useState("")
 
   const generatePassword = (length: number) => {
     // Define the length of the password
@@ -49,6 +51,7 @@ const FileUploadForm = () => {
           const sheet = workbook.Sheets[sheetName];
           const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
           for (let item of data) {
+            console.log(item);
             const name = item.Name + " " + item.Surname;
             try {
               const userID = generatePassword(7);
@@ -56,10 +59,12 @@ const FileUploadForm = () => {
                 Name: name,
                 Email: item.Email,
                 Class: item.Class,
-                Role: item.Role,
+                Role: 'Student',
                 UserID: userID,
                 LogOut: true,
               };
+              
+              setIsOpen(true);
               axios
                 .post(
                   "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -70,23 +75,25 @@ const FileUploadForm = () => {
                   }
                 )
                 .then((response) => {
+                  
                   console.log(response.data);
                 })
                 .catch((error) => {
                   console.error("Error sending email:", error);
                 });
               await addDoc(collection(db, "Users"), data);
+              setMessage("Učenici su uspešno dodati");
             } catch (error) {
+              setMessage("Došlo je do greške");
               console.error(error);
             }
-            console.log("aloo");
           }
         }
       };
       reader.readAsBinaryString(file);
     }
   };
-  const insertFile = (e) => {
+  const insertFile = (e:any) => {
     console.log("halooo");
     const file = e.target.files[0];
     handleFile(file);
@@ -159,12 +166,11 @@ const FileUploadForm = () => {
 
   return (
     <form
-      method="post"
-      action="https://css-tricks.com/examples/DragAndDropFileUploading//?"
       encType="multipart/form-data"
       noValidate
       className="box"
     >
+      <Popup onConfirm={()=>setIsOpen(false)} onCancel={()=>setIsOpen(false)} isOpen={isOpen} showBtns={false} message={message}/>
       <div className="box__input">
         <svg
           className="box__icon"
