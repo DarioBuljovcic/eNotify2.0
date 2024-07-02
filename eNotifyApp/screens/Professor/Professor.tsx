@@ -12,6 +12,7 @@ import {
   useColorScheme,
   Appearance,
   Platform,
+  PermissionsAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import {
@@ -67,54 +68,65 @@ function Modal({
   const [isFocus, setIsFocus] = useState(false);
 
   const AddNotifaciton = async() => {
-    if (textValue !== '' && tittleValue !== '') {
-
-
-
-      const data: NotificationType = {
-        NotificationId: generateID(7),
-        Tittle: tittleValue,
-        Text: textValue,
-        Class: [selectedClass],
-        Type: 'T',
-        Files: '',
-        Date: new Date(),
-        Seen: '',
-        From: naziv,
-      };
-
-      const sendData = async () => {
-        try {
-          const response = await axios.post(
-            'http://localhost:9000/.netlify/functions/api/data',
-            data,
-          );
-        } catch (error) {
-          console.error('Error sending data:', error);
-        }
-      };
-
-      sendData();
-
-      firestore().collection('Notifications').add(data);
-
-      setTextValue('');
-      setTittleValue('');
-      setSelectedClass('');
+    if (textValue !== '' && tittleValue !== '' && selectedFile?.name!==null && selectedFile?.fileCopyUri!==null) {
+          const reference = storage().ref(selectedFile?.name);
+          const pathToFile = `file://${decodeURIComponent(selectedFile.fileCopyUri)}`;
+          console.log(pathToFile);
+          await reference.putFile(pathToFile);
+          const data: NotificationType = {
+            NotificationId: generateID(7),
+            Tittle: tittleValue,
+            Text: textValue,
+            Class: [selectedClass],
+            Type: 'T',
+            Files: selectedFile.name,
+            Date: new Date(),
+            Seen: '',
+            From: naziv,
+          };
+          const sendData = async () => {
+            try {
+              const response = await axios.post(
+                'http://localhost:9000/.netlify/functions/api/data',
+                data,
+              );
+            } catch (error) {
+              console.error('Error sending data:', error);
+            }
+          };
+    
+          sendData();
+    
+          firestore().collection('Notifications').add(data);
+    
+          setTextValue('');
+          setTittleValue('');
+          setSelectedClass('');
     }
   };
   const [selectedFile, setSelectedFile] = useState<DocumentPickerResponse | null>(null);
   const AddFile = async()=> {
     try {
-      const file = await DocumentPicker.pick({
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'External Storage Permission',
+          message: 'This app needs access to your external storage to read files.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
-      });
+        copyTo: 'documentDirectory',
+      }).then(async (file)=>{
+        setSelectedFile(file[0]);
+      })
       //const path = await normalizePath(file.uri)
 
-      setSelectedFile(file[0]);
-
-      await console.log(selectedFile?.name);
       
+     
     } catch (error) {
       if (DocumentPicker.isCancel(error)) {
         console.log('User cancelled file selection');
