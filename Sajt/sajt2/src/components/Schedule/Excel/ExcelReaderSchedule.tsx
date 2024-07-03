@@ -25,12 +25,11 @@ type Data = {
 function extractXlsContent(html:any) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, "text/html");
-  const table = doc.querySelectorAll("table")[1];
+  // const table = doc.querySelectorAll("table")[1];
   const trs = doc.querySelectorAll("tr");
   const array = Array.from(trs).slice(6);
-  console.log(array[0].outerHTML);
 
-  return table ? table.innerHTML : "";
+  return array ? array[0].querySelectorAll("td") : "";
 }
 
 const FileUploadForm = () => {
@@ -60,14 +59,15 @@ const FileUploadForm = () => {
 
           const binaryString = extractXlsContent(text);
           console.log(binaryString);
-          // function parseHtmlToJson(htmlContent: any) {
-          //   const parser = new DOMParser();
-          //   const doc = parser.parseFromString(htmlContent, "text/html");
-          //   const data = doc.querySelector("body").innerHTML.split("\n");
-
-          //   const days = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak"];
-          // }
-          // parseHtmlToJson(text);
+          function parseHtmlToJson(htmlContent: any) {
+            const parser = new DOMParser();
+            console.log(htmlContent);
+            const doc = parser.parseFromString(htmlContent, "text/html");
+            const data = doc.querySelectorAll("td");
+            console.log(data);
+            const days = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak"];
+          }
+          parseHtmlToJson(binaryString);
 
           // const workbook = XLSX.read(binaryString, { type: "binary" });
           // const sheetName = workbook.SheetNames[0];

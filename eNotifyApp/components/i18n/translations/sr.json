@@ -16,5 +16,11 @@
     "thursday": "četvrtak",
     "friday": "petak",
     "about text": "eNotify je moćan alat za efikasno obaveštavanje učenika o važnim događajima, aktivnostima i informacijama u vezi sa njihovom školom. Ova aplikacija omogućava školama da lako komuniciraju sa svojim učenicima putem brzih, pouzdanih i personalizovanih obaveštenja.",
-    "dark mode":"Taman režim"
+    "dark mode":"Taman režim",
+    "Notification title":"Naslov obaveštenja",
+    "add notification":"Dodaj obaveštenje",
+    "notification text":"Telo obaveštenja",
+    "choose grade":"Izaberite razred...",
+    "add file":"Dodaj fajl",
+    "send":"Posalji"
 }

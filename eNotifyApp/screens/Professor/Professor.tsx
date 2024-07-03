@@ -34,9 +34,11 @@ import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-pi
 
 import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
+import { useTranslation } from 'react-i18next';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+
 
 const generateID = (length: number) => {
   const charset =
@@ -149,6 +151,7 @@ function Modal({
     return path;
   }
 
+  const {t,i18n} = useTranslation();
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Animated.View
@@ -180,12 +183,12 @@ function Modal({
                 : Colors.Dark.textPrimary,
             },
           ]}>
-          Dodaj obaveštenje
+          {t('add notification')}
         </Text>
 
         <View style={styles.inputContainer}>
           <TextInput
-            placeholder="Naslov obaveštenja"
+            placeholder={t('Notification title')}
             placeholderTextColor={Colors.Light.lightText}
             style={[
               styles.input,
@@ -220,7 +223,7 @@ function Modal({
               },
               {textAlignVertical: 'top'},
             ]}
-            placeholder="Tekst obaveštenja"
+            placeholder={t('notification text')}
             placeholderTextColor={Colors.Light.lightText}
             numberOfLines={4}
             value={textValue}
@@ -276,7 +279,7 @@ function Modal({
             }}
             data={razredi}
             search
-            placeholder={!isFocus ? 'Izaberite razred...' : '...'}
+            placeholder={!isFocus ? t('choose grade') : '...'}
             value={selectedClass}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
@@ -300,7 +303,7 @@ function Modal({
               size={50} 
               color={isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}
               />
-              <Text style={{color:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}}>{selectedFile===null?'Dodaj file':selectedFile.name}</Text>
+              <Text style={{color:isDarkMode?Colors.Dark.lightText:Colors.Light.lightText}}>{selectedFile===null?t('add file'):selectedFile.name}</Text>
               
           </TouchableOpacity>
 
@@ -314,7 +317,7 @@ function Modal({
               },
             ]}
             onPress={() => AddNotifaciton()}>
-            <Text style={[styles.sendText]}>Pošalji</Text>
+            <Text style={[styles.sendText]}>{t('send')}</Text>
           </TouchableOpacity>
         </View>
       </Animated.View>
