@@ -50,6 +50,10 @@ export default function DataTableStudents() {
 
   const [selectedStudents, setSelectedStudents] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
+  const [message, setMessage] = useState("");
+  const [shouldDelete, setShouldDelete] = useState(false)
+  const [shouldNext, setShouldNext] = useState(false)
+  const [Confirm, setConfirm] = useState(()=>{})
 
   const Edit = ({ row }: { row: User }) => {
     const update = async () => {
@@ -226,45 +230,55 @@ export default function DataTableStudents() {
       setData([...newData]);
     });
   };
+  
   const deleteUsers = async ()=>{
-    console.log("hello")
-    selectedStudents.forEach(async (stud) => {
-      const querySnapshot = await getDocs(
-        query(collection(db, "Users"), where("UserID", "==", stud))
-      );
-
-      await deleteDoc(querySnapshot.docs[0].ref);
-    });
-    setSelectedStudents([]);
-    getData();
+    setMessage("Da li ste sigurni da zelite da obrisete?");
+    setConfirm(()=>{setIsOpen(false);setShouldDelete(true);});
+    setIsOpen(true);
+    
+    if (shouldDelete) {
+      selectedStudents.forEach(async (stud) => {
+        const querySnapshot = await getDocs(
+          query(collection(db, "Users"), where("UserID", "==", stud))
+        );
+  
+        await deleteDoc(querySnapshot.docs[0].ref);
+      });
+      setSelectedStudents([]);
+      getData();
+    }
+    
     
   }
   const nextYear = async ()=>{
-    console.log("eeee");
-    selectedStudents.forEach(async (stud) => {
-      const querySnapshot = await getDocs(
-        query(collection(db, "Users"), where("UserID", "==", stud))
-      );
-      const className=querySnapshot.docs[0].data().Class;
-      const num = parseInt(className.substring(0,1))+1;
-      const newClass = num + className.substring(1,className.length)
-      
-      if(num===5)
-        await deleteDoc(querySnapshot.docs[0].ref);
-      else{
-        await updateDoc(querySnapshot.docs[0].ref, {
-            Class: newClass
-          });
-      }
-    });
-    setSelectedStudents([]);
-    getData();
+    setMessage("Da li ste sigurni da zelite da povecate razred?");
+    setConfirm(()=>{setIsOpen(false);setShouldNext(true);});
+    setIsOpen(true);
+    
+    if(shouldNext===true){
+      selectedStudents.forEach(async (stud) => {
+        const querySnapshot = await getDocs(
+          query(collection(db, "Users"), where("UserID", "==", stud))
+        );
+        const className=querySnapshot.docs[0].data().Class;
+        const num = parseInt(className.substring(0,1))+1;
+        const newClass = num + className.substring(1,className.length)
+        
+        if(num===5)
+          await deleteDoc(querySnapshot.docs[0].ref);
+        else{
+          await updateDoc(querySnapshot.docs[0].ref, {
+              Class: newClass
+            });
+        }
+      });
+      setSelectedStudents([]);
+      getData();
+    }
+    
     
   }
-  const Confirm = ()=>{
-    deleteUsers();
-    setIsOpen(false);
-  }
+  
 
   useEffect(() => {
     if (loading) {
@@ -305,7 +319,7 @@ export default function DataTableStudents() {
 
   return (
     <>
-      <Popup onCancel={()=>setIsOpen(false)} onConfirm={()=>Confirm()} isOpen={isOpen} message={"Da li ste sigurni da zelite da obrišete?" } showBtns={true}/>
+      <Popup onCancel={()=>setIsOpen(false)} onConfirm={()=>Confirm} isOpen={isOpen} message={message } showBtns={true}/>
       <button
         onClick={() => setSearchOn((prev) => !prev)}
         className="btn filterBtn"
@@ -391,7 +405,7 @@ export default function DataTableStudents() {
           </div>
         </div>
         <div className="multyFilter">
-          <button className="red" onClick={()=>setIsOpen(true)}>Izbriši učenike</button>
+          <button className="red" onClick={()=>deleteUsers()}>Izbriši učenike</button>
           <button onClick={()=>nextYear()}>Povećaj razred</button>
         </div>
         <div className="dataTable">

@@ -239,28 +239,6 @@ export default function DataTableProfessor() {
     getData();
     
   }
-  const nextYear = async ()=>{
-    console.log("eeee");
-    selectedStudents.forEach(async (stud) => {
-      const querySnapshot = await getDocs(
-        query(collection(db, "Users"), where("UserID", "==", stud))
-      );
-      const className=querySnapshot.docs[0].data().Class;
-      const num = parseInt(className.substring(0,1))+1;
-      const newClass = num + className.substring(1,className.length)
-      
-      if(num===5)
-        await deleteDoc(querySnapshot.docs[0].ref);
-      else{
-        await updateDoc(querySnapshot.docs[0].ref, {
-            Class: newClass
-          });
-      }
-    });
-    setSelectedStudents([]);
-    getData();
-    
-  }
   const Confirm = ()=>{
     deleteUsers();
     setIsOpen(false);
@@ -391,8 +369,7 @@ export default function DataTableProfessor() {
           </div>
         </div>
         <div className="multyFilter">
-          <button className="red" onClick={()=>setIsOpen(true)}>Izbriši učenike</button>
-          <button onClick={()=>nextYear()}>Povećaj razred</button>
+          <button className="red" onClick={()=>setIsOpen(true)}>Izbriši profesora</button>
         </div>
         <div className="dataTable">
           <DataTable
