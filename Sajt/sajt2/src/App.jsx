@@ -11,12 +11,15 @@ import { useEffect, useState } from "react";
 import "./css/App.css";
 import Professor from "./components/Professor/Professor";
 import DataTableProfessor from "./components/Professor/DataTable/DataTableProfessor";
+import Registration from "./components/Registration/Registration";
+
 
 function App() {
   const [selectedOption, setSelectedOption] = useState([
     "Dodavanje Učenika",
     0,
   ]);
+  const [registered, setRegistered] = useState(false)
 
 
   const displayOption = () => {
@@ -43,20 +46,22 @@ function App() {
         return <Schedule />;
     }
   };
-
+  const isRegistered = ()=>{
+    if(registered){
+      return  <div class="allContainer">
+                <Header setOptionText={(o) => setSelectedOption(o)} />
+                <div className="rightContainer">
+                  <div className="display">
+                    <div className="optionText">{selectedOption[0]}</div>
+                    {selectedOption && displayOption()}
+                  </div>
+                </div>
+              </div>
+    }
+    return <Registration registered={registered} setRegistered={setRegistered}/>
+  }
   
-  return (
-    <div class="allContainer">
-      <Header setOptionText={(o) => setSelectedOption(o)} />
-      <div className="rightContainer">
-        <div className="display">
-          <div className="optionText">{selectedOption[0]}</div>
-          {selectedOption && displayOption()}
-          
-        </div>
-      </div>
-    </div>
-  );
+  return (<>{isRegistered()}</>);
 }
 
 export default App;

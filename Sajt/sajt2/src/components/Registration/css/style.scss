@@ -1,0 +1,109 @@
+@import "../../Colors/colors.scss";
+
+.registrationContainer {
+    .logoContainer {
+        height: 3em;
+        width: max-content;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 30%;
+        left: 50%;
+
+        .logo {
+            position: relative;
+            color: #82bcf3;
+            background-color: #023047;
+            border-radius: 0.4em;
+            padding: 0.3em 0.6em;
+            font-weight: 500;
+            font-size: 4em;
+
+            .e {
+                color: white;
+                font-weight: 300;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                width: 0px;
+                height: 0px;
+                bottom: -0.5em;
+                left: 0;
+                border: 0.5em solid transparent;
+                border-top: 0.5em solid #023047;
+                border-left: 0.5em solid #023047;
+            }
+        }
+    }
+
+    .registration {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        display: grid;
+        align-items: center;
+        gap: 2em;
+
+        .inputContainer {
+            display: grid;
+            width: 20em;
+
+            .textAreaContainer {
+                input {
+                    display: none;
+                }
+            }
+
+            label {
+                font-size: 1.2rem;
+                margin-bottom: .5em;
+            }
+
+            input {
+                position: relative;
+                display: inline-block;
+                width: calc(100%);
+
+                padding: .5em;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                background-color: #fff;
+                cursor: pointer;
+                text-align: left;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+                font-size: 1.2rem;
+
+                &:focus,
+                &:active {
+                    border: 0.1em solid $selectBorder;
+                    background-color: #eeeeee;
+                }
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #eeeeee;
+                }
+            }
+
+        }
+
+        .submit-btn {
+            border: 0.15em solid $borderColor;
+            border-radius: 0.25em;
+            background-color: #fff;
+            padding: 0.25em 0.5em;
+            transition: 0.2s;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.2rem;
+            width: calc(100% + 1em);
+
+            &:hover {
+                border: 0.15em solid $selectBorder;
+                background-color: #eeeeee;
+            }
+        }
+    }
+}
