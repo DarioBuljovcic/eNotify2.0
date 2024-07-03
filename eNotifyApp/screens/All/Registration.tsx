@@ -45,15 +45,20 @@ const RegistrationScreen = ({
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
 
   const saveUser = async (user: User) => {
+    
     AsyncStorage.setItem('Role', user.Role);
     AsyncStorage.setItem('Class', user.Class);
     AsyncStorage.setItem('Name', user.Name);
-    AsyncStorage.setItem('UserId', value);
+    AsyncStorage.setItem('UserId', user.UserID);
+    
     messaging().subscribeToTopic('Svi');
+    
     if (user.Role !== 'Professor') {
+      
       messaging().subscribeToTopic(
         subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
       );
+      
       messaging().subscribeToTopic(user.Class);
       console.log(user.Class);
     }
@@ -74,15 +79,17 @@ const RegistrationScreen = ({
   
   const Login = () => {
     const query = firestore().collection('Users').where('UserID', '==', value);
+    
     query
       .get()
       .then(querySnapshot => {
+        
         if (!querySnapshot.empty) {
+          console.log("eees");
           const saveAll = async () => {
             setIsCorrect(true);
             const user: User = querySnapshot.docs[0].data() as User;
             await saveUser(user);
-            
             navigation.navigate('NavigationScreen');
           };
           saveAll();

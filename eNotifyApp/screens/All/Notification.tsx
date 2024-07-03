@@ -59,10 +59,10 @@ export default function Obavestenje({route}: any) {
       }),
     ]).start();
   };
-
+  console.log(route.params.id);
   useEffect(() => {
     const getNotification = async () => {
-      //Kod da uzmes podatke za notifikaciju
+      console.log("Uzima podatke");
       const querySnapshot = await firestore()
         .collection('Notifications')
         .where('NotificationId', '==', route.params.id)
@@ -86,8 +86,8 @@ export default function Obavestenje({route}: any) {
       }
       setImages(imgUrls);
     };
-    if (!notification) getNotification();
-  });
+    getNotification();
+  },[route.params.id]);
   useEffect(() => {
     if (!notification) {
       animationValue.setValue(-250);

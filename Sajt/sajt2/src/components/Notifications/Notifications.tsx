@@ -46,7 +46,7 @@ function MainPage() {
   const [files, setFiles] = useState<File[]>([]);
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState("")
-
+  
   const grupno = [
     { Class: "Svi razredi", id: "0" },
     { Class: "Prvi razredi", id: "1" },

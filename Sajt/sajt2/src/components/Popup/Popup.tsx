@@ -38,6 +38,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
     } else {
       setAnimationClass('exit');
       setAnimationClassOuter('exit');
+      setShouldRender(false);
     }
   }, [isOpen]);
 

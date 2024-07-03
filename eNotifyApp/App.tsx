@@ -37,7 +37,7 @@ PermissionsAndroid.request(
 PermissionsAndroid.request(
   PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
 );
-
+console.warn = ()=>{};
 const getMode = async () => {
   const mode = await AsyncStorage.getItem('Mode');
   Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
@@ -51,6 +51,7 @@ type Screens = {
 };
 
 function buildDeepLinkFromNotificationData(data: any): string | null {
+  console.log("Kliknuo");
   const notificationId = data.notification.android.channelId;
   return `eNotify://Notification/${notificationId}`;
 }
@@ -89,11 +90,9 @@ const linking = {
 
     //onNotificationOpenedApp: When the application is running, but in the background.
     const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(remoteMessage);
       const url = buildDeepLinkFromNotificationData(remoteMessage);
 
       if (typeof url === 'string') {
-        console.log(url);
         listener(url);
         Linking.openURL(url);
       }

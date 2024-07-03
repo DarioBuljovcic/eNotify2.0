@@ -35,8 +35,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     if (value !== null && name !== null && raz !== null) {
       setUserId(value);
       setProfessor(name);
-      setClass(raz.slice(0, 4));
-      prof ? setProfClass(raz.slice(0, 4)) : null;
+      setClass(raz);
+      prof ? setProfClass(raz) : null;
     }
   };
 

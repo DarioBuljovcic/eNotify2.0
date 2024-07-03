@@ -48,67 +48,67 @@ const FileUploadForm = () => {
   };
 
   const handleFile = async (file: File) => {
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = async (event: any) => {
-        if (event.target) {
-          const blob = new Blob([event.target.result], {
-            type: "application/json",
-          });
-          const text = await blob.text();
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onload = async (event: any) => {
+    //     if (event.target) {
+    //       const blob = new Blob([event.target.result], {
+    //         type: "application/json",
+    //       });
+    //       const text = await blob.text();
 
-          const binaryString = extractXlsContent(text);
-          console.log(binaryString);
-          function parseHtmlToJson(htmlContent: any) {
-            const parser = new DOMParser();
-            console.log(htmlContent);
-            const doc = parser.parseFromString(htmlContent, "text/html");
-            const data = doc.querySelectorAll("td");
-            console.log(data);
-            const days = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak"];
-          }
-          parseHtmlToJson(binaryString);
+    //       const binaryString = extractXlsContent(text);
+    //       console.log(binaryString);
+    //       function parseHtmlToJson(htmlContent: any) {
+    //         const parser = new DOMParser();
+    //         console.log(htmlContent);
+    //         const doc = parser.parseFromString(htmlContent, "text/html");
+    //         const data = doc.querySelectorAll("td");
+    //         console.log(data);
+    //         const days = ["Ponedeljak", "Utorak", "Sreda", "Cetvrtak", "Petak"];
+    //       }
+    //       parseHtmlToJson(binaryString);
 
-          // const workbook = XLSX.read(binaryString, { type: "binary" });
-          // const sheetName = workbook.SheetNames[0];
-          // const sheet = workbook.Sheets[sheetName];
-          // const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
-          // for (let item of data) {
-          //   const name = item.Name + " " + item.Surname;
-          //   try {
-          //     const userID = generatePassword(7);
-          //     const data: Data = {
-          //       Name: name,
-          //       Email: item.Email,
-          //       Class: item.Class,
-          //       Role: item.Role,
-          //       UserID: userID,
-          //     };
-          //     // axios
-          //     //   .post(
-          //     //     "http://localhost:9000/.netlify/functions/api/send-email",
-          //     //     {
-          //     //       to: item.Email,
-          //     //       subject: "Vaš kod",
-          //     //       text: userID,
-          //     //     }
-          //     //   )
-          //     //   .then((response) => {
-          //     //     console.log(response.data);
-          //     //   })
-          //     //   .catch((error) => {
-          //     //     console.error("Error sending email:", error);
-          //     //   });
-          //     // await addDoc(collection(db, "Users"), data);
-          //   } catch (error) {
-          //     console.error(error);
-          //   }
-          //   console.log("aloo");
-          // }
-        }
-      };
-      reader.readAsBinaryString(file);
-    }
+    //       // const workbook = XLSX.read(binaryString, { type: "binary" });
+    //       // const sheetName = workbook.SheetNames[0];
+    //       // const sheet = workbook.Sheets[sheetName];
+    //       // const data: ExcelItem[] = XLSX.utils.sheet_to_json<ExcelItem>(sheet);
+    //       // for (let item of data) {
+    //       //   const name = item.Name + " " + item.Surname;
+    //       //   try {
+    //       //     const userID = generatePassword(7);
+    //       //     const data: Data = {
+    //       //       Name: name,
+    //       //       Email: item.Email,
+    //       //       Class: item.Class,
+    //       //       Role: item.Role,
+    //       //       UserID: userID,
+    //       //     };
+    //       //     // axios
+    //       //     //   .post(
+    //       //     //     "http://localhost:9000/.netlify/functions/api/send-email",
+    //       //     //     {
+    //       //     //       to: item.Email,
+    //       //     //       subject: "Vaš kod",
+    //       //     //       text: userID,
+    //       //     //     }
+    //       //     //   )
+    //       //     //   .then((response) => {
+    //       //     //     console.log(response.data);
+    //       //     //   })
+    //       //     //   .catch((error) => {
+    //       //     //     console.error("Error sending email:", error);
+    //       //     //   });
+    //       //     // await addDoc(collection(db, "Users"), data);
+    //       //   } catch (error) {
+    //       //     console.error(error);
+    //       //   }
+    //       //   console.log("aloo");
+    //       // }
+    //     }
+    //   };
+    //   reader.readAsBinaryString(file);
+    // }
   };
 
   const insertFile = (e:any) => {
