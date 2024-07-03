@@ -10,7 +10,6 @@ import {
   Appearance,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Student from '../Student/Student';
 import React, {useEffect, useState, useRef} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,6 +22,7 @@ import {Button, Text} from 'react-native-elements';
 import Professor from '../Professor/Professor';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
+import RasporedV4 from '../Student/RasporedV4';
 
 const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -225,7 +225,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         />
         <Tab.Screen
           name="Raspored"
-          component={RasporedV3}
+          component={RasporedV4}
           options={{
             tabBarLabel: t('timetable'),
             headerTitle: t('timetable'),
@@ -405,7 +405,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           />
           <Tab.Screen
             name="Raspored"
-            component={RasporedV3}
+            component={RasporedV4}
             options={{
               tabBarLabel: t('timetable'),
               headerTitle: t('timetable'),

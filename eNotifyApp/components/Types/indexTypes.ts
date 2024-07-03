@@ -18,6 +18,7 @@ export type Navigation = {
     NavigationScreen: undefined,
     RasporedV2:undefined,
     RasporedV3:undefined,
+    RasporedV4:undefined,
     UserScreen:undefined,
     NotificationViewrs:undefined
 }
@@ -26,6 +27,7 @@ export type NotificationData={
 }
 export type RasporedV2 = StackScreenProps<Navigation,"RasporedV2">
 export type RasporedV3 = StackScreenProps<Navigation,"RasporedV3">
+export type RasporedV4 = StackScreenProps<Navigation,"RasporedV4">
 
 
 export type StudentProps = StackScreenProps<Navigation, "Student" >
