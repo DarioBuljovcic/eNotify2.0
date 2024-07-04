@@ -1,5 +1,6 @@
 {
     "test": "tesztelés",
+    "registration":"regisztráció",
     "english": "angol",
     "serbian": "szerb",
     "hungarian": "magyar",
@@ -22,5 +23,13 @@
     "notification text": "Értesítés szövege",
     "choose grade": "Válassza ki az osztályzatot...",
     "add file": "Fájl hozzáadása",
-    "send": "Küldés"
+    "send": "Küldés",
+    "log out":"Kijelentkezés",
+    "confirm logout":"Igen, biztos vagyok benne.",
+    "decline logout":"Nem, vigyél vissza!",
+    "logout message":"Ó, ne, biztos vagy benne?",
+    "loading":"betöltés",
+    "Incorrect code": "Érvénytelen kódot adott meg",
+    "Identification code": "Adja meg az azonosító kódját",
+    "Register": "Regisztráció"
 }

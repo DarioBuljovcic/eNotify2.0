@@ -26,6 +26,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [grade, setGrade] = useState('');
   const [language, setLanguage] = useState('');
   const [languageModal, setLanguageModal] = useState(false);
+  const [logoutModal, setLogoutModal] = useState(false);
   const rotationValue = useRef(new Animated.Value(isDarkMode ? 0 : 1)).current;
   const rotate = rotationValue.interpolate({
     inputRange: [0, 1],
@@ -68,13 +69,19 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     imgSource = require('../../assets/images/graduation.png');
   }
 
-  const changeLanguage = (prop:string) => {
-    if(prop==='sr')
+  const changeLanguage = async(prop:string) => {
+    if(prop==='sr'){
       i18n.changeLanguage('sr');
-    else if(prop==='hu')
+      AsyncStorage.setItem('Language', 'sr');
+    }
+    else if(prop==='hu'){
       i18n.changeLanguage('hu');
-    else if(prop==='en')
+      AsyncStorage.setItem('Language', 'hu');
+    }
+    else if(prop==='en'){
       i18n.changeLanguage('en');
+      AsyncStorage.setItem('Language', 'en');
+    }
 
     setLanguageModal(false);
   }
@@ -126,6 +133,24 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
       )
     }
 
+  }
+
+  const logOutModal = ()=>{
+    setLogoutModal(true)
+  }
+  const logOutCancle = ()=>{
+    setLogoutModal(false)
+  }
+  
+
+  const logOut = ()=>{
+    setLogoutModal(false)
+    AsyncStorage.removeItem('UserID');
+    AsyncStorage.removeItem('Name');
+    AsyncStorage.removeItem('Role');
+    AsyncStorage.removeItem('Class');
+    AsyncStorage.removeItem('Email');
+    AsyncStorage.removeItem('Language');
   }
 
   return (
@@ -288,6 +313,29 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             </TouchableOpacity>
 
           </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.notificationBG
+                  : Colors.Light.notificationBG,
+              },
+            ]}
+            activeOpacity={0.5}
+            onPress={() => logOutModal()}>
+            <Text
+              style={[
+                styles.optionText,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              {t('log out') }
+            </Text>
+          </TouchableOpacity>
 
 
         </View>
@@ -304,6 +352,29 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             <TouchableOpacity style={[styles.languageOption,{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground}]} activeOpacity={1} onPress={()=>changeLanguage('en')}>
               <Text style={[styles.languageOptionText,{color: i18n.language==='en'?Colors.Light.hyperlinkText:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>{t('english')}</Text>
             </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+        :null
+      }
+      {logoutModal?
+        <TouchableOpacity style={styles.modalBackground} onPress={()=>setLogoutModal(false)} activeOpacity={1}>
+          <View style={[styles.logOutModal,,{backgroundColor:isDarkMode?Colors.Dark.textInputBackground:Colors.Light.textInputBackground}]}>
+
+            <Ionicons
+              name={'log-out-outline'}
+              size={140}
+                color={isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}
+              style={{alignSelf:'center'}}
+            />
+            <Text style={[styles.logOutText,{color:isDarkMode?Colors.Dark.textPrimary:Colors.Light.textPrimary}]}>{t('logout message')}</Text>
+
+            <TouchableOpacity style={[styles.logOutAnswer,{borderColor:isDarkMode?Colors.Dark.warningRed:Colors.Light.warningRed}]} activeOpacity={1} onPress={()=>logOutCancle()}>
+              <Text style={{color:isDarkMode?Colors.Dark.white:Colors.Light.warningRed}}>{t('decline logout')}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.logOutAnswer,{backgroundColor:isDarkMode?Colors.Dark.warningRed:Colors.Light.warningRed},,{borderColor:isDarkMode?Colors.Dark.warningRed:Colors.Light.warningRed}]} activeOpacity={1} onPress={()=>logOut()}>
+              <Text style={{color:isDarkMode?Colors.Dark.white:Colors.Light.white}}>{t('confirm logout')}</Text>
+            </TouchableOpacity>
+            
           </View>
         </TouchableOpacity>
         :null
@@ -357,14 +428,14 @@ const styles = StyleSheet.create({
   },
 
   option: {
-    height: 70,
+    height: 65,
     width: '100%',
 
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
 
-    marginVertical: 10,
+    marginVertical: 5,
     borderRadius: 10,
 
     elevation: 3,
@@ -410,7 +481,7 @@ const styles = StyleSheet.create({
   },
   modal:{
     alignSelf:'center',
-    width:250,
+    width:300,
     height:150,
     backgroundColor:Colors.Light.textInputBackground,
     borderRadius:20,
@@ -426,6 +497,34 @@ const styles = StyleSheet.create({
     color:Colors.Light.textPrimary,
     fontFamily:'Mulish',
     textTransform:'capitalize',
+  },
+  logOutModal:{
+    padding:20,
+    paddingBottom:40,
+    alignSelf:'center',
+    width:320,
+    height:350,
+    backgroundColor:Colors.Light.textInputBackground,
+    borderRadius:20,
+    overflow:'hidden',
+    alignContent:'center',
+    justifyContent:'center',
+    gap:10
+  },
+  logOutAnswer:{
+    height:40,
+    borderRadius:10,
+    alignSelf:'center',
+    width:'80%',
+    borderWidth:2,
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  logOutText:{
+    alignSelf:'center',
+    fontSize:30,
+    fontFamily:'Mulish-Bold',
+    marginBottom:10,
   },
 });
 

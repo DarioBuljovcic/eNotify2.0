@@ -1,5 +1,6 @@
 {
     "test":"testiram",
+    "registration":"registracija",
     "english": "engleski",
     "serbian": "srpski",
     "hungarian": "madjarski",
@@ -22,5 +23,13 @@
     "notification text":"Telo obaveštenja",
     "choose grade":"Izaberite razred...",
     "add file":"Dodaj fajl",
-    "send":"Posalji"
+    "send":"Posalji",
+    "log out":"Izloguj se",
+    "confirm logout":"Da, siguran sam.",
+    "decline logout":"Ne, vrati me nazad!",
+    "logout message":"O ne, jeste li sigurni?",
+    "loading":"Ucitavanje",
+    "incorrect code":"Niste uneli dobar identifikacioni kod",
+    "identification code":"Unesite vas identifikacioni kod",
+    "register":"Registruj se"
 }

@@ -14,7 +14,7 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   ProfessorProps,
   ProfessorTabProps,
@@ -35,6 +35,7 @@ import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-pi
 import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
 import { useTranslation } from 'react-i18next';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -50,6 +51,7 @@ const generateID = (length: number) => {
   }
   return ID;
 };
+
 function Modal({
   closeModal,
   translateY,
@@ -336,43 +338,16 @@ export default function Professor({
   const [naziv, setNaziv] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const animateOpen = () => {
-    Animated.parallel([
-      Animated.timing(translateY, {
-        toValue: 0, // Change this value to change how far the circle moves up
-        duration: 300, // Adjust duration as needed
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacity, {
-        toValue: 0.6, // Change this value to change how far the circle moves up
-        duration: 300, // Adjust duration as needed
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
-  const animateClose = () => {
-    Animated.parallel([
-      Animated.timing(translateY, {
-        toValue: 800, // Change this value to change how far the circle moves up
-        duration: 300, // Adjust duration as needed
-        useNativeDriver: true,
-      }),
-      Animated.timing(opacity, {
-        toValue: 0, // Change this value to change how far the circle moves up
-        duration: 300, // Adjust duration as needed
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
 
-  const openModal = () => {
-    animateOpen();
-    setVisible(true);
-  };
-  const closeModal = () => {
-    animateClose();
-    setVisible(false);
-  };
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(()=>['20%','90%'],[])
+
+  const handleOpenPress = ()=>{
+    bottomSheetRef.current?.expand();
+  }
+
+ 
+
   useEffect(() => {
     const getData = async () => {
       const data = await firestore().collection('Classes').get();
@@ -388,42 +363,30 @@ export default function Professor({
   });
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <>
-        <Animated.View style={[styles.overlay, {opacity}]}></Animated.View>
         <View style={styles.container}>
           <NotificationLoader
             navigation={navigation}
             prof={true}
             razredi={razredi}
           />
-          <TouchableOpacity
-            style={[
-              styles.add,
-              {
-                backgroundColor: isDarkMode
-                  ? Colors.Light.accentGreen
-                  : Colors.Dark.accentGreen,
-              },
-            ]}
-            activeOpacity={0.9}
-            onPress={openModal}>
-            <Ionicons
-              name={'add-outline'}
-              size={35}
-              color={Colors.Light.white}
-            />
-          </TouchableOpacity>
+          
+          
 
-          <Modal
+          {/* <BottomSheet
+            ref={bottomSheetRef}
+            snapPoints={snapPoints}>
+            <BottomSheetView style={styles.contentContainer}>
+              <Text>Awesome 🎉</Text>
+            </BottomSheetView>
+          </BottomSheet> */}
+
+          {/* <Modal
             closeModal={closeModal}
             translateY={translateY}
             razredi={razredi}
             naziv={naziv}
-          />
+          /> */}
         </View>
-      </>
-    </TouchableWithoutFeedback>
   );
 }
 
@@ -568,5 +531,11 @@ const styles = StyleSheet.create({
     borderStyle:'dashed',
     alignItems:'center',
     justifyContent:'center'
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
+    elevation:10,
+    zIndex:10,
   },
 });

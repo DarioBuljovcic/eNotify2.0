@@ -108,8 +108,24 @@ const linking = {
 function App(): React.JSX.Element {
   LogBox.ignoreAllLogs();
   const isDarkMode = useColorScheme() === 'dark';
-  const {t} = useTranslation();
-  const [unseenNotify, setUnseenNotify] = useState(0);
+
+  const {t,i18n} = useTranslation();
+  const setLanguage=async()=>{
+    const lang = await AsyncStorage.getItem('Language');
+    
+
+    if(lang==='sr'){
+      i18n.changeLanguage('sr');
+    }
+    else if(lang==='hu'){
+      i18n.changeLanguage('hu');
+    }
+    else if(lang==='en'){
+      i18n.changeLanguage('en');
+    }
+  }
+  setLanguage();
+
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {});
 
@@ -121,6 +137,7 @@ function App(): React.JSX.Element {
     );
     return unsubscribe;
   });
+
   return (
     <NavigationContainer
       linking={linking}
@@ -130,8 +147,8 @@ function App(): React.JSX.Element {
           name="Registration"
           component={Registration}
           options={() => ({
+            headerTitle:t('registration'),
             headerBackVisible: false,
-            title: 'Registracija',
             headerLeft: () => null,
             headerStyle: {
               height: 100,
@@ -141,6 +158,7 @@ function App(): React.JSX.Element {
             headerTitleStyle: {
               fontSize: 35,
               fontFamily: 'Mulish-Light',
+              textTransform: 'capitalize',
             },
             headerBackground: () => (
               <View style={{position: 'absolute', top: -1, zIndex: -11}}>

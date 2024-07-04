@@ -25,6 +25,7 @@ const Colors: Theme = {
     lightText: '#adb5bd',
     whiteText: '#ffffff',
     hyperlinkText: '#0055cc',
+    warningRed:'#f56262',
   },
   Dark:{
     primary: '#ACE1FF',
@@ -48,8 +49,9 @@ const Colors: Theme = {
     textPrimary: '#adb5bd',
     textSecondary: '#adb5bd',
     lightText: '#7b8288',
-    whiteText: '#ffffff',
+    whiteText: '#031525',
     hyperlinkText: '#0055cc',
+    warningRed:'#f56262',
   }
 };
 export default Colors;

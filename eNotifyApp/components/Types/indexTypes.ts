@@ -96,6 +96,7 @@ export type Color = {
     lightText: string,
     whiteText:string,
     hyperlinkText: string,
+    warningRed:string,
 };
 export type Theme ={
   Light:Color,

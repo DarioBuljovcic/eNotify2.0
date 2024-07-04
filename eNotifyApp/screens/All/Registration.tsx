@@ -24,6 +24,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Circle, Svg} from 'react-native-svg';
 import Loading from './Loading';
+import { useTranslation } from 'react-i18next';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -43,6 +44,8 @@ const RegistrationScreen = ({
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
+
+  const {t} = useTranslation();
 
   const saveUser = async (user: User) => {
     
@@ -85,7 +88,6 @@ const RegistrationScreen = ({
       .then(querySnapshot => {
         
         if (!querySnapshot.empty) {
-          console.log("eees");
           const saveAll = async () => {
             setIsCorrect(true);
             const user: User = querySnapshot.docs[0].data() as User;
@@ -106,10 +108,10 @@ const RegistrationScreen = ({
       <View style={styles.container}>
         <View>
           <Text style={styles.incorrectText}>
-            {isCorrect ? '' : 'Niste uneli dobar kod'}
+            {isCorrect ? '' : t('incorrect code')}
           </Text>
           <TextInput
-            placeholder="Unesite vas identifikacioni kod"
+            placeholder={t('identification code')}
             placeholderTextColor={
               isDarkMode ? Colors.Dark.lightText : Colors.Light.lightText
             }
@@ -144,7 +146,7 @@ const RegistrationScreen = ({
             style={isDarkMode ? styles.confirmBtnDark : styles.confirmBtn}>
             <Text
               style={isDarkMode ? styles.confirmTxtDark : styles.confirmTxt}>
-              Registruj se
+              {t('register')}
             </Text>
           </LinearGradient>
         </TouchableOpacity>

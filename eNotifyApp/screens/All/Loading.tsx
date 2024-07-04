@@ -11,6 +11,7 @@ import {
 import {Text} from 'react-native-elements';
 import {Circle, Svg} from 'react-native-svg';
 import Colors from '../../components/Constants/Color';
+import { useTranslation } from 'react-i18next';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -33,6 +34,10 @@ export default function Loading() {
       ]),
     ).start();
   });
+
+
+  const {t} = useTranslation();
+
   return (
     <>
       <View style={styles.container}>
@@ -45,7 +50,7 @@ export default function Loading() {
                 : Colors.Light.accentGreen,
             },
           ]}>
-          Loading
+          {t('loading')}
         </Text>
         <Svg>
           <Circle
@@ -98,10 +103,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loadingText: {
-    fontSize: 36,
+    fontSize: 32,
     position: 'absolute',
     top: screenHeight / 2 - R - 30,
     alignSelf: 'center',
     zIndex: 100,
+    textTransform:'capitalize',
   },
 });
