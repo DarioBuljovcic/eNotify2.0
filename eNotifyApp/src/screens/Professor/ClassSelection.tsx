@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import {Class} from '../../components/Types/indexTypes';
+import {Class} from '../../constants/Types/indexTypes';
 import {
   Text,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   FlatListProps,
 } from 'react-native';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ClassSelection({

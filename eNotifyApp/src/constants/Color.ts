@@ -1,42 +1,42 @@
-import {Theme} from '../Types/indexTypes';
+import {Theme} from './Types/indexTypes';
 
 const Colors: Theme = {
-  Light:{
+  Light: {
     primary: '#ACE1FF',
     secondary: '#e0f4ff',
     notificationBG: 'white',
     headerBG: '#65C8FF',
     headerText: 'white',
 
-    headerFirst:'#206AF9',
-    headerSecond:'#205DF9',
-    headerThird:'#2050F9',
+    headerFirst: '#206AF9',
+    headerSecond: '#205DF9',
+    headerThird: '#2050F9',
 
     white: 'white',
     black: 'black',
 
-    accent:'#2077F9', //'#2192ff',
+    accent: '#2077F9', //'#2192ff',
     accentGreen: '#335ef6',
     appBackground: '#f8f9fa',
-    textInputBackground:'#ffffff',
+    textInputBackground: '#ffffff',
 
     textPrimary: '#252525',
     textSecondary: '#3d3d3d',
     lightText: '#adb5bd',
     whiteText: '#ffffff',
     hyperlinkText: '#0055cc',
-    warningRed:'#f56262',
+    warningRed: '#f56262',
   },
-  Dark:{
+  Dark: {
     primary: '#ACE1FF',
     secondary: '#e0f4ff',
     notificationBG: '#0D2136',
     headerBG: '#65C8FF',
     headerText: 'white',
 
-    headerFirst:'#0D3055',
-    headerSecond:'#052546',
-    headerThird:'#0b233d',
+    headerFirst: '#0D3055',
+    headerSecond: '#052546',
+    headerThird: '#0b233d',
 
     white: 'white',
     black: 'black',
@@ -44,14 +44,14 @@ const Colors: Theme = {
     accent: '#0F365F',
     accentGreen: '#AAC9F9',
     appBackground: '#031525',
-    textInputBackground:'#0D2136',
+    textInputBackground: '#0D2136',
 
     textPrimary: '#adb5bd',
     textSecondary: '#adb5bd',
     lightText: '#7b8288',
     whiteText: '#031525',
     hyperlinkText: '#0055cc',
-    warningRed:'#f56262',
-  }
+    warningRed: '#f56262',
+  },
 };
 export default Colors;

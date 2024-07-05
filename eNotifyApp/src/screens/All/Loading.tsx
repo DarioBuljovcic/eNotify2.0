@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {Text} from 'react-native-elements';
 import {Circle, Svg} from 'react-native-svg';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import {useTranslation} from 'react-i18next';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);

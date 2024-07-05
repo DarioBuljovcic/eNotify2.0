@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import firestore from '@react-native-firebase/firestore';
 
 type Data = {

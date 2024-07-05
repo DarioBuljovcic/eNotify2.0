@@ -9,10 +9,10 @@ import {
   useColorScheme,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import firestore from '@react-native-firebase/firestore';
 import Loading from '../All/Loading';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 type Data = {
   [key: string]: string;
@@ -39,8 +39,14 @@ const App = () => {
 
   const {t} = useTranslation();
 
-  const dayDisplay = [t('monday'), t('tuesday'), t('wednesday'), t('thursday'), t('friday')];
-  
+  const dayDisplay = [
+    t('monday'),
+    t('tuesday'),
+    t('wednesday'),
+    t('thursday'),
+    t('friday'),
+  ];
+
   const vreme = [
     '07:30\n08:15', // Prvi čas
     '08:20\n09:05', // Drugi čas
@@ -387,7 +393,7 @@ const styles = StyleSheet.create({
   },
   displayDayText: {
     fontSize: 25,
-    textTransform:'capitalize',
+    textTransform: 'capitalize',
     fontFamily: 'Mulish',
   },
   day: {

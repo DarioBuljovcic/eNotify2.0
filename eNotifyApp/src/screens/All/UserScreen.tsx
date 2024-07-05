@@ -1,4 +1,4 @@
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import {
   StyleSheet,
   View,
@@ -11,7 +11,7 @@ import {
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
-import {UserScreenTabProps} from '../../components/Types/indexTypes';
+import {UserScreenTabProps} from '../../constants/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
@@ -147,6 +147,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     AsyncStorage.removeItem('Email');
     AsyncStorage.removeItem('Language');
 
+    navigation.navigate('Registration');
     //TODO: navigate to registratin
   };
 

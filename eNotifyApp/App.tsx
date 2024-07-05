@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   Linking,
@@ -15,20 +15,18 @@ import 'react-native-url-polyfill/auto';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
-import Registration from './screens/All/Registration';
-import Student from './screens/Student/Student';
-import Professor from './screens/Professor/Professor';
-import Notification from './screens/All/Notification';
-import Colors from './components/Constants/Color';
-import {Navigation} from './components/Types/indexTypes';
-import LinearGradient from 'react-native-linear-gradient';
-import About from './screens/All/About';
-import NavigationScreen from './screens/All/NavigationScreen';
-import NotificationViewrs from './screens/Professor/NotificationViewrs';
+import Registration from './src/screens/All/Registration';
+import Student from './src/screens/Student/Student';
+import Professor from './src/screens/Professor/Professor';
+import Notification from './src/screens/All/Notification';
+import Colors from './src/constants/Color';
+import {Navigation} from './src/constants/Types/indexTypes';
+import About from './src/screens/All/About';
+import NavigationScreen from './src/screens/All/NavigationScreen';
+import NotificationViewrs from './src/screens/Professor/NotificationViewrs';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Text } from 'react-native-elements';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -37,93 +35,91 @@ PermissionsAndroid.request(
 PermissionsAndroid.request(
   PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
 );
-console.warn = ()=>{};
-const getMode = async () => {
-  const mode = await AsyncStorage.getItem('Mode');
-  Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
-};
-getMode();
-
-const Stack = createStackNavigator<Navigation>();
-const NAVIGATION_IDS = ['Registration', 'Notification', 'Professor'];
-type Screens = {
-  [key: string]: string;
-};
-
-function buildDeepLinkFromNotificationData(data: any): string | null {
-  console.log("Kliknuo");
-  const notificationId = data.notification.android.channelId;
-  return `eNotify://Notification/${notificationId}`;
-}
-
-const linking = {
-  prefixes: ['eNotify://'],
-  config: {
-    initialRouteName: `Registration`,
-    screens: {
-      Registration: `Registration`,
-      Notification: {
-        path: 'Notification/:id',
-        parse: {
-          id: (id: string) => `${id}`,
-        },
-      },
-    } as any,
-  },
-  async getInitialURL() {
-    const url = await Linking.getInitialURL();
-    if (typeof url === 'string') {
-      return url;
-    }
-    //getInitialNotification: When the application is opened from a quit state.
-    const message = await messaging().getInitialNotification();
-    const deeplinkURL = buildDeepLinkFromNotificationData('Notification');
-    if (typeof deeplinkURL === 'string') {
-      return deeplinkURL;
-    }
-  },
-  subscribe(listener: (url: string) => void) {
-    const onReceiveURL = ({url}: {url: string}) => listener(url);
-
-    // Listen to incoming links from deep linking
-    const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
-
-    //onNotificationOpenedApp: When the application is running, but in the background.
-    const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
-      const url = buildDeepLinkFromNotificationData(remoteMessage);
-
-      if (typeof url === 'string') {
-        listener(url);
-        Linking.openURL(url);
-      }
-    });
-
-    return () => {
-      linkingSubscription.remove();
-      unsubscribe();
-    };
-  },
-};
 
 function App(): React.JSX.Element {
   LogBox.ignoreAllLogs();
+
   const isDarkMode = useColorScheme() === 'dark';
+  const {t, i18n} = useTranslation();
 
-  const {t,i18n} = useTranslation();
-  const setLanguage=async()=>{
+  const Stack = createStackNavigator<Navigation>();
+
+  type Screens = {
+    [key: string]: string;
+  };
+
+  const getMode = async () => {
+    const mode = await AsyncStorage.getItem('Mode');
+    Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
+  };
+  getMode();
+
+  function buildDeepLinkFromNotificationData(data: any): string | null {
+    console.log('Kliknuo');
+    const notificationId = data.notification.android.channelId;
+    return `eNotify://Notification/${notificationId}`;
+  }
+
+  const linking = {
+    prefixes: ['eNotify://'],
+    config: {
+      initialRouteName: `Registration`,
+      screens: {
+        Registration: `Registration`,
+        Notification: {
+          path: 'Notification/:id',
+          parse: {
+            id: (id: string) => `${id}`,
+          },
+        },
+      } as any,
+    },
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      if (typeof url === 'string') {
+        return url;
+      }
+      //getInitialNotification: When the application is opened from a quit state.
+      const message = await messaging().getInitialNotification();
+      const deeplinkURL = buildDeepLinkFromNotificationData('Notification');
+      if (typeof deeplinkURL === 'string') {
+        return deeplinkURL;
+      }
+    },
+    subscribe(listener: (url: string) => void) {
+      const onReceiveURL = ({url}: {url: string}) => listener(url);
+
+      // Listen to incoming links from deep linking
+      const linkingSubscription = Linking.addEventListener('url', onReceiveURL);
+
+      //onNotificationOpenedApp: When the application is running, but in the background.
+      const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
+        const url = buildDeepLinkFromNotificationData(remoteMessage);
+
+        if (typeof url === 'string') {
+          listener(url);
+          Linking.openURL(url);
+        }
+      });
+
+      return () => {
+        linkingSubscription.remove();
+        unsubscribe();
+      };
+    },
+  };
+
+  const setLanguage = async () => {
     const lang = await AsyncStorage.getItem('Language');
-    
 
-    if(lang==='sr'){
+    if (lang === 'sr') {
       i18n.changeLanguage('sr');
-    }
-    else if(lang==='hu'){
+    } else if (lang === 'hu') {
       i18n.changeLanguage('hu');
-    }
-    else if(lang==='en'){
+    } else if (lang === 'en') {
       i18n.changeLanguage('en');
     }
-  }
+  };
   setLanguage();
 
   useEffect(() => {
@@ -147,7 +143,7 @@ function App(): React.JSX.Element {
           name="Registration"
           component={Registration}
           options={() => ({
-            headerTitle:t('registration'),
+            headerTitle: t('registration'),
             headerBackVisible: false,
             headerLeft: () => null,
             headerStyle: {
@@ -162,8 +158,15 @@ function App(): React.JSX.Element {
             },
             headerBackground: () => (
               <View style={{position: 'absolute', top: -1, zIndex: -11}}>
-                <Svg width={Dimensions.get('window').width} height="241" viewBox={`0 0 ${Dimensions.get('window').width} 241`} fill="none" >
-                  <Path d="M0 0H541V217.519C464.705 265.682 351.65 226.249 312.115 217.519C272.581 208.789 119.991 145.903 0 217.519V0Z" fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}/>
+                <Svg
+                  width={Dimensions.get('window').width}
+                  height="241"
+                  viewBox={`0 0 ${Dimensions.get('window').width} 241`}
+                  fill="none">
+                  <Path
+                    d="M0 0H541V217.519C464.705 265.682 351.65 226.249 312.115 217.519C272.581 208.789 119.991 145.903 0 217.519V0Z"
+                    fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
+                  />
                 </Svg>
               </View>
             ),
@@ -175,40 +178,6 @@ function App(): React.JSX.Element {
           options={navigation => ({
             headerBackVisible: false,
             headerShown: false,
-            headerLeft: () => null,
-            headerStyle: {
-              height: 60,
-            },
-            headerTintColor: Colors.Light.whiteText,
-            headerTitleStyle: {
-              fontSize: 23,
-              fontFamily: 'Mulish-Light',
-            },
-          })}
-        />
-        <Stack.Screen
-          name="Student"
-          component={Student}
-          options={() => ({
-            headerBackVisible: false,
-            title: 'Obavestenja',
-            headerLeft: () => null,
-            headerStyle: {
-              height: 60,
-            },
-            headerTintColor: Colors.Light.whiteText,
-            headerTitleStyle: {
-              fontSize: 23,
-              fontFamily: 'Mulish-Light',
-            },
-          })}
-        />
-        <Stack.Screen
-          name="Professor"
-          component={Professor}
-          options={() => ({
-            headerBackVisible: false,
-            title: 'Glavni Meni',
             headerLeft: () => null,
             headerStyle: {
               height: 60,
@@ -235,7 +204,7 @@ function App(): React.JSX.Element {
               fontSize: 25,
               fontFamily: 'Mulish-Light',
               marginBottom: 25,
-              width:'100%',
+              width: '100%',
             },
             headerLeftContainerStyle: {
               marginBottom: 25,
@@ -382,7 +351,7 @@ function App(): React.JSX.Element {
               fontSize: 35,
               fontFamily: 'Mulish-Light',
               marginBottom: 25,
-              textTransform:'capitalize',
+              textTransform: 'capitalize',
             },
             headerLeftContainerStyle: {
               marginBottom: 25,
@@ -441,24 +410,5 @@ function App(): React.JSX.Element {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;

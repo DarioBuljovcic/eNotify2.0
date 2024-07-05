@@ -11,9 +11,9 @@ import {
 import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import firestore from '@react-native-firebase/firestore';
-import {NotificationType} from '../../components/Types/indexTypes';
+import {NotificationType} from '../../constants/Types/indexTypes';
 import LinearGradient from 'react-native-linear-gradient';
 import ClassSelection from '../Professor/ClassSelection';
 import Ionicons from 'react-native-vector-icons/Ionicons';

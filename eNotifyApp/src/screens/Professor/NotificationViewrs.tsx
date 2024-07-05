@@ -1,8 +1,8 @@
 import {Dimensions, StyleSheet, View, useColorScheme} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {User} from '../../components/Types/indexTypes';
+import {User} from '../../constants/Types/indexTypes';
 import {Text} from 'react-native-elements';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import firestore from '@react-native-firebase/firestore';
 import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';

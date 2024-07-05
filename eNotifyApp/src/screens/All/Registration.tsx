@@ -13,11 +13,11 @@ import {
   RegistrationProps,
   User,
   Navigation,
-} from '../../components/Types/indexTypes';
+} from '../../constants/Types/indexTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Circle} from 'react-native-svg';

@@ -1,10 +1,10 @@
 import {Appearance, StyleSheet, Text, View, useColorScheme} from 'react-native';
-import Colors from '../../components/Constants/Color';
-import { useTranslation } from 'react-i18next';
+import Colors from '../../constants/Color';
+import {useTranslation} from 'react-i18next';
 
 export default function About() {
   const isDarkMode = useColorScheme() === 'light';
-  const {t}=useTranslation();
+  const {t} = useTranslation();
   return (
     <View
       style={[

@@ -6,13 +6,13 @@ import {
   useColorScheme,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import Zoom from 'react-native-zoom-reanimated';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function RasporedV4() {
+export default function TimeTable() {
   const isDarkMode = useColorScheme() === 'light';
   const [url, setUrl] = useState('');
 

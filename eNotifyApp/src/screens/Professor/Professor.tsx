@@ -4,7 +4,7 @@ import {
   ProfessorProps,
   ProfessorTabProps,
   Class,
-} from '../../components/Types/indexTypes';
+} from '../../constants/Types/indexTypes';
 import NotificationLoader from '../All/NotificationLoader';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';

@@ -9,9 +9,9 @@ import {
   Dimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import Colors from '../../components/Constants/Color';
+import Colors from '../../constants/Color';
 import {format} from 'date-fns';
-import {NotificationType, Navigation} from '../../components/Types/indexTypes';
+import {NotificationType, Navigation} from '../../constants/Types/indexTypes';
 import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState, useRef} from 'react';
 import storage from '@react-native-firebase/storage';
