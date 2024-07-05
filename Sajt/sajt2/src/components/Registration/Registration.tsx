@@ -19,6 +19,8 @@ type User = {
 
 function Registration({registered,setRegistered}:Props) {
     const [SchoolID, setSchoolID] = useState("")
+    const [password,setPassword] = useState(false);
+
     const Login = ()=>{
         const newData:User[]=[];
 
@@ -31,6 +33,7 @@ function Registration({registered,setRegistered}:Props) {
     const handleChange = (event:any) => {
         setSchoolID(event.target.value);
       };
+
   return (
     <div className='registrationContainer'>
      <div className="logoContainer">
@@ -42,7 +45,8 @@ function Registration({registered,setRegistered}:Props) {
        
        <span className="inputContainer">
            <label htmlFor="inputField">Registracija</label>
-           <input type="text" placeholder="Šifra" onChange={(event)=>handleChange(event)}/>
+           <input type={password===true?'text':'password'} placeholder="Šifra" onChange={(event)=>handleChange(event)}/>
+           <div className="show" onClick={()=>setPassword(!password)}></div>
         </span>
 
          <button

@@ -43,9 +43,7 @@
 .registrationContainer .registration .inputContainer {
   display: grid;
   width: 20em;
-}
-.registrationContainer .registration .inputContainer .textAreaContainer input {
-  display: none;
+  position: relative;
 }
 .registrationContainer .registration .inputContainer label {
   font-size: 1.2rem;
@@ -71,6 +69,14 @@
 .registrationContainer .registration .inputContainer input:hover {
   cursor: pointer;
   background-color: #eeeeee;
+}
+.registrationContainer .registration .inputContainer .show {
+  position: absolute;
+  width: 0.5em;
+  height: 0.5em;
+  background-color: red;
+  right: -2%;
+  bottom: 20%;
 }
 .registrationContainer .registration .submit-btn {
   border: 0.15em solid #adb5bd;
