@@ -7,6 +7,7 @@ import {
   Animated,
   useColorScheme,
   Dimensions,
+  PermissionsAndroid,
 } from 'react-native';
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,6 +16,12 @@ import {UserScreenTabProps} from '../../constants/Types/indexTypes';
 import {LinearGradient} from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
+import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
+import DocumentPicker, {
+  DocumentPickerResponse,
+} from 'react-native-document-picker';
+import {updateDoc} from 'firebase/firestore';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
   const {t, i18n} = useTranslation();
@@ -26,11 +33,13 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [languageModal, setLanguageModal] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
   const rotationValue = useRef(new Animated.Value(isDarkMode ? 0 : 1)).current;
+  const [imageSource, setImageSource] = useState('');
   const rotate = rotationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
-  let imgSource;
+  const [selectedFile, setSelectedFile] =
+    useState<DocumentPickerResponse | null>(null);
 
   useEffect(() => {
     const saveUser = async () => {
@@ -59,16 +68,25 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     rotateAnimation.start();
   };
 
-  const setImage = () => {
-    if (role == 'Student') {
-      imgSource = require('../../assets/images/graduation.png');
-    } else if (role == 'Professor') {
-      imgSource = require('../../assets/images/open-book.png');
-    } else {
-      imgSource = require('../../assets/images/graduation.png');
+  const updateImage = async () => {
+    const userID = await AsyncStorage.getItem('UserId');
+
+    if (userID) {
+      const querySnapshot = await firestore()
+        .collection('Users')
+        .where('UserID', '==', userID)
+        .get();
+
+      if (!querySnapshot.empty) {
+        const imageUrl = await storage()
+          .ref(querySnapshot.docs[0].data().profile_picture)
+          .getDownloadURL();
+
+        if (imageUrl) setImageSource(imageUrl);
+      }
     }
   };
-  setImage();
+  updateImage();
 
   const changeLanguage = async (prop: string) => {
     if (prop === 'sr') {
@@ -151,6 +169,70 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     //TODO: navigate to registratin
   };
 
+  const uploadProfilePicture = async () => {
+    try {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        {
+          title: 'External Storage Permission',
+          message:
+            'This app needs access to your external storage to read files.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+        copyTo: 'documentDirectory',
+      }).then(async file => {
+        setSelectedFile(file[0]);
+        const Picture = async () => {
+          //uploading the image to storage
+          if (selectedFile) {
+            const reference = storage().ref(file[0].name);
+
+            const pathToFile = `file://${decodeURIComponent(
+              file[0].fileCopyUri,
+            )}`;
+
+            await reference.putFile(pathToFile);
+          }
+
+          if (file[0])
+            await AsyncStorage.setItem('Profile_Picture', file[0]?.name);
+
+          const userID = await AsyncStorage.getItem('UserId');
+          //console.log(userID);
+          if (userID) {
+            const userSnapshot = await firestore()
+              .collection('Users')
+              .where('UserID', '==', userID)
+              .get();
+
+            console.log(userID);
+            if (!userSnapshot.empty) {
+              const userDoc = userSnapshot.docs[0];
+              console.log(file[0]?.name);
+              await firestore().collection('Users').doc(userDoc.id).update({
+                profile_picture: file[0]?.name,
+              });
+              console.log('a');
+              updateImage();
+            }
+          }
+        };
+        Picture();
+      });
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('User cancelled file selection');
+      } else {
+        console.log('Error selecting file:', error);
+      }
+    }
+  };
+
   return (
     <View
       style={[
@@ -170,7 +252,24 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               isDarkMode ? ['#355E89', '#031525'] : ['#2077F9', '#C6E2F5']
             }
             style={styles.imgBorder}>
-            <Image source={imgSource} style={styles.userImage} />
+            <TouchableOpacity
+              style={[
+                styles.add,
+                {
+                  backgroundColor: isDarkMode
+                    ? Colors.Light.accentGreen
+                    : Colors.Dark.accentGreen,
+                },
+              ]}
+              activeOpacity={0.9}
+              onPress={uploadProfilePicture}>
+              <Ionicons
+                name={'add-outline'}
+                size={35}
+                color={Colors.Light.white}
+              />
+            </TouchableOpacity>
+            <Image source={{uri: imageSource}} style={styles.userImage} />
           </LinearGradient>
 
           <Text
@@ -550,10 +649,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 150,
     padding: 5,
+    position: 'relative',
   },
   userImage: {
-    height: 100,
-    width: 100,
+    height: 150,
+    width: 150,
+    borderRadius: 150,
   },
   nameText: {
     marginTop: 15,
@@ -667,6 +768,19 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: 'Mulish-Bold',
     marginBottom: 10,
+  },
+  add: {
+    width: 40,
+    height: 40,
+
+    borderRadius: 50,
+
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 10,
   },
 });
 
