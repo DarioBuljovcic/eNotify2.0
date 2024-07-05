@@ -1,12 +1,6 @@
-import {
-  Appearance,
-  Dimensions,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
-import {ProfessorTabProps, User} from '../../components/Types/indexTypes';
+import {Dimensions, StyleSheet, View, useColorScheme} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {User} from '../../components/Types/indexTypes';
 import {Text} from 'react-native-elements';
 import Colors from '../../components/Constants/Color';
 import firestore from '@react-native-firebase/firestore';
@@ -142,7 +136,6 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
-
   flatList: {
     width: screenWidth,
   },
@@ -153,14 +146,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
-    flexDirection:'row',
-    justifyContent:'space-between',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
 
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
-
   },
 });

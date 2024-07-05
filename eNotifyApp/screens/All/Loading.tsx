@@ -1,7 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useEffect, useRef} from 'react';
 import {
-  Alert,
   Animated,
   Dimensions,
   StyleSheet,
@@ -11,13 +9,15 @@ import {
 import {Text} from 'react-native-elements';
 import {Circle, Svg} from 'react-native-svg';
 import Colors from '../../components/Constants/Color';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export default function Loading() {
+  const {t} = useTranslation();
   const isDarkMode = useColorScheme() === 'dark';
   const animationValue = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
@@ -34,9 +34,6 @@ export default function Loading() {
       ]),
     ).start();
   });
-
-
-  const {t} = useTranslation();
 
   return (
     <>
@@ -91,6 +88,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const loadWidth = 600;
 const R = loadWidth / (2 * Math.PI);
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -108,6 +106,6 @@ const styles = StyleSheet.create({
     top: screenHeight / 2 - R - 30,
     alignSelf: 'center',
     zIndex: 100,
-    textTransform:'capitalize',
+    textTransform: 'capitalize',
   },
 });

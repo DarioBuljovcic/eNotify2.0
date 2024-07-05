@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 import {Class} from '../../components/Types/indexTypes';
 import {
-  View,
   Text,
   StyleSheet,
   useColorScheme,
@@ -23,8 +22,6 @@ export default function ClassSelection({
   setProfClass: any;
 }) {
   const isDarkMode = useColorScheme() === 'dark';
-
-  
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,54 +33,57 @@ export default function ClassSelection({
     fetchUserID();
   }, []);
 
-  const renderClasses:FlatListProps<Class>['renderItem'] =  ({ item, index }) => {
-
-    if (!item.ProfessorsList || !userId || !item.ProfessorsList.includes(userId)) {
+  const renderClasses: FlatListProps<Class>['renderItem'] = ({item, index}) => {
+    if (
+      !item.ProfessorsList ||
+      !userId ||
+      !item.ProfessorsList.includes(userId)
+    ) {
       return null;
     }
 
     return (
-        <TouchableOpacity
-          onPress={() => setProfClass(item.Class)}
+      <TouchableOpacity
+        onPress={() => setProfClass(item.Class)}
+        style={[
+          styles.class,
+          {
+            backgroundColor: isDarkMode
+              ? Colors.Dark.notificationBG
+              : Colors.Light.notificationBG,
+            borderColor: isDarkMode
+              ? Colors.Dark.lightText
+              : Colors.Light.lightText,
+          },
+          item.Class === profClass
+            ? {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.accent
+                  : Colors.Light.accentGreen,
+                borderColor: isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText,
+              }
+            : null,
+        ]}>
+        <Text
           style={[
-            styles.class,
             {
-              backgroundColor: isDarkMode
-                ? Colors.Dark.notificationBG
-                : Colors.Light.notificationBG,
-              borderColor: isDarkMode
+              color: isDarkMode
                 ? Colors.Dark.lightText
                 : Colors.Light.lightText,
             },
             item.Class === profClass
               ? {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.accent
-                    : Colors.Light.accentGreen,
-                  borderColor: isDarkMode
+                  color: isDarkMode
                     ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
+                    : Colors.Light.whiteText,
                 }
               : null,
           ]}>
-          <Text
-            style={[
-              {
-                color: isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.lightText,
-              },
-              item.Class === profClass
-                ? {
-                    color: isDarkMode
-                      ? Colors.Dark.whiteText
-                      : Colors.Light.whiteText,
-                  }
-                : null,
-            ]}>
-            {item.Class}
-          </Text>
-        </TouchableOpacity>
+          {item.Class}
+        </Text>
+      </TouchableOpacity>
     );
   };
 
@@ -92,7 +92,7 @@ export default function ClassSelection({
       horizontal
       scrollEnabled={razredi.length > 4}
       style={styles.list}
-      contentContainerStyle={{paddingLeft:20}}
+      contentContainerStyle={{paddingLeft: 20}}
       data={razredi}
       renderItem={renderClasses}
       keyExtractor={obavestenje => obavestenje.NotificationId}
@@ -102,7 +102,6 @@ export default function ClassSelection({
 }
 
 const screenWidth = Dimensions.get('window').width;
-
 const height = 35;
 
 const styles = StyleSheet.create({
@@ -111,12 +110,12 @@ const styles = StyleSheet.create({
     width: screenWidth,
     marginTop: 10,
     overflow: 'hidden',
-    paddingRight:20,
+    paddingRight: 20,
     flexGrow: 0.02,
-    marginBottom:5,
+    marginBottom: 5,
   },
   class: {
-    marginRight:20,
+    marginRight: 20,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

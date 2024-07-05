@@ -1,10 +1,7 @@
 import {StyleSheet, View, Dimensions} from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
+import React from 'react';
 import {StudentProps, StudentTabProps} from '../../components/Types/indexTypes';
-import Colors from '../../components/Constants/Color';
 import NotificationLoader from '../All/NotificationLoader';
-
-const screenWidth = Dimensions.get('window').width;
 
 export default function Student({navigation}: StudentProps | StudentTabProps) {
   return (

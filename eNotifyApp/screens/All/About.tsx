@@ -1,7 +1,6 @@
 import {Appearance, StyleSheet, Text, View, useColorScheme} from 'react-native';
 import Colors from '../../components/Constants/Color';
 import { useTranslation } from 'react-i18next';
-// import { LinearGradient } from "expo-linear-gradient";
 
 export default function About() {
   const isDarkMode = useColorScheme() === 'light';

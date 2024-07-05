@@ -1,12 +1,10 @@
 import {
   View,
   Text,
-  Alert,
   StyleSheet,
   useColorScheme,
   Animated,
   Dimensions,
-  useAnimatedValue,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
@@ -22,9 +20,9 @@ import {PermissionsAndroid} from 'react-native';
 import Colors from '../../components/Constants/Color';
 import LinearGradient from 'react-native-linear-gradient';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Circle, Svg} from 'react-native-svg';
+import {Circle} from 'react-native-svg';
 import Loading from './Loading';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -40,28 +38,25 @@ const RegistrationScreen = ({
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>;
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const {t} = useTranslation();
 
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
 
-  const {t} = useTranslation();
-
   const saveUser = async (user: User) => {
-    
     AsyncStorage.setItem('Role', user.Role);
     AsyncStorage.setItem('Class', user.Class);
     AsyncStorage.setItem('Name', user.Name);
     AsyncStorage.setItem('UserId', user.UserID);
-    
+
     messaging().subscribeToTopic('Svi');
-    
+
     if (user.Role !== 'Professor') {
-      
       messaging().subscribeToTopic(
         subscriptions[parseInt(user.Class.slice(0, 1)[0]) - 1],
       );
-      
+
       messaging().subscribeToTopic(user.Class);
       console.log(user.Class);
     }
@@ -79,14 +74,13 @@ const RegistrationScreen = ({
         });
       });
   };
-  
+
   const Login = () => {
     const query = firestore().collection('Users').where('UserID', '==', value);
-    
+
     query
       .get()
       .then(querySnapshot => {
-        
         if (!querySnapshot.empty) {
           const saveAll = async () => {
             setIsCorrect(true);
@@ -103,6 +97,7 @@ const RegistrationScreen = ({
         console.error('Error getting document:', error);
       });
   };
+
   return (
     <>
       <View style={styles.container}>
@@ -122,14 +117,23 @@ const RegistrationScreen = ({
             }}
             value={value}
             style={[
-              isDarkMode ? styles.inputDark : styles.input,
-
+              styles.input,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.textInputBackground
+                  : Colors.Light.textInputBackground,
+              },
+              {
+                color: isDarkMode
+                  ? Colors.Dark.textPrimary
+                  : Colors.Light.textPrimary,
+              },
               {
                 borderColor: isCorrect
                   ? isDarkMode
                     ? Colors.Dark.lightText
                     : Colors.Light.lightText
-                  : 'red',
+                  : Colors.Light.warningRed,
               },
             ]}
           />
@@ -143,9 +147,23 @@ const RegistrationScreen = ({
                 ? [Colors.Dark.accent, Colors.Dark.accent]
                 : ['#C6E2F5', '#2077F9']
             }
-            style={isDarkMode ? styles.confirmBtnDark : styles.confirmBtn}>
+            style={[
+              styles.confirmBtn,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.accent
+                  : Colors.Light.accent,
+              },
+            ]}>
             <Text
-              style={isDarkMode ? styles.confirmTxtDark : styles.confirmTxt}>
+              style={[
+                styles.confirmTxt,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.whiteText,
+                },
+              ]}>
               {t('register')}
             </Text>
           </LinearGradient>
@@ -162,31 +180,33 @@ const RegistrationScreen = ({
     </>
   );
 };
-const checkStat = async () => {
-  const userId = await AsyncStorage.getItem('UserId');
-  await firestore()
-    .collection('Users')
-    .where('UserID', '==', userId)
-    .get()
-    .then(snapshot => {
-      if (!snapshot.empty) {
-        const user: User = snapshot.docs[0].data() as User;
-        if (user.LogOut === true) {
-          const deleteUser = async () => {
-            await AsyncStorage.removeItem('Role');
-            await AsyncStorage.removeItem('Class');
-            await AsyncStorage.removeItem('Name');
-            await AsyncStorage.removeItem('UserId');
-          };
-          deleteUser();
-        }
-      }
-    });
-};
+
 const LoadingScreen = (
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>,
 ) => {
   const [naziv, setNaziv] = useState('wait');
+  const checkStat = async () => {
+    const userId = await AsyncStorage.getItem('UserId');
+    await firestore()
+      .collection('Users')
+      .where('UserID', '==', userId)
+      .get()
+      .then(snapshot => {
+        if (!snapshot.empty) {
+          const user: User = snapshot.docs[0].data() as User;
+          if (user.LogOut === true) {
+            const deleteUser = async () => {
+              await AsyncStorage.removeItem('Role');
+              await AsyncStorage.removeItem('Class');
+              await AsyncStorage.removeItem('Name');
+              await AsyncStorage.removeItem('UserId');
+            };
+            deleteUser();
+          }
+        }
+      });
+  };
+
   const uzmiNaziv = async () => {
     const value = await AsyncStorage.getItem('Name');
     if (value !== null) setNaziv('yes');
@@ -212,10 +232,7 @@ const LoadingScreen = (
   else return false;
 };
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
 const Registration = ({navigation}: RegistrationProps) => {
-  const isDarkMode = useColorScheme() === 'dark';
   const animationValue = useRef(new Animated.Value(0)).current;
   useEffect(() => {
     Animated.loop(
@@ -233,21 +250,12 @@ const Registration = ({navigation}: RegistrationProps) => {
       ]),
     ).start();
   });
-  // AsyncStorage.removeItem('Role');
-  // AsyncStorage.removeItem('Class');
-  // AsyncStorage.removeItem('Name');
-  // AsyncStorage.removeItem('UserId');
   if (LoadingScreen(navigation) === true) {
     return <RegistrationScreen navigation={navigation} />;
   } else {
     return <Loading />;
   }
 };
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
-const loadWidth = 600;
-const R = loadWidth / (2 * Math.PI);
 
 const styles = StyleSheet.create({
   container: {
@@ -261,7 +269,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   incorrectText: {
-    color: 'red',
+    color: Colors.Light.warningRed,
 
     width: '80%',
 
@@ -291,42 +299,8 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
-  inputDark: {
-    fontSize: 17,
-    fontFamily: 'Mulish',
-
-    backgroundColor: Colors.Dark.textInputBackground,
-    color: Colors.Dark.textPrimary,
-
-    padding: 15,
-    width: '80%',
-
-    alignSelf: 'center',
-
-    borderRadius: 10,
-
-    borderWidth: 1,
-    borderColor: Colors.Dark.lightText,
-
-    elevation: 13,
-    shadowColor: Colors.Dark.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
-  },
   confirmBtn: {
     backgroundColor: Colors.Light.accent,
-
-    padding: 20,
-
-    width: '50%',
-
-    alignSelf: 'center',
-    alignItems: 'center',
-
-    borderRadius: 50,
-  },
-  confirmBtnDark: {
-    backgroundColor: Colors.Dark.accent,
 
     padding: 20,
 
@@ -342,19 +316,6 @@ const styles = StyleSheet.create({
 
     color: Colors.Light.whiteText,
     fontFamily: 'Mulish',
-  },
-  confirmTxtDark: {
-    fontSize: 17,
-
-    color: Colors.Dark.whiteText,
-    fontFamily: 'Mulish',
-  },
-  loadingText: {
-    fontSize: 36,
-    position: 'absolute',
-    top: screenHeight / 2 - R - 30,
-    alignSelf: 'center',
-    zIndex: 100,
   },
 });
 

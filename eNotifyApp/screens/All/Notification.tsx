@@ -5,9 +5,7 @@ import {
   Image,
   Animated,
   useColorScheme,
-  Appearance,
   PermissionsAndroid,
-  Platform,
   Dimensions,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -39,6 +37,8 @@ export default function Obavestenje({route}: any) {
   const [images, setImages] = useState<Images[]>([]);
   const animationValue = useRef(new Animated.Value(-250)).current;
   const [message, setMessage] = useState('Slika je uspešno skinuta!');
+  const [shown, setShown] = useState(false);
+  const opacity = useRef(new Animated.Value(0)).current;
   const [icon, setIcon] = useState<Icon>({
     name: 'checkmark-circle-outline',
     color: 'green',
@@ -59,16 +59,17 @@ export default function Obavestenje({route}: any) {
       }),
     ]).start();
   };
-  console.log(route.params.id);
+
   useEffect(() => {
     const getNotification = async () => {
-      console.log("Uzima podatke");
+      //console.log('Gets data');
       const querySnapshot = await firestore()
         .collection('Notifications')
         .where('NotificationId', '==', route.params.id)
         .get();
       const UserdId = await AsyncStorage.getItem('UserId');
       const data = querySnapshot.docs[0].data() as NotificationType;
+
       if (UserdId && !data.Seen.includes(UserdId)) {
         querySnapshot.docs[0].ref.update({
           Seen: [UserdId, ...data.Seen.split(',')].join(','),
@@ -76,8 +77,10 @@ export default function Obavestenje({route}: any) {
       }
 
       setNotification(data);
+
       navigation.setOptions({title: data.Tittle});
-      //Kod da uzmes slike
+
+      //Getting images
       let imgs: string[] = data.Files.split(',');
       let imgUrls: Images[] = [];
       for (let i = 0; i < imgs.length; i++) {
@@ -86,8 +89,10 @@ export default function Obavestenje({route}: any) {
       }
       setImages(imgUrls);
     };
+
     getNotification();
-  },[route.params.id]);
+  }, [route.params.id]);
+
   useEffect(() => {
     if (!notification) {
       animationValue.setValue(-250);
@@ -101,6 +106,7 @@ export default function Obavestenje({route}: any) {
     const data = await AsyncStorage.getItem('Role');
     if (data) setRole(data);
   };
+
   const downloadImage = async (imageUrl: string, fileName: string) => {
     try {
       const extention = fileName.split('.')[fileName.split('.').length - 1];
@@ -120,8 +126,8 @@ export default function Obavestenje({route}: any) {
             if (result.statusCode === 200) {
               setMessage(
                 extention === 'img'
-                  ? 'Slika je uspešno skinuta!'
-                  : 'Fajl je uspešno skinut!',
+                  ? 'Image succesfuly downloaded!'
+                  : 'FIle succesfuly downloaded!',
               );
               setIcon({name: 'checkmark-circle-outline', color: 'green'});
               startAnimation();
@@ -137,7 +143,9 @@ export default function Obavestenje({route}: any) {
           });
       } else {
         setMessage(
-          extention === 'img' ? 'Slika je već skinuta!' : 'Fajl je već skinut!',
+          extention === 'img'
+            ? 'Image already downloaded!'
+            : 'File already downloaded!',
         );
         setIcon({name: 'alert-circle-outline', color: 'red'});
         startAnimation();
@@ -147,7 +155,7 @@ export default function Obavestenje({route}: any) {
     }
   };
 
-  //request premission ne radi ali idalje mozes dodavati slike jer ne koristimo ovo ali trebamo popraviti :D
+  //TODO: fix
   const requestStoragePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -175,8 +183,7 @@ export default function Obavestenje({route}: any) {
     imageUrl: '',
     imageName: '',
   });
-  const [shown, setShown] = useState(false);
-  const opacity = useRef(new Animated.Value(0)).current;
+
   const openImage = (image: any) => {
     setShownImage(image);
     setShown(true);
@@ -188,6 +195,7 @@ export default function Obavestenje({route}: any) {
       }),
     ]).start();
   };
+
   const closeImage = () => {
     Animated.sequence([
       Animated.timing(opacity, {
@@ -198,7 +206,6 @@ export default function Obavestenje({route}: any) {
     ]).start();
   };
 
-  //funkcija za prikazivanje slike --
   const renderImages = () => {
     return (
       <View style={styles.imageContainer}>
@@ -263,6 +270,7 @@ export default function Obavestenje({route}: any) {
       </View>
     );
   };
+
   const renderClass = () => {
     let studentClass;
     switch (notification?.Class) {
