@@ -1,7 +1,15 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { addDoc, collection, getDocs, getFirestore, orderBy, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { getMessaging } from "firebase/messaging";
 import axios from "axios";
@@ -44,55 +52,63 @@ const generatePassword = (length) => {
 
 export const getNotifications = async () => {
   const newData = [];
-  const q = query(collection(db, "Notifications"), orderBy("Date","desc"));
+  const q = query(collection(db, "Notifications"), orderBy("Date", "desc"));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const data = doc.data();
 
     newData.push({
-      NotificationId:data.NotificationId,
-      Tittle:data.Tittle,
-      Text:data.Text,
-      From:data.From,
-      Date:data.Date,
+      NotificationId: data.NotificationId,
+      Tittle: data.Tittle,
+      Text: data.Text,
+      From: data.From,
+      Date: data.Date,
     });
   });
   return newData;
 };
 export const getStudents = async () => {
   const newData = [];
-  const q = query(collection(db, "Users"),where("Role","==","Student"),orderBy("Class"),orderBy("Name"));
+  const q = query(
+    collection(db, "Users"),
+    where("Role", "==", "Student"),
+    orderBy("Class"),
+    orderBy("Name")
+  );
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const data = doc.data();
 
     newData.push({
-      UserID:data.UserID,
-      Name:data.Name,
-      Email:data.Email,
-      Class:data.Class,
+      UserID: data.UserID,
+      Name: data.Name,
+      Email: data.Email,
+      Class: data.Class,
     });
   });
   return newData;
 };
 export const getProfessors = async () => {
   const newData = [];
-  const q = query(collection(db, "Users"),where("Role","==","Professor"),orderBy("Name"));
+  const q = query(
+    collection(db, "Users"),
+    where("Role", "==", "Professor"),
+    orderBy("Name")
+  );
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const data = doc.data();
     console.log(data);
     newData.push({
-      UserID:data.UserID,
-      Name:data.Name,
-      Email:data.Email,
-      Class:data.Class,
-      
+      UserID: data.UserID,
+      Name: data.Name,
+      Email: data.Email,
+      Class: data.Class,
     });
   });
   return newData;
 };
-export const postStudentsFile = async (data)=>{
+export const postStudentsFile = async (data) => {
   for (let item of data) {
     console.log(item);
     const name = item.Name + " " + item.Surname;
@@ -102,11 +118,11 @@ export const postStudentsFile = async (data)=>{
         Name: name,
         Email: item.Email,
         Class: item.Class,
-        Role: 'Student',
+        Role: "Student",
         UserID: userID,
         LogOut: true,
       };
-      
+
       axios
         .post(
           "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -117,7 +133,6 @@ export const postStudentsFile = async (data)=>{
           }
         )
         .then((response) => {
-          
           console.log(response.data);
         })
         .catch((error) => {
@@ -128,8 +143,8 @@ export const postStudentsFile = async (data)=>{
       console.error(error);
     }
   }
-}
-export const postProfessorsFile = async (data)=>{
+};
+export const postProfessorsFile = async (data) => {
   for (let item of data) {
     console.log(item);
     const name = item.Name + " " + item.Surname;
@@ -139,11 +154,11 @@ export const postProfessorsFile = async (data)=>{
         Name: name,
         Email: item.Email,
         Class: item.Class,
-        Role: 'Professor',
+        Role: "Professor",
         UserID: userID,
         LogOut: true,
       };
-      
+
       axios
         .post(
           "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -154,7 +169,6 @@ export const postProfessorsFile = async (data)=>{
           }
         )
         .then((response) => {
-          
           console.log(response.data);
         })
         .catch((error) => {
@@ -165,43 +179,8 @@ export const postProfessorsFile = async (data)=>{
       console.error(error);
     }
   }
-}
-export const postOneStudent = async (item)=>{
-    const name = item.Name + " " + item.Surname;
-    try {
-      const userID = generatePassword(7);
-      const data = {
-        Name: name,
-        Email: item.Email,
-        Class: item.Class,
-        Role: 'Student',
-        UserID: userID,
-        LogOut: true,
-      };
-      
-      axios
-        .post(
-          "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
-          {
-            to: item.Email,
-            subject: "Vaš kod",
-            text: userID,
-          }
-        )
-        .then((response) => {
-          
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("Error sending email:", error);
-        });
-      await addDoc(collection(db, "Users"), data);
-    } catch (error) {
-      throw new Error("Nije uspešno dodat student");
-      
-    }
-}
-export const postOneProfessor = async (item)=>{
+};
+export const postOneStudent = async (item) => {
   const name = item.Name + " " + item.Surname;
   try {
     const userID = generatePassword(7);
@@ -209,11 +188,11 @@ export const postOneProfessor = async (item)=>{
       Name: name,
       Email: item.Email,
       Class: item.Class,
-      Role: 'Professor',
+      Role: "Student",
       UserID: userID,
       LogOut: true,
     };
-    
+
     axios
       .post(
         "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
@@ -224,7 +203,6 @@ export const postOneProfessor = async (item)=>{
         }
       )
       .then((response) => {
-        
         console.log(response.data);
       })
       .catch((error) => {
@@ -234,10 +212,43 @@ export const postOneProfessor = async (item)=>{
   } catch (error) {
     throw new Error("Nije uspešno dodat student");
   }
-}
-export const getAllClasses = async ()=>{
+};
+export const postOneProfessor = async (item) => {
+  const name = item.Name + " " + item.Surname;
+  try {
+    const userID = generatePassword(7);
+    const data = {
+      Name: name,
+      Email: item.Email,
+      Class: item.Class,
+      Role: "Professor",
+      UserID: userID,
+      LogOut: true,
+    };
+
+    axios
+      .post(
+        "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
+        {
+          to: item.Email,
+          subject: "Vaš kod",
+          text: userID,
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+      });
+    await addDoc(collection(db, "Users"), data);
+  } catch (error) {
+    throw new Error("Nije uspešno dodat student");
+  }
+};
+export const getAllClasses = async () => {
   const newData = [];
-  const q = query(collection(db, "Classes"),orderBy("Class","asc"));
+  const q = query(collection(db, "Classes"), orderBy("Class", "asc"));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const data = doc.data();
@@ -248,32 +259,34 @@ export const getAllClasses = async ()=>{
     });
   });
   return newData;
-}
-export const sendNotification = async (files,item) => {
-  if (files) {
-    files.forEach((f) => {
+};
+export const sendNotification = async (files, item) => {
+  const fileArray = [...files];
+  if (fileArray) {
+    fileArray.forEach((f) => {
       const storageRef = ref(storage, f?.name);
-      // uploadBytes(storageRef, f)
-      //   .then((snapshot) => {
-      //     console.log("Uploaded a blob or file!");
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //   });
+      uploadBytes(storageRef, f)
+        .then((snapshot) => {
+          console.log("Uploaded a blob or file!");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     });
   }
+
   try {
-  const dataToInsert = {
-    NotificationId: generatePassword(7),
-    Class: item.Classes,
-    Date: new Date(),
-    Files: files.length > 0 ? `${files.map((f) => f.name)}` : ``,
-    Text: item.Text,
-    Tittle: item.Title,
-    Type: `T${files.length > 0 ? "F" : ""}`,
-    Seen: "",
-    From: "Uprava škole",
-  };
+    const dataToInsert = {
+      NotificationId: generatePassword(7),
+      Class: item.Classes,
+      Date: new Date(),
+      Files: fileArray.length > 0 ? `${fileArray.map((f) => f.name)}` : ``,
+      Text: item.Text,
+      Tittle: item.Title,
+      Type: `T${files.length > 0 ? "F" : ""}`,
+      Seen: "",
+      From: "Uprava škole",
+    };
 
     const sendData = async () => {
       try {
@@ -285,10 +298,9 @@ export const sendNotification = async (files,item) => {
         console.error("Error sending data:", error);
       }
     };
-    // sendData();
-    
-      await addDoc(collection(db, "Notifications"), dataToInsert);
-    } catch (error) {
-      throw new Error("Neuspešno slanje");
-    }
-}
+    sendData();
+    await addDoc(collection(db, "Notifications"), dataToInsert);
+  } catch (error) {
+    throw new Error("Neuspešno slanje");
+  }
+};
