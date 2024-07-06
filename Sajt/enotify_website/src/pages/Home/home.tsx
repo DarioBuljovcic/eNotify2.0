@@ -50,6 +50,8 @@ import {
   postOneStudent,
   getAllClasses,
   sendNotification,
+  deleteUserDocuments,
+  deleteNotificationDocuments,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -144,7 +146,11 @@ export default function Home() {
         prepend: <EuiIcon type="list" />,
         content: (
           <>
-            <DataGridStyle columns={columnsUsers} getData={getStudents} />
+            <DataGridStyle
+              columns={columnsUsers}
+              getData={getStudents}
+              deleteData={deleteUserDocuments}
+            />
           </>
         ),
       },
@@ -188,7 +194,11 @@ export default function Home() {
         prepend: <EuiIcon type="list" />,
         content: (
           <>
-            <DataGridStyle columns={columnsUsers} getData={getProfessors} />
+            <DataGridStyle
+              columns={columnsUsers}
+              getData={getProfessors}
+              deleteData={deleteUserDocuments}
+            />
           </>
         ),
       },
@@ -219,6 +229,7 @@ export default function Home() {
             <DataGridStyle
               columns={columnsNotification}
               getData={getNotifications}
+              deleteData={deleteNotificationDocuments}
             />
           </>
         ),

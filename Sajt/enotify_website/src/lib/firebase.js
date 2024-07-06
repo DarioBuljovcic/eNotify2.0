@@ -4,6 +4,8 @@ import { getAuth } from "firebase/auth";
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   getFirestore,
   orderBy,
@@ -302,5 +304,41 @@ export const sendNotification = async (files, item) => {
     await addDoc(collection(db, "Notifications"), dataToInsert);
   } catch (error) {
     throw new Error("Neuspešno slanje");
+  }
+};
+export const deleteUserDocuments = async (users) => {
+  for (const user of users) {
+    const q = query(
+      collection(db, "Users"),
+      where("UserID", "==", user.UserID)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docId = querySnapshot.docs[0].id;
+      await deleteDoc(doc(db, "Users", docId));
+      console.log(`Document with ID ${docId} deleted.`);
+    } else {
+      console.log(`No document found for UserID ${user.UserID}`);
+    }
+  }
+};
+export const deleteNotificationDocuments = async (notifications) => {
+  for (const notification of notifications) {
+    const q = query(
+      collection(db, "Notifications"),
+      where("NotificationId", "==", notification.NotificationId)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docId = querySnapshot.docs[0].id;
+      await deleteDoc(doc(db, "Notifications", docId)); // Ensure collection name is correct
+      console.log(`Document with ID ${docId} deleted.`);
+    } else {
+      console.log(
+        `No document found for NotificationId ${notification.NotificationId}`
+      );
+    }
   }
 };
