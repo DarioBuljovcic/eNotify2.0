@@ -218,17 +218,19 @@ export default function SendNotification({
             direction="column"
           >
             <EuiTitle
-              size="s"
+              size="m"
               children={<EuiText size="m">Slanje obaveštenja</EuiText>}
             ></EuiTitle>
-            <EuiText size="xs">Slanje obaveštenja učenicima škole</EuiText>
+            <EuiText size="s">Slanje obaveštenja učenicima škole</EuiText>
           </EuiFlexGroup>
         </EuiFlexItem>
 
         <EuiSpacer />
 
         <EuiFlexItem style={{ minWidth: 300 }}>
-          <EuiFormLabel>Naslov obaveštenja</EuiFormLabel>
+          <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
+            Naslov obaveštenja
+          </EuiFormLabel>
           <EuiFieldText
             placeholder="Naslov obaveštenja"
             isInvalid={errorList.title}
@@ -245,7 +247,9 @@ export default function SendNotification({
 
           <EuiSpacer />
 
-          <EuiFormLabel>Tekst obaveštenja</EuiFormLabel>
+          <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
+            Tekst obaveštenja
+          </EuiFormLabel>
           <EuiTextArea
             placeholder="Tekst obaveštenja"
             isInvalid={errorList.text}
@@ -262,7 +266,9 @@ export default function SendNotification({
 
           <EuiSpacer />
 
-          <EuiFormLabel>Tekst obaveštenja</EuiFormLabel>
+          <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
+            Tekst obaveštenja
+          </EuiFormLabel>
           <EuiFilePicker
             id={filePickerId}
             multiple
@@ -273,7 +279,9 @@ export default function SendNotification({
           />
           <EuiSpacer />
 
-          <EuiFormLabel>Razredi</EuiFormLabel>
+          <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
+            Razredi
+          </EuiFormLabel>
           <EuiComboBox
             aria-label="Accessible screen reader label"
             placeholder="Izaberite razrede"
@@ -287,7 +295,7 @@ export default function SendNotification({
 
         <EuiFlexItem>
           <EuiButton fill={true} onClick={() => handlePost()}>
-            Bošaljite obaveštenje
+            Pošaljite obaveštenje
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>

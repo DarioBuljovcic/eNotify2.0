@@ -52,11 +52,14 @@ import {
   sendNotification,
   deleteUserDocuments,
   deleteNotificationDocuments,
+  getImage,
+  setImage,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
 import AddOneUser from "../../components/addOneUser.tsx";
 import SendNotification from "../../components/sendNotification.tsx";
+import ClassTable from "../../components/classTable.tsx";
 
 type Tabs = {
   label: string;
@@ -235,6 +238,57 @@ export default function Home() {
         ),
       },
     ],
+    Razredi: [
+      {
+        id: 1,
+        name: "Dodavanje putem fajla",
+        prepend: <EuiIcon type="plus" />,
+        content: (
+          <>
+            <FilePicker
+              role="p"
+              postFile={postProfessorsFile}
+              setModalHeader={setModalHeader}
+              setModalText={setModalText}
+              setIsOpen={setIsOpen}
+            />
+          </>
+        ),
+      },
+      {
+        id: 2,
+        name: "Dodavanje ručno",
+        prepend: <EuiIcon type="pencil" />,
+        content: (
+          <>
+            <AddOneUser
+              role="p"
+              postUser={postOneProfessor}
+              setModalHeader={setModalHeader}
+              setModalText={setModalText}
+              setIsOpen={setIsOpen}
+            />
+          </>
+        ),
+      },
+      {
+        id: 3,
+        name: "Pregled",
+        prepend: <EuiIcon type="list" />,
+        content: (
+          <>
+            <ClassTable
+              getClasses={getAllClasses}
+              getImage={getImage}
+              setImage={setImage}
+              setModalHeader={setModalHeader}
+              setModalText={setModalText}
+              setIsOpen={setIsOpen}
+            />
+          </>
+        ),
+      },
+    ],
   };
   const [tabs, setTabs] = useState(allTabs.Student);
 
@@ -258,6 +312,7 @@ export default function Home() {
         break;
       case 4:
         setTitle("Razredi");
+        setTabs(allTabs.Razredi);
         onSelectedTabChanged(1);
         break;
     }

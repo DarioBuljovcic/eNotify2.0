@@ -10,9 +10,10 @@ import {
   getFirestore,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { getMessaging } from "firebase/messaging";
 import axios from "axios";
 
@@ -258,6 +259,9 @@ export const getAllClasses = async () => {
     newData.push({
       value: data.Class,
       text: data.Class,
+      url: data.Table,
+      professorsList: data.ProfessorsList,
+      professor: data.Professor,
     });
   });
   return newData;
@@ -340,5 +344,40 @@ export const deleteNotificationDocuments = async (notifications) => {
         `No document found for NotificationId ${notification.NotificationId}`
       );
     }
+  }
+};
+export const getImage = async (image) => {
+  try {
+    const imageRef = ref(storage, image); // Adjust the path if necessary
+    const url = await getDownloadURL(imageRef);
+    return url;
+  } catch (error) {
+    console.error("Error fetching image:", error);
+  }
+  return null;
+};
+export const setImage = async (Class, image) => {
+  try {
+    const storageRef = ref(storage, image.name);
+    uploadBytes(storageRef, image)
+      .then((snapshot) => {
+        console.log("Uploaded a blob or file!");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    const q = query(collection(db, "Classes"), where("Class", "==", Class));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const docId = querySnapshot.docs[0].id;
+      await updateDoc(doc(db, "Classes", docId), {
+        Table: image.name,
+      });
+      console.log("Document successfully updated!");
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error("Error updating document:", error);
   }
 };
