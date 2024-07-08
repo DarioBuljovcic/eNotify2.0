@@ -278,6 +278,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
   const AddNotifaciton = async () => {
     if (textValue !== '' && tittleValue !== '') {
       //console.log('textValue: '+textValue,'titleValue: '+tittleValue,'seletedClass: '+selectedClass,'selectedFile: '+selectedFile.name,'naziv: '+naziv)
+      const name = (await AsyncStorage.getItem('Name')) as string;
 
       console.log('check1');
       if (selectedFile) {
@@ -294,14 +295,9 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
         await reference.putFile(pathToFile);
       }
       console.log('check4');
-      const getName = async () => {
-        const name = await AsyncStorage.getItem('Name');
-        if (name) setNaziv(name);
-      };
-      getName();
 
       console.log('check5');
-
+      console.log(naziv);
       const data: NotificationType = {
         NotificationId: generateID(7),
         Tittle: tittleValue,
@@ -311,7 +307,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
         Files: selectedFile ? selectedFile.name : '',
         Date: new Date(),
         Seen: '',
-        From: naziv,
+        From: name,
       };
 
       console.log('check6');
