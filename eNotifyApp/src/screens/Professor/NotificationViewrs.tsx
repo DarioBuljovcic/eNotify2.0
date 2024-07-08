@@ -1,4 +1,10 @@
-import {Dimensions, StyleSheet, View, useColorScheme} from 'react-native';
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  useColorScheme,
+  Image,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {User} from '../../constants/Types/indexTypes';
 import {Text} from 'react-native-elements';
@@ -6,8 +12,12 @@ import Colors from '../../constants/Color';
 import firestore from '@react-native-firebase/firestore';
 import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from '@react-native-firebase/storage';
 
 export default function NotificationViewrs({route}: {route: any}) {
+  console.warn = () => {};
+
   const isDarkMode = useColorScheme() === 'light';
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
@@ -35,58 +45,66 @@ export default function NotificationViewrs({route}: {route: any}) {
     if (students.length != 0) setLoading(true);
   }, [students]);
 
-  const renderObavestenje = ({item}: {item: User}) => {
-    if (studentsViewd.includes(item.UserID)) {
-      return (
-        <View
-          style={[
-            styles.studentContainer,
-            {
-              backgroundColor: isDarkMode
-                ? Colors.Light.notificationBG
-                : Colors.Dark.notificationBG,
-            },
-          ]}>
-          <Text
-            style={{
-              color: isDarkMode
-                ? Colors.Light.textSecondary
-                : Colors.Dark.textSecondary,
-            }}>
-            {item.Name}
-          </Text>
-          <Ionicons
-            name={'checkmark-circle'}
-            size={21}
-            color={'green'}></Ionicons>
-        </View>
-      );
-    } else {
-      return (
-        <View
-          style={[
-            styles.studentContainer,
-            {
-              backgroundColor: isDarkMode
-                ? Colors.Light.notificationBG
-                : Colors.Dark.notificationBG,
-            },
-          ]}>
-          <Text
-            style={{
-              color: isDarkMode
-                ? Colors.Light.textSecondary
-                : Colors.Dark.textSecondary,
-            }}>
-            {item.Name}
-          </Text>
-          <Ionicons
-            name={'checkmark-circle-outline'}
-            size={21}
-            color={'gray'}></Ionicons>
-        </View>
-      );
+  const updateImage = async (userID: any) => {
+    if (userID) {
+      const querySnapshot = await firestore()
+        .collection('Users')
+        .where('UserID', '==', userID)
+        .get();
+
+      if (!querySnapshot.empty) {
+        const imageUrl = await storage()
+          .ref(querySnapshot.docs[0].data().profile_picture)
+          .getDownloadURL();
+
+        if (imageUrl) return imageUrl;
+      }
     }
+    return null;
+  };
+
+  const RenderObavestenje = ({item}: {item: User}) => {
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+    useEffect(() => {
+      const fetchImageUrl = async () => {
+        const url = await updateImage(item.UserID);
+        setImageUrl(url);
+      };
+
+      fetchImageUrl();
+    }, [item]);
+
+    return (
+      <View style={[styles.studentContainer]}>
+        <Image
+          source={
+            imageUrl ? {uri: imageUrl} : require('../../assets/images/user.png')
+          }
+          style={styles.userImage}
+        />
+        <Text
+          style={[
+            styles.userText,
+            {
+              color: isDarkMode
+                ? Colors.Light.textSecondary
+                : Colors.Dark.textSecondary,
+            },
+          ]}>
+          {item.Name}
+        </Text>
+        <Ionicons
+          name={
+            studentsViewd.includes(item.UserID)
+              ? 'checkmark-circle'
+              : 'checkmark-circle-outline'
+          }
+          size={25}
+          color={studentsViewd.includes(item.UserID) ? 'green' : 'gray'}
+        />
+      </View>
+    );
   };
 
   return (
@@ -103,7 +121,7 @@ export default function NotificationViewrs({route}: {route: any}) {
         <FlatList
           style={styles.flatList}
           data={students}
-          renderItem={renderObavestenje}
+          renderItem={({item}) => <RenderObavestenje item={item} />}
           keyExtractor={(stud: User) => stud.UserID}
           showsVerticalScrollIndicator={false}
         />
@@ -126,7 +144,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    alignItems: 'center',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
 
@@ -140,19 +157,24 @@ const styles = StyleSheet.create({
     width: screenWidth,
   },
   studentContainer: {
-    height: 40,
-    width: '90%',
+    height: 70,
+    width: '80%',
     marginTop: 10,
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-
-    borderRadius: 10,
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
+    alignContent: 'center',
+    alignItems: 'center',
+  },
+  userImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+  },
+  userText: {
+    fontSize: 17,
+    fontFamily: 'Mulish',
   },
 });

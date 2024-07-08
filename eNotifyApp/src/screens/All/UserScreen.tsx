@@ -8,6 +8,8 @@ import {
   useColorScheme,
   Dimensions,
   PermissionsAndroid,
+  ScrollView,
+  DevSettings,
 } from 'react-native';
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,7 +23,7 @@ import firestore from '@react-native-firebase/firestore';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import {updateDoc} from 'firebase/firestore';
+import RNRestart from 'react-native-restart';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
   const {t, i18n} = useTranslation();
@@ -165,7 +167,8 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     AsyncStorage.removeItem('Email');
     AsyncStorage.removeItem('Language');
 
-    navigation.navigate('Registration');
+    DevSettings.reload();
+    //RNRestart.restart();
     //TODO: navigate to registratin
   };
 
@@ -269,7 +272,14 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 color={Colors.Light.white}
               />
             </TouchableOpacity>
-            <Image source={{uri: imageSource}} style={styles.userImage} />
+            <Image
+              source={
+                imageSource
+                  ? {uri: imageSource}
+                  : require('../../assets/images/user.png')
+              }
+              style={styles.userImage}
+            />
           </LinearGradient>
 
           <Text
@@ -309,136 +319,137 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             ]}>
             {role == 'Professor' ? t('proffesor') : t('student')}
           </Text>
-
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                backgroundColor: isDarkMode
-                  ? Colors.Dark.notificationBG
-                  : Colors.Light.notificationBG,
-              },
-            ]}
-            activeOpacity={0.5}
-            onPress={() => navigation.navigate('About')}>
-            <Text
+          <ScrollView style={{width: '100%'}}>
+            <TouchableOpacity
               style={[
-                styles.optionText,
+                styles.option,
                 {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
+                  backgroundColor: isDarkMode
+                    ? Colors.Dark.notificationBG
+                    : Colors.Light.notificationBG,
                 },
-              ]}>
-              {t('about')}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                backgroundColor: isDarkMode
-                  ? Colors.Dark.notificationBG
-                  : Colors.Light.notificationBG,
-              },
-            ]}
-            activeOpacity={0.5}
-            onPress={() => setLanguageModal(true)}>
-            <Text
-              style={[
-                styles.optionText,
-                {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
-                },
-              ]}>
-              {t('language')}
-            </Text>
-            {renderLanguage()}
-            <Ionicons
-              name={'language'}
-              size={30}
-              color={
-                isDarkMode
-                  ? Colors.Dark.textSecondary
-                  : Colors.Light.textSecondary
-              }
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                backgroundColor: isDarkMode
-                  ? Colors.Dark.notificationBG
-                  : Colors.Light.notificationBG,
-              },
-            ]}
-            activeOpacity={0.5}
-            onPress={() => changeMode()}>
-            <Text
-              style={[
-                styles.optionText,
-                {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
-                },
-              ]}>
-              {t('dark mode')}
-            </Text>
+              ]}
+              activeOpacity={0.5}
+              onPress={() => navigation.navigate('About')}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('about')}
+              </Text>
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={[
-                styles.modeChange,
+                styles.option,
                 {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.accentGreen
-                    : Colors.Light.accentGreen,
+                  backgroundColor: isDarkMode
+                    ? Colors.Dark.notificationBG
+                    : Colors.Light.notificationBG,
                 },
               ]}
-              onPress={() => changeMode()}>
-              <Animated.View
-                style={[styles.modeRotate, {transform: [{rotate}]}]}>
-                <Ionicons
-                  name={'moon-outline'}
-                  size={35}
-                  color={Colors.Dark.textSecondary}
-                />
-                <Ionicons
-                  name={'sunny-outline'}
-                  size={35}
-                  color={Colors.Light.textSecondary}
-                />
-              </Animated.View>
-            </TouchableOpacity>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                backgroundColor: isDarkMode
-                  ? Colors.Dark.notificationBG
-                  : Colors.Light.notificationBG,
-              },
-            ]}
-            activeOpacity={0.5}
-            onPress={() => logOutModal()}>
-            <Text
-              style={[
-                styles.optionText,
-                {
-                  color: isDarkMode
+              activeOpacity={0.5}
+              onPress={() => setLanguageModal(true)}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('language')}
+              </Text>
+              {renderLanguage()}
+              <Ionicons
+                name={'language'}
+                size={30}
+                color={
+                  isDarkMode
                     ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
+                    : Colors.Light.textSecondary
+                }
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.option,
+                {
+                  backgroundColor: isDarkMode
+                    ? Colors.Dark.notificationBG
+                    : Colors.Light.notificationBG,
                 },
-              ]}>
-              {t('log out')}
-            </Text>
-          </TouchableOpacity>
+              ]}
+              activeOpacity={0.5}
+              onPress={() => changeMode()}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('dark mode')}
+              </Text>
+
+              <TouchableOpacity
+                style={[
+                  styles.modeChange,
+                  {
+                    borderColor: isDarkMode
+                      ? Colors.Dark.accentGreen
+                      : Colors.Light.accentGreen,
+                  },
+                ]}
+                onPress={() => changeMode()}>
+                <Animated.View
+                  style={[styles.modeRotate, {transform: [{rotate}]}]}>
+                  <Ionicons
+                    name={'moon-outline'}
+                    size={35}
+                    color={Colors.Dark.textSecondary}
+                  />
+                  <Ionicons
+                    name={'sunny-outline'}
+                    size={35}
+                    color={Colors.Light.textSecondary}
+                  />
+                </Animated.View>
+              </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.option,
+                {
+                  backgroundColor: isDarkMode
+                    ? Colors.Dark.notificationBG
+                    : Colors.Light.notificationBG,
+                },
+              ]}
+              activeOpacity={0.5}
+              onPress={() => logOutModal()}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('log out')}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
         </View>
       </View>
       {languageModal ? (
@@ -629,11 +640,11 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     marginTop: -35,
     zIndex: 10,
+    alignItems: 'center',
   },
   containerSize: {
     width: '80%',
@@ -721,6 +732,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('screen').height,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 10,
   },
   modal: {
     alignSelf: 'center',

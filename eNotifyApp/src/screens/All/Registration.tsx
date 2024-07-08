@@ -23,6 +23,8 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {Circle} from 'react-native-svg';
 import Loading from './Loading';
 import {useTranslation} from 'react-i18next';
+import {Dropdown} from 'react-native-element-dropdown';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -38,7 +40,7 @@ const RegistrationScreen = ({
   navigation: StackNavigationProp<Navigation, 'Registration', undefined>;
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
 
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
@@ -98,9 +100,70 @@ const RegistrationScreen = ({
       });
   };
 
+  const data = [
+    {label: t('serbian'), value: 'sr'},
+    {label: t('hungarian'), value: 'hu'},
+    {label: t('english'), value: 'en'},
+  ];
+
+  const changeLanguage = async (prop: string) => {
+    console.log(prop);
+    if (prop === 'sr') {
+      i18n.changeLanguage('sr');
+      AsyncStorage.setItem('Language', 'sr');
+    } else if (prop === 'hu') {
+      i18n.changeLanguage('hu');
+      AsyncStorage.setItem('Language', 'hu');
+    } else if (prop === 'en') {
+      i18n.changeLanguage('en');
+      AsyncStorage.setItem('Language', 'en');
+    }
+  };
+
+  const [lang, setLang] = useState('');
   return (
     <>
       <View style={styles.container}>
+        <Dropdown
+          style={{
+            margin: 16,
+            height: 50,
+            borderBottomColor: 'gray',
+            borderBottomWidth: 0.5,
+            width: 200,
+            alignSelf: 'center',
+          }}
+          itemTextStyle={[
+            {textTransform: 'capitalize'},
+            {color: Colors.Light.lightText},
+          ]}
+          placeholder={t('choose language')}
+          placeholderStyle={{textTransform: 'capitalize'}}
+          onChange={item => {
+            changeLanguage(item.value);
+            setLang(item.value);
+          }}
+          itemContainerStyle={{
+            backgroundColor: isDarkMode
+              ? Colors.Dark.textInputBackground
+              : Colors.Light.textInputBackground,
+          }}
+          labelField={'label'}
+          valueField={'value'}
+          value={lang}
+          data={data}
+          selectedTextStyle={{textTransform: 'capitalize', marginLeft: 10}}
+          renderLeftIcon={() => (
+            <Ionicons
+              name="language"
+              size={25}
+              color={
+                isDarkMode ? Colors.Dark.lightText : Colors.Light.lightText
+              }
+            />
+          )}
+        />
+
         <View>
           <Text style={styles.incorrectText}>
             {isCorrect ? '' : t('incorrect code')}
@@ -138,6 +201,7 @@ const RegistrationScreen = ({
             ]}
           />
         </View>
+
         <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
           <LinearGradient
             start={{x: 1.3, y: 0}}
