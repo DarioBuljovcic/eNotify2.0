@@ -8,6 +8,7 @@ import {
   useColorScheme,
   Dimensions,
   PermissionsAndroid,
+  ScrollView,
 } from 'react-native';
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,7 +22,6 @@ import firestore from '@react-native-firebase/firestore';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import {updateDoc} from 'firebase/firestore';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
   const {t, i18n} = useTranslation();
@@ -165,7 +165,6 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     AsyncStorage.removeItem('Email');
     AsyncStorage.removeItem('Language');
 
-    navigation.navigate('Registration');
     //TODO: navigate to registratin
   };
 
@@ -234,7 +233,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   };
 
   return (
-    <View
+    <ScrollView
       style={[
         styles.container,
         {
@@ -242,7 +241,10 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             ? Colors.Dark.appBackground
             : Colors.Light.appBackground,
         },
-      ]}>
+      ]}
+      contentContainerStyle={{
+        alignItems: 'center',
+      }}>
       <View style={styles.containerSize}>
         <View style={styles.userInfo}>
           <LinearGradient
@@ -622,14 +624,13 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
           </View>
         </TouchableOpacity>
       ) : null}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     marginTop: -35,
