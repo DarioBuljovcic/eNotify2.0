@@ -48,93 +48,96 @@ import {
 import { Timestamp } from "firebase/firestore";
 import { format } from "date-fns";
 import moment from "moment";
-import {SubmitHandler, useForm} from 'react-hook-form'
-
 
 type Inputs = {
-  NotificationId: string,
-  Tittle:string,
-  Text:string,
-  From:string,
-  Date: string,
-  UserID:string,
-  Name:string,
-  Email:string,
-  Class:string,
+  NotificationId: string;
+  Title: string;
+  Text: string;
+  From: string;
+  Date: string;
+  UserID: string;
+  Name: string;
+  Email: string;
+  Class: string;
 };
 
 //onChange={()=>setNewValue(prev=>({...prev,[key]:value as string}))}
 //const rowData = data[rowIndex];
-const Flyout = (isFlyoutOpen,setIsFlyoutOpen,rowData,setNewValue)=>{
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+const Flyout = (isFlyoutOpen, setIsFlyoutOpen, rowData, setNewValue) => {
+  const details = Object.entries(rowData).map(([key, value]) => {
+    if (key === "Date") {
+      const timestamp: Timestamp = value as Timestamp;
+      let date: Timestamp = new Timestamp(
+        timestamp.seconds,
+        timestamp.nanoseconds
+      );
 
-    const details = Object.entries(rowData).map(([key, value]) => {
-      if (key === "Date") {
-        const timestamp: Timestamp = value as Timestamp;
-        let date: Timestamp = new Timestamp(
-          timestamp.seconds,
-          timestamp.nanoseconds
-        );
-        
-        return (
-          <>
-            <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
-            <EuiDescriptionListDescription style={{maxWidth:300}}>
-              <EuiDatePicker selected={moment(date.toDate())} disabled={true} {...register(key)}/>
-            </EuiDescriptionListDescription>
-          </>
-        );
-      }else if(key==='Text'){
-        return (
-          <>
-            <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
-            <EuiDescriptionListDescription style={{maxWidth:300}}>
-              <EuiTextArea value={value as string}  {...register(key)}/>
-            </EuiDescriptionListDescription>
-          </>
-        );
-      }
       return (
         <>
           <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
-          <EuiDescriptionListDescription style={{maxWidth:300}}>
-            <EuiFieldText value={value as string} disabled={(key==='NotificationId'||key==='From'?true:false)} />
+          <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+            <EuiDatePicker selected={moment(date.toDate())} disabled={true} />
           </EuiDescriptionListDescription>
         </>
       );
-    });
+    } else if (key === "Text") {
+      return (
+        <>
+          <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
+          <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+            <EuiTextArea value={value as string} />
+          </EuiDescriptionListDescription>
+        </>
+      );
+    }
+    return (
+      <>
+        <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
+        <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+          <EuiFieldText
+            value={value as string}
+            disabled={key === "NotificationId" || key === "From" ? true : false}
+          />
+        </EuiDescriptionListDescription>
+      </>
+    );
+  });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <EuiPortal >
-        <EuiFlyout
-          ownFocus
-          onClose={() => {setIsFlyoutOpen(!isFlyoutOpen);console.log(isFlyoutOpen);}}
-          maxWidth={100}
-        >
-          <EuiFlyoutHeader hasBorder>
-            <EuiTitle size="m">
-              <h2>{rowData.name}</h2>
-            </EuiTitle>
-          </EuiFlyoutHeader>
-          <EuiFlyoutBody>
-            <EuiDescriptionList>{details}</EuiDescriptionList>
-            <EuiSpacer/>
-            <EuiButton fill={true} onClick={handleEdit}>Izmeni</EuiButton>
-          </EuiFlyoutBody>
-        </EuiFlyout>
-      </EuiPortal>
-    </form>
-  )
-}
+    <EuiPortal>
+      <EuiFlyout
+        ownFocus
+        onClose={() => {
+          setIsFlyoutOpen(!isFlyoutOpen);
+          console.log(isFlyoutOpen);
+        }}
+        maxWidth={100}
+      >
+        <EuiFlyoutHeader hasBorder>
+          <EuiTitle size="m">
+            <h2>{rowData.name}</h2>
+          </EuiTitle>
+        </EuiFlyoutHeader>
+        <EuiFlyoutBody>
+          <EuiDescriptionList>{details}</EuiDescriptionList>
+          <EuiSpacer />
+          <EuiButton fill={true} onClick={handleEdit}>
+            Izmeni
+          </EuiButton>
+        </EuiFlyoutBody>
+      </EuiFlyout>
+    </EuiPortal>
+  );
+};
 
 const DataGridStyle = ({ columns, getData, deleteData }) => {
   const [data, setData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [handlers, setHandlers] = useState({ handleConfirm: () => {}, handleClose: () => {} });
+  const [handlers, setHandlers] = useState({
+    handleConfirm: () => {},
+    handleClose: () => {},
+  });
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
-  
 
   const GetSetData = async () => {
     const d: any = await getData();
@@ -174,14 +177,14 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
     [setSortingColumns]
   );
   const renderCellValue = (rowIndex, columnId) => {
-      if (columnId === "Date") {
-        const timestamp: Timestamp = data[rowIndex][columnId];
-        let date: Timestamp = new Timestamp(
-          timestamp.seconds,
-          timestamp.nanoseconds
-        );
-        return <div>{format(date.toDate(), "dd/MM/yyyy")}</div>;
-      } else return <div>{data[rowIndex][columnId]}</div>;
+    if (columnId === "Date") {
+      const timestamp: Timestamp = data[rowIndex][columnId];
+      let date: Timestamp = new Timestamp(
+        timestamp.seconds,
+        timestamp.nanoseconds
+      );
+      return <div>{format(date.toDate(), "dd/MM/yyyy")}</div>;
+    } else return <div>{data[rowIndex][columnId]}</div>;
   };
   const rowSelection = useReducer((rowSelection, { action, rowIndex }) => {
     if (action === "add") {
@@ -206,13 +209,17 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
   const renderFooterCellValue = ({ columnId }) =>
     footerCellValues[columnId] || null;
 
-  const [flyout,setFlyout]=useState(<></>)
-  const [rowIndex,setRowIndex]=useState(0);
-  const [newValue,setNewValue] = useState(data[0]);
-  
+  const [flyout, setFlyout] = useState(<></>);
+  const [rowIndex, setRowIndex] = useState(0);
+  const [newValue, setNewValue] = useState(data[0]);
+
   const SelectionContext = createContext(rowSelection);
-  
-  const handleDelete = async (selectedRows,updateSelectedRows?,setIsPopoverOpen?) => {  
+
+  const handleDelete = async (
+    selectedRows,
+    updateSelectedRows?,
+    setIsPopoverOpen?
+  ) => {
     setIsPopoverOpen?.(false);
     const handleOpenModal = () => {
       setIsOpen(true);
@@ -221,34 +228,31 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
           setIsOpen(false);
           resolve(true);
         };
-  
+
         const handleClose = () => {
           setIsOpen(false);
           resolve(false);
         };
-  
+
         setHandlers({ handleConfirm, handleClose });
       });
     };
     const result = await handleOpenModal();
-    
-    if(result){
+
+    if (result) {
       const users = [];
       selectedRows.forEach((row) => {
         users.push(data[row]);
       });
       await deleteData(users);
       GetSetData();
-      updateSelectedRows?.({ action: "clear" })
+      updateSelectedRows?.({ action: "clear" });
     }
-    
   };
-  
 
   const SelectionButton = () => {
     const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-    
 
     if (selectedRows.size > 0) {
       return (
@@ -275,17 +279,19 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
           <EuiContextMenuPanel
             size="s"
             items={[
-              <EuiContextMenuItem
-                key="pencil"
-                icon="pencil"
-                onClick={()=>{}}
-              >
+              <EuiContextMenuItem key="pencil" icon="pencil" onClick={() => {}}>
                 Izmeni redove
               </EuiContextMenuItem>,
               <EuiContextMenuItem
                 key="delete"
                 icon="trash"
-                onClick={()=>handleDelete(selectedRows, updateSelectedRows,setIsPopoverOpen)}
+                onClick={() =>
+                  handleDelete(
+                    selectedRows,
+                    updateSelectedRows,
+                    setIsPopoverOpen
+                  )
+                }
               >
                 Obriši redove
               </EuiContextMenuItem>,
@@ -354,7 +360,7 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
       width: 32,
       headerCellRender: SelectionHeaderCell,
       rowCellRender: SelectionRowCell,
-    }
+    },
   ];
 
   const trailingControlColumns = [
@@ -384,18 +390,25 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
             >
               <EuiPopoverTitle>Actions</EuiPopoverTitle>
               <div style={{ width: 150 }}>
-                <button onClick={() => {setIsFlyoutOpen(true);setRowIndex(user);setNewValue(data[user])}} component="span">
+                <button
+                  onClick={() => {
+                    setIsFlyoutOpen(true);
+                    setRowIndex(user);
+                    setNewValue(data[user]);
+                  }}
+                  component="span"
+                >
                   <EuiFlexGroup
                     alignItems="center"
                     component="span"
                     gutterSize="s"
                   >
                     <EuiFlexItem grow={false}>
-                    <EuiButtonIcon
-                      color="text"
-                      iconType="pencil" 
-                      aria-label="View details"
-                    />
+                      <EuiButtonIcon
+                        color="text"
+                        iconType="pencil"
+                        aria-label="View details"
+                      />
                     </EuiFlexItem>
                     <EuiFlexItem>Izmeni</EuiFlexItem>
                   </EuiFlexGroup>
@@ -403,7 +416,7 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
                 <EuiSpacer size="s" />
                 <button
                   onClick={() => {
-                    handleDelete([user])
+                    handleDelete([user]);
                   }}
                 >
                   <EuiFlexGroup
@@ -435,15 +448,18 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
         <SelectionContext.Provider value={rowSelection}>
           {isFlyoutOpen && flyout}
           {isOpen && (
-          <EuiConfirmModal
-            style={{ width: 300 }}
-            title="Brisanje"
-            onCancel={handlers.handleClose}
-            onConfirm={handlers.handleConfirm}
-            cancelButtonText="Ne"
-            confirmButtonText="Da"
-            defaultFocusedButton="confirm"
-          ><p>Da li ste sigurni da želite da obrišete?</p></EuiConfirmModal>)}
+            <EuiConfirmModal
+              style={{ width: 300 }}
+              title="Brisanje"
+              onCancel={handlers.handleClose}
+              onConfirm={handlers.handleConfirm}
+              cancelButtonText="Ne"
+              confirmButtonText="Da"
+              defaultFocusedButton="confirm"
+            >
+              <p>Da li ste sigurni da želite da obrišete?</p>
+            </EuiConfirmModal>
+          )}
 
           <EuiDataGrid
             aria-label="Data grid styling"
@@ -464,7 +480,6 @@ const DataGridStyle = ({ columns, getData, deleteData }) => {
               header: "underline",
               footer: "overline",
             }}
-            
             leadingControlColumns={leadingControlColumns}
             trailingControlColumns={trailingControlColumns}
             renderCellValue={({ rowIndex, columnId }) =>

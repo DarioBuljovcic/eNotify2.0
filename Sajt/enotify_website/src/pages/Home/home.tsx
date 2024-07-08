@@ -1,43 +1,17 @@
-import React, {
-  Fragment,
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import React, { useMemo, useState } from "react";
 import "@elastic/eui/dist/eui_theme_light.css";
 import Logo from "../../components/logo.tsx";
 import {
   EuiPageHeader,
   EuiPageTemplate,
   EuiProvider,
-  EuiText,
   EuiPageTemplateProps,
-  EuiTabProps,
   EuiButton,
-  EuiSpacer,
   EuiFlexGrid,
   EuiTab,
   EuiTabs,
   EuiIcon,
   EuiPageBody,
-  EuiPopover,
-  EuiButtonEmpty,
-  EuiPopoverTitle,
-  EuiContextMenuPanel,
-  EuiContextMenuItem,
-  EuiCheckbox,
-  EuiDescriptionListTitle,
-  EuiDescriptionListDescription,
-  EuiPortal,
-  EuiFlyout,
-  EuiFlyoutHeader,
-  EuiTitle,
-  EuiDescriptionList,
-  EuiFlyoutBody,
-  EuiButtonIcon,
-  EuiFlexGroup,
-  EuiFlexItem,
 } from "@elastic/eui";
 import DataGridStyle from "../../components/dataGrid.tsx";
 import {
@@ -54,6 +28,7 @@ import {
   deleteNotificationDocuments,
   getImage,
   setImage,
+  editUser,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -62,18 +37,13 @@ import SendNotification from "../../components/sendNotification.tsx";
 import ClassTable from "../../components/classTable.tsx";
 import DataGrid2 from "../../components/dataGrid2.tsx";
 
-type Tabs = {
-  label: string;
-  isSelected: boolean;
-  onClick: () => void;
-};
 const columnsNotification = [
   {
     id: "NotificationId",
     initialWidth: 120,
   },
   {
-    id: "Tittle",
+    id: "Title",
   },
   {
     id: "Text",
@@ -109,8 +79,8 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [modalHeader, setModalHeader] = useState("");
   const [modalText, setModalText] = useState("");
-  const [modalConfirm,setModalConfirm] = useState(false);
-  const [result,setResult] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [result, setResult] = useState(false);
   const allTabs = {
     Student: [
       {
@@ -153,9 +123,10 @@ export default function Home() {
         content: (
           <>
             <DataGrid2
-              // columns={columnsUsers}
+              columns={columnsUsers}
               getData={getStudents}
-              // deleteData={deleteUserDocuments}
+              editUser={editUser}
+              deleteData={deleteUserDocuments}
             />
           </>
         ),

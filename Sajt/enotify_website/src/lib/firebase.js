@@ -62,7 +62,7 @@ export const getNotifications = async () => {
 
     newData.push({
       NotificationId: data.NotificationId,
-      Tittle: data.Tittle,
+      Title: data.Title,
       Text: data.Text,
       From: data.From,
       Date: data.Date,
@@ -288,7 +288,7 @@ export const sendNotification = async (files, item) => {
       Date: new Date(),
       Files: fileArray.length > 0 ? `${fileArray.map((f) => f.name)}` : ``,
       Text: item.Text,
-      Tittle: item.Title,
+      Title: item.Title,
       Type: `T${files.length > 0 ? "F" : ""}`,
       Seen: "",
       From: "Uprava škole",
@@ -381,3 +381,14 @@ export const setImage = async (Class, image) => {
     console.error("Error updating document:", error);
   }
 };
+export const editUser = async (user, newValue) => {
+  const q = query(collection(db, "Users"), where("UserID", "==", user.UserID));
+  const querySnapshot = await getDocs(q);
+  const docId = querySnapshot.docs[0].id;
+  await updateDoc(doc(db, "Users", docId), {
+    Name: newValue.Name,
+    Class: newValue.Class,
+    Email: newValue.Email,
+  });
+};
+export const editNotification = async (notification) => {};
