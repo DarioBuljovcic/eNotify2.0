@@ -127,13 +127,14 @@ export default function FilePicker({
           </EuiFlexGroup>
         </EuiFlexItem>
         <EuiSpacer />
-        <EuiFlexItem>
+        <EuiFlexItem style={{minWidth:400}}>
           <EuiFilePicker
             id={filePickerId}
             initialPromptText="Izaberite ili prevucite željeni fajl"
             onChange={onChange}
             display="large"
             aria-label="Use aria labels when no actual label is in use"
+            
           />
         </EuiFlexItem>
         <EuiFlexItem>

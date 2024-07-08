@@ -15,6 +15,9 @@ import {
   EuiTextArea,
   EuiComboBox,
   euiPaletteColorBlindBehindText,
+  EuiSelectable,
+  EuiFormRow,
+  EuiPanel,
 } from "@elastic/eui";
 
 type Props = {
@@ -282,6 +285,7 @@ export default function SendNotification({
           <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
             Razredi
           </EuiFormLabel>
+
           <EuiComboBox
             aria-label="Accessible screen reader label"
             placeholder="Izaberite razrede"
@@ -290,7 +294,10 @@ export default function SendNotification({
             selectedOptions={selectedClasses}
             onChange={onChange}
             data-test-subj="demoComboBox"
+            isClearable={true}
+            
           />
+          
         </EuiFlexItem>
 
         <EuiFlexItem>
@@ -298,6 +305,7 @@ export default function SendNotification({
             Pošaljite obaveštenje
           </EuiButton>
         </EuiFlexItem>
+        <EuiSpacer />
       </EuiFlexGroup>
     </EuiPageSection>
   );

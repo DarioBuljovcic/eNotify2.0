@@ -149,7 +149,7 @@ export default function ClassTable({
           />
         </EuiFlexItem>
         <EuiFlexItem style={{ minWidth: 300 }}>
-          <EuiImage src={tableImage} />
+          <EuiImage src={tableImage} alt="Prikaz slike rasporeda"/>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPageSection>

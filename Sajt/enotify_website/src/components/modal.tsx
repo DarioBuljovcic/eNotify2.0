@@ -1,11 +1,37 @@
 import { EuiButton, EuiModal, EuiModalBody, EuiModalFooter, EuiModalHeader, EuiModalHeaderTitle, EuiSpacer } from '@elastic/eui'
 import React from 'react'
 
-function Modal({isOpen,setIsOpen,modalHeader,modalText}) {
+function Modal({isOpen,setIsOpen,modalHeader,modalText,modalConfirm,setResult}) {
 
-    const closeModal = ()=>{
-        setIsOpen(false);
+  const closeModal = ()=>{
+      setIsOpen(false);
+  }
+  const Yes = ()=>{
+    setIsOpen(false);
+    setResult(true);
+  }
+  const No = ()=>{
+    setIsOpen(false);
+    setResult(false);
+  }
+  const buttons = ()=>{
+    if(modalConfirm){
+      return <EuiModalFooter>
+              <EuiButton onClick={Yes} fill>
+                Da
+              </EuiButton>
+              <EuiButton onClick={No} fill>
+                Ne
+              </EuiButton>
+            </EuiModalFooter>
+    }else{
+     return <EuiModalFooter>
+              <EuiButton onClick={closeModal} fill>
+                Spusti
+              </EuiButton>
+            </EuiModalFooter>
     }
+  }
   return (<>
     {isOpen && (
         <EuiModal onClose={closeModal}>
@@ -20,12 +46,10 @@ function Modal({isOpen,setIsOpen,modalHeader,modalText}) {
             <EuiSpacer />
             
           </EuiModalBody>
-
-          <EuiModalFooter>
-            <EuiButton onClick={closeModal} fill>
-              Spusti
-            </EuiButton>
-          </EuiModalFooter>
+          {
+            buttons()
+          }
+          
         </EuiModal>
       )}
 </>)

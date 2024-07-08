@@ -60,6 +60,7 @@ import Modal from "../../components/modal.tsx";
 import AddOneUser from "../../components/addOneUser.tsx";
 import SendNotification from "../../components/sendNotification.tsx";
 import ClassTable from "../../components/classTable.tsx";
+import DataGrid2 from "../../components/dataGrid2.tsx";
 
 type Tabs = {
   label: string;
@@ -108,6 +109,8 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [modalHeader, setModalHeader] = useState("");
   const [modalText, setModalText] = useState("");
+  const [modalConfirm,setModalConfirm] = useState(false);
+  const [result,setResult] = useState(false);
   const allTabs = {
     Student: [
       {
@@ -149,10 +152,10 @@ export default function Home() {
         prepend: <EuiIcon type="list" />,
         content: (
           <>
-            <DataGridStyle
-              columns={columnsUsers}
+            <DataGrid2
+              // columns={columnsUsers}
               getData={getStudents}
-              deleteData={deleteUserDocuments}
+              // deleteData={deleteUserDocuments}
             />
           </>
         ),
@@ -347,6 +350,8 @@ export default function Home() {
           setIsOpen={setIsOpen}
           modalHeader={modalHeader}
           modalText={modalText}
+          modalConfirm={modalConfirm}
+          setResult={setResult}
         />
         <EuiPageTemplate.Sidebar sticky={true} minWidth={"150px"}>
           <EuiFlexGrid>
