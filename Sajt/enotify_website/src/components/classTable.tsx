@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  EuiFilePicker,
+  
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
-  EuiSpacer,
-  useGeneratedHtmlId,
+
   EuiPageSection,
   EuiTitle,
-  EuiButton,
-  EuiFieldText,
+
   EuiFormLabel,
   EuiSelect,
   EuiImage,

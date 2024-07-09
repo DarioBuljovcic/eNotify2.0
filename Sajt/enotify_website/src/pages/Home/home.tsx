@@ -13,7 +13,6 @@ import {
   EuiIcon,
   EuiPageBody,
 } from "@elastic/eui";
-import DataGridStyle from "../../components/dataGrid.tsx";
 import {
   getNotifications,
   getStudents,
@@ -29,6 +28,8 @@ import {
   getImage,
   setImage,
   editUser,
+  editNotification,
+  postClass,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -36,6 +37,7 @@ import AddOneUser from "../../components/addOneUser.tsx";
 import SendNotification from "../../components/sendNotification.tsx";
 import ClassTable from "../../components/classTable.tsx";
 import DataGrid2 from "../../components/dataGrid2.tsx";
+import AddClass from "../../components/addClass.tsx";
 
 const columnsNotification = [
   {
@@ -69,6 +71,18 @@ const columnsUsers = [
   {
     id: "Class",
   },
+];
+const columnsClasses = [
+  {
+    id: "Class",
+    initialWidth: 120,
+  },
+  {
+    id: "Professor",
+  },
+  {
+    id: "ProfessorsList",
+  }
 ];
 
 export default function Home() {
@@ -125,8 +139,10 @@ export default function Home() {
             <DataGrid2
               columns={columnsUsers}
               getData={getStudents}
-              editUser={editUser}
+              editData={editUser}
               deleteData={deleteUserDocuments}
+              dataType='User'
+              getAddition={getAllClasses}
             />
           </>
         ),
@@ -171,10 +187,13 @@ export default function Home() {
         prepend: <EuiIcon type="list" />,
         content: (
           <>
-            <DataGridStyle
+            <DataGrid2
               columns={columnsUsers}
               getData={getProfessors}
+              editData={editUser}
               deleteData={deleteUserDocuments}
+              dataType='User'
+              getAddition={getAllClasses}
             />
           </>
         ),
@@ -203,10 +222,13 @@ export default function Home() {
         prepend: <EuiIcon type="list" />,
         content: (
           <>
-            <DataGridStyle
+            <DataGrid2
               columns={columnsNotification}
               getData={getNotifications}
+              editData={editNotification}
               deleteData={deleteNotificationDocuments}
+              dataType='Notification'
+              getAddition={getAllClasses}
             />
           </>
         ),
@@ -215,13 +237,13 @@ export default function Home() {
     Razredi: [
       {
         id: 1,
-        name: "Dodavanje putem fajla",
-        prepend: <EuiIcon type="plus" />,
+        name: "Dodavanje ručno",
+        prepend: <EuiIcon type="pencil" />,
         content: (
           <>
-            <FilePicker
-              role="p"
-              postFile={postProfessorsFile}
+            <AddClass
+              getProfessors={getProfessors}
+              postClass={postClass}
               setModalHeader={setModalHeader}
               setModalText={setModalText}
               setIsOpen={setIsOpen}
@@ -231,24 +253,24 @@ export default function Home() {
       },
       {
         id: 2,
-        name: "Dodavanje ručno",
-        prepend: <EuiIcon type="pencil" />,
+        name: "Pregled",
+        prepend: <EuiIcon type="list" />,
         content: (
-          <>
-            <AddOneUser
-              role="p"
-              postUser={postOneProfessor}
-              setModalHeader={setModalHeader}
-              setModalText={setModalText}
-              setIsOpen={setIsOpen}
+          <>  
+            <DataGrid2
+              columns={columnsClasses}
+              getData={getAllClasses}
+              editData={editNotification}
+              deleteData={deleteNotificationDocuments}
+              dataType='Class'
             />
           </>
         ),
       },
       {
         id: 3,
-        name: "Pregled",
-        prepend: <EuiIcon type="list" />,
+        name: "Raspored",
+        prepend: <EuiIcon type="image" />,
         content: (
           <>
             <ClassTable

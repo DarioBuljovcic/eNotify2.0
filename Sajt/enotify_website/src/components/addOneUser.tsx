@@ -49,7 +49,6 @@ export default function AddOneUser({
   setIsOpen,
   getClasses,
 }: Props) {
-  const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const basicSelectId = useGeneratedHtmlId({ prefix: "basicSelect" });
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");

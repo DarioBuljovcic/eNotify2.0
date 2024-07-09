@@ -30,8 +30,6 @@ import {
   EuiButton,
   EuiSpacer,
 } from "@elastic/eui";
-import { Timestamp } from "firebase/firestore";
-import moment from "moment";
 import {
   dataUsers,
   dataNotification,
@@ -39,12 +37,16 @@ import {
   RowSelection,
   RowSelectionAction,
 } from "../types/types";
+import { Timestamp } from "firebase/firestore";
+import { format } from "date-fns";
+import { FlyoutNotification, FlyoutUser } from "./flyout.tsx";
+
 
 const defaultValueData: gridDataContext = {
   data: [],
   deleteData: ([]) => {},
   setData: () => {},
-  editUser: () => {},
+  editData: () => {},
 };
 const defaultRowSelection: RowSelection = {
   rowSelection: new Set<number>(),
@@ -59,13 +61,27 @@ const defaultRowSelection: RowSelection = {
 const SelectionContext = createContext<RowSelection>(defaultRowSelection);
 const DataContext = createContext<gridDataContext>(defaultValueData);
 
+const handleDelete = async (data,dataForDelete,deleteData,setData,handleUpdate?,closeModal?) => {
+  
+  if(dataForDelete instanceof Set){
+    const newData = data.filter((_,index) => dataForDelete.has(index));
+    console.log(newData);
+    deleteData(newData);
+    setData(data.filter((_,index) => !dataForDelete.has(index)));
+    handleUpdate();
+  }else{
+    deleteData([dataForDelete]);
+    setData(data.filter((d) => d !== dataForDelete));
+  }
+  closeModal?.();
+};
+
+
 const SelectionButton = () => {
-  const [selectedRows] = useContext(SelectionContext);
+  const [selectedRows,updateSelectedRows] = useContext(SelectionContext);
+  const {data,deleteData,setData} = useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const alertAndClosePopover = () => {
-    setIsPopoverOpen(false);
-    window.alert("This is not a real control.");
-  };
+  const handleUpdate = () => updateSelectedRows({action:'clear'})
   if (selectedRows.size > 0) {
     return (
       <EuiPopover
@@ -92,16 +108,9 @@ const SelectionButton = () => {
           size="s"
           items={[
             <EuiContextMenuItem
-              key="pin"
-              icon="pin"
-              onClick={alertAndClosePopover}
-            >
-              Pin items
-            </EuiContextMenuItem>,
-            <EuiContextMenuItem
               key="delete"
               icon="trash"
-              onClick={alertAndClosePopover}
+              onClick={()=>handleDelete(data,selectedRows,deleteData,setData,handleUpdate)}
             >
               Delete item
             </EuiContextMenuItem>,
@@ -169,6 +178,22 @@ const leadingControlColumns = [
     rowCellRender: SelectionRowCell,
   },
 ];
+const Modal = ({onConfirm,onCancel,modalVisible,Title,Text,CancelBtn,ConfrimBtn})=>{
+
+  if(modalVisible){
+    return <EuiConfirmModal
+              onCancel={onCancel}
+              onConfirm={onConfirm}
+              title={Title}
+              cancelButtonText={CancelBtn}
+              confirmButtonText={ConfrimBtn}
+            >
+              <p>{Text}</p>
+            </EuiConfirmModal>
+  }
+  return<></>;
+}
+
 const trailingControlColumns = [
   {
     id: "actions",
@@ -180,7 +205,7 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { data, deleteData, setData, editUser } = useContext(DataContext);
+      const { data, deleteData, setData, editData, dataType } = useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(data[0]);
 
@@ -195,42 +220,9 @@ const trailingControlColumns = [
         closePopover();
         setIsModalVisible(true);
       };
-      const handleDelete = async () => {
-        deleteData([data[rowIndex]]);
-        closeModal();
-        setData(data.filter((d) => d !== data[rowIndex]));
-      };
-      const handleEdit = async () => {
-        editUser(data[rowIndex], newValue);
-        closeModal();
-        setData((prevItems: dataUsers[]) => {
-          return prevItems.map((item) =>
-            item.UserID === data[rowIndex]?.UserID
-              ? {
-                  ...item,
-                  Name: newValue.Name,
-                  Email: newValue.Email,
-                  Class: newValue.Class,
-                }
-              : item
-          );
-        });
-      };
+      
+      
       let modal;
-
-      if (isModalVisible) {
-        modal = (
-          <EuiConfirmModal
-            onCancel={closeModal}
-            onConfirm={handleDelete}
-            title="Brisanje"
-            cancelButtonText="Ne"
-            confirmButtonText="Da"
-          >
-            <p>Da li ste sigurni da želite da obrišete?</p>
-          </EuiConfirmModal>
-        );
-      }
 
       const [isFlyoutVisible, setIsFlyoutVisible] = useState(false);
       const closeFlyout = () => {
@@ -239,90 +231,8 @@ const trailingControlColumns = [
       const showFlyout = () => {
         closePopover();
         setIsFlyoutVisible(true);
+        setNewValue(data[rowIndex]);
       };
-      const handleChange = (value, key) => {
-        setNewValue((prev) => ({ ...prev, [key]: value }));
-        console.log(value);
-      };
-      const body = Object.entries(data[rowIndex]).map(([key, value]) => {
-        if (key === "Date") {
-          return (
-            <>
-              <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
-              <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
-                <EuiDatePicker
-                  selected={moment(newValue.Date.toDate())}
-                  disabled={true}
-                  onChange={(e) => handleChange(e, key)}
-                />
-              </EuiDescriptionListDescription>
-            </>
-          );
-        } else if (key === "Text") {
-          return (
-            <>
-              <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
-              <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
-                <EuiTextArea
-                  value={newValue[key]}
-                  onChange={(e) => handleChange(e.target.value, key)}
-                />
-              </EuiDescriptionListDescription>
-            </>
-          );
-        }
-        return (
-          <>
-            <EuiDescriptionListTitle>{key}</EuiDescriptionListTitle>
-            <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
-              <EuiFieldText
-                value={newValue[key]}
-                disabled={
-                  ["NotificationId", "UserID", "From"].includes(key)
-                    ? true
-                    : false
-                }
-                onChange={(e) => handleChange(e.target.value, key)}
-              />
-            </EuiDescriptionListDescription>
-          </>
-        );
-      });
-
-      let flyout;
-
-      if (isFlyoutVisible) {
-        flyout = (
-          <EuiFlyout
-            aria-labelledby="flyoutTitle"
-            onClose={closeFlyout}
-            ownFocus
-            size="s"
-          >
-            <EuiFlyoutHeader hasBorder>
-              <EuiTitle size="m">
-                <h2 id="flyoutTitle">Izmena</h2>
-              </EuiTitle>
-            </EuiFlyoutHeader>
-
-            <EuiFlyoutBody>
-              {body}
-              <EuiSpacer />
-              <EuiButton onClick={handleEdit}>Izmeni</EuiButton>
-            </EuiFlyoutBody>
-
-            <EuiFlyoutFooter>
-              <EuiButtonEmpty
-                flush="left"
-                iconType="cross"
-                onClick={closeFlyout}
-              >
-                Spusti
-              </EuiButtonEmpty>
-            </EuiFlyoutFooter>
-          </EuiFlyout>
-        );
-      }
 
       const actions = [
         <EuiContextMenuItem icon="trash" key="modal" onClick={showModal}>
@@ -352,19 +262,32 @@ const trailingControlColumns = [
             <EuiContextMenuPanel items={actions} size="s" title="Opcije" />
           </EuiPopover>
 
-          {modal}
-
-          {flyout}
+          <Modal 
+            Title='Brisanje' 
+            Text='Da li ste sigurni da želite da obrišete?' 
+            ConfrimBtn='Da' 
+            CancelBtn='Ne' 
+            modalVisible={isModalVisible} 
+            onCancel={closeModal} 
+            onConfirm={()=>{handleDelete(data,data[rowIndex],deleteData,setData,closeModal);closeModal()}}
+          />
+          {dataType==='User' && <FlyoutUser newValue={newValue} rowIndex={rowIndex} setNewValue={setNewValue} closeFlyout={closeFlyout} isFlyoutVisible={isFlyoutVisible} DataContext={DataContext}/>}
+            
+          {dataType==='Notification' && <FlyoutNotification newValue={newValue} rowIndex={rowIndex} setNewValue={setNewValue} closeFlyout={closeFlyout} isFlyoutVisible={isFlyoutVisible} DataContext={DataContext}/>}
+            
         </>
       );
     },
   },
 ];
-export default function DataGrid({ getData, deleteData, columns, editUser }) {
+export default function DataGrid({ getData, deleteData, columns, editData,dataType, getAddition }) {
   const [pagination, setPagination] = useState({ pageIndex: 0 });
   const [data, setData] = useState<dataUsers[] | dataNotification[]>([]);
+  const [addition, setAddition] = useState([]);
   const GetSetData = async () => {
     const d: any = await getData();
+    const a:any = await getAddition?.();
+    setAddition(a);
     setData(d);
   };
   useEffect(() => {
@@ -407,17 +330,24 @@ export default function DataGrid({ getData, deleteData, columns, editUser }) {
     },
     new Set()
   );
-  const renderCellValue = useCallback(
-    ({ rowIndex, columnId }) => data[rowIndex][columnId],
-    [data]
-  );
+  const renderCellValue = useCallback(({ rowIndex, columnId }) => {
+    if (columnId === "Date") {
+      const timestamp: Timestamp = data[rowIndex][columnId];
+      let date: Timestamp = new Timestamp(
+        timestamp.seconds,
+        timestamp.nanoseconds
+      );
+      return <div>{format(date.toDate(), "dd/MM/yyyy")}</div>;
+      
+    } else return <div>{data[rowIndex][columnId]}</div>;
+  },[data]);
   if (data.length > 0)
     return (
-      <DataContext.Provider value={{ data, deleteData, setData, editUser }}>
+      <DataContext.Provider value={{ data, deleteData, setData, editData,dataType,addition }}>
         <SelectionContext.Provider value={rowSelection}>
           <div>
             <EuiDataGrid
-              aria-label="Top EUI contributors"
+              aria-label="Lista"
               leadingControlColumns={leadingControlColumns}
               trailingControlColumns={trailingControlColumns}
               columns={columns}
@@ -439,5 +369,5 @@ export default function DataGrid({ getData, deleteData, columns, editUser }) {
           </div>
         </SelectionContext.Provider>
       </DataContext.Provider>
-    );
+  );
 }

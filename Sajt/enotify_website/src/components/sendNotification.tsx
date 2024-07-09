@@ -19,14 +19,9 @@ import {
   EuiFormRow,
   EuiPanel,
 } from "@elastic/eui";
+import { ClassesNotification, PropsNotification, optionsNotification } from "../types/types";
 
-type Props = {
-  sendNotification: (o, p) => void;
-  setModalHeader: (o) => void;
-  setModalText: (o) => void;
-  setIsOpen: (o) => void;
-  getClasses: () => void;
-};
+
 type ExcelItem = {
   Name: string;
   Surname: string;
@@ -41,15 +36,7 @@ type Data = {
   UserID: string;
   LogOut: boolean;
 };
-type options = {
-  label: string;
-  value: string;
-};
 
-type Classes = {
-  label: string;
-  options: options[];
-};
 
 export default function SendNotification({
   sendNotification,
@@ -57,19 +44,19 @@ export default function SendNotification({
   setModalText,
   setIsOpen,
   getClasses,
-}: Props) {
+}: PropsNotification) {
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const [files, setFiles] = useState<File[]>();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [classList, setClassList] = useState<Classes[]>();
-  const [selectedClasses, setSelectedClasses] = useState<options[]>([]);
+  const [classList, setClassList] = useState<ClassesNotification[]>();
+  const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>([]);
   const [errorList, setErrorList] = useState({
     title: false,
     text: false,
     classList: false,
   });
-  const groupOptions: Classes = {
+  const groupOptions: ClassesNotification = {
     label: "Godine",
     options: [
       {
@@ -90,7 +77,7 @@ export default function SendNotification({
       },
     ],
   };
-  const alwaysAlone: Classes = {
+  const alwaysAlone: ClassesNotification = {
     label: "Svi razredi",
     options: [
       {
@@ -99,14 +86,14 @@ export default function SendNotification({
       },
     ],
   };
-  const otherOptions: Classes = {
+  const otherOptions: ClassesNotification = {
     label: "Razredi",
     options: [],
   };
   useEffect(() => {
     const funk = async () => {
       const data: any = await getClasses();
-      const classes: Classes[] = [alwaysAlone, groupOptions];
+      const classes: ClassesNotification[] = [alwaysAlone, groupOptions];
       if (otherOptions.options.length === 0) {
         data.forEach((d: any) => {
           otherOptions.options.push({
@@ -155,7 +142,7 @@ export default function SendNotification({
     setSelectedClasses(selected);
   };
 
-  const handlePost = () => {
+  const handlePost = async () => {
     if (title === "")
       setErrorList((prevErrorList) => ({
         ...prevErrorList,
@@ -183,7 +170,7 @@ export default function SendNotification({
           Classes: classes,
         };
 
-        sendNotification(files, item);
+        await sendNotification(files, item);
 
         setModalHeader("Uspešno dodavanje");
         setModalText(`Uspešno ste poslali obaveštenje!`);
@@ -270,12 +257,12 @@ export default function SendNotification({
           <EuiSpacer />
 
           <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
-            Tekst obaveštenja
+            Dodatak
           </EuiFormLabel>
           <EuiFilePicker
             id={filePickerId}
             multiple
-            initialPromptText="Select or drag and drop multiple files"
+            initialPromptText="Izeberite ili prevucite fajl ili sliku"
             onChange={onFileChange}
             display="default"
             aria-label="Use aria labels when no actual label is in use"

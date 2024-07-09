@@ -19,7 +19,7 @@ export type gridDataContext = {
     data: dataUsers[]|dataNotification[],
     deleteData: ([]) => void,
     setData: (newData: (dataUsers | dataNotification)[]) => void;
-    editUser:(d:dataUsers)=> void,
+    editData:(d:dataUsers|dataNotification,p:dataUsers|dataNotification)=> void,
 }
 export type RowSelectionAction = {
     action: 'add' | 'delete' | 'clear' | 'selectAll';
@@ -30,3 +30,31 @@ export type RowSelection = {
     dispatch: Dispatch<RowSelectionAction>
     [Symbol.iterator]:()=>any, 
 }
+export type DropdownUsers = {
+    label: string,
+    text: string,
+    value:string,
+}
+export type  AddClassProps = {
+    postClass: (o,p) => void;
+    setModalHeader: (o) => void;
+    setModalText: (o) => void;
+    setIsOpen: (o) => void;
+    getProfessors?: () => void;
+};
+export type optionsNotification = {
+    label: string;
+    value: string;
+};
+
+export type ClassesNotification = {
+    label: string;
+    options: optionsNotification[];
+};
+export type PropsNotification = {
+    sendNotification: (o, p) => void;
+    setModalHeader: (o) => void;
+    setModalText: (o) => void;
+    setIsOpen: (o) => void;
+    getClasses: () => void;
+  };
