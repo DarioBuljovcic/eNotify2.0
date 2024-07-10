@@ -16,10 +16,6 @@ import {
 } from "@elastic/eui";
 import { AddClassProps, DropdownUsers } from "../types/types";
 
-
-
-
-
 export default function AddClass({
   postClass,
   setModalHeader,
@@ -35,7 +31,7 @@ export default function AddClass({
   const [selectedClasses, setSelectedClasses] = useState<DropdownUsers[]>([]);
   const [errorList, setErrorList] = useState({
     name: false,
-    professorList:false
+    professorList: false,
   });
   const [file, setFiles] = useState<File>();
   const onChangeFile = (file) => {
@@ -43,9 +39,9 @@ export default function AddClass({
   };
   const onChangeCombo = (selected) => {
     setSelectedClasses(selected);
-    setErrorList(prev=>({
-        ...prev,
-        professorList:false,
+    setErrorList((prev) => ({
+      ...prev,
+      professorList: false,
     }));
   };
 
@@ -54,13 +50,13 @@ export default function AddClass({
       const funk = async () => {
         const data: any = await getProfessors();
         setValue(data[0].UserID);
-        const profs:DropdownUsers[] = [];
-        data.forEach(d => {
-            profs.push({
-                value:d.UserID,
-                text:d.Name,
-                label:d.Name
-            })
+        const profs: DropdownUsers[] = [];
+        data.forEach((d) => {
+          profs.push({
+            value: d.UserID,
+            text: d.Name,
+            label: d.Name,
+          });
         });
         setProfessorList([...profs]);
       };
@@ -70,28 +66,27 @@ export default function AddClass({
 
   const handlePost = async () => {
     setErrorList({
-      name: name === ""?true:false,
-      professorList:selectedClasses.length===0?true:false,
+      name: name === "" ? true : false,
+      professorList: selectedClasses.length === 0 ? true : false,
     });
 
-
-    if (name.length > 0 ) {
+    if (name.length > 0) {
       try {
-        let ProfessorsList='';
-        selectedClasses.forEach((p)=>{
-            ProfessorsList+=p.value+','
-        })
-        const dataToInsert={
-            Class:name,
-            Professor:value,
-            ProfessorsList:ProfessorsList,
-        }
-        await postClass(dataToInsert,file);
+        let ProfessorsList = "";
+        selectedClasses.forEach((p) => {
+          ProfessorsList += p.value + ",";
+        });
+        const dataToInsert = {
+          Class: name,
+          Professor: value,
+          ProfessorsList: ProfessorsList,
+        };
+        await postClass(dataToInsert, file);
         setModalHeader("Uspešno dodavanje");
-        setModalText('Uspešno ste dodali novi razred!');
+        setModalText("Uspešno ste dodali novi razred!");
         setIsOpen((prev: boolean) => !prev);
         setFiles(undefined);
-        setName('');
+        setName("");
         setSelectedClasses([]);
       } catch (error) {
         console.log(error.message);
@@ -121,11 +116,7 @@ export default function AddClass({
           >
             <EuiTitle
               size="m"
-              children={
-                <EuiText size="m">
-                  Dodavanje razreda
-                </EuiText>
-              }
+              children={<EuiText size="m">Dodavanje razreda</EuiText>}
             ></EuiTitle>
             <EuiText size="s">
               Manuelno upisivanje jednog razreda u školski sistem
@@ -135,9 +126,9 @@ export default function AddClass({
 
         <EuiSpacer />
 
-        <EuiFlexItem style={{ minWidth: 300,maxWidth:300 }}>
+        <EuiFlexItem style={{ minWidth: 300, maxWidth: 300 }}>
           <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
-           Naziv razreda
+            Naziv razreda
           </EuiFormLabel>
           <EuiFieldText
             placeholder="Ime"
@@ -159,11 +150,11 @@ export default function AddClass({
             Razredni starešina
           </EuiFormLabel>
           <EuiSelect
-                id={basicSelectId}
-                options={professorList}
-                value={value}
-                onChange={(e) => setValue(e.target.innerText)}
-            />
+            id={basicSelectId}
+            options={professorList}
+            value={value}
+            onChange={(e) => setValue(e.target.innerText)}
+          />
 
           <EuiSpacer />
           <EuiFormLabel style={{ fontSize: 16, marginBottom: 10 }}>
@@ -178,7 +169,6 @@ export default function AddClass({
             isInvalid={errorList.professorList}
             data-test-subj="demoComboBox"
             isClearable={true}
-            
           />
 
           <EuiSpacer />
@@ -192,12 +182,13 @@ export default function AddClass({
             onChange={onChangeFile}
             display="default"
             aria-label="Use aria labels when no actual label is in use"
-            
           />
         </EuiFlexItem>
 
         <EuiFlexItem>
-          <EuiButton fill={true} onClick={() => handlePost()}>Dodajte razred</EuiButton>
+          <EuiButton fill={true} onClick={() => handlePost()}>
+            Dodajte razred
+          </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPageSection>

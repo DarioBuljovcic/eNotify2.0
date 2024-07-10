@@ -30,6 +30,7 @@ import {
   editUser,
   editNotification,
   postClass,
+  editClass,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -82,7 +83,7 @@ const columnsClasses = [
   },
   {
     id: "ProfessorsList",
-  }
+  },
 ];
 
 export default function Home() {
@@ -141,7 +142,7 @@ export default function Home() {
               getData={getStudents}
               editData={editUser}
               deleteData={deleteUserDocuments}
-              dataType='User'
+              dataType="User"
               getAddition={getAllClasses}
             />
           </>
@@ -192,7 +193,7 @@ export default function Home() {
               getData={getProfessors}
               editData={editUser}
               deleteData={deleteUserDocuments}
-              dataType='User'
+              dataType="User"
               getAddition={getAllClasses}
             />
           </>
@@ -227,7 +228,7 @@ export default function Home() {
               getData={getNotifications}
               editData={editNotification}
               deleteData={deleteNotificationDocuments}
-              dataType='Notification'
+              dataType="Notification"
               getAddition={getAllClasses}
             />
           </>
@@ -256,13 +257,14 @@ export default function Home() {
         name: "Pregled",
         prepend: <EuiIcon type="list" />,
         content: (
-          <>  
+          <>
             <DataGrid2
               columns={columnsClasses}
               getData={getAllClasses}
-              editData={editNotification}
+              editData={editClass}
               deleteData={deleteNotificationDocuments}
-              dataType='Class'
+              dataType="Class"
+              getAddition={getProfessors}
             />
           </>
         ),

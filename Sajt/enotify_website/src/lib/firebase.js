@@ -66,7 +66,7 @@ export const getNotifications = async () => {
       Text: data.Text,
       From: data.From,
       Date: data.Date,
-      Class:data.Class,
+      Class: data.Class,
     });
   });
   return newData;
@@ -251,23 +251,25 @@ export const getAllClasses = async () => {
   const newData = [];
   const q = query(collection(db, "Classes"), orderBy("Class", "asc"));
   const querySnapshot = await getDocs(q);
-  const profs = query(collection(db, "Users"), where("Role","==","Professor"));
-  const profesors = (await getDocs(profs));
+  const profs = query(
+    collection(db, "Users"),
+    where("Role", "==", "Professor")
+  );
+  const profesors = await getDocs(profs);
   querySnapshot.forEach(async (doc) => {
     const data = doc.data();
-    let ProfessorsList = '';
-    
-    profesors.docs.forEach((prof)=>{
-      console.log(data.ProfessorsList.includes(prof.data().UserID));
-      if(data.ProfessorsList.includes(prof.data().UserID))
-        ProfessorsList+=`${prof.data().Name}, `
-    })
-    console.log(ProfessorsList);
+    let ProfessorsList = "";
+
+    profesors.docs.forEach((prof) => {
+      if (data.ProfessorsList.includes(prof.data().UserID))
+        ProfessorsList += `${prof.data().Name}, `;
+    });
+
     newData.push({
       value: data.Class,
       text: data.Class,
       url: data.Table,
-      Class:data.Class,
+      Class: data.Class,
       ProfessorsList: ProfessorsList,
       Professor: data.Professor,
     });
@@ -275,7 +277,7 @@ export const getAllClasses = async () => {
   return newData;
 };
 export const sendNotification = async (files, item) => {
-  let fileArray=[];
+  let fileArray = [];
   if (Array.isArray(files)) {
     fileArray = [...files];
     fileArray.forEach((f) => {
@@ -288,9 +290,8 @@ export const sendNotification = async (files, item) => {
           console.log(e);
         });
     });
-  } 
+  }
   try {
-    
     const dataToInsert = {
       NotificationId: generatePassword(7),
       Class: item.Classes,
@@ -302,7 +303,7 @@ export const sendNotification = async (files, item) => {
       Seen: "",
       From: "Uprava škole",
     };
-    
+
     const sendData = async () => {
       try {
         const response = await axios.post(
@@ -314,12 +315,11 @@ export const sendNotification = async (files, item) => {
       }
     };
     sendData();
-    
+
     await addDoc(collection(db, "Notifications"), dataToInsert);
   } catch (error) {
     throw new Error("Neuspešno slanje");
   }
-  
 };
 export const deleteUserDocuments = async (users) => {
   for (const user of users) {
@@ -348,7 +348,7 @@ export const deleteNotificationDocuments = async (notifications) => {
 
     if (!querySnapshot.empty) {
       const docId = querySnapshot.docs[0].id;
-      await deleteDoc(doc(db, "Notifications", docId)); 
+      await deleteDoc(doc(db, "Notifications", docId));
       console.log(`Document with ID ${docId} deleted.`);
     } else {
       console.log(
@@ -402,17 +402,20 @@ export const editUser = async (user, newValue) => {
     Email: newValue.Email,
   });
 };
-export const editNotification = async (notification,newValue) => {
-  const q = query(collection(db, "Notifications"), where("NotificationId", "==", notification.NotificationId));
+export const editNotification = async (notification, newValue) => {
+  const q = query(
+    collection(db, "Notifications"),
+    where("NotificationId", "==", notification.NotificationId)
+  );
   const querySnapshot = await getDocs(q);
   const docId = querySnapshot.docs[0].id;
   await updateDoc(doc(db, "Notifications", docId), {
     Text: newValue.Text,
     Title: newValue.Title,
-    Class: newValue.Class
+    Class: newValue.Class,
   });
 };
-export const postClass = async(dataToInsert,file)=>{
+export const postClass = async (dataToInsert, file) => {
   if (file) {
     const storageRef = ref(storage, file?.name);
     uploadBytes(storageRef, file)
@@ -422,15 +425,28 @@ export const postClass = async(dataToInsert,file)=>{
       .catch((e) => {
         console.log(e);
       });
-  } 
-  try{
-    await addDoc(collection(db, "Classes"), {...dataToInsert,Table: file?file.name:''});
-  }catch{
-    throw new Error('alo')
   }
-}
-export const Login = async(password)=>{
+  try {
+    await addDoc(collection(db, "Classes"), {
+      ...dataToInsert,
+      Table: file ? file.name : "",
+    });
+  } catch {
+    throw new Error("alo");
+  }
+};
+export const editClass = async (Class, newValue) => {
+  console.log(newValue);
+  const q = query(collection(db, "Classes"), where("Class", "==", Class.Class));
+  const querySnapshot = await getDocs(q);
+  const docId = querySnapshot.docs[0].id;
+  await updateDoc(doc(db, "Classes", docId), {
+    Professor: newValue.Professor,
+    ProfessorsList: newValue.ProfessorsList,
+  });
+};
+export const Login = async (password) => {
   const q = query(collection(db, "Schools"), where("SchoolID", "==", password));
   const querySnapshot = await getDocs(q);
-  return querySnapshot.empty?false:true;
-}
+  return querySnapshot.empty ? false : true;
+};

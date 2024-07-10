@@ -39,8 +39,7 @@ import {
 } from "../types/types";
 import { Timestamp } from "firebase/firestore";
 import { format } from "date-fns";
-import { FlyoutNotification, FlyoutUser } from "./flyout.tsx";
-
+import { FlyoutClasses, FlyoutNotification, FlyoutUser } from "./flyout.tsx";
 
 const defaultValueData: gridDataContext = {
   data: [],
@@ -61,27 +60,32 @@ const defaultRowSelection: RowSelection = {
 const SelectionContext = createContext<RowSelection>(defaultRowSelection);
 const DataContext = createContext<gridDataContext>(defaultValueData);
 
-const handleDelete = async (data,dataForDelete,deleteData,setData,handleUpdate?,closeModal?) => {
-  
-  if(dataForDelete instanceof Set){
-    const newData = data.filter((_,index) => dataForDelete.has(index));
+const handleDelete = async (
+  data,
+  dataForDelete,
+  deleteData,
+  setData,
+  handleUpdate?,
+  closeModal?
+) => {
+  if (dataForDelete instanceof Set) {
+    const newData = data.filter((_, index) => dataForDelete.has(index));
     console.log(newData);
     deleteData(newData);
-    setData(data.filter((_,index) => !dataForDelete.has(index)));
+    setData(data.filter((_, index) => !dataForDelete.has(index)));
     handleUpdate();
-  }else{
+  } else {
     deleteData([dataForDelete]);
     setData(data.filter((d) => d !== dataForDelete));
   }
   closeModal?.();
 };
 
-
 const SelectionButton = () => {
-  const [selectedRows,updateSelectedRows] = useContext(SelectionContext);
-  const {data,deleteData,setData} = useContext(DataContext);
+  const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
+  const { data, deleteData, setData } = useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const handleUpdate = () => updateSelectedRows({action:'clear'})
+  const handleUpdate = () => updateSelectedRows({ action: "clear" });
   if (selectedRows.size > 0) {
     return (
       <EuiPopover
@@ -110,7 +114,15 @@ const SelectionButton = () => {
             <EuiContextMenuItem
               key="delete"
               icon="trash"
-              onClick={()=>handleDelete(data,selectedRows,deleteData,setData,handleUpdate)}
+              onClick={() =>
+                handleDelete(
+                  data,
+                  selectedRows,
+                  deleteData,
+                  setData,
+                  handleUpdate
+                )
+              }
             >
               Delete item
             </EuiContextMenuItem>,
@@ -178,21 +190,30 @@ const leadingControlColumns = [
     rowCellRender: SelectionRowCell,
   },
 ];
-const Modal = ({onConfirm,onCancel,modalVisible,Title,Text,CancelBtn,ConfrimBtn})=>{
-
-  if(modalVisible){
-    return <EuiConfirmModal
-              onCancel={onCancel}
-              onConfirm={onConfirm}
-              title={Title}
-              cancelButtonText={CancelBtn}
-              confirmButtonText={ConfrimBtn}
-            >
-              <p>{Text}</p>
-            </EuiConfirmModal>
+const Modal = ({
+  onConfirm,
+  onCancel,
+  modalVisible,
+  Title,
+  Text,
+  CancelBtn,
+  ConfrimBtn,
+}) => {
+  if (modalVisible) {
+    return (
+      <EuiConfirmModal
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+        title={Title}
+        cancelButtonText={CancelBtn}
+        confirmButtonText={ConfrimBtn}
+      >
+        <p>{Text}</p>
+      </EuiConfirmModal>
+    );
   }
-  return<></>;
-}
+  return <></>;
+};
 
 const trailingControlColumns = [
   {
@@ -205,9 +226,10 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { data, deleteData, setData, editData, dataType } = useContext(DataContext);
+      const { data, deleteData, setData, editData, dataType } =
+        useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
-      const [newValue, setNewValue] = useState(data[0]);
+      const [newValue, setNewValue] = useState(data[rowIndex]);
 
       const [isModalVisible, setIsModalVisible] = useState(false);
       // const [modalText, setModalText] = useState("");
@@ -220,9 +242,6 @@ const trailingControlColumns = [
         closePopover();
         setIsModalVisible(true);
       };
-      
-      
-      let modal;
 
       const [isFlyoutVisible, setIsFlyoutVisible] = useState(false);
       const closeFlyout = () => {
@@ -262,31 +281,75 @@ const trailingControlColumns = [
             <EuiContextMenuPanel items={actions} size="s" title="Opcije" />
           </EuiPopover>
 
-          <Modal 
-            Title='Brisanje' 
-            Text='Da li ste sigurni da želite da obrišete?' 
-            ConfrimBtn='Da' 
-            CancelBtn='Ne' 
-            modalVisible={isModalVisible} 
-            onCancel={closeModal} 
-            onConfirm={()=>{handleDelete(data,data[rowIndex],deleteData,setData,closeModal);closeModal()}}
+          <Modal
+            Title="Brisanje"
+            Text="Da li ste sigurni da želite da obrišete?"
+            ConfrimBtn="Da"
+            CancelBtn="Ne"
+            modalVisible={isModalVisible}
+            onCancel={closeModal}
+            onConfirm={() => {
+              handleDelete(
+                data,
+                data[rowIndex],
+                deleteData,
+                setData,
+                closeModal
+              );
+              closeModal();
+            }}
           />
-          {dataType==='User' && <FlyoutUser newValue={newValue} rowIndex={rowIndex} setNewValue={setNewValue} closeFlyout={closeFlyout} isFlyoutVisible={isFlyoutVisible} DataContext={DataContext}/>}
-            
-          {dataType==='Notification' && <FlyoutNotification newValue={newValue} rowIndex={rowIndex} setNewValue={setNewValue} closeFlyout={closeFlyout} isFlyoutVisible={isFlyoutVisible} DataContext={DataContext}/>}
-            
+          {dataType === "User" && (
+            <FlyoutUser
+              newValue={newValue}
+              rowIndex={rowIndex}
+              setNewValue={setNewValue}
+              closeFlyout={closeFlyout}
+              isFlyoutVisible={isFlyoutVisible}
+              DataContext={DataContext}
+            />
+          )}
+
+          {dataType === "Notification" && (
+            <FlyoutNotification
+              newValue={newValue}
+              rowIndex={rowIndex}
+              setNewValue={setNewValue}
+              closeFlyout={closeFlyout}
+              isFlyoutVisible={isFlyoutVisible}
+              DataContext={DataContext}
+            />
+          )}
+
+          {dataType === "Class" && (
+            <FlyoutClasses
+              newValue={newValue}
+              rowIndex={rowIndex}
+              setNewValue={setNewValue}
+              closeFlyout={closeFlyout}
+              isFlyoutVisible={isFlyoutVisible}
+              DataContext={DataContext}
+            />
+          )}
         </>
       );
     },
   },
 ];
-export default function DataGrid({ getData, deleteData, columns, editData,dataType, getAddition }) {
+export default function DataGrid({
+  getData,
+  deleteData,
+  columns,
+  editData,
+  dataType,
+  getAddition,
+}) {
   const [pagination, setPagination] = useState({ pageIndex: 0 });
   const [data, setData] = useState<dataUsers[] | dataNotification[]>([]);
   const [addition, setAddition] = useState([]);
   const GetSetData = async () => {
     const d: any = await getData();
-    const a:any = await getAddition?.();
+    const a: any = await getAddition?.();
     setAddition(a);
     setData(d);
   };
@@ -330,20 +393,24 @@ export default function DataGrid({ getData, deleteData, columns, editData,dataTy
     },
     new Set()
   );
-  const renderCellValue = useCallback(({ rowIndex, columnId }) => {
-    if (columnId === "Date") {
-      const timestamp: Timestamp = data[rowIndex][columnId];
-      let date: Timestamp = new Timestamp(
-        timestamp.seconds,
-        timestamp.nanoseconds
-      );
-      return <div>{format(date.toDate(), "dd/MM/yyyy")}</div>;
-      
-    } else return <div>{data[rowIndex][columnId]}</div>;
-  },[data]);
+  const renderCellValue = useCallback(
+    ({ rowIndex, columnId }) => {
+      if (columnId === "Date") {
+        const timestamp: Timestamp = data[rowIndex][columnId];
+        let date: Timestamp = new Timestamp(
+          timestamp.seconds,
+          timestamp.nanoseconds
+        );
+        return <div>{format(date.toDate(), "dd/MM/yyyy")}</div>;
+      } else return <div>{data[rowIndex][columnId]}</div>;
+    },
+    [data]
+  );
   if (data.length > 0)
     return (
-      <DataContext.Provider value={{ data, deleteData, setData, editData,dataType,addition }}>
+      <DataContext.Provider
+        value={{ data, deleteData, setData, editData, dataType, addition }}
+      >
         <SelectionContext.Provider value={rowSelection}>
           <div>
             <EuiDataGrid
@@ -369,5 +436,5 @@ export default function DataGrid({ getData, deleteData, columns, editData,dataTy
           </div>
         </SelectionContext.Provider>
       </DataContext.Provider>
-  );
+    );
 }
