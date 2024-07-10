@@ -90,14 +90,14 @@ export const FlyoutUser = ({
   isFlyoutVisible,
   DataContext,
 }) => {
-  const { data, setData, editData, addition } = useContext(DataContext);
+  const { searchData, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedClass, setSelectedClass] = useState(
-    addition.find((obj) => obj.text === data[rowIndex].Class)
+    addition.find((obj) => obj.text === searchData[rowIndex].Class)
   );
   const handleEdit = async () => {
-    editData(data[rowIndex] as dataUsers, newValue as dataUsers);
-    const newData = [...data];
+    editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
+    const newData = [...searchData];
     newData[rowIndex] = newValue;
     console.log(newData);
     setData(newData);
@@ -195,7 +195,7 @@ export const FlyoutNotification = ({
   isFlyoutVisible,
   DataContext,
 }) => {
-  const { data, setData, editData, addition } = useContext(DataContext);
+  const { searchData, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [classList, setClassList] = useState<ClassesNotification[]>();
   const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>(
@@ -249,9 +249,9 @@ export const FlyoutNotification = ({
             value: d.value,
           });
         });
-        console.log(data[rowIndex]);
+        console.log(searchData[rowIndex]);
         const selected: optionsNotification[] = [];
-        data[rowIndex].Class.forEach((d: any) => {
+        searchData[rowIndex].Class.forEach((d: any) => {
           console.log(d);
           selected.push({
             label: d,
@@ -268,8 +268,11 @@ export const FlyoutNotification = ({
 
   const handleEdit = async () => {
     console.log(newValue);
-    editData(data[rowIndex] as dataNotification, newValue as dataNotification);
-    const newData = [...data];
+    editData(
+      searchData[rowIndex] as dataNotification,
+      newValue as dataNotification
+    );
+    const newData = [...searchData];
     newData[rowIndex] = newValue;
     console.log(newData);
     setData(newData);

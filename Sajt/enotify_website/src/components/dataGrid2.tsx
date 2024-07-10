@@ -5,6 +5,7 @@ import React, {
   useReducer,
   useState,
   useEffect,
+  useMemo,
 } from "react";
 import {
   EuiDataGrid,
@@ -40,6 +41,7 @@ import {
 import { Timestamp } from "firebase/firestore";
 import { format } from "date-fns";
 import { FlyoutClasses, FlyoutNotification, FlyoutUser } from "./flyout.tsx";
+import { DataGridSearchUser } from "./dataGridSearch.tsx";
 
 const defaultValueData: gridDataContext = {
   data: [],
@@ -83,7 +85,7 @@ const handleDelete = async (
 
 const SelectionButton = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const { data, deleteData, setData } = useContext(DataContext);
+  const { searchData, deleteData, setData } = useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const handleUpdate = () => updateSelectedRows({ action: "clear" });
   if (selectedRows.size > 0) {
@@ -116,7 +118,7 @@ const SelectionButton = () => {
               icon="trash"
               onClick={() =>
                 handleDelete(
-                  data,
+                  searchData,
                   selectedRows,
                   deleteData,
                   setData,
@@ -136,9 +138,9 @@ const SelectionButton = () => {
 };
 const SelectionHeaderCell = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const { data } = useContext(DataContext);
+  const { searchData } = useContext(DataContext);
   const isIndeterminate =
-    selectedRows.size > 0 && selectedRows.size < data.length;
+    selectedRows.size > 0 && selectedRows.size < searchData.length;
   return (
     <EuiCheckbox
       id="selection-toggle"
@@ -226,10 +228,10 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { data, deleteData, setData, editData, dataType } =
+      const { searchData, deleteData, setData, editData, dataType } =
         useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
-      const [newValue, setNewValue] = useState(data[rowIndex]);
+      const [newValue, setNewValue] = useState(searchData[rowIndex]);
 
       const [isModalVisible, setIsModalVisible] = useState(false);
       // const [modalText, setModalText] = useState("");
@@ -250,7 +252,7 @@ const trailingControlColumns = [
       const showFlyout = () => {
         closePopover();
         setIsFlyoutVisible(true);
-        setNewValue(data[rowIndex]);
+        setNewValue(searchData[rowIndex]);
       };
 
       const actions = [
@@ -347,6 +349,24 @@ export default function DataGrid({
   const [pagination, setPagination] = useState({ pageIndex: 0 });
   const [data, setData] = useState<dataUsers[] | dataNotification[]>([]);
   const [addition, setAddition] = useState([]);
+  const [search, setSearch] = useState("");
+  const searchData = useMemo(() => {
+    if (data) {
+      console.log(data);
+      let newData: (dataUsers | dataNotification)[] = [];
+      if (dataType === "User")
+        newData = data.filter(
+          (obj) =>
+            obj["Name"].includes(search) ||
+            obj["Class"].includes(search) ||
+            obj["Email"].includes(search)
+        );
+
+      return newData;
+    }
+    return [];
+  }, [search, data]);
+
   const GetSetData = async () => {
     const d: any = await getData();
     const a: any = await getAddition?.();
@@ -387,7 +407,7 @@ export default function DataGrid({
       } else if (action === "clear") {
         return new Set();
       } else if (action === "selectAll") {
-        return new Set(data.map((_: any, index) => index));
+        return new Set(searchData.map((_: any, index) => index));
       }
       return rowSelection;
     },
@@ -396,23 +416,32 @@ export default function DataGrid({
   const renderCellValue = useCallback(
     ({ rowIndex, columnId }) => {
       if (columnId === "Date") {
-        const timestamp: Timestamp = data[rowIndex][columnId];
+        const timestamp: Timestamp = searchData[rowIndex][columnId];
         let date: Timestamp = new Timestamp(
           timestamp.seconds,
           timestamp.nanoseconds
         );
         return <div>{format(date.toDate(), "dd/MM/yyyy")}</div>;
-      } else return <div>{data[rowIndex][columnId]}</div>;
+      } else return <div>{searchData[rowIndex][columnId]}</div>;
     },
-    [data]
+    [searchData]
   );
-  if (data.length > 0)
+
+  if (searchData.length > 0)
     return (
       <DataContext.Provider
-        value={{ data, deleteData, setData, editData, dataType, addition }}
+        value={{
+          searchData,
+          deleteData,
+          setData,
+          editData,
+          dataType,
+          addition,
+        }}
       >
         <SelectionContext.Provider value={rowSelection}>
           <div>
+            <DataGridSearchUser search={search} setSearch={setSearch} />
             <EuiDataGrid
               aria-label="Lista"
               leadingControlColumns={leadingControlColumns}
@@ -422,7 +451,7 @@ export default function DataGrid({
                 visibleColumns,
                 setVisibleColumns,
               }}
-              rowCount={data.length}
+              rowCount={searchData.length}
               renderCellValue={renderCellValue}
               pagination={{
                 ...pagination,
@@ -437,4 +466,5 @@ export default function DataGrid({
         </SelectionContext.Provider>
       </DataContext.Provider>
     );
+  return <DataGridSearchUser search={search} setSearch={setSearch} />;
 }
