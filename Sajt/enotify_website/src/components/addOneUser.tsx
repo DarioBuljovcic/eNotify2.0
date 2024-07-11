@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useContext } from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -13,29 +13,8 @@ import {
   EuiFormLabel,
   EuiSelect,
 } from "@elastic/eui";
+import { AddUserProps } from "../types/types";
 
-type Props = {
-  role: string;
-  postUser: (o) => void;
-  setModalHeader: (o) => void;
-  setModalText: (o) => void;
-  setIsOpen: (o) => void;
-  getClasses?: () => void;
-};
-type ExcelItem = {
-  Name: string;
-  Surname: string;
-  Email: string;
-  Class: string;
-};
-type Data = {
-  Name: string;
-  Class: string;
-  Email: string;
-  Role: string;
-  UserID: string;
-  LogOut: boolean;
-};
 type Classes = {
   value: string;
   text: string;
@@ -48,7 +27,11 @@ export default function AddOneUser({
   setModalText,
   setIsOpen,
   getClasses,
-}: Props) {
+  DataContext,
+}: AddUserProps) {
+  const { setToasts } = useContext(DataContext);
+  let toast;
+
   const basicSelectId = useGeneratedHtmlId({ prefix: "basicSelect" });
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -97,25 +80,40 @@ export default function AddOneUser({
           Class: value,
         };
         postUser(item);
-        setModalHeader("Uspešno dodavanje");
-        setModalText(
-          `Uspešno ste dodali novog ${role === "u" ? "učenika" : "profesora"}!`
-        );
-        setIsOpen((prev: boolean) => !prev);
+        toast = {
+          title: "Uspeh",
+          color: "success",
+          text: (
+            <>
+              <p>Uspešno ste dodali učenika '{name}'</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
       } catch (error) {
         console.log(error.message);
-        setModalHeader("Greška");
-        setModalText(
-          `Došlo je do greške prilikom dodavanja ${
-            role === "u" ? "učenika" : "profesora"
-          }!`
-        );
-        setIsOpen((prev: boolean) => !prev);
+        toast = {
+          title: "Greška",
+          color: "danger",
+          text: (
+            <>
+              <p>Došlo je do greške prilikom dodavanja učenika</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
       }
     } else {
-      setModalHeader("Greška");
-      setModalText(`Popunite sva polja!`);
-      setIsOpen((prev: boolean) => !prev);
+      toast = {
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Popunite sva polja pre dodavanja!</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
     }
   };
 

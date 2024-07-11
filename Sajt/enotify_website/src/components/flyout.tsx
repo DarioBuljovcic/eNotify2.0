@@ -5,13 +5,14 @@ import {
   dataUsers,
   DropdownUsers,
   optionsNotification,
+  gridDataContext,
+  PropfFlyout,
+  dataClass,
 } from "../types/types";
 import {
   EuiButton,
   EuiButtonEmpty,
   EuiComboBox,
-  EuiConfirmModal,
-  EuiDatePicker,
   EuiDescriptionListDescription,
   EuiDescriptionListTitle,
   EuiFieldText,
@@ -89,32 +90,69 @@ export const FlyoutUser = ({
   closeFlyout,
   isFlyoutVisible,
   DataContext,
-}) => {
+  ToastContext,
+}: PropfFlyout) => {
+  const { setToasts } = useContext(ToastContext);
+
   const { searchData, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedClass, setSelectedClass] = useState(
-    addition.find((obj) => obj.text === searchData[rowIndex].Class)
-  );
+  const additionArray: dataClass | undefined = addition.find(
+    (obj) => obj.text === searchData[rowIndex].Class
+  ) as dataClass | undefined;
+  const [selectedClass, setSelectedClass] = useState(additionArray);
   const handleEdit = async () => {
-    editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
-    const newData = [...searchData];
-    newData[rowIndex] = newValue;
-    console.log(newData);
-    setData(newData);
-    closeFlyout();
+    let toast;
+    try {
+      editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
+      const newData = [...searchData];
+      newData[rowIndex] = newValue;
+      setData(newData);
+      closeFlyout();
+      toast = {
+        title: "Uspeh",
+        color: "success",
+        text: (
+          <>
+            <p>Uspešno ste izmenili učenika '{searchData[rowIndex].Name}'</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+    } catch (error) {
+      toast = {
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>
+              Došlo je do greške pirlikom izmene učenika '
+              {searchData[rowIndex].Name}'
+            </p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+    }
   };
 
-  const handleChange = (value, key) => {
-    setNewValue((prev) => ({ ...prev, [key]: value }));
+  const handleChange = (value: any, key: string) => {
+    setNewValue(
+      (prev: dataUsers | dataNotification) =>
+        ({
+          ...prev,
+          [key]: value,
+        } as dataUsers | dataNotification)
+    );
     console.log(value);
   };
+
   const handleSelectChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedValue = e.target.value;
     const selectedClassObject = addition.find(
       (cls) => cls.value === selectedValue
-    );
+    ) as dataClass;
     setSelectedClass(selectedClassObject || null);
     handleChange(selectedValue || null, "Class");
   };
@@ -130,6 +168,7 @@ export const FlyoutUser = ({
           modalVisible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           onConfirm={handleEdit}
+          confirm={true}
         />
 
         <EuiFlyout
@@ -194,7 +233,10 @@ export const FlyoutNotification = ({
   closeFlyout,
   isFlyoutVisible,
   DataContext,
-}) => {
+  ToastContext,
+}: PropfFlyout) => {
+  const { setToasts } = useContext(ToastContext);
+
   const { searchData, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [classList, setClassList] = useState<ClassesNotification[]>();
@@ -249,7 +291,6 @@ export const FlyoutNotification = ({
             value: d.value,
           });
         });
-        console.log(searchData[rowIndex]);
         const selected: optionsNotification[] = [];
         searchData[rowIndex].Class.forEach((d: any) => {
           console.log(d);
@@ -267,16 +308,39 @@ export const FlyoutNotification = ({
   }, []);
 
   const handleEdit = async () => {
-    console.log(newValue);
-    editData(
-      searchData[rowIndex] as dataNotification,
-      newValue as dataNotification
-    );
-    const newData = [...searchData];
-    newData[rowIndex] = newValue;
-    console.log(newData);
-    setData(newData);
-    closeFlyout();
+    let toast;
+    try {
+      editData(
+        searchData[rowIndex] as dataNotification,
+        newValue as dataNotification
+      );
+      const newData = [...searchData];
+      newData[rowIndex] = newValue;
+      console.log(newData);
+      setData(newData);
+      closeFlyout();
+      toast = {
+        title: "Uspeh",
+        color: "success",
+        text: (
+          <>
+            <p>Uspešno ste izmenili obaveštenje</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+    } catch (error) {
+      toast = {
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Došlo je do greške pirlikom izmene obaveštenja</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+    }
   };
 
   const handleChange = (value, key) => {
@@ -413,7 +477,10 @@ export const FlyoutClasses = ({
   closeFlyout,
   isFlyoutVisible,
   DataContext,
-}) => {
+  ToastContext,
+}: PropfFlyout) => {
+  const { setToasts } = useContext(ToastContext);
+
   const { data, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
@@ -454,23 +521,53 @@ export const FlyoutClasses = ({
     setSelectedProfessors(selected);
     let profs = "";
     selected.forEach((s) => {
-      profs += `${s.value},`;
+      profs += `${s.text},`;
     });
-    handleChange();
-    // setErrorList((prev) => ({
-    //   ...prev,
-    //   professorList: false,
-    // }));
+    handleChange(profs, "ProfessorsList");
   };
 
   const handleEdit = async () => {
+    let toast;
+    try {
+      let ProfessorsList;
+      professorList.forEach((prof) => {
+        newValue.ProfessorsList.includes(prof.label);
+        ProfessorsList += `${prof.value},`;
+      });
+      const setValue = {
+        Class: newValue.Class,
+        Professor: newValue.Professor,
+        ProfessorsList: newValue.ProfessorsList,
+      };
+      editData(data[rowIndex], setValue);
+      const newData = [...data];
+      newData[rowIndex] = newValue;
+      console.log(newData);
+      setData(newData);
+      closeFlyout();
+      toast = {
+        title: "Uspeh",
+        color: "success",
+        text: (
+          <>
+            <p>Uspešno ste izmenili razred</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+    } catch (error) {
+      toast = {
+        title: "Greška",
+        color: "success",
+        text: (
+          <>
+            <p>Došlo je do greške prilikom izmene razreda</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+    }
     console.log(newValue);
-    // editData(data[rowIndex], newValue);
-    const newData = [...data];
-    newData[rowIndex] = newValue;
-    console.log(newData);
-    setData(newData);
-    closeFlyout();
   };
 
   const handleChange = (value, key) => {
