@@ -24,8 +24,7 @@ export default function AddClass({
   getProfessors,
   DataContext,
 }: AddClassProps) {
-  const { setToasts } = useContext(DataContext);
-  let toast;
+  const { setToasts, toastId, setToastId } = useContext(DataContext);
 
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const basicSelectId = useGeneratedHtmlId({ prefix: "basicSelect" });
@@ -69,6 +68,7 @@ export default function AddClass({
   });
 
   const handlePost = async () => {
+    let toast;
     setErrorList({
       name: name === "" ? true : false,
       professorList: selectedClasses.length === 0 ? true : false,
@@ -80,13 +80,15 @@ export default function AddClass({
         selectedClasses.forEach((p) => {
           ProfessorsList += p.value + ",";
         });
+        const prof = professorList.find((obj) => obj.value === value);
         const dataToInsert = {
           Class: name,
-          Professor: value,
+          Professor: prof?.text,
           ProfessorsList: ProfessorsList,
         };
         await postClass(dataToInsert, file);
         toast = {
+          id: `toast${toastId}`,
           title: "Uspeh",
           color: "success",
           text: (
@@ -96,12 +98,14 @@ export default function AddClass({
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
         setFiles(undefined);
         setName("");
         setSelectedClasses([]);
       } catch (error) {
         console.log(error.message);
         toast = {
+          id: `toast${toastId}`,
           title: "Greška",
           color: "danger",
           text: (
@@ -111,9 +115,11 @@ export default function AddClass({
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       }
     } else {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "danger",
         text: (
@@ -123,6 +129,7 @@ export default function AddClass({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
 

@@ -97,6 +97,8 @@ export type PropfFlyout = {
 };
 export type toastContext = {
   setToasts: (o) => void;
+  toastId: number;
+  setToastId: (o) => void;
 };
 export type PropsFilePicker = {
   role: string;

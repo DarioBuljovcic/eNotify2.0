@@ -38,6 +38,7 @@ import {
   editNotification,
   postClass,
   editClass,
+  deleteClassesDocuments,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -109,7 +110,9 @@ export default function Home() {
   const [modalConfirm, setModalConfirm] = useState(false);
   const [result, setResult] = useState(false);
   const [toasts, setToasts] = useState([]);
+  const [toastId, setToastId] = useState(0);
   const removeToast = (removedToast) => {
+    console.log(removedToast);
     setToasts((toasts) =>
       toasts.filter((toast) => toast.id !== removedToast.id)
     );
@@ -290,7 +293,7 @@ export default function Home() {
               columns={columnsClasses}
               getData={getAllClasses}
               editData={editClass}
-              deleteData={deleteNotificationDocuments}
+              deleteData={deleteClassesDocuments}
               dataType="Class"
               getAddition={getProfessors}
               ToastContext={DataContext}
@@ -367,7 +370,7 @@ export default function Home() {
   };
 
   return (
-    <DataContext.Provider value={{ setToasts }}>
+    <DataContext.Provider value={{ setToasts, toastId, setToastId }}>
       <EuiProvider colorMode="light">
         <EuiPageTemplate panelled={panelled}>
           <EuiGlobalToastList

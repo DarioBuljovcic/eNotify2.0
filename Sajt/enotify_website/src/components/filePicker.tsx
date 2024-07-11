@@ -28,8 +28,8 @@ export default function FilePicker({
   setIsOpen,
   DataContext,
 }: PropsFilePicker) {
-  const { setToasts } = useContext(DataContext);
-  let toast;
+  const { setToasts, setToastId, toastId } = useContext(DataContext);
+
   const [file, setFiles] = useState<File>();
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
 
@@ -50,6 +50,7 @@ export default function FilePicker({
     return items as ExcelItem[];
   };
   const handleFile = async () => {
+    let toast;
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -66,6 +67,7 @@ export default function FilePicker({
             postFile(validatedData);
 
             toast = {
+              id: `toast${toastId}`,
               title: "Uspešno dodavanje",
               color: "success",
               text: (
@@ -76,9 +78,10 @@ export default function FilePicker({
             };
             console.log(setToasts);
             setToasts((prev) => [...prev, toast]);
+            setToastId(toastId + 1);
           } catch (error) {
-            console.log("aloo");
             toast = {
+              id: `toast${toastId}`,
               title: "Greška",
               color: "danger",
               text: (
@@ -88,6 +91,7 @@ export default function FilePicker({
               ),
             };
             setToasts((prev) => [...prev, toast]);
+            setToastId(toastId + 1);
             return;
           }
         }
@@ -96,6 +100,7 @@ export default function FilePicker({
       reader.readAsBinaryString(file);
     } else {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "danger",
         text: (
@@ -105,6 +110,7 @@ export default function FilePicker({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
   return (

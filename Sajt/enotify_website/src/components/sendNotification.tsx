@@ -29,8 +29,8 @@ export default function SendNotification({
   getClasses,
   DataContext,
 }: PropsNotification) {
-  const { setToasts } = useContext(DataContext);
-  let toast;
+  const { setToasts, toastId, setToastId } = useContext(DataContext);
+
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const [files, setFiles] = useState<File[]>();
   const [title, setTitle] = useState("");
@@ -131,6 +131,7 @@ export default function SendNotification({
   };
 
   const handlePost = async () => {
+    let toast;
     if (title === "")
       setErrorList((prevErrorList) => ({
         ...prevErrorList,
@@ -160,6 +161,7 @@ export default function SendNotification({
 
         await sendNotification(files, item);
         toast = {
+          id: `toast${toastId}`,
           title: "Uspeh",
           color: "success",
           text: (
@@ -169,11 +171,13 @@ export default function SendNotification({
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
         setTitle("");
         setText("");
         setSelectedClasses([]);
       } catch (error) {
         toast = {
+          id: `toast${toastId}`,
           title: "Greška",
           color: "danger",
           text: (
@@ -183,9 +187,11 @@ export default function SendNotification({
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       }
     } else {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "danger",
         text: (
@@ -195,6 +201,7 @@ export default function SendNotification({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
   const onFileChange = (files) => {

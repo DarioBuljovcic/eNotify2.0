@@ -70,34 +70,33 @@ const DataContext = createContext<gridDataContext>(defaultValueData);
 
 const deleteUsers = async (
   data,
+  searchData,
   dataForDelete,
   deleteData,
-  setData,
   closeModal?
 ) => {
   if (dataForDelete instanceof Set) {
-    const newData = data.filter((_, index) => dataForDelete.has(index));
+    const newData = searchData.filter((_, index) => dataForDelete.has(index));
     deleteData(newData);
-    setData(data.filter((_, index) => !dataForDelete.has(index)));
   } else {
     deleteData([dataForDelete]);
-    setData(data.filter((d) => d !== dataForDelete));
   }
   closeModal?.();
 };
 
 const SelectionButton = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const { searchData, deleteData, setData, ToastContext } =
+  const { data, searchData, deleteData, setData, ToastContext } =
     useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const { setToasts } = useContext(ToastContext);
+  const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
   const handleDelete = () => {
-    deleteUsers(searchData, selectedRows, deleteData, setData);
+    deleteUsers(data, searchData, selectedRows, deleteData, setData);
     updateSelectedRows({ action: "clear" });
     let toast;
     toast = {
+      id: `toast${toastId}`,
       title: "Uspeh",
       color: "success",
       text: (
@@ -107,6 +106,7 @@ const SelectionButton = () => {
       ),
     };
     setToasts((prev) => [...prev, toast]);
+    setToastId(toastId + 1);
   };
   if (selectedRows.size > 0) {
     return (
@@ -240,7 +240,7 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { searchData, deleteData, setData, ToastContext, dataType } =
+      const { searchData, data, deleteData, setData, ToastContext, dataType } =
         useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(searchData[rowIndex]);
@@ -266,11 +266,11 @@ const trailingControlColumns = [
         setIsFlyoutVisible(true);
         setNewValue(searchData[rowIndex]);
       };
-      const { setToasts } = useContext(ToastContext);
+      const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
       const handleDelete = () => {
         deleteUsers(
-          searchData,
+          data,
           searchData[rowIndex],
           deleteData,
           setData,
@@ -279,6 +279,7 @@ const trailingControlColumns = [
         closeModal();
         let toast;
         toast = {
+          id: `toast${toastId}`,
           title: "Uspeh",
           color: "success",
           text: (
@@ -290,6 +291,7 @@ const trailingControlColumns = [
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       };
 
       const actions = [
@@ -385,29 +387,32 @@ export default function DataGrid({
   const [addition, setAddition] = useState([]);
   const [search, setSearch] = useState("");
   const searchData = useMemo(() => {
+    console.log(data);
     if (data) {
       console.log(data);
       let newData: (dataUsers | dataNotification | dataClass)[] = [];
       if (dataType === "User")
         newData = data.filter(
           (obj) =>
-            obj["Name"].includes(search) ||
-            obj["Class"].includes(search) ||
-            obj["Email"].includes(search)
+            obj["Name"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["Class"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["Email"].toLowerCase().includes(search.toLowerCase())
         );
       else if (dataType === "Notification")
         newData = data.filter(
           (obj) =>
-            obj["Text"].includes(search) ||
-            obj["Title"].includes(search) ||
-            obj["Date"].includes(search)
+            obj["Text"].toLowerCase().includes(search).toLowerCase() ||
+            obj["Title"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["Date"].toLowerCase().includes(search.toLowerCase())
         );
       else if (dataType === "Class")
         newData = data.filter(
           (obj) =>
-            obj["Class"].includes(search) ||
-            obj["ProfessorsList"].includes(search) ||
-            obj["Professor"].includes(search)
+            obj["Class"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["ProfessorsList"]
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            obj["Professor"].toLowerCase().includes(search.toLowerCase())
         );
       return newData;
     }
@@ -478,6 +483,7 @@ export default function DataGrid({
     return (
       <DataContext.Provider
         value={{
+          data,
           searchData,
           deleteData,
           setData,

@@ -29,8 +29,7 @@ export default function AddOneUser({
   getClasses,
   DataContext,
 }: AddUserProps) {
-  const { setToasts } = useContext(DataContext);
-  let toast;
+  const { setToasts, toastId, setToastId } = useContext(DataContext);
 
   const basicSelectId = useGeneratedHtmlId({ prefix: "basicSelect" });
   const [name, setName] = useState("");
@@ -56,6 +55,7 @@ export default function AddOneUser({
   });
 
   const handlePost = () => {
+    let toast;
     if (name === "")
       setErrorList((prevErrorList) => ({
         ...prevErrorList,
@@ -81,6 +81,7 @@ export default function AddOneUser({
         };
         postUser(item);
         toast = {
+          id: `toast${toastId}`,
           title: "Uspeh",
           color: "success",
           text: (
@@ -90,9 +91,11 @@ export default function AddOneUser({
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       } catch (error) {
         console.log(error.message);
         toast = {
+          id: `toast${toastId}`,
           title: "Greška",
           color: "danger",
           text: (
@@ -102,9 +105,11 @@ export default function AddOneUser({
           ),
         };
         setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       }
     } else {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "danger",
         text: (
@@ -114,6 +119,7 @@ export default function AddOneUser({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
 

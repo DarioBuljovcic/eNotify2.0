@@ -450,3 +450,21 @@ export const Login = async (password) => {
   const querySnapshot = await getDocs(q);
   return querySnapshot.empty ? false : true;
 };
+export const deleteClassesDocuments = async (Classes) => {
+  for (const Class of Classes) {
+    console.log(Class);
+    const q = query(
+      collection(db, "Classes"),
+      where("Class", "==", Class.Class)
+    );
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const docId = querySnapshot.docs[0].id;
+      await deleteDoc(doc(db, "Classes", docId));
+      console.log(`Document with ID ${docId} deleted.`);
+    } else {
+      console.log(`No document found for NotificationId ${Class.Class}`);
+    }
+  }
+};

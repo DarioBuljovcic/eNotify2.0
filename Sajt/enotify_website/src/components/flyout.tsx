@@ -92,7 +92,7 @@ export const FlyoutUser = ({
   DataContext,
   ToastContext,
 }: PropfFlyout) => {
-  const { setToasts } = useContext(ToastContext);
+  const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
   const { searchData, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -109,6 +109,7 @@ export const FlyoutUser = ({
       setData(newData);
       closeFlyout();
       toast = {
+        id: `toast${toastId}`,
         title: "Uspeh",
         color: "success",
         text: (
@@ -118,8 +119,10 @@ export const FlyoutUser = ({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     } catch (error) {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "danger",
         text: (
@@ -132,6 +135,7 @@ export const FlyoutUser = ({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
 
@@ -235,7 +239,7 @@ export const FlyoutNotification = ({
   DataContext,
   ToastContext,
 }: PropfFlyout) => {
-  const { setToasts } = useContext(ToastContext);
+  const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
   const { searchData, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -320,6 +324,7 @@ export const FlyoutNotification = ({
       setData(newData);
       closeFlyout();
       toast = {
+        id: `toast${toastId}`,
         title: "Uspeh",
         color: "success",
         text: (
@@ -329,8 +334,10 @@ export const FlyoutNotification = ({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     } catch (error) {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "danger",
         text: (
@@ -340,6 +347,7 @@ export const FlyoutNotification = ({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
 
@@ -479,7 +487,7 @@ export const FlyoutClasses = ({
   DataContext,
   ToastContext,
 }: PropfFlyout) => {
-  const { setToasts } = useContext(ToastContext);
+  const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
   const { data, setData, editData, addition } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -546,6 +554,7 @@ export const FlyoutClasses = ({
       setData(newData);
       closeFlyout();
       toast = {
+        id: `toast${toastId}`,
         title: "Uspeh",
         color: "success",
         text: (
@@ -555,8 +564,10 @@ export const FlyoutClasses = ({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     } catch (error) {
       toast = {
+        id: `toast${toastId}`,
         title: "Greška",
         color: "success",
         text: (
@@ -566,6 +577,7 @@ export const FlyoutClasses = ({
         ),
       };
       setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
     console.log(newValue);
   };
