@@ -138,25 +138,26 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           textTransform: 'capitalize',
         },
         headerStyle: {
-          height: 150,
+          height: 130,
           elevation: 0,
         },
         headerTintColor: Colors.Light.whiteText,
         headerTitleStyle: {
-          fontSize: 35,
+          fontSize: 28,
           fontFamily: 'Mulish',
-          marginBottom: 25,
           textTransform: 'capitalize',
+          marginBottom: 20,
+          letterSpacing: 3,
         },
-        headerTitleAlign: 'left',
+        headerTitleAlign: 'center',
         headerBackground: () => (
           <View>
             <Svg
               style={{position: 'absolute', top: -1}}
               width={Dimensions.get('window').width + 10}
-              height="160"
+              height="130"
               fill="none"
-              viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
+              viewBox={`0 0 ${Dimensions.get('window').width + 10} 130`}>
               <G clip-path="url(#a)">
                 <Path
                   fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}

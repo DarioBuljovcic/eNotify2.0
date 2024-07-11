@@ -78,7 +78,7 @@ export default function Obavestenje({route}: any) {
 
       setNotification(data);
 
-      navigation.setOptions({title: data.Tittle});
+      navigation.setOptions({title: data.Title});
 
       //Getting images
       let imgs: string[] = data.Files.split(',');

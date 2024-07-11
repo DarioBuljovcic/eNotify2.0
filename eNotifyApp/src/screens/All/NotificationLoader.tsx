@@ -41,7 +41,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ['90%'], []);
 
-  const [tittleValue, setTittleValue] = useState('');
+  const [TitleValue, setTitleValue] = useState('');
   const [textValue, setTextValue] = useState('');
 
   const [selectedClass, setSelectedClass] = useState('');
@@ -111,6 +111,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     if (studentClass != '' && userId !== '' && professor !== '') {
       getData();
     }
+
+    setSelectedClass(profClass); //sets dropdown to selected class
   }, [studentClass, userId, professor, profClass]);
 
   const getInitials = (name: string) => {
@@ -152,7 +154,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
               : Colors.Dark.notificationBG,
           },
         ]}
-        activeOpacity={0.5}
+        activeOpacity={0.7}
         key={item.NotificationId}
         onPress={() => {
           navigation.navigate('Notification', {id: item.NotificationId});
@@ -171,15 +173,15 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                 ]
           }></View>
 
-        <LinearGradient
-          start={{x: 1.3, y: 0}}
-          end={{x: 0, y: 0}}
-          colors={
-            isDarkMode
-              ? ['#C6E2F5', '#2077F9']
-              : [Colors.Dark.accent, Colors.Dark.appBackground]
-          }
-          style={styles.initialsContainer}>
+        <View
+          style={[
+            styles.initialsContainer,
+            {
+              backgroundColor: isDarkMode
+                ? Colors.Light.accent
+                : Colors.Dark.accent,
+            },
+          ]}>
           <Text
             style={[
               styles.initialsText,
@@ -191,7 +193,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
             ]}>
             {getInitials(item.From)}
           </Text>
-        </LinearGradient>
+        </View>
         <View>
           <Text
             style={[
@@ -202,7 +204,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                   : Colors.Dark.textPrimary,
               },
             ]}>
-            {item.Tittle}
+            {item.Title}
           </Text>
 
           <Text
@@ -274,10 +276,9 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     }
     return ID;
   };
-
   const AddNotifaciton = async () => {
-    if (textValue !== '' && tittleValue !== '') {
-      //console.log('textValue: '+textValue,'titleValue: '+tittleValue,'seletedClass: '+selectedClass,'selectedFile: '+selectedFile.name,'naziv: '+naziv)
+    if (textValue !== '' && TitleValue !== '') {
+      //console.log('textValue: '+textValue,'titleValue: '+TitleValue,'seletedClass: '+selectedClass,'selectedFile: '+selectedFile.name,'naziv: '+naziv)
       const name = (await AsyncStorage.getItem('Name')) as string;
 
       console.log('check1');
@@ -300,7 +301,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
       console.log(naziv);
       const data: NotificationType = {
         NotificationId: generateID(7),
-        Tittle: tittleValue,
+        Title: TitleValue,
         Text: textValue,
         Class: [selectedClass],
         Type: 'T',
@@ -333,9 +334,11 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
       console.log('check9');
 
       setTextValue('');
-      setTittleValue('');
+      setTitleValue('');
       setSelectedClass('');
       setSelectedFile(null);
+
+      bottomSheetRef.current?.close();
     }
   };
 
@@ -432,7 +435,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                       : Colors.Dark.accentGreen,
                   },
                 ]}
-                activeOpacity={0.9}
+                activeOpacity={0.7}
                 onPress={handleOpenPress}>
                 <Ionicons
                   name={'add-outline'}
@@ -458,11 +461,14 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                     : Colors.Dark.lightText,
                 }}>
                 <BottomSheetScrollView
-                  style={{
-                    backgroundColor: isDarkMode
-                      ? Colors.Light.appBackground
-                      : Colors.Dark.appBackground,
-                  }}>
+                  style={[
+                    {
+                      backgroundColor: isDarkMode
+                        ? Colors.Light.appBackground
+                        : Colors.Dark.appBackground,
+                    },
+                    {paddingBottom: 30},
+                  ]}>
                   <Text
                     style={[
                       styles.title,
@@ -493,8 +499,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                             : Colors.Dark.lightText,
                         },
                       ]}
-                      value={tittleValue}
-                      onChangeText={e => setTittleValue(e)}
+                      value={TitleValue}
+                      onChangeText={e => setTitleValue(e)}
                     />
                     <TextInput
                       style={[
@@ -590,7 +596,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                             : Colors.Light.lightText,
                         },
                       ]}
-                      activeOpacity={0.5}
+                      activeOpacity={0.7}
                       onPress={() => AddFile()}>
                       <Ionicons
                         name={
@@ -681,7 +687,7 @@ const styles = StyleSheet.create({
   obavestenje: {
     alignItems: 'center',
     flexDirection: 'row',
-    height: 100,
+    height: 90,
     width: '90%',
     marginTop: 5,
     marginBottom: 10,
@@ -711,13 +717,13 @@ const styles = StyleSheet.create({
   obavestenjeTitle: {
     fontSize: 20,
 
-    fontFamily: 'Mulish-Light',
+    fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,
   },
   obavestenjeBody: {
     flexShrink: 1,
 
-    fontFamily: 'Mulish-Light',
+    fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,
   },
   newObavestenje: {
@@ -730,8 +736,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
 
     position: 'absolute',
-    top: -5,
-    right: -5,
+    top: 10,
+    right: 10,
   },
   newObavestenjeText: {
     color: 'white',
@@ -796,6 +802,8 @@ const styles = StyleSheet.create({
 
     alignSelf: 'center',
     alignItems: 'center',
+
+    marginBottom: 30,
 
     borderRadius: 30,
   },
