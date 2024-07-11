@@ -260,8 +260,8 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 styles.add,
                 {
                   backgroundColor: isDarkMode
-                    ? Colors.Light.accentGreen
-                    : Colors.Dark.accentGreen,
+                    ? Colors.Dark.accentGreen
+                    : Colors.Light.accentGreen,
                 },
               ]}
               activeOpacity={0.9}
@@ -324,12 +324,12 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               style={[
                 styles.option,
                 {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.notificationBG
-                    : Colors.Light.notificationBG,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.lightText,
                 },
               ]}
-              activeOpacity={0.5}
+              activeOpacity={0.7}
               onPress={() => navigation.navigate('About')}>
               <Text
                 style={[
@@ -348,12 +348,12 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               style={[
                 styles.option,
                 {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.notificationBG
-                    : Colors.Light.notificationBG,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.lightText,
                 },
               ]}
-              activeOpacity={0.5}
+              activeOpacity={0.7}
               onPress={() => setLanguageModal(true)}>
               <Text
                 style={[
@@ -382,12 +382,12 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               style={[
                 styles.option,
                 {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.notificationBG
-                    : Colors.Light.notificationBG,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.lightText,
                 },
               ]}
-              activeOpacity={0.5}
+              activeOpacity={0.7}
               onPress={() => changeMode()}>
               <Text
                 style={[
@@ -430,12 +430,15 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               style={[
                 styles.option,
                 {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.notificationBG
-                    : Colors.Light.notificationBG,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.lightText,
+                },
+                {
+                  borderBottomWidth: 1,
                 },
               ]}
-              activeOpacity={0.5}
+              activeOpacity={0.7}
               onPress={() => logOutModal()}>
               <Text
                 style={[
@@ -690,13 +693,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
 
-    marginVertical: 5,
-    borderRadius: 10,
-
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
+    borderTopWidth: 1,
   },
   optionText: {
     fontSize: 17,

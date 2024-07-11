@@ -52,7 +52,7 @@ export default function TimeTable() {
             style={{
               backgroundColor: isDarkMode
                 ? Colors.Light.white
-                : Colors.Dark.accentGreen,
+                : Colors.Dark.white,
               width: Dimensions.get('window').width,
               height: (100 * Dimensions.get('window').width) / 100,
             }}

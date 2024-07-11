@@ -147,15 +147,17 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             headerLeft: () => null,
             headerStyle: {
-              height: 100,
+              height: 170,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 35,
-              fontFamily: 'Mulish-Light',
-              textTransform: 'capitalize',
+              marginTop: 40,
+              fontSize: 50,
+              fontFamily: 'Mulish',
+              letterSpacing: 2,
             },
+            headerTitleAlign: 'center',
             headerBackground: () => (
               <View style={{position: 'absolute', top: -1, zIndex: -11}}>
                 <Svg
@@ -201,7 +203,7 @@ function App(): React.JSX.Element {
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 25,
+              fontSize: 28,
               fontFamily: 'Mulish-Light',
               marginBottom: 25,
               width: '100%',
@@ -278,7 +280,7 @@ function App(): React.JSX.Element {
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 35,
+              fontSize: 28,
               fontFamily: 'Mulish',
               marginBottom: 25,
             },
@@ -348,7 +350,7 @@ function App(): React.JSX.Element {
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 35,
+              fontSize: 28,
               fontFamily: 'Mulish-Light',
               marginBottom: 25,
               textTransform: 'capitalize',

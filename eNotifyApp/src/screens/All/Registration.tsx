@@ -125,14 +125,23 @@ const RegistrationScreen = ({
     <>
       <View style={styles.container}>
         <Dropdown
-          style={{
-            margin: 16,
-            height: 50,
-            borderBottomColor: 'gray',
-            borderBottomWidth: 0.5,
-            width: 200,
-            alignSelf: 'center',
-          }}
+          style={[
+            {
+              margin: 16,
+              height: 50,
+              borderBottomColor: 'gray',
+              borderBottomWidth: 0.5,
+              width: 200,
+              alignSelf: 'center',
+              padding: 20,
+              borderRadius: 10,
+            },
+            {
+              backgroundColor: isDarkMode
+                ? Colors.Dark.appBackground
+                : Colors.Light.appBackground,
+            },
+          ]}
           itemTextStyle={[
             {textTransform: 'capitalize'},
             {color: Colors.Light.lightText},
@@ -323,6 +332,7 @@ const Registration = ({navigation}: RegistrationProps) => {
 
 const styles = StyleSheet.create({
   container: {
+    top: -100,
     position: 'absolute',
     width: '100%',
     height: '100%',

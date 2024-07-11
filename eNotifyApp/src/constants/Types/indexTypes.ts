@@ -49,7 +49,7 @@ export type UserScreenTabProps = BottomTabScreenProps<
 //Notification
 export type NotificationType = {
   NotificationId: string;
-  Tittle: string;
+  Title: string;
   Text: string;
   Class: string | string[];
   Type: string;

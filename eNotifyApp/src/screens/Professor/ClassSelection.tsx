@@ -45,24 +45,21 @@ export default function ClassSelection({
     return (
       <TouchableOpacity
         onPress={() => setProfClass(item.Class)}
+        activeOpacity={0.7}
         style={[
           styles.class,
           {
             backgroundColor: isDarkMode
               ? Colors.Dark.notificationBG
               : Colors.Light.notificationBG,
-            borderColor: isDarkMode
-              ? Colors.Dark.lightText
-              : Colors.Light.lightText,
+            borderWidth: isDarkMode ? 0 : 1,
+            borderColor: Colors.Light.lightText,
           },
           item.Class === profClass
             ? {
                 backgroundColor: isDarkMode
                   ? Colors.Dark.accent
                   : Colors.Light.accentGreen,
-                borderColor: isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.lightText,
               }
             : null,
         ]}>
@@ -121,11 +118,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     height: height - 5,
-    width: 60,
+    width: 80,
 
     paddingHorizontal: 10,
 
-    borderWidth: 1,
-    borderRadius: 15,
+    borderRadius: 10,
   },
 });
