@@ -12,7 +12,11 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 import Registration from './src/screens/All/Registration';
@@ -47,12 +51,6 @@ function App(): React.JSX.Element {
   type Screens = {
     [key: string]: string;
   };
-
-  const getMode = async () => {
-    const mode = await AsyncStorage.getItem('Mode');
-    Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
-  };
-  getMode();
 
   function buildDeepLinkFromNotificationData(data: any): string | null {
     console.log('Kliknuo');
@@ -120,7 +118,16 @@ function App(): React.JSX.Element {
       i18n.changeLanguage('en');
     }
   };
-  setLanguage();
+  const getMode = async () => {
+    const mode = await AsyncStorage.getItem('Mode');
+    Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
+  };
+
+  //gets light mode and languge
+  useEffect(() => {
+    getMode();
+    setLanguage();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {});
@@ -132,13 +139,17 @@ function App(): React.JSX.Element {
       async remoteMessage => {},
     );
     return unsubscribe;
-  });
+  }, []);
 
   return (
     <NavigationContainer
       linking={linking}
-      fallback={<ActivityIndicator animating />}>
-      <Stack.Navigator>
+      fallback={<ActivityIndicator animating />}
+      theme={isDarkMode ? DarkTheme : DefaultTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          animationEnabled: true,
+        }}>
         <Stack.Screen
           name="Registration"
           component={Registration}

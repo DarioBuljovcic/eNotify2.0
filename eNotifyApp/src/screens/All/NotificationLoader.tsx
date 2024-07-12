@@ -523,6 +523,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                       numberOfLines={4}
                       value={textValue}
                       onChangeText={e => setTextValue(e)}
+                      multiline={true}
                     />
                     <Dropdown
                       style={[
@@ -829,6 +830,8 @@ const styles = StyleSheet.create({
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
+
+    overflow: 'scroll',
   },
   addFile: {
     height: 150,

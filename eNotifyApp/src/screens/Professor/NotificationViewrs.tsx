@@ -79,7 +79,11 @@ export default function NotificationViewrs({route}: {route: any}) {
       <View style={[styles.studentContainer]}>
         <Image
           source={
-            imageUrl ? {uri: imageUrl} : require('../../assets/images/user.png')
+            imageUrl
+              ? {uri: imageUrl}
+              : isDarkMode
+              ? require('../../assets/images/user-light.png')
+              : require('../../assets/images/user-dark.png')
           }
           style={styles.userImage}
         />
