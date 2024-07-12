@@ -48,12 +48,6 @@ function App(): React.JSX.Element {
     [key: string]: string;
   };
 
-  const getMode = async () => {
-    const mode = await AsyncStorage.getItem('Mode');
-    Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
-  };
-  getMode();
-
   function buildDeepLinkFromNotificationData(data: any): string | null {
     console.log('Kliknuo');
     const notificationId = data.notification.android.channelId;
@@ -120,7 +114,16 @@ function App(): React.JSX.Element {
       i18n.changeLanguage('en');
     }
   };
-  setLanguage();
+  const getMode = async () => {
+    const mode = await AsyncStorage.getItem('Mode');
+    Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
+  };
+
+  //gets light mode and languge
+  useEffect(() => {
+    getMode();
+    setLanguage();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {});
@@ -132,7 +135,7 @@ function App(): React.JSX.Element {
       async remoteMessage => {},
     );
     return unsubscribe;
-  });
+  }, []);
 
   return (
     <NavigationContainer

@@ -51,7 +51,9 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
       setLanguage((await AsyncStorage.getItem('Language')) as string);
     };
     saveUser();
-  });
+    console.log('effect');
+    updateImage();
+  }, []);
 
   const changeMode = async () => {
     Appearance.setColorScheme(
@@ -88,7 +90,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
       }
     }
   };
-  updateImage();
+  // updateImage();
 
   const changeLanguage = async (prop: string) => {
     if (prop === 'sr') {
