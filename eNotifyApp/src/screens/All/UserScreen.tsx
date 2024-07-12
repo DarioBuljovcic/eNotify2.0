@@ -250,13 +250,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
       ]}>
       <View style={styles.containerSize}>
         <View style={styles.userInfo}>
-          <LinearGradient
-            start={{x: 0.1, y: 0}}
-            end={{x: 1, y: -0.8}}
-            colors={
-              isDarkMode ? ['#355E89', '#031525'] : ['#2077F9', '#C6E2F5']
-            }
-            style={styles.imgBorder}>
+          <View style={styles.imgBorder}>
             <TouchableOpacity
               style={[
                 styles.add,
@@ -278,11 +272,13 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               source={
                 imageSource
                   ? {uri: imageSource}
-                  : require('../../assets/images/user.png')
+                  : isDarkMode
+                  ? require('../../assets/images/user-dark.png')
+                  : require('../../assets/images/user-light.png')
               }
               style={styles.userImage}
             />
-          </LinearGradient>
+          </View>
 
           <Text
             style={[
