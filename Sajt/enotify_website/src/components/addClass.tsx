@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useContext } from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -22,7 +22,10 @@ export default function AddClass({
   setModalText,
   setIsOpen,
   getProfessors,
+  DataContext,
 }: AddClassProps) {
+  const { setToasts, toastId, setToastId } = useContext(DataContext);
+
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const basicSelectId = useGeneratedHtmlId({ prefix: "basicSelect" });
   const [name, setName] = useState("");
@@ -65,39 +68,68 @@ export default function AddClass({
   });
 
   const handlePost = async () => {
+    let toast;
     setErrorList({
       name: name === "" ? true : false,
       professorList: selectedClasses.length === 0 ? true : false,
     });
 
-    if (name.length > 0) {
+    if (name.length > 0 && selectedClasses.length !== 0) {
       try {
         let ProfessorsList = "";
         selectedClasses.forEach((p) => {
           ProfessorsList += p.value + ",";
         });
+        const prof = professorList.find((obj) => obj.value === value);
         const dataToInsert = {
           Class: name,
-          Professor: value,
+          Professor: prof?.text,
           ProfessorsList: ProfessorsList,
         };
         await postClass(dataToInsert, file);
-        setModalHeader("Uspešno dodavanje");
-        setModalText("Uspešno ste dodali novi razred!");
-        setIsOpen((prev: boolean) => !prev);
+        toast = {
+          id: `toast${toastId}`,
+          title: "Uspeh",
+          color: "success",
+          text: (
+            <>
+              <p>Uspešno ste dodali novi razred '{name}'</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
         setFiles(undefined);
         setName("");
         setSelectedClasses([]);
       } catch (error) {
         console.log(error.message);
-        setModalHeader("Greška");
-        setModalText(`Došlo je do greške prilikom dodavanja razreda!`);
-        setIsOpen((prev: boolean) => !prev);
+        toast = {
+          id: `toast${toastId}`,
+          title: "Greška",
+          color: "danger",
+          text: (
+            <>
+              <p>Došlo je do greške prilikom dodavanja razreda</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       }
     } else {
-      setModalHeader("Greška");
-      setModalText(`Popunite sva polja!`);
-      setIsOpen((prev: boolean) => !prev);
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Popunite sva polja pre dodavanja!</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
 

@@ -37,6 +37,8 @@ import {
   gridDataContext,
   RowSelection,
   RowSelectionAction,
+  dataClass,
+  gridDataProps,
 } from "../types/types";
 import { Timestamp } from "firebase/firestore";
 import { format } from "date-fns";
@@ -48,6 +50,10 @@ const defaultValueData: gridDataContext = {
   deleteData: ([]) => {},
   setData: () => {},
   editData: () => {},
+  searchData: [],
+  dataType: "",
+  addition: [],
+  ToastContext: undefined,
 };
 const defaultRowSelection: RowSelection = {
   rowSelection: new Set<number>(),
@@ -62,32 +68,46 @@ const defaultRowSelection: RowSelection = {
 const SelectionContext = createContext<RowSelection>(defaultRowSelection);
 const DataContext = createContext<gridDataContext>(defaultValueData);
 
-const handleDelete = async (
+const deleteUsers = async (
   data,
+  searchData,
   dataForDelete,
   deleteData,
-  setData,
-  handleUpdate?,
   closeModal?
 ) => {
   if (dataForDelete instanceof Set) {
-    const newData = data.filter((_, index) => dataForDelete.has(index));
-    console.log(newData);
+    const newData = searchData.filter((_, index) => dataForDelete.has(index));
     deleteData(newData);
-    setData(data.filter((_, index) => !dataForDelete.has(index)));
-    handleUpdate();
   } else {
     deleteData([dataForDelete]);
-    setData(data.filter((d) => d !== dataForDelete));
   }
   closeModal?.();
 };
 
 const SelectionButton = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const { searchData, deleteData, setData } = useContext(DataContext);
+  const { data, searchData, deleteData, setData, ToastContext } =
+    useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const handleUpdate = () => updateSelectedRows({ action: "clear" });
+  const { setToasts, toastId, setToastId } = useContext(ToastContext);
+
+  const handleDelete = () => {
+    deleteUsers(data, searchData, selectedRows, deleteData, setData);
+    updateSelectedRows({ action: "clear" });
+    let toast;
+    toast = {
+      id: `toast${toastId}`,
+      title: "Uspeh",
+      color: "success",
+      text: (
+        <>
+          <p>Uspešno ste obrisali sve izabrane korisnike!</p>
+        </>
+      ),
+    };
+    setToasts((prev) => [...prev, toast]);
+    setToastId(toastId + 1);
+  };
   if (selectedRows.size > 0) {
     return (
       <EuiPopover
@@ -116,15 +136,7 @@ const SelectionButton = () => {
             <EuiContextMenuItem
               key="delete"
               icon="trash"
-              onClick={() =>
-                handleDelete(
-                  searchData,
-                  selectedRows,
-                  deleteData,
-                  setData,
-                  handleUpdate
-                )
-              }
+              onClick={handleDelete}
             >
               Delete item
             </EuiContextMenuItem>,
@@ -228,7 +240,7 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { searchData, deleteData, setData, editData, dataType } =
+      const { searchData, data, deleteData, setData, ToastContext, dataType } =
         useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(searchData[rowIndex]);
@@ -253,6 +265,33 @@ const trailingControlColumns = [
         closePopover();
         setIsFlyoutVisible(true);
         setNewValue(searchData[rowIndex]);
+      };
+      const { setToasts, toastId, setToastId } = useContext(ToastContext);
+
+      const handleDelete = () => {
+        deleteUsers(
+          data,
+          searchData[rowIndex],
+          deleteData,
+          setData,
+          closeModal
+        );
+        closeModal();
+        let toast;
+        toast = {
+          id: `toast${toastId}`,
+          title: "Uspeh",
+          color: "success",
+          text: (
+            <>
+              <p>
+                Uspešno ste obrisali korisnika '{searchData[rowIndex].Name}'
+              </p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       };
 
       const actions = [
@@ -290,16 +329,7 @@ const trailingControlColumns = [
             CancelBtn="Ne"
             modalVisible={isModalVisible}
             onCancel={closeModal}
-            onConfirm={() => {
-              handleDelete(
-                data,
-                data[rowIndex],
-                deleteData,
-                setData,
-                closeModal
-              );
-              closeModal();
-            }}
+            onConfirm={handleDelete}
           />
           {dataType === "User" && (
             <FlyoutUser
@@ -309,6 +339,7 @@ const trailingControlColumns = [
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
+              ToastContext={ToastContext}
             />
           )}
 
@@ -320,6 +351,7 @@ const trailingControlColumns = [
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
+              ToastContext={ToastContext}
             />
           )}
 
@@ -331,6 +363,7 @@ const trailingControlColumns = [
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
+              ToastContext={ToastContext}
             />
           )}
         </>
@@ -345,26 +378,45 @@ export default function DataGrid({
   editData,
   dataType,
   getAddition,
-}) {
+  ToastContext,
+}: gridDataProps) {
   const [pagination, setPagination] = useState({ pageIndex: 0 });
-  const [data, setData] = useState<dataUsers[] | dataNotification[]>([]);
+  const [data, setData] = useState<
+    dataUsers[] | dataNotification[] | dataClass[]
+  >([]);
   const [addition, setAddition] = useState([]);
   const [search, setSearch] = useState("");
   const searchData = useMemo(() => {
+    console.log(data);
     if (data) {
       console.log(data);
-      let newData: (dataUsers | dataNotification)[] = [];
+      let newData: (dataUsers | dataNotification | dataClass)[] = [];
       if (dataType === "User")
         newData = data.filter(
           (obj) =>
-            obj["Name"].includes(search) ||
-            obj["Class"].includes(search) ||
-            obj["Email"].includes(search)
+            obj["Name"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["Class"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["Email"].toLowerCase().includes(search.toLowerCase())
         );
-
+      else if (dataType === "Notification")
+        newData = data.filter(
+          (obj) =>
+            obj["Text"].toLowerCase().includes(search).toLowerCase() ||
+            obj["Title"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["Date"].toLowerCase().includes(search.toLowerCase())
+        );
+      else if (dataType === "Class")
+        newData = data.filter(
+          (obj) =>
+            obj["Class"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["ProfessorsList"]
+              .toLowerCase()
+              .includes(search.toLowerCase()) ||
+            obj["Professor"].toLowerCase().includes(search.toLowerCase())
+        );
       return newData;
     }
-    return [];
+    return [] as (dataUsers | dataNotification | dataClass)[];
   }, [search, data]);
 
   const GetSetData = async () => {
@@ -431,12 +483,14 @@ export default function DataGrid({
     return (
       <DataContext.Provider
         value={{
+          data,
           searchData,
           deleteData,
           setData,
           editData,
           dataType,
           addition,
+          ToastContext,
         }}
       >
         <SelectionContext.Provider value={rowSelection}>

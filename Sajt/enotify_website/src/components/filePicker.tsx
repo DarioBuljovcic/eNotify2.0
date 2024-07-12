@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -11,27 +11,13 @@ import {
   EuiButton,
 } from "@elastic/eui";
 import * as XLSX from "xlsx";
+import { PropsFilePicker } from "../types/types";
 
-type Props = {
-  role: string;
-  postFile: (o) => void;
-  setModalHeader: (o) => void;
-  setModalText: (o) => void;
-  setIsOpen: (o) => void;
-};
 type ExcelItem = {
   Name: string;
   Surname: string;
   Email: string;
   Class: string;
-};
-type Data = {
-  Name: string;
-  Class: string;
-  Email: string;
-  Role: string;
-  UserID: string;
-  LogOut: boolean;
 };
 
 export default function FilePicker({
@@ -40,9 +26,13 @@ export default function FilePicker({
   setModalHeader,
   setModalText,
   setIsOpen,
-}: Props) {
+  DataContext,
+}: PropsFilePicker) {
+  const { setToasts, setToastId, toastId } = useContext(DataContext);
+
   const [file, setFiles] = useState<File>();
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
+
   const onChange = (file) => {
     setFiles(file[0]);
   };
@@ -60,6 +50,7 @@ export default function FilePicker({
     return items as ExcelItem[];
   };
   const handleFile = async () => {
+    let toast;
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -72,30 +63,54 @@ export default function FilePicker({
           try {
             const jsonData: ExcelItem[] = XLSX.utils.sheet_to_json(worksheet);
             const validatedData = validateExcelItems(jsonData);
-            console.log(validatedData);
+
             postFile(validatedData);
-            setModalHeader("Uspešno dodavanje");
-            setModalText(
-              `Uspešno ste dodali nove ${
-                role === "u" ? "učenike" : "profesore"
-              }!`
-            );
-            setIsOpen((prev: boolean) => !prev);
+
+            toast = {
+              id: `toast${toastId}`,
+              title: "Uspešno dodavanje",
+              color: "success",
+              text: (
+                <>
+                  <p>Uspešno ste dodali nove učenike putem fajla!</p>
+                </>
+              ),
+            };
+            console.log(setToasts);
+            setToasts((prev) => [...prev, toast]);
+            setToastId(toastId + 1);
           } catch (error) {
-            console.log("ovo?");
-            setModalHeader("Greška");
-            setModalText(
-              `Došlo je do greške prilikom dodavanja ${
-                role === "u" ? "učenika" : "profesora"
-              }!`
-            );
-            setIsOpen((prev: boolean) => !prev);
+            toast = {
+              id: `toast${toastId}`,
+              title: "Greška",
+              color: "danger",
+              text: (
+                <>
+                  <p>Greška prilikom dodavanja fajla</p>
+                </>
+              ),
+            };
+            setToasts((prev) => [...prev, toast]);
+            setToastId(toastId + 1);
             return;
           }
         }
       };
 
       reader.readAsBinaryString(file);
+    } else {
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Greška prilikom dodavanja fajla</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
   return (
@@ -127,14 +142,13 @@ export default function FilePicker({
           </EuiFlexGroup>
         </EuiFlexItem>
         <EuiSpacer />
-        <EuiFlexItem style={{minWidth:400}}>
+        <EuiFlexItem style={{ minWidth: 400 }}>
           <EuiFilePicker
             id={filePickerId}
             initialPromptText="Izaberite ili prevucite željeni fajl"
             onChange={onChange}
             display="large"
             aria-label="Use aria labels when no actual label is in use"
-            
           />
         </EuiFlexItem>
         <EuiFlexItem>

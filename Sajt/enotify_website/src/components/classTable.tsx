@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
-
   EuiPageSection,
   EuiTitle,
-
   EuiFormLabel,
   EuiSelect,
   EuiImage,
@@ -83,10 +80,6 @@ export default function ClassTable({
     }
   };
 
-  const onButtonClick = () => {
-    setIsPopoverOpen(!isPopoverOpen);
-  };
-
   const closePopover = () => setIsPopoverOpen(false);
   const button = (
     <button
@@ -147,7 +140,7 @@ export default function ClassTable({
           />
         </EuiFlexItem>
         <EuiFlexItem style={{ minWidth: 300 }}>
-          <EuiImage src={tableImage} alt="Prikaz slike rasporeda"/>
+          <EuiImage src={tableImage} alt="Prikaz slike rasporeda" />
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPageSection>

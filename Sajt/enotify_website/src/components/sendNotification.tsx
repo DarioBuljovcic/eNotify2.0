@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment, useEffect, useContext } from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -11,32 +11,15 @@ import {
   EuiButton,
   EuiFieldText,
   EuiFormLabel,
-  EuiSelect,
   EuiTextArea,
   EuiComboBox,
-  euiPaletteColorBlindBehindText,
-  EuiSelectable,
-  EuiFormRow,
-  EuiPanel,
+  EuiGlobalToastList,
 } from "@elastic/eui";
-import { ClassesNotification, PropsNotification, optionsNotification } from "../types/types";
-
-
-type ExcelItem = {
-  Name: string;
-  Surname: string;
-  Email: string;
-  Class: string;
-};
-type Data = {
-  Name: string;
-  Class: string;
-  Email: string;
-  Role: string;
-  UserID: string;
-  LogOut: boolean;
-};
-
+import {
+  ClassesNotification,
+  PropsNotification,
+  optionsNotification,
+} from "../types/types";
 
 export default function SendNotification({
   sendNotification,
@@ -44,13 +27,18 @@ export default function SendNotification({
   setModalText,
   setIsOpen,
   getClasses,
+  DataContext,
 }: PropsNotification) {
+  const { setToasts, toastId, setToastId } = useContext(DataContext);
+
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const [files, setFiles] = useState<File[]>();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [classList, setClassList] = useState<ClassesNotification[]>();
-  const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>([]);
+  const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>(
+    []
+  );
   const [errorList, setErrorList] = useState({
     title: false,
     text: false,
@@ -143,6 +131,7 @@ export default function SendNotification({
   };
 
   const handlePost = async () => {
+    let toast;
     if (title === "")
       setErrorList((prevErrorList) => ({
         ...prevErrorList,
@@ -171,23 +160,48 @@ export default function SendNotification({
         };
 
         await sendNotification(files, item);
-
-        setModalHeader("Uspešno dodavanje");
-        setModalText(`Uspešno ste poslali obaveštenje!`);
-        setIsOpen((prev: boolean) => !prev);
-
+        toast = {
+          id: `toast${toastId}`,
+          title: "Uspeh",
+          color: "success",
+          text: (
+            <>
+              <p>Uspešno ste poslali obaveštenje!</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
         setTitle("");
         setText("");
         setSelectedClasses([]);
       } catch (error) {
-        setModalHeader("Greška");
-        setModalText(`Došlo je do greške prilikom slanja obaveštenja!`);
-        setIsOpen((prev: boolean) => !prev);
+        toast = {
+          id: `toast${toastId}`,
+          title: "Greška",
+          color: "danger",
+          text: (
+            <>
+              <p>Došlo je do greške prilikom slanja!</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
       }
     } else {
-      setModalHeader("Greška");
-      setModalText(`Popunite sva polja!`);
-      setIsOpen((prev: boolean) => !prev);
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Popunite sva polja pre dodavanja!</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
     }
   };
   const onFileChange = (files) => {
@@ -282,9 +296,7 @@ export default function SendNotification({
             onChange={onChange}
             data-test-subj="demoComboBox"
             isClearable={true}
-            
           />
-          
         </EuiFlexItem>
 
         <EuiFlexItem>

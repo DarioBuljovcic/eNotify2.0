@@ -1,4 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import "@elastic/eui/dist/eui_theme_light.css";
 import Logo from "../../components/logo.tsx";
 import {
@@ -12,6 +18,7 @@ import {
   EuiTabs,
   EuiIcon,
   EuiPageBody,
+  EuiGlobalToastList,
 } from "@elastic/eui";
 import {
   getNotifications,
@@ -31,6 +38,7 @@ import {
   editNotification,
   postClass,
   editClass,
+  deleteClassesDocuments,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -39,6 +47,7 @@ import SendNotification from "../../components/sendNotification.tsx";
 import ClassTable from "../../components/classTable.tsx";
 import DataGrid2 from "../../components/dataGrid2.tsx";
 import AddClass from "../../components/addClass.tsx";
+import { toastContext } from "../../types/types.ts";
 
 const columnsNotification = [
   {
@@ -85,6 +94,10 @@ const columnsClasses = [
     id: "ProfessorsList",
   },
 ];
+const defaultValue = {
+  setToasts: () => {},
+};
+const DataContext = createContext<toastContext>(defaultValue);
 
 export default function Home() {
   const panelled: EuiPageTemplateProps["panelled"] = true;
@@ -96,6 +109,15 @@ export default function Home() {
   const [modalText, setModalText] = useState("");
   const [modalConfirm, setModalConfirm] = useState(false);
   const [result, setResult] = useState(false);
+  const [toasts, setToasts] = useState([]);
+  const [toastId, setToastId] = useState(0);
+  const removeToast = (removedToast) => {
+    console.log(removedToast);
+    setToasts((toasts) =>
+      toasts.filter((toast) => toast.id !== removedToast.id)
+    );
+  };
+
   const allTabs = {
     Student: [
       {
@@ -110,6 +132,7 @@ export default function Home() {
               setModalHeader={setModalHeader}
               setModalText={setModalText}
               setIsOpen={setIsOpen}
+              DataContext={DataContext}
             />
           </>
         ),
@@ -127,6 +150,7 @@ export default function Home() {
               setModalText={setModalText}
               setIsOpen={setIsOpen}
               getClasses={getAllClasses}
+              DataContext={DataContext}
             />
           </>
         ),
@@ -144,6 +168,7 @@ export default function Home() {
               deleteData={deleteUserDocuments}
               dataType="User"
               getAddition={getAllClasses}
+              ToastContext={DataContext}
             />
           </>
         ),
@@ -162,6 +187,7 @@ export default function Home() {
               setModalHeader={setModalHeader}
               setModalText={setModalText}
               setIsOpen={setIsOpen}
+              DataContext={DataContext}
             />
           </>
         ),
@@ -178,6 +204,7 @@ export default function Home() {
               setModalHeader={setModalHeader}
               setModalText={setModalText}
               setIsOpen={setIsOpen}
+              DataContext={DataContext}
             />
           </>
         ),
@@ -195,6 +222,7 @@ export default function Home() {
               deleteData={deleteUserDocuments}
               dataType="User"
               getAddition={getAllClasses}
+              ToastContext={DataContext}
             />
           </>
         ),
@@ -213,6 +241,7 @@ export default function Home() {
               setModalText={setModalText}
               setIsOpen={setIsOpen}
               getClasses={getAllClasses}
+              DataContext={DataContext}
             />
           </>
         ),
@@ -230,6 +259,7 @@ export default function Home() {
               deleteData={deleteNotificationDocuments}
               dataType="Notification"
               getAddition={getAllClasses}
+              ToastContext={DataContext}
             />
           </>
         ),
@@ -248,6 +278,7 @@ export default function Home() {
               setModalHeader={setModalHeader}
               setModalText={setModalText}
               setIsOpen={setIsOpen}
+              DataContext={DataContext}
             />
           </>
         ),
@@ -262,9 +293,10 @@ export default function Home() {
               columns={columnsClasses}
               getData={getAllClasses}
               editData={editClass}
-              deleteData={deleteNotificationDocuments}
+              deleteData={deleteClassesDocuments}
               dataType="Class"
               getAddition={getProfessors}
+              ToastContext={DataContext}
             />
           </>
         ),
@@ -338,67 +370,72 @@ export default function Home() {
   };
 
   return (
-    <EuiProvider colorMode="light">
-      <EuiPageTemplate panelled={panelled}>
-        <Modal
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          modalHeader={modalHeader}
-          modalText={modalText}
-          modalConfirm={modalConfirm}
-          setResult={setResult}
-        />
-        <EuiPageTemplate.Sidebar sticky={true} minWidth={"150px"}>
-          <EuiFlexGrid>
-            <Logo />
-            <EuiButton
-              color="primary"
-              fill={selectedTab === 1}
-              size="s"
-              onClick={() => handleTabChange(1)}
-            >
-              {" "}
-              Učenici{" "}
-            </EuiButton>
-            <EuiButton
-              color="primary"
-              fill={selectedTab === 2}
-              size="s"
-              onClick={() => handleTabChange(2)}
-            >
-              {" "}
-              Profesori{" "}
-            </EuiButton>
-            <EuiButton
-              color="primary"
-              fill={selectedTab === 3}
-              size="s"
-              onClick={() => handleTabChange(3)}
-            >
-              {" "}
-              Obaveštenja{" "}
-            </EuiButton>
-            <EuiButton
-              color="primary"
-              fill={selectedTab === 4}
-              size="s"
-              onClick={() => handleTabChange(4)}
-            >
-              {" "}
-              Razredi{" "}
-            </EuiButton>
-          </EuiFlexGrid>
-        </EuiPageTemplate.Sidebar>
+    <DataContext.Provider value={{ setToasts, toastId, setToastId }}>
+      <EuiProvider colorMode="light">
+        <EuiPageTemplate panelled={panelled}>
+          <EuiGlobalToastList
+            toasts={toasts}
+            toastLifeTimeMs={6000}
+            dismissToast={removeToast}
+          />
+          <Modal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            modalHeader={modalHeader}
+            modalText={modalText}
+            modalConfirm={modalConfirm}
+            setResult={setResult}
+          />
+          <EuiPageTemplate.Sidebar sticky={true} minWidth={"150px"}>
+            <EuiFlexGrid>
+              <Logo />
 
-        <EuiPageHeader pageTitle={title} paddingSize="m" />
-        <EuiPageBody paddingSize="m">
-          <EuiTabs>{renderTabs()}</EuiTabs>
+              <EuiButton
+                color="primary"
+                fill={selectedTab === 1}
+                size="s"
+                onClick={() => handleTabChange(1)}
+              >
+                Učenici
+              </EuiButton>
+              <EuiButton
+                color="primary"
+                fill={selectedTab === 2}
+                size="s"
+                onClick={() => handleTabChange(2)}
+              >
+                Profesori
+              </EuiButton>
+              <EuiButton
+                color="primary"
+                fill={selectedTab === 3}
+                size="s"
+                onClick={() => handleTabChange(3)}
+              >
+                Obaveštenja
+              </EuiButton>
 
-          <EuiPageTemplate.Section grow={false}>
-            {selectedTabContent}
-          </EuiPageTemplate.Section>
-        </EuiPageBody>
-      </EuiPageTemplate>
-    </EuiProvider>
+              <EuiButton
+                color="primary"
+                fill={selectedTab === 4}
+                size="s"
+                onClick={() => handleTabChange(4)}
+              >
+                Razredi
+              </EuiButton>
+            </EuiFlexGrid>
+          </EuiPageTemplate.Sidebar>
+
+          <EuiPageHeader pageTitle={title} paddingSize="m" />
+          <EuiPageBody paddingSize="m">
+            <EuiTabs>{renderTabs()}</EuiTabs>
+
+            <EuiPageTemplate.Section grow={false}>
+              {selectedTabContent}
+            </EuiPageTemplate.Section>
+          </EuiPageBody>
+        </EuiPageTemplate>
+      </EuiProvider>
+    </DataContext.Provider>
   );
 }
