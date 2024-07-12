@@ -100,7 +100,7 @@ export default function Obavestenje({route}: any) {
       navigation.setOptions({title: ''});
       requestStoragePermission();
     }
-  });
+  }, []);
 
   const getRole = async () => {
     const data = await AsyncStorage.getItem('Role');

@@ -12,7 +12,11 @@ import {
 } from 'react-native';
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import messaging from '@react-native-firebase/messaging';
 import Registration from './src/screens/All/Registration';
@@ -140,8 +144,12 @@ function App(): React.JSX.Element {
   return (
     <NavigationContainer
       linking={linking}
-      fallback={<ActivityIndicator animating />}>
-      <Stack.Navigator>
+      fallback={<ActivityIndicator animating />}
+      theme={isDarkMode ? DarkTheme : DefaultTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          animationEnabled: true,
+        }}>
         <Stack.Screen
           name="Registration"
           component={Registration}

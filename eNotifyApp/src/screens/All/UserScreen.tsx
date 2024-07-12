@@ -23,7 +23,8 @@ import firestore from '@react-native-firebase/firestore';
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
-import RNRestart from 'react-native-restart';
+import messaging from '@react-native-firebase/messaging';
+// import RNRestart from 'react-native-restart';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
   const {t, i18n} = useTranslation();
@@ -160,8 +161,17 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     setLogoutModal(false);
   };
 
-  const logOut = () => {
+  const logOut = async () => {
     setLogoutModal(false);
+    messaging().unsubscribeFromTopic('Svi');
+    messaging().unsubscribeFromTopic('Prvi');
+    messaging().unsubscribeFromTopic('Drugi');
+    messaging().unsubscribeFromTopic('Treci');
+    messaging().unsubscribeFromTopic('Cetvrit');
+
+    const classTopic = await AsyncStorage.getItem('Class');
+    if (classTopic) messaging().unsubscribeFromTopic(classTopic);
+
     AsyncStorage.removeItem('UserID');
     AsyncStorage.removeItem('Name');
     AsyncStorage.removeItem('Role');
@@ -249,7 +259,9 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
         },
       ]}>
       <View style={styles.containerSize}>
-        <View style={styles.userInfo}>
+        <ScrollView
+          contentContainerStyle={{alignItems: 'center'}}
+          showsVerticalScrollIndicator={false}>
           <View style={styles.imgBorder}>
             <TouchableOpacity
               style={[
@@ -317,141 +329,140 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             ]}>
             {role == 'Professor' ? t('proffesor') : t('student')}
           </Text>
-          <ScrollView style={{width: '100%'}}>
-            <TouchableOpacity
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                borderColor: isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate('About')}>
+            <Text
               style={[
-                styles.option,
+                styles.optionText,
                 {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
-                },
-              ]}
-              activeOpacity={0.7}
-              onPress={() => navigation.navigate('About')}>
-              <Text
-                style={[
-                  styles.optionText,
-                  {
-                    color: isDarkMode
-                      ? Colors.Dark.textSecondary
-                      : Colors.Light.textSecondary,
-                  },
-                ]}>
-                {t('about')}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[
-                styles.option,
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
-                },
-              ]}
-              activeOpacity={0.7}
-              onPress={() => setLanguageModal(true)}>
-              <Text
-                style={[
-                  styles.optionText,
-                  {
-                    color: isDarkMode
-                      ? Colors.Dark.textSecondary
-                      : Colors.Light.textSecondary,
-                  },
-                ]}>
-                {t('language')}
-              </Text>
-              {renderLanguage()}
-              <Ionicons
-                name={'language'}
-                size={30}
-                color={
-                  isDarkMode
+                  color: isDarkMode
                     ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary
-                }
-              />
-            </TouchableOpacity>
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              {t('about')}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                borderColor: isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={() => setLanguageModal(true)}>
+            <Text
+              style={[
+                styles.optionText,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              {t('language')}
+            </Text>
+            {renderLanguage()}
+            <Ionicons
+              name={'language'}
+              size={30}
+              color={
+                isDarkMode
+                  ? Colors.Dark.textSecondary
+                  : Colors.Light.textSecondary
+              }
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                borderColor: isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={() => changeMode()}>
+            <Text
+              style={[
+                styles.optionText,
+                {
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
+                },
+              ]}>
+              {t('dark mode')}
+            </Text>
 
             <TouchableOpacity
               style={[
-                styles.option,
+                styles.modeChange,
                 {
                   borderColor: isDarkMode
-                    ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
+                    ? Colors.Dark.accentGreen
+                    : Colors.Light.accentGreen,
                 },
               ]}
-              activeOpacity={0.7}
               onPress={() => changeMode()}>
-              <Text
-                style={[
-                  styles.optionText,
-                  {
-                    color: isDarkMode
-                      ? Colors.Dark.textSecondary
-                      : Colors.Light.textSecondary,
-                  },
-                ]}>
-                {t('dark mode')}
-              </Text>
-
-              <TouchableOpacity
-                style={[
-                  styles.modeChange,
-                  {
-                    borderColor: isDarkMode
-                      ? Colors.Dark.accentGreen
-                      : Colors.Light.accentGreen,
-                  },
-                ]}
-                onPress={() => changeMode()}>
-                <Animated.View
-                  style={[styles.modeRotate, {transform: [{rotate}]}]}>
-                  <Ionicons
-                    name={'moon-outline'}
-                    size={35}
-                    color={Colors.Dark.textSecondary}
-                  />
-                  <Ionicons
-                    name={'sunny-outline'}
-                    size={35}
-                    color={Colors.Light.textSecondary}
-                  />
-                </Animated.View>
-              </TouchableOpacity>
+              <Animated.View
+                style={[styles.modeRotate, {transform: [{rotate}]}]}>
+                <Ionicons
+                  name={'moon-outline'}
+                  size={35}
+                  color={Colors.Dark.textSecondary}
+                />
+                <Ionicons
+                  name={'sunny-outline'}
+                  size={35}
+                  color={Colors.Light.textSecondary}
+                />
+              </Animated.View>
             </TouchableOpacity>
-            <TouchableOpacity
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.option,
+              {
+                borderColor: isDarkMode
+                  ? Colors.Dark.lightText
+                  : Colors.Light.lightText,
+              },
+              {
+                borderBottomWidth: 1,
+                marginBottom: 50,
+              },
+            ]}
+            activeOpacity={0.7}
+            onPress={() => logOutModal()}>
+            <Text
               style={[
-                styles.option,
+                styles.optionText,
                 {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
+                  color: isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textSecondary,
                 },
-                {
-                  borderBottomWidth: 1,
-                },
-              ]}
-              activeOpacity={0.7}
-              onPress={() => logOutModal()}>
-              <Text
-                style={[
-                  styles.optionText,
-                  {
-                    color: isDarkMode
-                      ? Colors.Dark.textSecondary
-                      : Colors.Light.textSecondary,
-                  },
-                ]}>
-                {t('log out')}
-              </Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </View>
+              ]}>
+              {t('log out')}
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
       {languageModal ? (
         <TouchableOpacity
@@ -650,9 +661,6 @@ const styles = StyleSheet.create({
   containerSize: {
     width: '80%',
     marginTop: 30,
-  },
-  userInfo: {
-    alignItems: 'center',
   },
   imgBorder: {
     height: 150,
