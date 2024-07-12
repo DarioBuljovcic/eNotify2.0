@@ -11,10 +11,49 @@ import Zoom from 'react-native-zoom-reanimated';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNFS from 'react-native-fs';
 
 export default function TimeTable() {
   const isDarkMode = useColorScheme() === 'light';
-  const [url, setUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  const downloadAndSaveImage = async (
+    imageName: string,
+  ): Promise<string | null> => {
+    const storageRef = storage().ref(imageName);
+    const localPath = `${RNFS.DocumentDirectoryPath}/${imageName}`;
+
+    try {
+      const url = await storageRef.getDownloadURL();
+      const downloadResult = await RNFS.downloadFile({
+        fromUrl: url,
+        toFile: localPath,
+      }).promise;
+
+      if (downloadResult.statusCode === 200) {
+        return localPath;
+      } else {
+        console.error('Error downloading image:', downloadResult);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting download URL or saving image:', error);
+      return null;
+    }
+  };
+
+  const loadImage = async (imageName: string): Promise<string | null> => {
+    const localPath = `${RNFS.DocumentDirectoryPath}/${imageName}`;
+
+    const fileExists = await RNFS.exists(localPath);
+
+    if (fileExists) {
+      return `file://${localPath}`;
+    } else {
+      const downloadedPath = await downloadAndSaveImage(imageName);
+      return downloadedPath ? `file://${downloadedPath}` : null;
+    }
+  };
 
   useEffect(() => {
     const func = async () => {
@@ -25,11 +64,8 @@ export default function TimeTable() {
         .where('Class', '==', myClass)
         .get();
 
-      const imageUrl = await storage()
-        .ref(querySnapshot.docs[0].data().Table)
-        .getDownloadURL();
-
-      if (imageUrl) setUrl(imageUrl);
+      const uri = await loadImage(querySnapshot.docs[0].data().Table);
+      setImageUrl(uri);
     };
     func();
   }, []);
@@ -47,7 +83,7 @@ export default function TimeTable() {
         ]}>
         <Zoom>
           <Image
-            source={{uri: url}}
+            source={{uri: imageUrl}}
             resizeMode="contain"
             style={{
               backgroundColor: isDarkMode
