@@ -30,6 +30,10 @@ import {
   EuiTextArea,
   EuiButton,
   EuiSpacer,
+  EuiIcon,
+  EuiPageSection,
+  EuiFlexGroup,
+  EuiText,
 } from "@elastic/eui";
 import {
   dataUsers,
@@ -45,10 +49,35 @@ import { format } from "date-fns";
 import { FlyoutClasses, FlyoutNotification, FlyoutUser } from "./flyout.tsx";
 import { DataGridSearchUser } from "./dataGridSearch.tsx";
 
+const Modal = ({
+  onConfirm,
+  onCancel,
+  modalVisible,
+  Title,
+  Text,
+  CancelBtn,
+  ConfrimBtn,
+}) => {
+  if (modalVisible) {
+    return (
+      <EuiConfirmModal
+        onCancel={onCancel}
+        onConfirm={onConfirm}
+        title={Title}
+        cancelButtonText={CancelBtn}
+        confirmButtonText={ConfrimBtn}
+      >
+        <p>{Text}</p>
+      </EuiConfirmModal>
+    );
+  }
+  return <></>;
+};
+
 const defaultValueData: gridDataContext = {
   data: [],
   deleteData: ([]) => {},
-  setData: () => {},
+  GetSetData: () => {},
   editData: () => {},
   searchData: [],
   dataType: "",
@@ -69,30 +98,33 @@ const SelectionContext = createContext<RowSelection>(defaultRowSelection);
 const DataContext = createContext<gridDataContext>(defaultValueData);
 
 const deleteUsers = async (
-  data,
   searchData,
   dataForDelete,
   deleteData,
+  GetSetData,
   closeModal?
 ) => {
   if (dataForDelete instanceof Set) {
     const newData = searchData.filter((_, index) => dataForDelete.has(index));
     deleteData(newData);
+    GetSetData();
   } else {
     deleteData([dataForDelete]);
+    GetSetData();
   }
   closeModal?.();
 };
 
 const SelectionButton = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const { data, searchData, deleteData, setData, ToastContext } =
+  const { searchData, deleteData, GetSetData, ToastContext } =
     useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleDelete = () => {
-    deleteUsers(data, searchData, selectedRows, deleteData, setData);
+    deleteUsers(searchData, selectedRows, deleteData, GetSetData);
     updateSelectedRows({ action: "clear" });
     let toast;
     toast = {
@@ -107,6 +139,12 @@ const SelectionButton = () => {
     };
     setToasts((prev) => [...prev, toast]);
     setToastId(toastId + 1);
+  };
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+  const showModal = () => {
+    setIsModalVisible(true);
   };
   if (selectedRows.size > 0) {
     return (
@@ -127,17 +165,22 @@ const SelectionButton = () => {
         }
         closePopover={() => setIsPopoverOpen(false)}
       >
+        <Modal
+          Title="Brisanje"
+          Text="Da li ste sigurni da želite da obrišete?"
+          ConfrimBtn="Da"
+          CancelBtn="Ne"
+          modalVisible={isModalVisible}
+          onCancel={closeModal}
+          onConfirm={handleDelete}
+        />
         <EuiPopoverTitle>
           {selectedRows.size} {selectedRows.size > 1 ? "items" : "item"}
         </EuiPopoverTitle>
         <EuiContextMenuPanel
           size="s"
           items={[
-            <EuiContextMenuItem
-              key="delete"
-              icon="trash"
-              onClick={handleDelete}
-            >
+            <EuiContextMenuItem key="delete" icon="trash" onClick={showModal}>
               Delete item
             </EuiContextMenuItem>,
           ]}
@@ -204,30 +247,6 @@ const leadingControlColumns = [
     rowCellRender: SelectionRowCell,
   },
 ];
-const Modal = ({
-  onConfirm,
-  onCancel,
-  modalVisible,
-  Title,
-  Text,
-  CancelBtn,
-  ConfrimBtn,
-}) => {
-  if (modalVisible) {
-    return (
-      <EuiConfirmModal
-        onCancel={onCancel}
-        onConfirm={onConfirm}
-        title={Title}
-        cancelButtonText={CancelBtn}
-        confirmButtonText={ConfrimBtn}
-      >
-        <p>{Text}</p>
-      </EuiConfirmModal>
-    );
-  }
-  return <></>;
-};
 
 const trailingControlColumns = [
   {
@@ -240,7 +259,7 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { searchData, data, deleteData, setData, ToastContext, dataType } =
+      const { searchData, deleteData, GetSetData, ToastContext, dataType } =
         useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(searchData[rowIndex]);
@@ -270,10 +289,10 @@ const trailingControlColumns = [
 
       const handleDelete = () => {
         deleteUsers(
-          data,
+          searchData,
           searchData[rowIndex],
           deleteData,
-          setData,
+          GetSetData,
           closeModal
         );
         closeModal();
@@ -331,7 +350,7 @@ const trailingControlColumns = [
             onCancel={closeModal}
             onConfirm={handleDelete}
           />
-          {dataType === "User" && (
+          {(dataType === "Student" || dataType === "Professor") && (
             <FlyoutUser
               newValue={newValue}
               rowIndex={rowIndex}
@@ -387,11 +406,9 @@ export default function DataGrid({
   const [addition, setAddition] = useState([]);
   const [search, setSearch] = useState("");
   const searchData = useMemo(() => {
-    console.log(data);
     if (data) {
-      console.log(data);
       let newData: (dataUsers | dataNotification | dataClass)[] = [];
-      if (dataType === "User")
+      if (dataType === "Student" || dataType === "Professor")
         newData = data.filter(
           (obj) =>
             obj["Name"].toLowerCase().includes(search.toLowerCase()) ||
@@ -399,12 +416,14 @@ export default function DataGrid({
             obj["Email"].toLowerCase().includes(search.toLowerCase())
         );
       else if (dataType === "Notification")
-        newData = data.filter(
-          (obj) =>
-            obj["Text"].toLowerCase().includes(search).toLowerCase() ||
+        newData = data.filter((obj) => {
+          console.log();
+          return (
+            obj["Text"].toLowerCase().includes(search.toLowerCase()) ||
             obj["Title"].toLowerCase().includes(search.toLowerCase()) ||
-            obj["Date"].toLowerCase().includes(search.toLowerCase())
-        );
+            format(obj["Date"].toDate(), "dd/MM/yyyy").includes(search)
+          );
+        });
       else if (dataType === "Class")
         newData = data.filter(
           (obj) =>
@@ -481,44 +500,72 @@ export default function DataGrid({
 
   if (searchData.length > 0)
     return (
-      <DataContext.Provider
-        value={{
-          data,
-          searchData,
-          deleteData,
-          setData,
-          editData,
-          dataType,
-          addition,
-          ToastContext,
-        }}
-      >
-        <SelectionContext.Provider value={rowSelection}>
-          <div>
-            <DataGridSearchUser search={search} setSearch={setSearch} />
-            <EuiDataGrid
-              aria-label="Lista"
-              leadingControlColumns={leadingControlColumns}
-              trailingControlColumns={trailingControlColumns}
-              columns={columns}
-              columnVisibility={{
-                visibleColumns,
-                setVisibleColumns,
-              }}
-              rowCount={searchData.length}
-              renderCellValue={renderCellValue}
-              pagination={{
-                ...pagination,
-                onChangeItemsPerPage: setPageSize,
-                onChangePage: setPageIndex,
-              }}
-              toolbarVisibility={{
-                additionalControls: <SelectionButton />,
-              }}
-            />
-          </div>
-        </SelectionContext.Provider>
-      </DataContext.Provider>
+      <EuiPageSection>
+        <DataContext.Provider
+          value={{
+            data,
+            searchData,
+            setData,
+            deleteData,
+            GetSetData,
+            editData,
+            dataType,
+            addition,
+            ToastContext,
+          }}
+        >
+          <SelectionContext.Provider value={rowSelection}>
+            <div>
+              <DataGridSearchUser search={search} setSearch={setSearch} />
+              <EuiDataGrid
+                aria-label="Lista"
+                leadingControlColumns={leadingControlColumns}
+                trailingControlColumns={trailingControlColumns}
+                columns={columns}
+                columnVisibility={{
+                  visibleColumns,
+                  setVisibleColumns,
+                }}
+                rowCount={searchData.length}
+                renderCellValue={renderCellValue}
+                pagination={{
+                  ...pagination,
+                  onChangeItemsPerPage: setPageSize,
+                  onChangePage: setPageIndex,
+                }}
+                toolbarVisibility={{
+                  additionalControls: <SelectionButton />,
+                }}
+                style={{ maxHeight: 470 }}
+              />
+            </div>
+          </SelectionContext.Provider>
+        </DataContext.Provider>
+      </EuiPageSection>
     );
-  return <DataGridSearchUser search={search} setSearch={setSearch} />;
+  else if (search.length > 0)
+    return (
+      <>
+        <div>
+          <EuiPageSection
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <DataGridSearchUser search={search} setSearch={setSearch} />
+            <EuiFlexGroup
+              justifyContent="center"
+              alignItems="center"
+              direction="column"
+              style={{ height: 470 }}
+            >
+              <EuiIcon type={"faceSad"} size="xxl" />
+              <EuiText>Nismo uspeli da nađemo to što tražite</EuiText>
+            </EuiFlexGroup>
+          </EuiPageSection>
+        </div>
+      </>
+    );
 }

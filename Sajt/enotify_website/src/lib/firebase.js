@@ -193,23 +193,28 @@ export const postOneStudent = async (item) => {
       UserID: userID,
       LogOut: true,
     };
+    const list = await getStudents();
 
-    axios
-      .post(
-        "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
-        {
-          to: item.Email,
-          subject: "Vaš kod",
-          text: userID,
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-      });
-    await addDoc(collection(db, "Users"), data);
+    if (list.every((obj) => obj.Email !== item.Email)) {
+      axios
+        .post(
+          "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
+          {
+            to: item.Email,
+            subject: "Vaš kod",
+            text: userID,
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+        });
+      await addDoc(collection(db, "Users"), data);
+      return true;
+    }
+    return false;
   } catch (error) {
     throw new Error("Nije uspešno dodat student");
   }
@@ -226,23 +231,27 @@ export const postOneProfessor = async (item) => {
       UserID: userID,
       LogOut: true,
     };
+    const list = await getStudents();
 
-    axios
-      .post(
-        "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
-        {
-          to: item.Email,
-          subject: "Vaš kod",
-          text: userID,
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-      });
-    await addDoc(collection(db, "Users"), data);
+    if (list.every((obj) => obj.Email !== item.Email)) {
+      axios
+        .post(
+          "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
+          {
+            to: item.Email,
+            subject: "Vaš kod",
+            text: userID,
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+        });
+      await addDoc(collection(db, "Users"), data);
+    }
+    return false;
   } catch (error) {
     throw new Error("Nije uspešno dodat student");
   }
@@ -266,6 +275,7 @@ export const getAllClasses = async () => {
     });
 
     newData.push({
+      label: data.Class,
       value: data.Class,
       text: data.Class,
       url: data.Table,
@@ -276,10 +286,11 @@ export const getAllClasses = async () => {
   });
   return newData;
 };
-export const sendNotification = async (files, item) => {
+export const sendNotification = async (item) => {
   let fileArray = [];
-  if (Array.isArray(files)) {
-    fileArray = [...files];
+
+  if (item.Files[0]) {
+    fileArray = [...item.Files];
     fileArray.forEach((f) => {
       const storageRef = ref(storage, f?.name);
       uploadBytes(storageRef, f)
@@ -303,7 +314,6 @@ export const sendNotification = async (files, item) => {
       Seen: "",
       From: "Uprava škole",
     };
-
     const sendData = async () => {
       try {
         const response = await axios.post(
@@ -315,7 +325,7 @@ export const sendNotification = async (files, item) => {
       }
     };
     sendData();
-
+    console.log("radiiii");
     await addDoc(collection(db, "Notifications"), dataToInsert);
   } catch (error) {
     throw new Error("Neuspešno slanje");
@@ -396,6 +406,7 @@ export const editUser = async (user, newValue) => {
   const q = query(collection(db, "Users"), where("UserID", "==", user.UserID));
   const querySnapshot = await getDocs(q);
   const docId = querySnapshot.docs[0].id;
+  console.log(newValue.Class);
   await updateDoc(doc(db, "Users", docId), {
     Name: newValue.Name,
     Class: newValue.Class,
@@ -440,6 +451,7 @@ export const editClass = async (Class, newValue) => {
   const q = query(collection(db, "Classes"), where("Class", "==", Class.Class));
   const querySnapshot = await getDocs(q);
   const docId = querySnapshot.docs[0].id;
+  console.log();
   await updateDoc(doc(db, "Classes", docId), {
     Professor: newValue.Professor,
     ProfessorsList: newValue.ProfessorsList,

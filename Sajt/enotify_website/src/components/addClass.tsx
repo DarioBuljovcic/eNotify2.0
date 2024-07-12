@@ -58,7 +58,7 @@ export default function AddClass({
           profs.push({
             value: d.UserID,
             text: d.Name,
-            label: d.Name,
+            label: `${d.Name} (${d.Email})`,
           });
         });
         setProfessorList([...profs]);
@@ -124,7 +124,10 @@ export default function AddClass({
         color: "danger",
         text: (
           <>
-            <p>Popunite sva polja pre dodavanja!</p>
+            {name === "" && <p> &gt; Naziv razreda nije popunjen!</p>}
+            {selectedClasses.length === 0 && (
+              <p> &gt; Niste izabrali profesore!</p>
+            )}
           </>
         ),
       };
@@ -185,7 +188,7 @@ export default function AddClass({
             id={basicSelectId}
             options={professorList}
             value={value}
-            onChange={(e) => setValue(e.target.innerText)}
+            onChange={(e) => setValue(e.target.value)}
           />
 
           <EuiSpacer />

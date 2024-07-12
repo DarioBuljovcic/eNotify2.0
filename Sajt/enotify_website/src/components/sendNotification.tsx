@@ -1,4 +1,11 @@
-import React, { useState, Fragment, useEffect, useContext } from "react";
+import React, {
+  useState,
+  Fragment,
+  useEffect,
+  useContext,
+  useRef,
+  LegacyRef,
+} from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -14,6 +21,7 @@ import {
   EuiTextArea,
   EuiComboBox,
   EuiGlobalToastList,
+  EuiFilePickerProps,
 } from "@elastic/eui";
 import {
   ClassesNotification,
@@ -23,9 +31,6 @@ import {
 
 export default function SendNotification({
   sendNotification,
-  setModalHeader,
-  setModalText,
-  setIsOpen,
   getClasses,
   DataContext,
 }: PropsNotification) {
@@ -39,6 +44,10 @@ export default function SendNotification({
   const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>(
     []
   );
+  const filePickerRef = useRef<
+    LegacyRef<Omit<EuiFilePickerProps, "stylesMemoizer">> | undefined
+  >(undefined);
+
   const [errorList, setErrorList] = useState({
     title: false,
     text: false,
@@ -74,7 +83,7 @@ export default function SendNotification({
       },
     ],
   };
-  const otherOptions: ClassesNotification = {
+  let otherOptions: ClassesNotification = {
     label: "Razredi",
     options: [],
   };
@@ -82,13 +91,14 @@ export default function SendNotification({
     const funk = async () => {
       const data: any = await getClasses();
       const classes: ClassesNotification[] = [alwaysAlone, groupOptions];
-      if (otherOptions.options.length === 0) {
+      if (otherOptions.options.length === 0 && data.length > 0) {
         data.forEach((d: any) => {
           otherOptions.options.push({
             label: d.text,
             value: d.value,
           });
         });
+
         classes.push(otherOptions);
         setClassList(classes);
       }
@@ -97,33 +107,25 @@ export default function SendNotification({
   }, []);
 
   const onChange = (selected) => {
-    console.log(selected);
+    let toast;
     const selectedLabels = selected.map((option) => option.value);
     // Check if 'Always Alone' is selected with any other option
     if (
       selectedLabels.includes(alwaysAlone.options[0].value) &&
       selectedLabels.length > 1
     ) {
-      setModalHeader("Greška");
-      setModalText(
-        `Opcija 'Svi razredi' ne može da se meša sa drugim opcijama`
-      );
-      setIsOpen((prev) => !prev);
-      return;
-    }
-
-    // Check if group options are mixed with other options
-    const hasGroupOptions = selectedLabels.some((value) =>
-      groupOptions.options.map((option) => option.value).includes(value)
-    );
-    const hasOtherOptions = selectedLabels.some((value) =>
-      otherOptions.options.map((option) => option.value).includes(value)
-    );
-
-    if (hasGroupOptions && hasOtherOptions) {
-      setModalHeader("Greška");
-      setModalText(`Opcija sa razredima ne može da se meša sa godinama`);
-      setIsOpen((prev) => !prev);
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Opcija 'Svi razredi' ne može da se meša sa drugim opcijama</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
       return;
     }
 
@@ -132,21 +134,12 @@ export default function SendNotification({
 
   const handlePost = async () => {
     let toast;
-    if (title === "")
-      setErrorList((prevErrorList) => ({
-        ...prevErrorList,
-        title: true,
-      }));
-    if (text === "")
-      setErrorList((prevErrorList) => ({
-        ...prevErrorList,
-        text: true,
-      }));
-    if (selectedClasses.length === 0)
-      setErrorList((prevErrorList) => ({
-        ...prevErrorList,
-        classList: true,
-      }));
+    setErrorList({
+      title: title === "" ? true : false,
+      text: text === "" ? true : false,
+      classList: selectedClasses.length === 0 ? true : false,
+    });
+
     if (title.length > 0 && text.length > 0 && selectedClasses.length > 0) {
       try {
         const classes: string[] = [];
@@ -157,9 +150,10 @@ export default function SendNotification({
           Title: title,
           Text: text,
           Classes: classes,
+          Files: files,
         };
-
-        await sendNotification(files, item);
+        console.log(files);
+        await sendNotification(item);
         toast = {
           id: `toast${toastId}`,
           title: "Uspeh",
@@ -174,6 +168,8 @@ export default function SendNotification({
         setToastId(toastId + 1);
         setTitle("");
         setText("");
+        setFiles([]);
+        if (filePickerRef.current) filePickerRef.current.removeFiles();
         setSelectedClasses([]);
       } catch (error) {
         toast = {
@@ -274,6 +270,7 @@ export default function SendNotification({
             Dodatak
           </EuiFormLabel>
           <EuiFilePicker
+            ref={filePickerRef}
             id={filePickerId}
             multiple
             initialPromptText="Izeberite ili prevucite fajl ili sliku"

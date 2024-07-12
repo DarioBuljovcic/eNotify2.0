@@ -18,6 +18,7 @@ export type dataNotification = {
 };
 export type dataClass = {
   [key: string]: any;
+  label: string;
   value: string;
   text: string;
   url: string;
@@ -29,7 +30,7 @@ export type dataClass = {
 export type gridDataContext = {
   data: dataClass[] | dataUsers[] | dataNotification[];
   deleteData: ([]) => void;
-  setData: (newData: (dataUsers | dataNotification | dataClass)[]) => void;
+  GetSetData: () => void;
   editData: (
     d: dataUsers | dataNotification,
     p: dataUsers | dataNotification
@@ -71,7 +72,7 @@ export type ClassesNotification = {
   options: optionsNotification[];
 };
 export type PropsNotification = {
-  sendNotification: (o, p) => void;
+  sendNotification: (p) => void;
   setModalHeader: (o) => void;
   setModalText: (o) => void;
   setIsOpen: (o) => void;
@@ -103,17 +104,11 @@ export type toastContext = {
 export type PropsFilePicker = {
   role: string;
   postFile: (o) => void;
-  setModalHeader: (o) => void;
-  setModalText: (o) => void;
-  setIsOpen: (o) => void;
   DataContext: React.Context<toastContext>;
 };
 export type AddUserProps = {
   role: string;
-  postUser: (o) => void;
-  setModalHeader: (o) => void;
-  setModalText: (o) => void;
-  setIsOpen: (o) => void;
+  postUser: (o) => Promise<boolean>;
   getClasses?: () => void;
   DataContext: React.Context<toastContext>;
 };

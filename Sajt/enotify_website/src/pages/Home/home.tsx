@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { createContext, useMemo, useState } from "react";
 import "@elastic/eui/dist/eui_theme_light.css";
 import Logo from "../../components/logo.tsx";
 import {
@@ -96,6 +90,8 @@ const columnsClasses = [
 ];
 const defaultValue = {
   setToasts: () => {},
+  toastId: 0,
+  setToastId: () => {},
 };
 const DataContext = createContext<toastContext>(defaultValue);
 
@@ -129,9 +125,6 @@ export default function Home() {
             <FilePicker
               role="u"
               postFile={postStudentsFile}
-              setModalHeader={setModalHeader}
-              setModalText={setModalText}
-              setIsOpen={setIsOpen}
               DataContext={DataContext}
             />
           </>
@@ -146,9 +139,6 @@ export default function Home() {
             <AddOneUser
               role="u"
               postUser={postOneStudent}
-              setModalHeader={setModalHeader}
-              setModalText={setModalText}
-              setIsOpen={setIsOpen}
               getClasses={getAllClasses}
               DataContext={DataContext}
             />
@@ -166,7 +156,7 @@ export default function Home() {
               getData={getStudents}
               editData={editUser}
               deleteData={deleteUserDocuments}
-              dataType="User"
+              dataType="Student"
               getAddition={getAllClasses}
               ToastContext={DataContext}
             />
@@ -184,9 +174,6 @@ export default function Home() {
             <FilePicker
               role="p"
               postFile={postProfessorsFile}
-              setModalHeader={setModalHeader}
-              setModalText={setModalText}
-              setIsOpen={setIsOpen}
               DataContext={DataContext}
             />
           </>
@@ -201,9 +188,6 @@ export default function Home() {
             <AddOneUser
               role="p"
               postUser={postOneProfessor}
-              setModalHeader={setModalHeader}
-              setModalText={setModalText}
-              setIsOpen={setIsOpen}
               DataContext={DataContext}
             />
           </>
@@ -220,7 +204,7 @@ export default function Home() {
               getData={getProfessors}
               editData={editUser}
               deleteData={deleteUserDocuments}
-              dataType="User"
+              dataType="Professor"
               getAddition={getAllClasses}
               ToastContext={DataContext}
             />

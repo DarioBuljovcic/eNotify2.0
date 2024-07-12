@@ -23,9 +23,6 @@ type Classes = {
 export default function AddOneUser({
   role,
   postUser,
-  setModalHeader,
-  setModalText,
-  setIsOpen,
   getClasses,
   DataContext,
 }: AddUserProps) {
@@ -54,24 +51,23 @@ export default function AddOneUser({
     }
   });
 
-  const handlePost = () => {
+  const handlePost = async () => {
     let toast;
-    if (name === "")
-      setErrorList((prevErrorList) => ({
-        ...prevErrorList,
-        name: true,
-      }));
-    if (surname === "")
-      setErrorList((prevErrorList) => ({
-        ...prevErrorList,
-        surname: true,
-      }));
-    if (email === "")
-      setErrorList((prevErrorList) => ({
-        ...prevErrorList,
-        email: true,
-      }));
-    if (name.length > 0 && surname.length > 0 && email.length > 0) {
+
+    setErrorList({
+      name: name === "" ? true : false,
+      surname: surname === "" ? true : false,
+      email:
+        email === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+          ? true
+          : false,
+    });
+    if (
+      name.length > 0 &&
+      surname.length > 0 &&
+      email.length > 0 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    ) {
       try {
         const item = {
           Name: name,
@@ -79,19 +75,42 @@ export default function AddOneUser({
           Email: email,
           Class: value,
         };
-        postUser(item);
-        toast = {
-          id: `toast${toastId}`,
-          title: "Uspeh",
-          color: "success",
-          text: (
-            <>
-              <p>Uspešno ste dodali učenika '{name}'</p>
-            </>
-          ),
-        };
+        const answer: boolean = await postUser(item);
+        if (answer) {
+          toast = {
+            id: `toast${toastId}`,
+            title: "Uspeh",
+            color: "success",
+            text: (
+              <>
+                <p>
+                  Uspešno ste dodali {role === "u" ? "učenika" : "profesora"}{" "}
+                  pod imenom '{name}'
+                </p>
+              </>
+            ),
+          };
+        } else {
+          toast = {
+            id: `toast${toastId}`,
+            title: "Greška",
+            color: "danger",
+            text: (
+              <>
+                <p>
+                  {role === "u" ? "Učenik" : "Profesor"} sa ovim email-om
+                  postoji!
+                </p>
+              </>
+            ),
+          };
+        }
+
         setToasts((prev) => [...prev, toast]);
         setToastId(toastId + 1);
+        setName("");
+        setSurname("");
+        setEmail("");
       } catch (error) {
         console.log(error.message);
         toast = {
@@ -100,7 +119,7 @@ export default function AddOneUser({
           color: "danger",
           text: (
             <>
-              <p>Došlo je do greške prilikom dodavanja učenika</p>
+              <p>Došlo je do greške prilikom dodavanja </p>
             </>
           ),
         };
@@ -114,7 +133,12 @@ export default function AddOneUser({
         color: "danger",
         text: (
           <>
-            <p>Popunite sva polja pre dodavanja!</p>
+            {name === "" && <p> &gt; Ime nije popunjeno!</p>}
+            {surname === "" && <p> &gt; Prezime nije popunjeno!</p>}
+            {email === "" && <p>&gt; Email nije popunjen!</p>}
+            {email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+              <p>&gt; Email nije u dobrom formatu!</p>
+            )}
           </>
         ),
       };

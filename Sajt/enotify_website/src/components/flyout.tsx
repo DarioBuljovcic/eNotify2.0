@@ -94,18 +94,26 @@ export const FlyoutUser = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { searchData, setData, editData, addition } = useContext(DataContext);
+  const { searchData, setData, editData, addition, dataType } =
+    useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const additionArray: dataClass | undefined = addition.find(
-    (obj) => obj.text === searchData[rowIndex].Class
-  ) as dataClass | undefined;
-  const [selectedClass, setSelectedClass] = useState(additionArray);
+
+  const [selectedClass, setSelectedClass] = useState<dataClass[]>([]);
+
+  useEffect(() => {
+    const additionArray: dataClass | undefined = addition.find(
+      (obj) => obj.text === searchData[rowIndex].Class
+    ) as dataClass | undefined;
+    if (additionArray === undefined) setSelectedClass([]);
+    else setSelectedClass([additionArray]);
+  }, []);
   const handleEdit = async () => {
     let toast;
     try {
       editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
       const newData = [...searchData];
       newData[rowIndex] = newValue;
+      console.log(newData);
       setData(newData);
       closeFlyout();
       toast = {
@@ -114,7 +122,11 @@ export const FlyoutUser = ({
         color: "success",
         text: (
           <>
-            <p>Uspešno ste izmenili učenika '{searchData[rowIndex].Name}'</p>
+            <p>
+              Uspešno ste izmenili{" "}
+              {dataType === "Student" ? "učenika" : "profesora"} '
+              {searchData[rowIndex].Name}'
+            </p>
           </>
         ),
       };
@@ -128,7 +140,8 @@ export const FlyoutUser = ({
         text: (
           <>
             <p>
-              Došlo je do greške pirlikom izmene učenika '
+              Došlo je do greške pirlikom izmene{" "}
+              {dataType === "Student" ? "učenika" : "profesora"} '
               {searchData[rowIndex].Name}'
             </p>
           </>
@@ -136,6 +149,8 @@ export const FlyoutUser = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      closeFlyout();
+      setIsModalVisible(false);
     }
   };
 
@@ -150,15 +165,10 @@ export const FlyoutUser = ({
     console.log(value);
   };
 
-  const handleSelectChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedValue = e.target.value;
-    const selectedClassObject = addition.find(
-      (cls) => cls.value === selectedValue
-    ) as dataClass;
-    setSelectedClass(selectedClassObject || null);
-    handleChange(selectedValue || null, "Class");
+  const onChangeCombo = (selected) => {
+    setSelectedClass(selected);
+    if (selected[0]) handleChange(selected[0].text, "Class");
+    else handleChange("", "Class");
   };
 
   if (isFlyoutVisible) {
@@ -206,11 +216,18 @@ export const FlyoutUser = ({
             <EuiSpacer />
             <EuiDescriptionListTitle>Razred</EuiDescriptionListTitle>
             <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
-              <EuiSelect
-                options={addition}
+              <EuiComboBox
+                options={addition as dataClass[]}
+                onChange={onChangeCombo}
+                selectedOptions={selectedClass}
+                isClearable={true}
+                singleSelection={true}
+              />
+              {/* <EuiSelect
+                options={addition as dataClass[]}
                 value={selectedClass ? selectedClass.value : ""}
                 onChange={handleSelectChange}
-              />
+              /> */}
             </EuiDescriptionListDescription>
 
             <EuiSpacer />
@@ -297,7 +314,6 @@ export const FlyoutNotification = ({
         });
         const selected: optionsNotification[] = [];
         searchData[rowIndex].Class.forEach((d: any) => {
-          console.log(d);
           selected.push({
             label: d,
             value: d,
@@ -449,7 +465,7 @@ export const FlyoutNotification = ({
 
             <EuiSpacer />
 
-            <EuiDescriptionListTitle>Datum</EuiDescriptionListTitle>
+            <EuiDescriptionListTitle>Poslato razredima</EuiDescriptionListTitle>
             <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
               <EuiComboBox
                 aria-label="Accessible screen reader label"
@@ -489,7 +505,8 @@ export const FlyoutClasses = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { data, setData, editData, addition } = useContext(DataContext);
+  const { data, setData, editData, addition, GetSetData } =
+    useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
   const [value, setValue] = useState<string>(newValue.Professor);
@@ -509,7 +526,7 @@ export const FlyoutClasses = ({
         profs.push({
           value: d.UserID,
           text: d.Name,
-          label: d.Name,
+          label: `${d.Name} (${d.Email})`,
         });
         if (newValue.ProfessorsList.includes(d.Name)) {
           selectedProfs.push({
@@ -529,7 +546,7 @@ export const FlyoutClasses = ({
     setSelectedProfessors(selected);
     let profs = "";
     selected.forEach((s) => {
-      profs += `${s.text},`;
+      profs += `${s.label},`;
     });
     handleChange(profs, "ProfessorsList");
   };
@@ -537,22 +554,24 @@ export const FlyoutClasses = ({
   const handleEdit = async () => {
     let toast;
     try {
-      let ProfessorsList;
+      let ProfessorsList = "";
+      console.log(newValue.ProfessorsList);
       professorList.forEach((prof) => {
-        newValue.ProfessorsList.includes(prof.label);
-        ProfessorsList += `${prof.value},`;
+        console.log(prof.label);
+        if (newValue.ProfessorsList.includes(prof.label))
+          ProfessorsList += `${prof.value},`;
       });
       const setValue = {
         Class: newValue.Class,
         Professor: newValue.Professor,
-        ProfessorsList: newValue.ProfessorsList,
+        ProfessorsList: ProfessorsList,
       };
+      console.log(ProfessorsList, setValue, data[rowIndex]);
       editData(data[rowIndex], setValue);
       const newData = [...data];
       newData[rowIndex] = newValue;
-      console.log(newData);
-      setData(newData);
-      closeFlyout();
+      // setData(newData);
+
       toast = {
         id: `toast${toastId}`,
         title: "Uspeh",
@@ -565,6 +584,9 @@ export const FlyoutClasses = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      GetSetData();
+      setIsModalVisible(false);
+      closeFlyout();
     } catch (error) {
       toast = {
         id: `toast${toastId}`,
@@ -579,7 +601,6 @@ export const FlyoutClasses = ({
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
     }
-    console.log(newValue);
   };
 
   const handleChange = (value, key) => {
@@ -648,7 +669,7 @@ export const FlyoutClasses = ({
             <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
               <EuiComboBox
                 aria-label="Accessible screen reader label"
-                placeholder="Izaberite razrede"
+                placeholder="Izaberite profesore"
                 options={professorList}
                 selectedOptions={selectedProfessors}
                 onChange={onChangeCombo}

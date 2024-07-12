@@ -23,9 +23,6 @@ type ExcelItem = {
 export default function FilePicker({
   role,
   postFile,
-  setModalHeader,
-  setModalText,
-  setIsOpen,
   DataContext,
 }: PropsFilePicker) {
   const { setToasts, setToastId, toastId } = useContext(DataContext);
@@ -42,7 +39,8 @@ export default function FilePicker({
         typeof item.Name !== "string" ||
         typeof item.Surname !== "string" ||
         typeof item.Email !== "string" ||
-        typeof item.Class !== "string"
+        typeof item.Class !== "string" ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.Email)
       ) {
         throw new Error("Invalid ExcelItem");
       }
@@ -86,7 +84,7 @@ export default function FilePicker({
               color: "danger",
               text: (
                 <>
-                  <p>Greška prilikom dodavanja fajla</p>
+                  <p>Fajl nije dobrog formata</p>
                 </>
               ),
             };
@@ -105,13 +103,34 @@ export default function FilePicker({
         color: "danger",
         text: (
           <>
-            <p>Greška prilikom dodavanja fajla</p>
+            <p>Niste dodali fajl!</p>
           </>
         ),
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
     }
+  };
+  const handleDownload = () => {
+    fetch(
+      "https://firebasestorage.googleapis.com/v0/b/enotify-c579a.appspot.com/o/User.ods?alt=media&token=4d89d85d-25b4-4427-ae2c-58eb14d9356d"
+    )
+      .then((response) => response.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "User.ods";
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((error) => {
+        console.error("Error fetching the file:", error);
+      });
   };
   return (
     <EuiPageSection>
@@ -137,7 +156,9 @@ export default function FilePicker({
             <EuiText size="s">
               Da dodate {role === "u" ? "učenike" : "profesore"} prevucite fajl
               ili klikom izaberite Excel fajl. Da skinete primer fajla{" "}
-              <a href="#">kliknite ovde</a>
+              <a href="#" onClick={handleDownload}>
+                kliknite ovde
+              </a>
             </EuiText>
           </EuiFlexGroup>
         </EuiFlexItem>

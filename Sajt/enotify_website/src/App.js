@@ -10,6 +10,7 @@ function App() {
   const LoginTest = useCallback(async (password) => {
     const logedIn = await Login(password);
     if (logedIn) setLogedIn(logedIn);
+    else return false;
   }, []);
   if (logedIn) return <Home />;
 
