@@ -13,6 +13,15 @@ import {
   EuiIcon,
   EuiPageBody,
   EuiGlobalToastList,
+  EuiCollapsibleNavGroup,
+  EuiListGroup,
+  EuiListGroupProps,
+  EuiSpacer,
+  EuiPinnableListGroup,
+  EuiPinnableListGroupItemProps,
+  EuiText,
+  EuiCode,
+  EuiCollapsibleNav,
 } from "@elastic/eui";
 import {
   getNotifications,
@@ -42,6 +51,7 @@ import ClassTable from "../../components/classTable.tsx";
 import DataGrid2 from "../../components/dataGrid2.tsx";
 import AddClass from "../../components/addClass.tsx";
 import { toastContext } from "../../types/types.ts";
+import Test from "../../components/Test.tsx";
 
 const columnsNotification = [
   {
@@ -105,6 +115,7 @@ export default function Home() {
   const [modalText, setModalText] = useState("");
   const [modalConfirm, setModalConfirm] = useState(false);
   const [result, setResult] = useState(false);
+  const [options, setOptions] = useState([false, false, false, false]);
   const [toasts, setToasts] = useState([]);
   const [toastId, setToastId] = useState(0);
   const removeToast = (removedToast) => {
@@ -129,6 +140,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(1);
+        },
       },
       {
         id: 2,
@@ -144,6 +158,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(2);
+        },
       },
       {
         id: 3,
@@ -162,6 +179,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(3);
+        },
       },
     ],
     Professor: [
@@ -178,6 +198,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(1);
+        },
       },
       {
         id: 2,
@@ -192,6 +215,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(2);
+        },
       },
       {
         id: 3,
@@ -210,6 +236,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(3);
+        },
       },
     ],
     Notifications: [
@@ -229,6 +258,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(1);
+        },
       },
       {
         id: 2,
@@ -247,9 +279,12 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(2);
+        },
       },
     ],
-    Razredi: [
+    Class: [
       {
         id: 1,
         name: "Dodavanje ručno",
@@ -266,6 +301,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(1);
+        },
       },
       {
         id: 2,
@@ -284,6 +322,9 @@ export default function Home() {
             />
           </>
         ),
+        onclick: () => {
+          onSelectedTabChanged(2);
+        },
       },
       {
         id: 3,
@@ -301,6 +342,10 @@ export default function Home() {
             />
           </>
         ),
+
+        onclick: () => {
+          onSelectedTabChanged(3);
+        },
       },
     ],
   };
@@ -313,21 +358,25 @@ export default function Home() {
         setTitle("Učenici");
         setTabs(allTabs.Student);
         onSelectedTabChanged(1);
+        setOptions([true, false, false, false]);
         break;
       case 2:
         setTitle("Profesori");
         setTabs(allTabs.Professor);
         onSelectedTabChanged(1);
+        setOptions([false, true, false, false]);
         break;
       case 3:
         setTitle("Obaveštenja");
         setTabs(allTabs.Notifications);
         onSelectedTabChanged(1);
+        setOptions([false, false, true, false]);
         break;
       case 4:
         setTitle("Razredi");
-        setTabs(allTabs.Razredi);
+        setTabs(allTabs.Class);
         onSelectedTabChanged(1);
+        setOptions([false, false, false, true]);
         break;
     }
   };
@@ -352,6 +401,17 @@ export default function Home() {
       </EuiTab>
     ));
   };
+  const TopNavLinks: EuiPinnableListGroupItemProps[] = [
+    {
+      label: "Home",
+      iconType: "home",
+      isActive: true,
+      pinnable: false,
+    },
+    { label: "Dashboards", pinned: true },
+    { label: "Dev tools", pinned: true },
+    { label: "Maps", pinned: true },
+  ];
 
   return (
     <DataContext.Provider value={{ setToasts, toastId, setToastId }}>
@@ -370,43 +430,33 @@ export default function Home() {
             modalConfirm={modalConfirm}
             setResult={setResult}
           />
-          <EuiPageTemplate.Sidebar sticky={true} minWidth={"150px"}>
+          <EuiPageTemplate.Sidebar sticky={true} minWidth={"250px"}>
             <EuiFlexGrid>
               <Logo />
-
-              <EuiButton
-                color="primary"
-                fill={selectedTab === 1}
-                size="s"
-                onClick={() => handleTabChange(1)}
-              >
-                Učenici
-              </EuiButton>
-              <EuiButton
-                color="primary"
-                fill={selectedTab === 2}
-                size="s"
-                onClick={() => handleTabChange(2)}
-              >
-                Profesori
-              </EuiButton>
-              <EuiButton
-                color="primary"
-                fill={selectedTab === 3}
-                size="s"
-                onClick={() => handleTabChange(3)}
-              >
-                Obaveštenja
-              </EuiButton>
-
-              <EuiButton
-                color="primary"
-                fill={selectedTab === 4}
-                size="s"
-                onClick={() => handleTabChange(4)}
-              >
-                Razredi
-              </EuiButton>
+              <Test
+                items={allTabs.Student}
+                title={"Učenici"}
+                isOpen={options[0]}
+                handleOpen={() => handleTabChange(1)}
+              />
+              <Test
+                items={allTabs.Professor}
+                title={"Profesori"}
+                isOpen={options[1]}
+                handleOpen={() => handleTabChange(2)}
+              />
+              <Test
+                items={allTabs.Notifications}
+                title={"Obaveštenja"}
+                isOpen={options[2]}
+                handleOpen={() => handleTabChange(3)}
+              />
+              <Test
+                items={allTabs.Class}
+                title={"Razredi"}
+                isOpen={options[3]}
+                handleOpen={() => handleTabChange(4)}
+              />
             </EuiFlexGrid>
           </EuiPageTemplate.Sidebar>
 

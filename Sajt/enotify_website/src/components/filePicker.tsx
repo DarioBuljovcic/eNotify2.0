@@ -1,4 +1,10 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, {
+  useState,
+  Fragment,
+  useContext,
+  LegacyRef,
+  useRef,
+} from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -9,6 +15,7 @@ import {
   EuiPageSection,
   EuiTitle,
   EuiButton,
+  EuiFilePickerProps,
 } from "@elastic/eui";
 import * as XLSX from "xlsx";
 import { PropsFilePicker } from "../types/types";
@@ -29,6 +36,9 @@ export default function FilePicker({
 
   const [file, setFiles] = useState<File>();
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
+  const filePickerRef = useRef<
+    LegacyRef<Omit<EuiFilePickerProps, "stylesMemoizer">> | undefined
+  >(undefined);
 
   const onChange = (file) => {
     setFiles(file[0]);
@@ -56,8 +66,8 @@ export default function FilePicker({
           const binaryStr = event.target.result;
           const workbook = XLSX.read(binaryStr, { type: "binary" });
 
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
+          const sheetName = workbook.SheetNames?.[0];
+          const worksheet = workbook.Sheets?.[sheetName];
           try {
             const jsonData: ExcelItem[] = XLSX.utils.sheet_to_json(worksheet);
             const validatedData = validateExcelItems(jsonData);
@@ -74,9 +84,9 @@ export default function FilePicker({
                 </>
               ),
             };
-            console.log(setToasts);
             setToasts((prev) => [...prev, toast]);
             setToastId(toastId + 1);
+            if (filePickerRef.current) filePickerRef.current.removeFiles();
           } catch (error) {
             toast = {
               id: `toast${toastId}`,
@@ -111,27 +121,6 @@ export default function FilePicker({
       setToastId(toastId + 1);
     }
   };
-  const handleDownload = () => {
-    fetch(
-      "https://firebasestorage.googleapis.com/v0/b/enotify-c579a.appspot.com/o/User.ods?alt=media&token=4d89d85d-25b4-4427-ae2c-58eb14d9356d"
-    )
-      .then((response) => response.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "User.ods";
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-      })
-      .catch((error) => {
-        console.error("Error fetching the file:", error);
-      });
-  };
   return (
     <EuiPageSection>
       <EuiFlexGroup
@@ -156,7 +145,15 @@ export default function FilePicker({
             <EuiText size="s">
               Da dodate {role === "u" ? "učenike" : "profesore"} prevucite fajl
               ili klikom izaberite Excel fajl. Da skinete primer fajla{" "}
-              <a href="#" onClick={handleDownload}>
+              <a
+                href={`./fileForms/${
+                  role === "u" || role === "p" ? "User.ods" : "Class.ods"
+                }`}
+                download={
+                  role === "u" || role === "p" ? "User.ods" : "Class.ods"
+                }
+                target="_blank"
+              >
                 kliknite ovde
               </a>
             </EuiText>
@@ -166,6 +163,7 @@ export default function FilePicker({
         <EuiFlexItem style={{ minWidth: 400 }}>
           <EuiFilePicker
             id={filePickerId}
+            ref={filePickerRef}
             initialPromptText="Izaberite ili prevucite željeni fajl"
             onChange={onChange}
             display="large"

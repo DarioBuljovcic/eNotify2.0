@@ -197,7 +197,7 @@ export default function AddClass({
           </EuiFormLabel>
           <EuiComboBox
             aria-label="Accessible screen reader label"
-            placeholder="Izaberite razrede"
+            placeholder="Izaberite profesore"
             options={professorList}
             selectedOptions={selectedClasses}
             onChange={onChangeCombo}

@@ -106,10 +106,11 @@ const deleteUsers = async (
 ) => {
   if (dataForDelete instanceof Set) {
     const newData = searchData.filter((_, index) => dataForDelete.has(index));
-    deleteData(newData);
+    console.log(dataForDelete);
+    await deleteData(newData);
     GetSetData();
   } else {
-    deleteData([dataForDelete]);
+    await deleteData([dataForDelete]);
     GetSetData();
   }
   closeModal?.();

@@ -1,0 +1,52 @@
+.dropdownButton {
+  border-radius: 0.5vw;
+  transition: background 0.2s ease, color 0.2s ease;
+  padding: 0.5em 1em;
+  font-weight: 800;
+  font-size: 1.2em;
+  text-align: left;
+  width: 100%;
+}
+.dropdownButton:hover {
+  background: rgb(82, 173, 238);
+  color: white;
+}
+.dropdownButton.selected {
+  color: white;
+  background: #07c;
+}
+
+.dropdownContainer {
+  display: grid;
+  justify-content: start;
+  margin-left: 10%;
+  block-size: 0px;
+  writing-mode: horizontal-tb;
+  overflow: hidden;
+  transition: block-size 0.2s ease;
+  padding-block: 0.5em;
+  gap: 0.2em;
+}
+.dropdownContainer .dropdownItem {
+  text-align: left;
+  padding: 0.2em 0.5em;
+  border-radius: 0.5vw;
+  transition: background 0.2s ease;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.2s 0.1s ease;
+}
+.dropdownContainer .dropdownItem:hover {
+  background: rgb(82, 173, 238);
+  color: white;
+}
+.dropdownContainer .dropdownItem.selected {
+  background: #07c;
+  color: white;
+}
+.dropdownContainer.isOpen {
+  transition: block-size 0.5s ease;
+}
+.dropdownContainer.isOpen > .dropdownItem {
+  opacity: 1;
+}/*# sourceMappingURL=dropdown.css.map */
