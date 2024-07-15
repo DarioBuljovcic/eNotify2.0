@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 
-export default ({ title, items, isOpen, handleOpen }) => {
+export default ({ title, items, isOpen, handleOpen, selectedTabId }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const handleClick = (item, index) => {
     setSelectedTab(index);
     item.onclick();
   };
+  useEffect(() => {
+    setSelectedTab(selectedTabId - 1);
+  }, [selectedTabId]);
   useEffect(() => {
     setSelectedTab(0);
   }, [isOpen]);

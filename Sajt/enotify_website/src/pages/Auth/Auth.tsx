@@ -30,7 +30,7 @@ function Auth({ Login }) {
   };
   const handleLogin = async () => {
     let toast;
-    const val = await Login(value); 
+    const val = await Login(value);
     if (!val) {
       toast = {
         id: `toast${toastId}`,
@@ -44,6 +44,7 @@ function Auth({ Login }) {
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      setValue("");
     }
   };
   const handleKeyDown = (e) => {

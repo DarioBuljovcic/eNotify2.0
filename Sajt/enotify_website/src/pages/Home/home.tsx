@@ -440,24 +440,28 @@ export default function Home() {
                 title={"Učenici"}
                 isOpen={options[0]}
                 handleOpen={() => handleTabChange(1)}
+                selectedTabId={selectedTabId}
               />
               <Test
                 items={allTabs.Professor}
                 title={"Profesori"}
                 isOpen={options[1]}
                 handleOpen={() => handleTabChange(2)}
+                selectedTabId={selectedTabId}
               />
               <Test
                 items={allTabs.Notifications}
                 title={"Obaveštenja"}
                 isOpen={options[2]}
                 handleOpen={() => handleTabChange(3)}
+                selectedTabId={selectedTabId}
               />
               <Test
                 items={allTabs.Class}
                 title={"Razredi"}
                 isOpen={options[3]}
                 handleOpen={() => handleTabChange(4)}
+                selectedTabId={selectedTabId}
               />
             </EuiFlexGrid>
           </EuiPageTemplate.Sidebar>
