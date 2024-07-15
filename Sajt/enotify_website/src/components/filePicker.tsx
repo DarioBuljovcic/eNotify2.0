@@ -100,6 +100,7 @@ export default function FilePicker({
             };
             setToasts((prev) => [...prev, toast]);
             setToastId(toastId + 1);
+            if (filePickerRef.current) filePickerRef.current.removeFiles();
             return;
           }
         }

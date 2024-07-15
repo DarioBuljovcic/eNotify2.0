@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default ({ title, items, isOpen, handleOpen }) => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -6,6 +6,9 @@ export default ({ title, items, isOpen, handleOpen }) => {
     setSelectedTab(index);
     item.onclick();
   };
+  useEffect(() => {
+    setSelectedTab(0);
+  }, [isOpen]);
   return (
     <div>
       <button

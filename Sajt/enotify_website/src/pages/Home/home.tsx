@@ -115,7 +115,7 @@ export default function Home() {
   const [modalText, setModalText] = useState("");
   const [modalConfirm, setModalConfirm] = useState(false);
   const [result, setResult] = useState(false);
-  const [options, setOptions] = useState([false, false, false, false]);
+  const [options, setOptions] = useState([true, false, false, false]);
   const [toasts, setToasts] = useState([]);
   const [toastId, setToastId] = useState(0);
   const removeToast = (removedToast) => {
@@ -431,7 +431,9 @@ export default function Home() {
             setResult={setResult}
           />
           <EuiPageTemplate.Sidebar sticky={true} minWidth={"250px"}>
-            <EuiFlexGrid>
+            <EuiFlexGrid
+              style={{ alignItems: "center", justifyContent: "center" }}
+            >
               <Logo />
               <Test
                 items={allTabs.Student}

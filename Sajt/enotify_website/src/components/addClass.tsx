@@ -1,4 +1,11 @@
-import React, { useState, Fragment, useEffect, useContext } from "react";
+import React, {
+  useState,
+  Fragment,
+  useEffect,
+  useContext,
+  useRef,
+  LegacyRef,
+} from "react";
 import {
   EuiFilePicker,
   EuiFlexGroup,
@@ -13,14 +20,12 @@ import {
   EuiFormLabel,
   EuiSelect,
   EuiComboBox,
+  EuiFilePickerProps,
 } from "@elastic/eui";
 import { AddClassProps, DropdownUsers } from "../types/types";
 
 export default function AddClass({
   postClass,
-  setModalHeader,
-  setModalText,
-  setIsOpen,
   getProfessors,
   DataContext,
 }: AddClassProps) {
@@ -32,13 +37,41 @@ export default function AddClass({
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
   const [value, setValue] = useState("");
   const [selectedClasses, setSelectedClasses] = useState<DropdownUsers[]>([]);
+  const filePickerRef = useRef<
+    LegacyRef<Omit<EuiFilePickerProps, "stylesMemoizer">> | undefined
+  >(undefined);
+
   const [errorList, setErrorList] = useState({
     name: false,
     professorList: false,
   });
   const [file, setFiles] = useState<File>();
   const onChangeFile = (file) => {
-    setFiles(file[0]);
+    let toast;
+
+    if (file[0]) {
+      console.log(file[0]);
+      const validateImage = (file) => {
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+        return validImageTypes.includes(file.type);
+      };
+
+      if (validateImage(file[0])) setFiles(file[0]);
+      else {
+        toast = {
+          id: `toast${toastId}`,
+          title: "Greška",
+          color: "danger",
+          text: (
+            <>
+              <p> Fajl nije dobrog formata!</p>
+            </>
+          ),
+        };
+        setToasts((prev) => [...prev, toast]);
+        setToastId(toastId + 1);
+      }
+    }
   };
   const onChangeCombo = (selected) => {
     setSelectedClasses(selected);
@@ -102,6 +135,7 @@ export default function AddClass({
         setFiles(undefined);
         setName("");
         setSelectedClasses([]);
+        if (filePickerRef.current) filePickerRef.current.removeFiles();
       } catch (error) {
         console.log(error.message);
         toast = {
@@ -116,6 +150,10 @@ export default function AddClass({
         };
         setToasts((prev) => [...prev, toast]);
         setToastId(toastId + 1);
+        setFiles(undefined);
+        setName("");
+        setSelectedClasses([]);
+        if (filePickerRef.current) filePickerRef.current.removeFiles();
       }
     } else {
       toast = {

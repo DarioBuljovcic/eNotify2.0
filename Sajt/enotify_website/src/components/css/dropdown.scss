@@ -12,10 +12,6 @@ $selectedClr: white;
   text-align: left;
   width: 100%;
 
-  &:hover {
-    background: $selectedBgClrHover;
-    color: $selectedClr;
-  }
   &.selected {
     color: $selectedClr;
     background: $selectedBgClr;
@@ -40,13 +36,10 @@ $selectedClr: white;
     opacity: 0;
     transition: opacity 0.2s 0.1s ease;
 
-    &:hover {
-      background: $selectedBgClrHover;
-      color: $selectedClr;
-    }
     &.selected {
       background: $selectedBgClr;
       color: $selectedClr;
+      //   text-decoration: underline;
     }
   }
 

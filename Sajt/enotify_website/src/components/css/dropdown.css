@@ -7,10 +7,6 @@
   text-align: left;
   width: 100%;
 }
-.dropdownButton:hover {
-  background: rgb(82, 173, 238);
-  color: white;
-}
 .dropdownButton.selected {
   color: white;
   background: #07c;
@@ -35,10 +31,6 @@
   font-weight: 600;
   opacity: 0;
   transition: opacity 0.2s 0.1s ease;
-}
-.dropdownContainer .dropdownItem:hover {
-  background: rgb(82, 173, 238);
-  color: white;
 }
 .dropdownContainer .dropdownItem.selected {
   background: #07c;

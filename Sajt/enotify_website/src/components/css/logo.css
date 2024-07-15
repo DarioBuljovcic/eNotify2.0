@@ -1,5 +1,6 @@
 .logoContainer {
   height: 10em;
+  max-width: 80px;
 }
 .logoContainer .logo {
   position: relative;
