@@ -106,7 +106,7 @@ const deleteUsers = async (
 ) => {
   if (dataForDelete instanceof Set) {
     const newData = searchData.filter((_, index) => dataForDelete.has(index));
-    console.log(dataForDelete);
+
     await deleteData(newData);
     GetSetData();
   } else {

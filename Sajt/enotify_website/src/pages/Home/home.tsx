@@ -294,9 +294,7 @@ export default function Home() {
             <AddClass
               getProfessors={getProfessors}
               postClass={postClass}
-              setModalHeader={setModalHeader}
-              setModalText={setModalText}
-              setIsOpen={setIsOpen}
+              getAllClasses={getAllClasses}
               DataContext={DataContext}
             />
           </>
