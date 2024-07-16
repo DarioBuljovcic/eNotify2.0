@@ -1,7 +1,7 @@
 .dropdownButton {
-  border-radius: 0.5vw;
+  border-radius: 0.4vw;
   transition: background 0.2s ease, color 0.2s ease;
-  padding: 0.5em 1em;
+  padding: 0.4em 1em;
   font-weight: 800;
   font-size: 1.2em;
   text-align: left;
@@ -15,29 +15,49 @@
 .dropdownContainer {
   display: grid;
   justify-content: start;
-  margin-left: 10%;
+  margin-top: 10px;
+  padding-left: 10px;
+  margin-left: 10px;
   block-size: 0px;
   writing-mode: horizontal-tb;
-  overflow: hidden;
+  overflow-y: clip;
   transition: block-size 0.2s ease;
   padding-block: 0.5em;
   gap: 0.2em;
+  grid-auto-columns: 95%;
 }
 .dropdownContainer .dropdownItem {
+  position: relative;
   text-align: left;
   padding: 0.2em 0.5em;
-  border-radius: 0.5vw;
+  border-radius: 0.3vw;
   transition: background 0.2s ease;
   font-weight: 600;
   opacity: 0;
-  transition: opacity 0.2s 0.1s ease;
+  width: 100%;
 }
 .dropdownContainer .dropdownItem.selected {
   background: #07c;
   color: white;
 }
+.dropdownContainer .dropdownItem.selected::after {
+  opacity: 1;
+  background: #07c;
+}
+.dropdownContainer .dropdownItem::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 2.5px);
+  left: -13.5px;
+  width: 5px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
 .dropdownContainer.isOpen {
   transition: block-size 0.5s ease;
+  border-left: 2px solid #07c;
 }
 .dropdownContainer.isOpen > .dropdownItem {
   opacity: 1;

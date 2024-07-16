@@ -372,37 +372,29 @@ export const FlyoutNotification = ({
     console.log(value);
   };
   const onChangeClass = (selected) => {
-    console.log(selected);
+    let toast;
     const selectedLabels = selected.map((option) => option.value);
     // Check if 'Always Alone' is selected with any other option
     if (
       selectedLabels.includes(alwaysAlone.options[0].value) &&
       selectedLabels.length > 1
     ) {
-      setModalConfirm(false);
-      setModalHeader("Greška");
-      setModalText(
-        `Opcija 'Svi razredi' ne može da se meša sa drugim opcijama`
-      );
-      setIsModalVisible(true);
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>Došlo je do greške prilikom slanja!</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
       return;
     }
 
     // Check if group options are mixed with other options
-    const hasGroupOptions = selectedLabels.some((value) =>
-      groupOptions.options.map((option) => option.value).includes(value)
-    );
-    const hasOtherOptions = selectedLabels.some((value) =>
-      otherOptions.options.map((option) => option.value).includes(value)
-    );
-
-    if (hasGroupOptions && hasOtherOptions) {
-      setModalConfirm(false);
-      setModalHeader("Greška");
-      setModalText(`Opcija sa razredima ne može da se meša sa godinama`);
-      setIsModalVisible(true);
-      return;
-    }
 
     setSelectedClasses(selected);
     let classes: string[] = [];

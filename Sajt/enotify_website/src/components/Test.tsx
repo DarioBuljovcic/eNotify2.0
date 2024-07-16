@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, LegacyRef } from "react";
 
 export default ({ title, items, isOpen, handleOpen, selectedTabId }) => {
   const [selectedTab, setSelectedTab] = useState(0);
+  const containerRef = useRef<HTMLDivElement | undefined>();
   const handleClick = (item, index) => {
     setSelectedTab(index);
     item.onclick();
@@ -11,7 +12,11 @@ export default ({ title, items, isOpen, handleOpen, selectedTabId }) => {
   }, [selectedTabId]);
   useEffect(() => {
     setSelectedTab(0);
+    isOpen
+      ? containerRef.current.removeAttribute("inert")
+      : containerRef.current.setAttribute("inert", "");
   }, [isOpen]);
+
   return (
     <div>
       <button
@@ -23,6 +28,7 @@ export default ({ title, items, isOpen, handleOpen, selectedTabId }) => {
       <div
         className={`dropdownContainer ${isOpen ? "isOpen selected" : ""}`}
         style={isOpen ? { blockSize: items.length * 25 + 16 } : {}}
+        ref={containerRef}
       >
         {items.map((item, index) => (
           <button

@@ -289,7 +289,7 @@ export const getAllClasses = async () => {
 export const sendNotification = async (item) => {
   let fileArray = [];
 
-  if (item.Files[0]) {
+  if (item.Files) {
     fileArray = [...item.Files];
     fileArray.forEach((f) => {
       const storageRef = ref(storage, f?.name);
