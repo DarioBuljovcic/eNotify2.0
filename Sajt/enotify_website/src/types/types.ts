@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
+import { getAllClasses } from './../lib/firebase';
 
 export type dataUsers = {
   [key: string]: any;
@@ -56,9 +57,7 @@ export type DropdownUsers = {
 };
 export type AddClassProps = {
   postClass: (o, p) => void;
-  setModalHeader: (o) => void;
-  setModalText: (o) => void;
-  setIsOpen: (o) => void;
+  getAllClasses:()=> Promise<any[]>;
   getProfessors?: () => void;
   DataContext: React.Context<toastContext>;
 };

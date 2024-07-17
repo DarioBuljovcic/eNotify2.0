@@ -94,7 +94,7 @@ export const FlyoutStudent = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { searchData, setData, editData, addition, dataType } =
+  const { searchData, GetSetData, editData, addition, dataType } =
     useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -110,11 +110,9 @@ export const FlyoutStudent = ({
   const handleEdit = async () => {
     let toast;
     try {
-      editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
-      const newData = [...searchData];
-      newData[rowIndex] = newValue;
-      console.log(newData);
-      setData(newData);
+      await editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
+
+      GetSetData();
       closeFlyout();
       toast = {
         id: `toast${toastId}`,
@@ -132,6 +130,7 @@ export const FlyoutStudent = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      setIsModalVisible(false);
     } catch (error) {
       toast = {
         id: `toast${toastId}`,
@@ -223,11 +222,6 @@ export const FlyoutStudent = ({
                 isClearable={true}
                 singleSelection={true}
               />
-              {/* <EuiSelect
-                options={addition as dataClass[]}
-                value={selectedClass ? selectedClass.value : ""}
-                onChange={handleSelectChange}
-              /> */}
             </EuiDescriptionListDescription>
 
             <EuiSpacer />
@@ -406,7 +400,8 @@ export const FlyoutNotification = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { searchData, setData, editData, addition } = useContext(DataContext);
+  const { searchData, GetSetData, editData, addition } =
+    useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [classList, setClassList] = useState<ClassesNotification[]>();
   const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>(
@@ -478,14 +473,14 @@ export const FlyoutNotification = ({
   const handleEdit = async () => {
     let toast;
     try {
-      editData(
+      await editData(
         searchData[rowIndex] as dataNotification,
         newValue as dataNotification
       );
       const newData = [...searchData];
       newData[rowIndex] = newValue;
       console.log(newData);
-      setData(newData);
+      GetSetData();
       closeFlyout();
       toast = {
         id: `toast${toastId}`,
@@ -499,6 +494,7 @@ export const FlyoutNotification = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      setIsModalVisible(false);
     } catch (error) {
       toast = {
         id: `toast${toastId}`,
@@ -512,6 +508,8 @@ export const FlyoutNotification = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      setIsModalVisible(false);
+      closeFlyout();
     }
   };
 
@@ -645,8 +643,7 @@ export const FlyoutClasses = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { data, setData, editData, addition, GetSetData } =
-    useContext(DataContext);
+  const { data, editData, addition, GetSetData } = useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
   const [value, setValue] = useState<string>(newValue.Professor);
@@ -672,7 +669,7 @@ export const FlyoutClasses = ({
           selectedProfs.push({
             value: d.UserID,
             text: d.Name,
-            label: d.Name,
+            label: `${d.Name} (${d.Email})`,
           });
         }
       });
@@ -707,10 +704,7 @@ export const FlyoutClasses = ({
         ProfessorsList: ProfessorsList,
       };
       console.log(ProfessorsList, setValue, data[rowIndex]);
-      editData(data[rowIndex], setValue);
-      const newData = [...data];
-      newData[rowIndex] = newValue;
-      // setData(newData);
+      await editData(data[rowIndex], setValue);
 
       toast = {
         id: `toast${toastId}`,
@@ -813,7 +807,6 @@ export const FlyoutClasses = ({
                 options={professorList}
                 selectedOptions={selectedProfessors}
                 onChange={onChangeCombo}
-                // isInvalid={errorList.professorList}
                 data-test-subj="demoComboBox"
                 isClearable={true}
               />

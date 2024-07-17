@@ -22,11 +22,12 @@ import {
   EuiComboBox,
   EuiFilePickerProps,
 } from "@elastic/eui";
-import { AddClassProps, DropdownUsers } from "../types/types";
+import { AddClassProps, dataClass, DropdownUsers } from "../types/types";
 
 export default function AddClass({
   postClass,
   getProfessors,
+  getAllClasses,
   DataContext,
 }: AddClassProps) {
   const { setToasts, toastId, setToastId } = useContext(DataContext);
@@ -37,6 +38,7 @@ export default function AddClass({
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
   const [value, setValue] = useState("");
   const [selectedClasses, setSelectedClasses] = useState<DropdownUsers[]>([]);
+  const [allClasses, setClasses] = useState<dataClass[]>();
   const filePickerRef = useRef<
     LegacyRef<Omit<EuiFilePickerProps, "stylesMemoizer">> | undefined
   >(undefined);
@@ -95,10 +97,13 @@ export default function AddClass({
           });
         });
         setProfessorList([...profs]);
+        console.log(getAllClasses);
+        const classes: dataClass[] = await getAllClasses();
+        setClasses(classes);
       };
       if (professorList.length === 0) funk();
     }
-  });
+  }, []);
 
   const handlePost = async () => {
     let toast;
@@ -119,6 +124,25 @@ export default function AddClass({
           Professor: prof?.text,
           ProfessorsList: ProfessorsList,
         };
+        if (allClasses?.some((obj) => obj.Class === name)) {
+          toast = {
+            id: `toast${toastId}`,
+            title: "Greška",
+            color: "danger",
+            text: (
+              <>
+                <p>Razred '{name}' već postoji</p>
+              </>
+            ),
+          };
+          setToasts((prev) => [...prev, toast]);
+          setToastId(toastId + 1);
+          setFiles(undefined);
+          setName("");
+          setSelectedClasses([]);
+          if (filePickerRef.current) filePickerRef.current.removeFiles();
+          return;
+        }
         await postClass(dataToInsert, file);
         toast = {
           id: `toast${toastId}`,
