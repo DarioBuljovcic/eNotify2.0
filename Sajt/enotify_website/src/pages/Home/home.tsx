@@ -71,7 +71,7 @@ const columnsNotification = [
     id: "Date",
   },
 ];
-const columnsUsers = [
+const columnsStudents = [
   {
     id: "UserID",
     initialWidth: 120,
@@ -84,6 +84,18 @@ const columnsUsers = [
   },
   {
     id: "Class",
+  },
+];
+const columnsProfessor = [
+  {
+    id: "UserID",
+    initialWidth: 120,
+  },
+  {
+    id: "Name",
+  },
+  {
+    id: "Email",
   },
 ];
 const columnsClasses = [
@@ -169,7 +181,7 @@ export default function Home() {
         content: (
           <>
             <DataGrid2
-              columns={columnsUsers}
+              columns={columnsStudents}
               getData={getStudents}
               editData={editUser}
               deleteData={deleteUserDocuments}
@@ -226,7 +238,7 @@ export default function Home() {
         content: (
           <>
             <DataGrid2
-              columns={columnsUsers}
+              columns={columnsProfessor}
               getData={getProfessors}
               editData={editUser}
               deleteData={deleteUserDocuments}

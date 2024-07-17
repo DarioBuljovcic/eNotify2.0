@@ -46,7 +46,12 @@ import {
 } from "../types/types";
 import { Timestamp } from "firebase/firestore";
 import { format } from "date-fns";
-import { FlyoutClasses, FlyoutNotification, FlyoutUser } from "./flyout.tsx";
+import {
+  FlyoutClasses,
+  FlyoutNotification,
+  FlyoutProfessor,
+  FlyoutStudent,
+} from "./flyout.tsx";
 import { DataGridSearchUser } from "./dataGridSearch.tsx";
 
 const Modal = ({
@@ -118,11 +123,17 @@ const deleteUsers = async (
 
 const SelectionButton = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const { searchData, deleteData, GetSetData, ToastContext } =
+  const { searchData, deleteData, GetSetData, ToastContext, dataType } =
     useContext(DataContext);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const text =
+    dataType === "Student" || dataType === "Professor"
+      ? "korisnike"
+      : dataType === "Class"
+      ? "razrede"
+      : "notifikacije";
 
   const handleDelete = () => {
     deleteUsers(searchData, selectedRows, deleteData, GetSetData);
@@ -134,18 +145,28 @@ const SelectionButton = () => {
       color: "success",
       text: (
         <>
-          <p>Uspešno ste obrisali sve izabrane korisnike!</p>
+          <p>Uspešno ste obrisali sve izabrane {text}!</p>
         </>
       ),
     };
     setToasts((prev) => [...prev, toast]);
     setToastId(toastId + 1);
   };
+  const handleUpdate = () => {};
   const closeModal = () => {
     setIsModalVisible(false);
   };
   const showModal = () => {
     setIsModalVisible(true);
+  };
+  const items = () => {
+    if (dataType === "Student")
+      return (
+        <EuiContextMenuItem key="update" icon="arrowUp" onClick={showModal}>
+          Sledeći razred
+        </EuiContextMenuItem>
+      );
+    return <></>;
   };
   if (selectedRows.size > 0) {
     return (
@@ -182,8 +203,9 @@ const SelectionButton = () => {
           size="s"
           items={[
             <EuiContextMenuItem key="delete" icon="trash" onClick={showModal}>
-              Delete item
+              Obriši {text}
             </EuiContextMenuItem>,
+            items(),
           ]}
         />
       </EuiPopover>
@@ -352,7 +374,7 @@ const trailingControlColumns = [
             onConfirm={handleDelete}
           />
           {(dataType === "Student" || dataType === "Professor") && (
-            <FlyoutUser
+            <FlyoutStudent
               newValue={newValue}
               rowIndex={rowIndex}
               setNewValue={setNewValue}
@@ -362,7 +384,17 @@ const trailingControlColumns = [
               ToastContext={ToastContext}
             />
           )}
-
+          {dataType === "Professor" && (
+            <FlyoutProfessor
+              newValue={newValue}
+              rowIndex={rowIndex}
+              setNewValue={setNewValue}
+              closeFlyout={closeFlyout}
+              isFlyoutVisible={isFlyoutVisible}
+              DataContext={DataContext}
+              ToastContext={ToastContext}
+            />
+          )}
           {dataType === "Notification" && (
             <FlyoutNotification
               newValue={newValue}
