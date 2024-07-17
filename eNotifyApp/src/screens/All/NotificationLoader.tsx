@@ -461,6 +461,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                     : Colors.Dark.lightText,
                 }}>
                 <BottomSheetScrollView
+                  showsVerticalScrollIndicator={false}
                   style={[
                     {
                       backgroundColor: isDarkMode
@@ -652,15 +653,12 @@ const screenHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: -35,
     zIndex: 100,
   },
   list: {
     flex: 1,
 
     width: '100%',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
 
     overflow: 'hidden',
     elevation: 2,

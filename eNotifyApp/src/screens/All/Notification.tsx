@@ -450,10 +450,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     zIndex: 10,
-    marginTop: -35,
 
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
     overflow: 'hidden',
   },
 

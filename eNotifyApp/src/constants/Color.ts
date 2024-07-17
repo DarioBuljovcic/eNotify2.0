@@ -8,16 +8,16 @@ const Colors: Theme = {
     headerBG: '#65C8FF',
     headerText: 'white',
 
-    headerFirst: '#206AF9',
-    headerSecond: '#205DF9',
-    headerThird: '#2050F9',
+    headerFirst: '#A35CBC',
+    headerSecond: '#9648B2',
+    headerThird: '#8D3AAB',
 
     white: 'white',
     black: 'black',
 
-    accent: '#2077F9', //'#2192ff',
-    accentGreen: '#335ef6',
-    appBackground: '#f8f9fa',
+    accent: '#AE6FC4', //'#2192ff',
+    accentGreen: '#9B49B8',
+    appBackground: '#F3E7F9',
     textInputBackground: '#ffffff',
 
     textPrimary: '#252525',
@@ -30,7 +30,7 @@ const Colors: Theme = {
   Dark: {
     primary: '#ACE1FF',
     secondary: '#e0f4ff',
-    notificationBG: '#0D2136',
+    notificationBG: '#93719F',
     headerBG: '#65C8FF',
     headerText: 'white',
 
@@ -41,10 +41,10 @@ const Colors: Theme = {
     white: 'white',
     black: 'black',
 
-    accent: '#0F365F',
-    accentGreen: '#AAC9F9',
-    appBackground: '#031525',
-    textInputBackground: '#0D2136',
+    accent: '#814695',
+    accentGreen: '#581370',
+    appBackground: '#452350',
+    textInputBackground: '#704082',
 
     textPrimary: '#adb5bd',
     textSecondary: '#adb5bd',

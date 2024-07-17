@@ -10,6 +10,7 @@ import {
   PermissionsAndroid,
   ScrollView,
   DevSettings,
+  Switch,
 } from 'react-native';
 import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -172,6 +173,12 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     const classTopic = await AsyncStorage.getItem('Class');
     if (classTopic) messaging().unsubscribeFromTopic(classTopic);
 
+    AsyncStorage.removeItem('UserId');
+    AsyncStorage.removeItem('Name');
+    AsyncStorage.removeItem('Role');
+    AsyncStorage.removeItem('Class');
+    AsyncStorage.removeItem('Email');
+    AsyncStorage.removeItem('Language');
     AsyncStorage.clear();
 
     DevSettings.reload();
@@ -242,6 +249,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
       }
     }
   };
+  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   return (
     <View
@@ -271,7 +279,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               onPress={uploadProfilePicture}>
               <Ionicons
                 name={'add-outline'}
-                size={35}
+                size={30}
                 color={Colors.Light.white}
               />
             </TouchableOpacity>
@@ -330,7 +338,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               {
                 borderColor: isDarkMode
                   ? Colors.Dark.lightText
-                  : Colors.Light.lightText,
+                  : Colors.Light.textPrimary,
               },
             ]}
             activeOpacity={0.7}
@@ -346,6 +354,15 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               ]}>
               {t('about')}
             </Text>
+            <Ionicons
+              name={'chevron-forward-outline'}
+              size={30}
+              color={
+                isDarkMode
+                  ? Colors.Dark.textSecondary
+                  : Colors.Light.textSecondary
+              }
+            />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -354,7 +371,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               {
                 borderColor: isDarkMode
                   ? Colors.Dark.lightText
-                  : Colors.Light.lightText,
+                  : Colors.Light.textPrimary,
               },
             ]}
             activeOpacity={0.7}
@@ -372,7 +389,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
             </Text>
             {renderLanguage()}
             <Ionicons
-              name={'language'}
+              name={'chevron-forward-outline'}
               size={30}
               color={
                 isDarkMode
@@ -381,14 +398,14 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               }
             />
           </TouchableOpacity>
-
+          {/* 
           <TouchableOpacity
             style={[
               styles.option,
               {
                 borderColor: isDarkMode
                   ? Colors.Dark.lightText
-                  : Colors.Light.lightText,
+                  : Colors.Light.textPrimary,
               },
             ]}
             activeOpacity={0.7}
@@ -404,39 +421,22 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               ]}>
               {t('dark mode')}
             </Text>
-
-            <TouchableOpacity
-              style={[
-                styles.modeChange,
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.accentGreen
-                    : Colors.Light.accentGreen,
-                },
-              ]}
-              onPress={() => changeMode()}>
-              <Animated.View
-                style={[styles.modeRotate, {transform: [{rotate}]}]}>
-                <Ionicons
-                  name={'moon-outline'}
-                  size={35}
-                  color={Colors.Dark.textSecondary}
-                />
-                <Ionicons
-                  name={'sunny-outline'}
-                  size={35}
-                  color={Colors.Light.textSecondary}
-                />
-              </Animated.View>
-            </TouchableOpacity>
-          </TouchableOpacity>
+            <Switch
+              trackColor={{false: '#767577', true: '#81b0ff'}}
+              thumbColor={isDarkMode ? '#f4f3f4' : '#f4f3f4'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={() => changeMode()}
+              value={isDarkMode}
+              disabled={true}
+            />
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={[
               styles.option,
               {
                 borderColor: isDarkMode
                   ? Colors.Dark.lightText
-                  : Colors.Light.lightText,
+                  : Colors.Light.textPrimary,
               },
               {
                 borderBottomWidth: 1,
@@ -456,6 +456,15 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               ]}>
               {t('log out')}
             </Text>
+            <Ionicons
+              name={'log-out-outline'}
+              size={30}
+              color={
+                isDarkMode
+                  ? Colors.Dark.textSecondary
+                  : Colors.Light.textPrimary
+              }
+            />
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -647,9 +656,6 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    marginTop: -35,
     zIndex: 10,
     alignItems: 'center',
   },
@@ -657,8 +663,8 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   imgBorder: {
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 150,
@@ -667,13 +673,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   userImage: {
-    height: 150,
-    width: 150,
+    height: 100,
+    width: 100,
     borderRadius: 150,
   },
   nameText: {
     marginTop: 15,
-    fontSize: 25,
+    fontSize: 20,
     fontFamily: 'Mulish-Light',
   },
   gradeText: {
@@ -681,18 +687,17 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish-Light',
   },
   roleText: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 30,
     fontFamily: 'Mulish-Light',
     textTransform: 'capitalize',
   },
   option: {
-    height: 65,
+    height: 55,
     width: '100%',
-
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 20,
 
     borderTopWidth: 1,
   },
@@ -780,8 +785,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   add: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
 
     borderRadius: 50,
 

@@ -37,10 +37,7 @@ const styles = StyleSheet.create({
     height: '150%',
     padding: 20,
 
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
     zIndex: 10,
-    marginTop: -35,
   },
   aboutText: {
     fontSize: 16,

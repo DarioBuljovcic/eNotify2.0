@@ -138,7 +138,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           textTransform: 'capitalize',
         },
         headerStyle: {
-          height: 130,
+          height: 100,
           elevation: 0,
         },
         headerTintColor: Colors.Light.whiteText,
@@ -146,7 +146,6 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           fontSize: 28,
           fontFamily: 'Mulish',
           textTransform: 'capitalize',
-          marginBottom: 20,
           letterSpacing: 3,
         },
         headerTitleAlign: 'center',

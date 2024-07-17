@@ -257,18 +257,14 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             title: 'Notifikacija',
             headerStyle: {
-              height: 150,
+              height: 100,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 28,
               fontFamily: 'Mulish-Light',
-              marginBottom: 25,
               width: '100%',
-            },
-            headerLeftContainerStyle: {
-              marginBottom: 25,
             },
             headerBackground: () => (
               <View>
@@ -334,17 +330,13 @@ function App(): React.JSX.Element {
             },
             headerStyle: {
               backgroundColor: Colors.Light.accent,
-              height: 150,
+              height: 100,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 28,
               fontFamily: 'Mulish',
-              marginBottom: 25,
-            },
-            headerLeftContainerStyle: {
-              marginBottom: 25,
             },
             headerTitleAlign: 'left',
             headerBackground: () => (
@@ -404,18 +396,14 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             title: t('about'),
             headerStyle: {
-              height: 150,
+              height: 100,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
               fontSize: 28,
               fontFamily: 'Mulish-Light',
-              marginBottom: 25,
               textTransform: 'capitalize',
-            },
-            headerLeftContainerStyle: {
-              marginBottom: 25,
             },
             headerBackground: () => (
               <View>

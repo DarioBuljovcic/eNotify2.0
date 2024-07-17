@@ -366,8 +366,6 @@ const cellHeight = 90;
 
 const styles = StyleSheet.create({
   container: {
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
     overflow: 'hidden',
   },
   flatList: {

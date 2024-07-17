@@ -141,15 +141,12 @@ const styles = StyleSheet.create({
     flex: 1,
 
     borderWidth: 0,
-    marginTop: -40,
     width: screenWidth,
     height: screenHeight,
     zIndex: 10,
   },
   list: {
     flex: 1,
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
 
     overflow: 'hidden',
     elevation: 2,
