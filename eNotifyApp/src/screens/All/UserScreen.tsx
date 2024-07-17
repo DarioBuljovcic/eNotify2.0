@@ -172,12 +172,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     const classTopic = await AsyncStorage.getItem('Class');
     if (classTopic) messaging().unsubscribeFromTopic(classTopic);
 
-    AsyncStorage.removeItem('UserID');
-    AsyncStorage.removeItem('Name');
-    AsyncStorage.removeItem('Role');
-    AsyncStorage.removeItem('Class');
-    AsyncStorage.removeItem('Email');
-    AsyncStorage.removeItem('Language');
+    AsyncStorage.clear();
 
     DevSettings.reload();
     //RNRestart.restart();
@@ -660,7 +655,6 @@ const styles = StyleSheet.create({
   },
   containerSize: {
     width: '80%',
-    marginTop: 30,
   },
   imgBorder: {
     height: 150,
@@ -670,6 +664,7 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     padding: 5,
     position: 'relative',
+    marginTop: 30,
   },
   userImage: {
     height: 150,

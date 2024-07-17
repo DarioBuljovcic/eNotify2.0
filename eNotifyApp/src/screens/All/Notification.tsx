@@ -7,6 +7,7 @@ import {
   useColorScheme,
   PermissionsAndroid,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../constants/Color';
@@ -369,75 +370,77 @@ export default function Obavestenje({route}: any) {
               : Colors.Dark.appBackground,
           },
         ]}>
-        {notification && (
-          <>
-            <View
-              style={[
-                styles.infoContainer,
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Light.textSecondary
-                    : Colors.Dark.textSecondary,
-                },
-              ]}>
-              {true && renderClass()}
-              <Text
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {notification && (
+            <>
+              <View
                 style={[
-                  styles.date,
+                  styles.infoContainer,
                   {
-                    color: isDarkMode
+                    borderColor: isDarkMode
                       ? Colors.Light.textSecondary
                       : Colors.Dark.textSecondary,
                   },
                 ]}>
-                {format(notification.Date.toDate(), 'dd.MM.yyyy')}
+                {true && renderClass()}
+                <Text
+                  style={[
+                    styles.date,
+                    {
+                      color: isDarkMode
+                        ? Colors.Light.textSecondary
+                        : Colors.Dark.textSecondary,
+                    },
+                  ]}>
+                  {format(notification.Date.toDate(), 'dd.MM.yyyy')}
+                </Text>
+              </View>
+              {role === 'Professor' && (
+                <TouchableOpacity
+                  style={styles.seen}
+                  onPress={() =>
+                    navigation.navigate('NotificationViewrs', {
+                      Seen: notification.Seen,
+                      Class: notification.Class,
+                    })
+                  }>
+                  <Ionicons
+                    name={'eye-outline'}
+                    size={28}
+                    color={
+                      isDarkMode
+                        ? Colors.Light.textSecondary
+                        : Colors.Dark.textSecondary
+                    }></Ionicons>
+                </TouchableOpacity>
+              )}
+              <Text
+                style={[
+                  styles.body,
+                  {
+                    color: isDarkMode
+                      ? Colors.Light.textPrimary
+                      : Colors.Dark.textPrimary,
+                  },
+                ]}>
+                {notification.Text}
               </Text>
-            </View>
-            {role === 'Professor' && (
-              <TouchableOpacity
-                style={styles.seen}
-                onPress={() =>
-                  navigation.navigate('NotificationViewrs', {
-                    Seen: notification.Seen,
-                    Class: notification.Class,
-                  })
-                }>
-                <Ionicons
-                  name={'eye-outline'}
-                  size={28}
-                  color={
-                    isDarkMode
-                      ? Colors.Light.textSecondary
-                      : Colors.Dark.textSecondary
-                  }></Ionicons>
-              </TouchableOpacity>
-            )}
-            <Text
-              style={[
-                styles.body,
-                {
-                  color: isDarkMode
-                    ? Colors.Light.textPrimary
-                    : Colors.Dark.textPrimary,
-                },
-              ]}>
-              {notification.Text}
-            </Text>
-            <Text
-              style={[
-                styles.sender,
-                {
-                  color: isDarkMode
-                    ? Colors.Light.lightText
-                    : Colors.Dark.lightText,
-                },
-              ]}>
-              {notification.From}
-            </Text>
-            {/* TODO scrolable */}
-            {images && renderImages()}
-          </>
-        )}
+              <Text
+                style={[
+                  styles.sender,
+                  {
+                    color: isDarkMode
+                      ? Colors.Light.lightText
+                      : Colors.Dark.lightText,
+                  },
+                ]}>
+                {notification.From}
+              </Text>
+              {/* TODO scrolable */}
+              {images && renderImages()}
+            </>
+          )}
+        </ScrollView>
       </View>
     </>
   );
@@ -451,6 +454,7 @@ const styles = StyleSheet.create({
 
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
+    overflow: 'hidden',
   },
 
   body: {
@@ -484,7 +488,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish',
   },
   imageContainer: {
-    position: 'absolute',
+    marginVertical: 15,
     bottom: 10,
     width: '100%',
     padding: 10,

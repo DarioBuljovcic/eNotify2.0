@@ -31,6 +31,8 @@ import NotificationViewrs from './src/screens/Professor/NotificationViewrs';
 import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTranslation} from 'react-i18next';
+import firestore from '@react-native-firebase/firestore';
+import {QuerySnapshot} from 'firebase/firestore';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -53,7 +55,6 @@ function App(): React.JSX.Element {
   };
 
   function buildDeepLinkFromNotificationData(data: any): string | null {
-    console.log('Kliknuo');
     const notificationId = data.notification.android.channelId;
     return `eNotify://Notification/${notificationId}`;
   }
@@ -123,12 +124,59 @@ function App(): React.JSX.Element {
     Appearance.setColorScheme(mode === 'dark' ? 'dark' : 'light');
   };
 
+  //user data check
+  useEffect(() => {
+    const getID = async () => {
+      // console.log('eff');
+      const userID = await AsyncStorage.getItem('UserId');
+      if (userID) {
+        // console.log('userID');
+        const userSnapshot = await firestore()
+          .collection('Users')
+          .where('UserID', '==', userID)
+          .get();
+
+        if (!userSnapshot.empty) {
+          // console.log('not empty');
+          const currentName = userSnapshot.docs[0].data().Name;
+          const currentEmail = userSnapshot.docs[0].data().Email;
+          const currentClass = userSnapshot.docs[0].data().Class;
+
+          const asyncName = await AsyncStorage.getItem('Name');
+          const asyncEmail = await AsyncStorage.getItem('Email');
+          const asyncClass = await AsyncStorage.getItem('Class');
+
+          // console.log(currentName + ' - ' + asyncName);
+          // console.log(currentEmail + ' - ' + asyncEmail);
+          // console.log(currentClass + ' - ' + asyncClass);
+
+          if (currentName !== asyncName)
+            await AsyncStorage.setItem('Name', currentName);
+          if (currentEmail !== asyncEmail)
+            await AsyncStorage.setItem('Email', currentEmail);
+          if (currentClass !== asyncClass)
+            await AsyncStorage.setItem('Class', currentClass);
+        } else {
+          messaging().unsubscribeFromTopic('Svi');
+          messaging().unsubscribeFromTopic('Prvi');
+          messaging().unsubscribeFromTopic('Drugi');
+          messaging().unsubscribeFromTopic('Treci');
+          messaging().unsubscribeFromTopic('Cetvrit');
+
+          const classTopic = await AsyncStorage.getItem('Class');
+          if (classTopic) messaging().unsubscribeFromTopic(classTopic);
+
+          AsyncStorage.clear();
+        }
+      }
+    };
+    getID();
+  }, []);
   //gets light mode and languge
   useEffect(() => {
     getMode();
     setLanguage();
   }, []);
-
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {});
 

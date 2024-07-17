@@ -45,12 +45,14 @@ const RegistrationScreen = ({
   const [isCorrect, setIsCorrect] = useState(true);
   const [value, setValue] = useState('');
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
+  const [lang, setLang] = useState('');
 
   const saveUser = async (user: User) => {
     AsyncStorage.setItem('Role', user.Role);
     AsyncStorage.setItem('Class', user.Class);
     AsyncStorage.setItem('Name', user.Name);
     AsyncStorage.setItem('UserId', user.UserID);
+    AsyncStorage.setItem('Email', user.Email);
 
     messaging().subscribeToTopic('Svi');
 
@@ -120,7 +122,6 @@ const RegistrationScreen = ({
     }
   };
 
-  const [lang, setLang] = useState('');
   return (
     <>
       <View style={styles.container}>
