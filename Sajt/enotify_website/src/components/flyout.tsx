@@ -155,11 +155,11 @@ export const FlyoutStudent = ({
 
   const handleChange = (value: any, key: string) => {
     setNewValue(
-      (prev: dataUsers | dataNotification) =>
+      (prev: dataUsers | dataNotification | dataClass) =>
         ({
           ...prev,
           [key]: value,
-        } as dataUsers | dataNotification)
+        } as dataUsers | dataNotification | dataClass)
     );
     console.log(value);
   };
@@ -252,7 +252,7 @@ export const FlyoutProfessor = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { searchData, setData, editData, addition, dataType } =
+  const { searchData, GetSetData, editData, addition, dataType } =
     useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -269,10 +269,7 @@ export const FlyoutProfessor = ({
     let toast;
     try {
       editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
-      const newData = [...searchData];
-      newData[rowIndex] = newValue;
-      console.log(newData);
-      setData(newData);
+      GetSetData();
       closeFlyout();
       toast = {
         id: `toast${toastId}`,
@@ -290,6 +287,7 @@ export const FlyoutProfessor = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      setIsModalVisible(false);
     } catch (error) {
       toast = {
         id: `toast${toastId}`,
@@ -314,19 +312,13 @@ export const FlyoutProfessor = ({
 
   const handleChange = (value: any, key: string) => {
     setNewValue(
-      (prev: dataUsers | dataNotification) =>
+      (prev: dataUsers | dataNotification | dataClass) =>
         ({
           ...prev,
           [key]: value,
-        } as dataUsers | dataNotification)
+        } as dataUsers | dataNotification | dataClass)
     );
     console.log(value);
-  };
-
-  const onChangeCombo = (selected) => {
-    setSelectedClass(selected);
-    if (selected[0]) handleChange(selected[0].text, "Class");
-    else handleChange("", "Class");
   };
 
   if (isFlyoutVisible) {

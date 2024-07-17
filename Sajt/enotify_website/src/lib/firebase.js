@@ -480,4 +480,27 @@ export const deleteClassesDocuments = async (Classes) => {
     }
   }
 };
-export const nextYear = async (Users) => {};
+export const nextYear = async (Users) => {
+  const classes = await getAllClasses();
+
+  for (const user of Users) {
+    const newClass =
+      parseInt(user.Class.substring(0, 1)) +
+      1 +
+      user.Class.substring(1, user.Class.length);
+    console.log(newClass);
+
+    if (classes.some((obj) => obj.Class === newClass)) {
+      const newUser = {
+        ...user,
+        Class: newClass,
+      };
+
+      await editUser(user, newUser);
+    } else {
+      throw new Error(
+        `Učenik pod imenom ${user.Name} ne može da ide u sledeću godinu. Dodajte razred u koji može da se prebaci ili ga obrišite!`
+      );
+    }
+  }
+};
