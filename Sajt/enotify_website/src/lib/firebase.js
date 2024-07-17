@@ -480,3 +480,4 @@ export const deleteClassesDocuments = async (Classes) => {
     }
   }
 };
+export const nextYear = async (Users) => {};

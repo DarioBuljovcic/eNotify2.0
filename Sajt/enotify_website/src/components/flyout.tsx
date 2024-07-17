@@ -83,7 +83,7 @@ const Modal = ({
   return <></>;
 };
 
-export const FlyoutUser = ({
+export const FlyoutStudent = ({
   newValue,
   rowIndex,
   setNewValue,
@@ -228,6 +228,154 @@ export const FlyoutUser = ({
                 value={selectedClass ? selectedClass.value : ""}
                 onChange={handleSelectChange}
               /> */}
+            </EuiDescriptionListDescription>
+
+            <EuiSpacer />
+            <EuiButton onClick={() => setIsModalVisible(true)}>
+              Izmeni
+            </EuiButton>
+          </EuiFlyoutBody>
+
+          <EuiFlyoutFooter>
+            <EuiButtonEmpty flush="left" iconType="cross" onClick={closeFlyout}>
+              Spusti
+            </EuiButtonEmpty>
+          </EuiFlyoutFooter>
+        </EuiFlyout>
+      </>
+    );
+  }
+  return <></>;
+};
+export const FlyoutProfessor = ({
+  newValue,
+  rowIndex,
+  setNewValue,
+  closeFlyout,
+  isFlyoutVisible,
+  DataContext,
+  ToastContext,
+}: PropfFlyout) => {
+  const { setToasts, toastId, setToastId } = useContext(ToastContext);
+
+  const { searchData, setData, editData, addition, dataType } =
+    useContext(DataContext);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [selectedClass, setSelectedClass] = useState<dataClass[]>([]);
+
+  useEffect(() => {
+    const additionArray: dataClass | undefined = addition.find(
+      (obj) => obj.text === searchData[rowIndex].Class
+    ) as dataClass | undefined;
+    if (additionArray === undefined) setSelectedClass([]);
+    else setSelectedClass([additionArray]);
+  }, []);
+  const handleEdit = async () => {
+    let toast;
+    try {
+      editData(searchData[rowIndex] as dataUsers, newValue as dataUsers);
+      const newData = [...searchData];
+      newData[rowIndex] = newValue;
+      console.log(newData);
+      setData(newData);
+      closeFlyout();
+      toast = {
+        id: `toast${toastId}`,
+        title: "Uspeh",
+        color: "success",
+        text: (
+          <>
+            <p>
+              Uspešno ste izmenili{" "}
+              {dataType === "Student" ? "učenika" : "profesora"} '
+              {searchData[rowIndex].Name}'
+            </p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
+    } catch (error) {
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>
+              Došlo je do greške pirlikom izmene{" "}
+              {dataType === "Student" ? "učenika" : "profesora"} '
+              {searchData[rowIndex].Name}'
+            </p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
+      closeFlyout();
+      setIsModalVisible(false);
+    }
+  };
+
+  const handleChange = (value: any, key: string) => {
+    setNewValue(
+      (prev: dataUsers | dataNotification) =>
+        ({
+          ...prev,
+          [key]: value,
+        } as dataUsers | dataNotification)
+    );
+    console.log(value);
+  };
+
+  const onChangeCombo = (selected) => {
+    setSelectedClass(selected);
+    if (selected[0]) handleChange(selected[0].text, "Class");
+    else handleChange("", "Class");
+  };
+
+  if (isFlyoutVisible) {
+    return (
+      <>
+        <Modal
+          Title="Izmena"
+          Text="Da li ste sigurni da želite da izmenite?"
+          ConfrimBtn="Da"
+          CancelBtn="Ne"
+          modalVisible={isModalVisible}
+          onCancel={() => setIsModalVisible(false)}
+          onConfirm={handleEdit}
+          confirm={true}
+        />
+
+        <EuiFlyout
+          aria-labelledby="flyoutTitle"
+          onClose={closeFlyout}
+          ownFocus
+          size="s"
+        >
+          <EuiFlyoutHeader hasBorder>
+            <EuiTitle size="m">
+              <h2 id="flyoutTitle">Izmena</h2>
+            </EuiTitle>
+          </EuiFlyoutHeader>
+
+          <EuiFlyoutBody>
+            <EuiDescriptionListTitle>Naziv</EuiDescriptionListTitle>
+            <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+              <EuiFieldText
+                value={newValue["Name"]}
+                onChange={(e) => handleChange(e.target.value, "Name")}
+              />
+            </EuiDescriptionListDescription>
+            <EuiSpacer />
+            <EuiDescriptionListTitle>Email</EuiDescriptionListTitle>
+            <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+              <EuiFieldText
+                value={newValue["Email"]}
+                onChange={(e) => handleChange(e.target.value, "Email")}
+              />
             </EuiDescriptionListDescription>
 
             <EuiSpacer />
