@@ -53,6 +53,8 @@ import {
   FlyoutStudent,
 } from "./flyout.tsx";
 import { DataGridSearchUser } from "./dataGridSearch.tsx";
+import { nextYear } from "../lib/firebase.js";
+import { DataGridText } from "../Text/Text.js";
 
 const Modal = ({
   onConfirm,
@@ -125,9 +127,13 @@ const SelectionButton = () => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
   const { searchData, deleteData, GetSetData, ToastContext, dataType } =
     useContext(DataContext);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalText, setModalText] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [option, setOption] = useState(0);
   const text =
     dataType === "Student" || dataType === "Professor"
       ? "korisnike"
@@ -152,17 +158,60 @@ const SelectionButton = () => {
     setToasts((prev) => [...prev, toast]);
     setToastId(toastId + 1);
   };
-  const handleUpdate = () => {};
+  const handleUpdate = async () => {
+    const newData = searchData.filter((_, index) => selectedRows.has(index));
+    try {
+      await nextYear(newData);
+      setIsModalVisible(false);
+      updateSelectedRows({ action: "clear" });
+      let toast;
+      toast = {
+        id: `toast${toastId}`,
+        title: "Uspeh",
+        color: "success",
+        text: (
+          <>
+            <p>Uspešno ste obrisali sve izabrane {text}!</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
+      GetSetData();
+    } catch (error) {
+      updateSelectedRows({ action: "clear" });
+      let toast;
+      toast = {
+        id: `toast${toastId}`,
+        title: "Greška",
+        color: "danger",
+        text: (
+          <>
+            <p>{error.message}</p>
+          </>
+        ),
+      };
+      setToasts((prev) => [...prev, toast]);
+      setToastId(toastId + 1);
+      setIsModalVisible(false);
+    }
+  };
+
   const closeModal = () => {
     setIsModalVisible(false);
   };
-  const showModal = () => {
+  const showModal = (num: number) => {
     setIsModalVisible(true);
+    setOption(num);
   };
   const items = () => {
     if (dataType === "Student")
       return (
-        <EuiContextMenuItem key="update" icon="arrowUp" onClick={showModal}>
+        <EuiContextMenuItem
+          key="update"
+          icon="arrowUp"
+          onClick={() => showModal(2)}
+        >
           Sledeći razred
         </EuiContextMenuItem>
       );
@@ -188,13 +237,21 @@ const SelectionButton = () => {
         closePopover={() => setIsPopoverOpen(false)}
       >
         <Modal
-          Title="Brisanje"
-          Text="Da li ste sigurni da želite da obrišete?"
+          Title={
+            option === 1
+              ? DataGridText.onDeleteStudentM.Title
+              : DataGridText.onNextYear.Title
+          }
+          Text={
+            option === 1
+              ? DataGridText.onDeleteStudentM.Text
+              : DataGridText.onNextYear.Text
+          }
           ConfrimBtn="Da"
           CancelBtn="Ne"
           modalVisible={isModalVisible}
           onCancel={closeModal}
-          onConfirm={handleDelete}
+          onConfirm={option === 1 ? handleDelete : handleUpdate}
         />
         <EuiPopoverTitle>
           {selectedRows.size} {selectedRows.size > 1 ? "items" : "item"}
@@ -202,7 +259,11 @@ const SelectionButton = () => {
         <EuiContextMenuPanel
           size="s"
           items={[
-            <EuiContextMenuItem key="delete" icon="trash" onClick={showModal}>
+            <EuiContextMenuItem
+              key="delete"
+              icon="trash"
+              onClick={() => showModal(1)}
+            >
               Obriši {text}
             </EuiContextMenuItem>,
             items(),
@@ -344,6 +405,24 @@ const trailingControlColumns = [
           Izmeni
         </EuiContextMenuItem>,
       ];
+      const text = () => {
+        let Title, Text;
+        switch (dataType) {
+          case "Student":
+            Title = DataGridText.onDeleteStudentM.Title;
+            Text = DataGridText.onDeleteStudentM.Text;
+          case "Professor":
+            Title = DataGridText.onDeleteProfessorM.Title;
+            Text = DataGridText.onDeleteProfessorM.Text;
+          case "Notification":
+            Title = DataGridText.onDeleteNotificationM.Title;
+            Text = DataGridText.onDeleteNotificationM.Text;
+          case "Class":
+            Title = DataGridText.onDeleteClassM.Title;
+            Text = DataGridText.onDeleteClassM.Text;
+        }
+        return { Title: Title, Text: Text };
+      };
 
       return (
         <>
@@ -365,8 +444,8 @@ const trailingControlColumns = [
           </EuiPopover>
 
           <Modal
-            Title="Brisanje"
-            Text="Da li ste sigurni da želite da obrišete?"
+            Title={text()?.Title}
+            Text={text()?.Text}
             ConfrimBtn="Da"
             CancelBtn="Ne"
             modalVisible={isModalVisible}
