@@ -1,6 +1,5 @@
 import React, { createContext, useMemo, useState } from "react";
 import "@elastic/eui/dist/eui_theme_light.css";
-import Logo from "../../components/logo.tsx";
 import {
   EuiPageHeader,
   EuiPageTemplate,
@@ -51,7 +50,9 @@ import ClassTable from "../../components/classTable.tsx";
 import DataGrid2 from "../../components/dataGrid2.tsx";
 import AddClass from "../../components/addClass.tsx";
 import { toastContext } from "../../types/types.ts";
-import Test from "../../components/Test.tsx";
+import Sidebar from "../../components/sidebar.tsx";
+import { IoCloseSharp } from "react-icons/io5";
+import { FaGripLines } from "react-icons/fa";
 
 const columnsNotification = [
   {
@@ -127,7 +128,8 @@ export default function Home() {
   const [modalText, setModalText] = useState("");
   const [modalConfirm, setModalConfirm] = useState(false);
   const [result, setResult] = useState(false);
-  const [options, setOptions] = useState([true, false, false, false]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [toasts, setToasts] = useState([]);
   const [toastId, setToastId] = useState(0);
   const removeToast = (removedToast) => {
@@ -368,25 +370,22 @@ export default function Home() {
         setTitle("Učenici");
         setTabs(allTabs.Student);
         onSelectedTabChanged(1);
-        setOptions([true, false, false, false]);
         break;
       case 2:
         setTitle("Profesori");
         setTabs(allTabs.Professor);
         onSelectedTabChanged(1);
-        setOptions([false, true, false, false]);
+
         break;
       case 3:
         setTitle("Obaveštenja");
         setTabs(allTabs.Notifications);
         onSelectedTabChanged(1);
-        setOptions([false, false, true, false]);
         break;
       case 4:
         setTitle("Razredi");
         setTabs(allTabs.Class);
         onSelectedTabChanged(1);
-        setOptions([false, false, false, true]);
         break;
     }
   };
@@ -411,22 +410,25 @@ export default function Home() {
       </EuiTab>
     ));
   };
-  const TopNavLinks: EuiPinnableListGroupItemProps[] = [
-    {
-      label: "Home",
-      iconType: "home",
-      isActive: true,
-      pinnable: false,
-    },
-    { label: "Dashboards", pinned: true },
-    { label: "Dev tools", pinned: true },
-    { label: "Maps", pinned: true },
-  ];
+  const navBtns = () => {
+    if (sidebarOpen) {
+      return <IoCloseSharp size={20} />;
+    }
+    return <FaGripLines size={20} />;
+  };
 
   return (
     <DataContext.Provider value={{ setToasts, toastId, setToastId }}>
       <EuiProvider colorMode="light">
-        <EuiPageTemplate panelled={panelled}>
+        <EuiPageTemplate panelled={panelled} color="red">
+          {sidebarOpen}
+          <button
+            className={`openSidebar ${sidebarOpen ? "open" : ""}`}
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            {navBtns()}
+          </button>
+
           <EuiGlobalToastList
             toasts={toasts}
             toastLifeTimeMs={6000}
@@ -440,49 +442,24 @@ export default function Home() {
             modalConfirm={modalConfirm}
             setResult={setResult}
           />
-          <EuiPageTemplate.Sidebar sticky={true} minWidth={"250px"}>
-            <EuiFlexGrid
-              style={{ alignItems: "center", justifyContent: "center" }}
-            >
-              <Logo />
-              <Test
-                items={allTabs.Student}
-                title={"Učenici"}
-                isOpen={options[0]}
-                handleOpen={() => handleTabChange(1)}
-                selectedTabId={selectedTabId}
-              />
-              <Test
-                items={allTabs.Professor}
-                title={"Profesori"}
-                isOpen={options[1]}
-                handleOpen={() => handleTabChange(2)}
-                selectedTabId={selectedTabId}
-              />
-              <Test
-                items={allTabs.Notifications}
-                title={"Obaveštenja"}
-                isOpen={options[2]}
-                handleOpen={() => handleTabChange(3)}
-                selectedTabId={selectedTabId}
-              />
-              <Test
-                items={allTabs.Class}
-                title={"Razredi"}
-                isOpen={options[3]}
-                handleOpen={() => handleTabChange(4)}
-                selectedTabId={selectedTabId}
-              />
-            </EuiFlexGrid>
+          <EuiPageTemplate.Sidebar
+            sticky={true}
+            minWidth={"250px"}
+            className={`sidebarContainer ${sidebarOpen ? "open" : ""}`}
+            style={{ minInlineSize: "350px", maxBlockSize: 350 }}
+          >
+            <Sidebar
+              tabs={allTabs}
+              handleTabChange={handleTabChange}
+              tabId={selectedTab}
+            />
           </EuiPageTemplate.Sidebar>
 
           <EuiPageHeader pageTitle={title} paddingSize="m" />
           <EuiPageBody paddingSize="m">
             <EuiTabs>{renderTabs()}</EuiTabs>
 
-            <EuiPageTemplate.Section grow={false}>
-              {selectedTabContent}
-            </EuiPageTemplate.Section>
+            {selectedTabContent}
           </EuiPageBody>
         </EuiPageTemplate>
       </EuiProvider>
