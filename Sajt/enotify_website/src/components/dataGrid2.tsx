@@ -649,6 +649,16 @@ export default function DataGrid({
                   additionalControls: <SelectionButton />,
                 }}
                 style={{ maxHeight: 470 }}
+                gridStyle={{
+                  border: "none",
+                  stripes: true,
+                  rowHover: "highlight",
+                  header: "underline",
+                  // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
+                  cellPadding: "m",
+                  fontSize: "m",
+                  footer: "overline",
+                }}
               />
             </div>
           </SelectionContext.Provider>

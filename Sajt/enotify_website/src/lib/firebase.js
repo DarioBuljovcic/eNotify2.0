@@ -319,6 +319,8 @@ export const sendNotification = async (item) => {
       Seen: "",
       From: "Uprava škole",
     };
+    //https://enotifyserver2.netlify.app/.netlify/functions/api/data
+    //http://localhost:9000/.netlify/functions/api
     const sendData = async () => {
       try {
         const response = await axios.post(
