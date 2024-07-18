@@ -71,7 +71,7 @@ export default function TimeTable() {
   }, []);
 
   return (
-    <View style={{marginTop: -35, zIndex: 100}}>
+    <View style={{zIndex: 100}}>
       <View
         style={[
           styles.container,
@@ -87,7 +87,7 @@ export default function TimeTable() {
             resizeMode="contain"
             style={{
               backgroundColor: isDarkMode
-                ? Colors.Light.white
+                ? Colors.Light.appBackground
                 : Colors.Dark.white,
               width: Dimensions.get('window').width,
               height: (100 * Dimensions.get('window').width) / 100,
@@ -103,8 +103,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
     overflow: 'hidden',
     height: Dimensions.get('window').height / 1.2,
   },

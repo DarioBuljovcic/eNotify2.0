@@ -219,7 +219,7 @@ const RegistrationScreen = ({
             colors={
               isDarkMode
                 ? [Colors.Dark.accent, Colors.Dark.accent]
-                : ['#C6E2F5', '#2077F9']
+                : ['#9958B8', '#9D7FDC']
             }
             style={[
               styles.confirmBtn,

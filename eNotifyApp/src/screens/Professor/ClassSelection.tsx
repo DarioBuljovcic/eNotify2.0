@@ -52,8 +52,7 @@ export default function ClassSelection({
             backgroundColor: isDarkMode
               ? Colors.Dark.notificationBG
               : Colors.Light.notificationBG,
-            borderWidth: isDarkMode ? 0 : 1,
-            borderColor: Colors.Light.lightText,
+            borderColor: Colors.Light.textPrimary,
           },
           item.Class === profClass
             ? {
@@ -67,8 +66,8 @@ export default function ClassSelection({
           style={[
             {
               color: isDarkMode
-                ? Colors.Dark.lightText
-                : Colors.Light.lightText,
+                ? Colors.Dark.textPrimary
+                : Colors.Light.textPrimary,
             },
             item.Class === profClass
               ? {
