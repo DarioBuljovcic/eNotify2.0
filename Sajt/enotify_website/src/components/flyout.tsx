@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   ClassesNotification,
   dataNotification,
@@ -20,6 +20,8 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
+  EuiIcon,
+  EuiImage,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -31,6 +33,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import moment from "moment";
+import { getImage } from "../lib/firebase";
 
 const Modal = ({
   onConfirm,
@@ -257,14 +260,21 @@ export const FlyoutProfessor = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [selectedClass, setSelectedClass] = useState<dataClass[]>([]);
+  const [image, setImage] = useState();
 
   useEffect(() => {
+    const getImg = async () => {
+      const image = await getImage(newValue.Table);
+      setImage(image);
+    };
+    getImg();
     const additionArray: dataClass | undefined = addition.find(
       (obj) => obj.text === searchData[rowIndex].Class
     ) as dataClass | undefined;
     if (additionArray === undefined) setSelectedClass([]);
     else setSelectedClass([additionArray]);
   }, []);
+
   const handleEdit = async () => {
     let toast;
     try {
@@ -321,6 +331,26 @@ export const FlyoutProfessor = ({
     console.log(value);
   };
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      handleChange(file, "Table");
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        setImage(e.target?.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleEditTable = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   if (isFlyoutVisible) {
     return (
       <>
@@ -355,13 +385,39 @@ export const FlyoutProfessor = ({
                 onChange={(e) => handleChange(e.target.value, "Name")}
               />
             </EuiDescriptionListDescription>
+
             <EuiSpacer />
+
             <EuiDescriptionListTitle>Email</EuiDescriptionListTitle>
             <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
               <EuiFieldText
                 value={newValue["Email"]}
                 onChange={(e) => handleChange(e.target.value, "Email")}
               />
+            </EuiDescriptionListDescription>
+
+            <EuiSpacer />
+
+            <EuiDescriptionListTitle>Raspored</EuiDescriptionListTitle>
+            <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+              <EuiFieldText
+                value={newValue["Table"]}
+                disabled={true}
+                append={
+                  <button onClick={handleEditTable} style={{ height: "100%" }}>
+                    <input
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg"
+                      style={{ display: "none" }}
+                      onChange={onChange}
+                      ref={fileInputRef}
+                    />
+                    <EuiIcon type="documentEdit"></EuiIcon>
+                  </button>
+                }
+              />
+
+              <EuiImage src={image} alt="Prikaz slike rasporeda" />
             </EuiDescriptionListDescription>
 
             <EuiSpacer />

@@ -136,14 +136,14 @@ export default function FilePicker({
             direction="column"
           >
             <EuiTitle
-              size="m"
+              size="l"
               children={
-                <EuiText size="m">
+                <EuiText className="titleText">
                   Dodajte {role === "u" ? "učenike" : "profesore"} pomoću fajla
                 </EuiText>
               }
             ></EuiTitle>
-            <EuiText size="s">
+            <EuiText className="subtitleText">
               Da dodate {role === "u" ? "učenike" : "profesore"} prevucite fajl
               ili klikom izaberite Excel fajl. Da skinete primer fajla{" "}
               <a

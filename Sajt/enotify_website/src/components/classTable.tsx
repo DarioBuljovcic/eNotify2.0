@@ -29,14 +29,7 @@ type Classes = {
   professor: string;
 };
 
-export default function ClassTable({
-  setModalHeader,
-  setModalText,
-  setIsOpen,
-  getClasses,
-  getImage,
-  setImage,
-}: Props) {
+export default function ClassTable({ getClasses, getImage, setImage }: Props) {
   const [classList, setClassList] = useState<Classes[]>([]);
   const [selectedClass, setSelectedClass] = useState<Classes | null>(null);
   const [tableImage, setTableImage] = useState("");

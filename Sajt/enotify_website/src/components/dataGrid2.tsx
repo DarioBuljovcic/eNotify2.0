@@ -14,22 +14,10 @@ import {
   EuiPopover,
   EuiButtonEmpty,
   EuiPopoverTitle,
-  EuiFlyout,
-  EuiFlyoutBody,
-  EuiFlyoutHeader,
-  EuiTitle,
-  EuiDescriptionListTitle,
-  EuiDescriptionListDescription,
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiScreenReaderOnly,
-  EuiFlyoutFooter,
   EuiConfirmModal,
-  EuiFieldText,
-  EuiDatePicker,
-  EuiTextArea,
-  EuiButton,
-  EuiSpacer,
   EuiIcon,
   EuiPageSection,
   EuiFlexGroup,
@@ -230,8 +218,7 @@ const SelectionButton = () => {
             iconSide="right"
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
           >
-            {selectedRows.size} {selectedRows.size > 1 ? "items" : "item"}{" "}
-            selected
+            {selectedRows.size + " "}izabrano
           </EuiButtonEmpty>
         }
         closePopover={() => setIsPopoverOpen(false)}
@@ -343,8 +330,14 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { searchData, deleteData, GetSetData, ToastContext, dataType } =
-        useContext(DataContext);
+      const {
+        data,
+        searchData,
+        deleteData,
+        GetSetData,
+        ToastContext,
+        dataType,
+      } = useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(searchData[rowIndex]);
 
@@ -367,7 +360,7 @@ const trailingControlColumns = [
       const showFlyout = () => {
         closePopover();
         setIsFlyoutVisible(true);
-        setNewValue(searchData[rowIndex]);
+        setNewValue(data[rowIndex]);
       };
       const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
@@ -654,9 +647,8 @@ export default function DataGrid({
                   stripes: true,
                   rowHover: "highlight",
                   header: "underline",
-                  // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
                   cellPadding: "m",
-                  fontSize: "m",
+                  fontSize: "l",
                   footer: "overline",
                 }}
               />

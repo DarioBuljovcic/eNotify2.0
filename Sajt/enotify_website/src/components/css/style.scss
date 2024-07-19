@@ -24,6 +24,7 @@ $font: "Mulish";
 
 body {
   font-family: "Mulish", "sans-serif";
+  font-size: 1.2em;
   .auth {
     z-index: 100;
     background-color: $BGauth;
@@ -85,16 +86,27 @@ body {
     }
   }
   .euiButton {
-    background-color: $dark2;
+    background-color: $main;
     color: $white;
     padding: 10px 20px;
     border-radius: 10px;
   }
+  .euiTab__content {
+    font-size: 1em;
+  }
   a {
     color: $main;
+    font-size: 1em;
+  }
+
+  .subtitleText {
+    font-size: 1.2em;
   }
   .euiIcon {
     color: $main;
+  }
+  .titleText {
+    font-size: 2em;
   }
   .openSidebar {
     position: absolute;
@@ -113,6 +125,9 @@ body {
 
     box-shadow: 7px 0 9px -7px black;
     .sidebarOptions {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
       img {
         width: 150px;
       }
@@ -163,8 +178,8 @@ body {
                 position: absolute;
                 content: "";
                 left: 10%;
-                bottom: 0;
-                height: 2px;
+                bottom: -4px;
+                height: 1px;
                 background-color: $white;
                 animation: open 0.2s ease forwards;
               }

@@ -1,5 +1,6 @@
 body {
   font-family: "Mulish", "sans-serif";
+  font-size: 1.2em;
 }
 body .auth {
   z-index: 100;
@@ -58,16 +59,26 @@ body .auth .loginBtn {
   width: 100%;
 }
 body .euiButton {
-  background-color: #003060;
+  background-color: #0e86d4;
   color: white;
   padding: 10px 20px;
   border-radius: 10px;
 }
+body .euiTab__content {
+  font-size: 1em;
+}
 body a {
   color: #0e86d4;
+  font-size: 1em;
+}
+body .subtitleText {
+  font-size: 1.2em;
 }
 body .euiIcon {
   color: #0e86d4;
+}
+body .titleText {
+  font-size: 2em;
 }
 body .openSidebar {
   position: absolute;
@@ -84,6 +95,11 @@ body .sidebarContainer {
   transition: all 0.5s ease;
   overflow: hidden;
   box-shadow: 7px 0 9px -7px black;
+}
+body .sidebarContainer .sidebarOptions {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 body .sidebarContainer .sidebarOptions img {
   width: 150px;
@@ -132,8 +148,8 @@ body .sidebarContainer .sidebarOptions .sidebarBlock .sidebarGroup.open .sidebar
   position: absolute;
   content: "";
   left: 10%;
-  bottom: 0;
-  height: 2px;
+  bottom: -4px;
+  height: 1px;
   background-color: white;
   animation: open 0.2s ease forwards;
 }

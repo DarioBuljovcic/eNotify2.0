@@ -163,12 +163,12 @@ export default function AddOneUser({
             <EuiTitle
               size="m"
               children={
-                <EuiText size="m">
+                <EuiText className="titleText">
                   Dodajte jednog {role === "u" ? "učenika" : "profesora"}
                 </EuiText>
               }
             ></EuiTitle>
-            <EuiText size="s">
+            <EuiText className="subtitleText">
               Manuelno upisivanje jednog{" "}
               {role === "u" ? "učenika" : "profesora"} u školski sistem
             </EuiText>
@@ -193,6 +193,7 @@ export default function AddOneUser({
               }));
             }}
             aria-label="Use aria labels when no actual label is in use"
+            className="inputAll"
           />
 
           <EuiSpacer />
@@ -212,6 +213,7 @@ export default function AddOneUser({
               }));
             }}
             aria-label="Use aria labels when no actual label is in use"
+            className="inputAll"
           />
 
           <EuiSpacer />
@@ -232,6 +234,7 @@ export default function AddOneUser({
             }}
             spellCheck={true}
             aria-label="Use aria labels when no actual label is in use"
+            className="inputAll"
           />
 
           <EuiSpacer />
@@ -246,6 +249,7 @@ export default function AddOneUser({
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 aria-label="Use aria labels when no actual label is in use"
+                className="inputAll"
               />
             </>
           )}

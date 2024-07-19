@@ -107,6 +107,7 @@ export const getProfessors = async () => {
       Name: data.Name,
       Email: data.Email,
       Class: data.Class,
+      Table: data.Table,
     });
   });
   return newData;
@@ -418,6 +419,31 @@ export const editUser = async (user, newValue) => {
     Name: newValue.Name,
     Class: newValue.Class,
     Email: newValue.Email,
+  });
+};
+export const editProfessor = async (user, newValue) => {
+  const q = query(collection(db, "Users"), where("UserID", "==", user.UserID));
+  const querySnapshot = await getDocs(q);
+  const docId = querySnapshot.docs[0].id;
+  if (newValue.Table)
+    try {
+      console.log(newValue.Table.name);
+      const storageRef = ref(storage, newValue.Table.name);
+      uploadBytes(storageRef, newValue.Table)
+        .then((snapshot) => {
+          console.log("Uploaded a blob or file!");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } catch (error) {
+      console.error("Error updating document:", error);
+    }
+  await updateDoc(doc(db, "Users", docId), {
+    Name: newValue.Name,
+    Class: newValue.Class,
+    Email: newValue.Email,
+    Table: newValue.Table.name,
   });
 };
 export const editNotification = async (notification, newValue) => {
