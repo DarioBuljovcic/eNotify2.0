@@ -181,7 +181,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     AsyncStorage.removeItem('Language');
     AsyncStorage.clear();
 
-    DevSettings.reload();
+    navigation.push('Registration');
     //RNRestart.restart();
     //TODO: navigate to registratin
   };

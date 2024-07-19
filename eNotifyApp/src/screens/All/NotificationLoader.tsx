@@ -338,7 +338,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
         try {
           console.log('check7');
           const response = await axios.post(
-            'http://localhost:9000/.netlify/functions/api/data',
+            'http://enotifyserver2.netlify.app/.netlify/functions/api/data',
             data,
           );
         } catch (error) {
