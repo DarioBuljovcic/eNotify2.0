@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.Light.notificationBG,
+    backgroundColor: Colors.Light.componentBG,
     borderWidth: 0.5,
     padding: 5,
     gap: 10,

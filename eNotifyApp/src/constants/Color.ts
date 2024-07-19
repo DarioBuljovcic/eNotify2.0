@@ -1,23 +1,18 @@
 import {Theme} from './Types/indexTypes';
 
+// 68BBE3
+// 0E86D4
+// 162C46
+// 031525
+// f1f6ff
+// ffffff
+// 0d2136
+
 const Colors: Theme = {
   Light: {
-    primary: '#ACE1FF',
-    secondary: '#e0f4ff',
-    notificationBG: 'white',
-    headerBG: '#65C8FF',
-    headerText: 'white',
-
-    headerFirst: '#A35CBC',
-    headerSecond: '#9648B2',
-    headerThird: '#8D3AAB',
-
-    white: 'white',
-    black: 'black',
-
-    accent: '#AE6FC4', //'#2192ff',
-    accentGreen: '#9B49B8',
-    appBackground: '#F3E7F9',
+    appBackground: '#f1f6ff',
+    componentBG: '#ffffff',
+    accent: '#0E86D4', //'#2192ff',
     textInputBackground: '#ffffff',
 
     textPrimary: '#252525',
@@ -26,24 +21,18 @@ const Colors: Theme = {
     whiteText: '#ffffff',
     hyperlinkText: '#0055cc',
     warningRed: '#f56262',
-  },
-  Dark: {
-    primary: '#ACE1FF',
-    secondary: '#e0f4ff',
-    notificationBG: '#93719F',
-    headerBG: '#65C8FF',
-    headerText: 'white',
 
-    headerFirst: '#0D3055',
-    headerSecond: '#052546',
-    headerThird: '#0b233d',
-
+    accentGreen: '#0E86D4',
+    headerFirst: '#A35CBC',
+    headerSecond: '#9648B2',
+    headerThird: '#8D3AAB',
     white: 'white',
     black: 'black',
-
-    accent: '#814695',
-    accentGreen: '#581370',
-    appBackground: '#452350',
+  },
+  Dark: {
+    appBackground: '#031525',
+    componentBG: '#0d2136',
+    accent: '#055C9D',
     textInputBackground: '#704082',
 
     textPrimary: '#adb5bd',
@@ -52,6 +41,13 @@ const Colors: Theme = {
     whiteText: '#031525',
     hyperlinkText: '#0055cc',
     warningRed: '#f56262',
+
+    headerFirst: '#0D3055',
+    headerSecond: '#052546',
+    headerThird: '#0b233d',
+    white: 'white',
+    black: 'black',
+    accentGreen: '#055C9D',
   },
 };
 export default Colors;

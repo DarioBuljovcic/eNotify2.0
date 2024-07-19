@@ -265,207 +265,217 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
         <ScrollView
           contentContainerStyle={{alignItems: 'center'}}
           showsVerticalScrollIndicator={false}>
-          <View style={styles.imgBorder}>
-            <TouchableOpacity
-              style={[
-                styles.add,
-                {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.accentGreen
-                    : Colors.Light.accentGreen,
-                },
-              ]}
-              activeOpacity={0.9}
-              onPress={uploadProfilePicture}>
-              <Ionicons
-                name={'add-outline'}
-                size={30}
-                color={Colors.Light.white}
-              />
-            </TouchableOpacity>
-            <Image
-              source={
-                imageSource
-                  ? {uri: imageSource}
-                  : isDarkMode
-                  ? require('../../assets/images/user-dark.png')
-                  : require('../../assets/images/user-light.png')
-              }
-              style={styles.userImage}
-            />
+          <View
+            style={[
+              styles.accountInfoContainer,
+              {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.componentBG
+                  : Colors.Light.componentBG,
+              },
+            ]}>
+            <View>
+              <TouchableOpacity
+                style={[
+                  styles.add,
+                  {
+                    backgroundColor: isDarkMode
+                      ? Colors.Dark.accentGreen
+                      : Colors.Light.accentGreen,
+                  },
+                ]}
+                activeOpacity={0.9}
+                onPress={uploadProfilePicture}>
+                <Ionicons
+                  name={'add-outline'}
+                  size={20}
+                  color={Colors.Light.white}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={uploadProfilePicture}
+                activeOpacity={1}>
+                <Image
+                  source={
+                    imageSource
+                      ? {uri: imageSource}
+                      : isDarkMode
+                      ? require('../../assets/images/user-dark.png')
+                      : require('../../assets/images/user-light.png')
+                  }
+                  style={styles.userImage}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.userInfoContainer}>
+              <Text
+                style={[
+                  styles.nameText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textPrimary
+                      : Colors.Light.textPrimary,
+                  },
+                ]}>
+                {name}
+              </Text>
+
+              {role == 'Professor' ? (
+                <></>
+              ) : (
+                <Text
+                  style={[
+                    styles.gradeText,
+                    {
+                      color: isDarkMode
+                        ? Colors.Dark.lightText
+                        : Colors.Light.lightText,
+                    },
+                  ]}>
+                  {grade}
+                </Text>
+              )}
+            </View>
           </View>
 
-          <Text
+          <View
             style={[
-              styles.nameText,
+              styles.optionsContainer,
               {
-                color: isDarkMode
-                  ? Colors.Dark.textPrimary
-                  : Colors.Light.textPrimary,
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.componentBG
+                  : Colors.Light.componentBG,
               },
             ]}>
-            {name}
-          </Text>
-          {role == 'Professor' ? (
-            <></>
-          ) : (
-            <Text
+            <TouchableOpacity
               style={[
-                styles.gradeText,
+                styles.option,
                 {
-                  color: isDarkMode
+                  borderColor: isDarkMode
                     ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
+                    : Colors.Light.textPrimary,
                 },
-              ]}>
-              {grade}
-            </Text>
-          )}
-          <Text
-            style={[
-              styles.roleText,
-              {
-                color: isDarkMode
-                  ? Colors.Dark.textSecondary
-                  : Colors.Light.textSecondary,
-              },
-            ]}>
-            {role == 'Professor' ? t('proffesor') : t('student')}
-          </Text>
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                borderColor: isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.textPrimary,
-              },
-            ]}
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate('About')}>
-            <Text
-              style={[
-                styles.optionText,
-                {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
-                },
-              ]}>
-              {t('about')}
-            </Text>
-            <Ionicons
-              name={'chevron-forward-outline'}
-              size={30}
-              color={
-                isDarkMode
-                  ? Colors.Dark.textSecondary
-                  : Colors.Light.textSecondary
-              }
-            />
-          </TouchableOpacity>
+              ]}
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('About')}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('about')}
+              </Text>
+              <Ionicons
+                name={'arrow-forward-outline'}
+                size={26}
+                color={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
+              />
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                borderColor: isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.textPrimary,
-              },
-            ]}
-            activeOpacity={0.7}
-            onPress={() => setLanguageModal(true)}>
-            <Text
+            <TouchableOpacity
               style={[
-                styles.optionText,
+                styles.option,
                 {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.textPrimary,
                 },
-              ]}>
-              {t('language')}
-            </Text>
-            {renderLanguage()}
-            <Ionicons
-              name={'chevron-forward-outline'}
-              size={30}
-              color={
-                isDarkMode
-                  ? Colors.Dark.textSecondary
-                  : Colors.Light.textSecondary
-              }
-            />
-          </TouchableOpacity>
-          {/* 
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                borderColor: isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.textPrimary,
-              },
-            ]}
-            activeOpacity={0.7}
-            onPress={() => changeMode()}>
-            <Text
+              ]}
+              activeOpacity={0.7}
+              onPress={() => setLanguageModal(true)}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('language')}
+              </Text>
+              {renderLanguage()}
+              <Ionicons
+                name={'arrow-forward-outline'}
+                size={26}
+                color={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
               style={[
-                styles.optionText,
+                styles.optionLast,
                 {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.textPrimary,
                 },
-              ]}>
-              {t('dark mode')}
-            </Text>
-            <Switch
-              trackColor={{false: '#767577', true: '#81b0ff'}}
-              thumbColor={isDarkMode ? '#f4f3f4' : '#f4f3f4'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={() => changeMode()}
-              value={isDarkMode}
-              disabled={true}
-            />
-          </TouchableOpacity> */}
-          <TouchableOpacity
-            style={[
-              styles.option,
-              {
-                borderColor: isDarkMode
-                  ? Colors.Dark.lightText
-                  : Colors.Light.textPrimary,
-              },
-              {
-                borderBottomWidth: 1,
-                marginBottom: 50,
-              },
-            ]}
-            activeOpacity={0.7}
-            onPress={() => logOutModal()}>
-            <Text
+              ]}
+              activeOpacity={0.7}
+              onPress={() => changeMode()}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('dark mode')}
+              </Text>
+              <Switch
+                trackColor={{false: '#767577', true: '#81b0ff'}}
+                thumbColor={isDarkMode ? '#f4f3f4' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={() => changeMode()}
+                value={isDarkMode}
+                disabled={true}
+              />
+            </TouchableOpacity>
+
+            <View style={{flex: 1}}></View>
+
+            <TouchableOpacity
               style={[
-                styles.optionText,
+                styles.optionLast,
+
                 {
-                  color: isDarkMode
-                    ? Colors.Dark.textSecondary
-                    : Colors.Light.textSecondary,
+                  borderTopWidth: 0.2,
+                  borderColor: isDarkMode
+                    ? Colors.Dark.lightText
+                    : Colors.Light.textPrimary,
                 },
-              ]}>
-              {t('log out')}
-            </Text>
-            <Ionicons
-              name={'log-out-outline'}
-              size={30}
-              color={
-                isDarkMode
-                  ? Colors.Dark.textSecondary
-                  : Colors.Light.textPrimary
-              }
-            />
-          </TouchableOpacity>
+                {},
+              ]}
+              activeOpacity={0.7}
+              onPress={() => logOutModal()}>
+              <Text
+                style={[
+                  styles.optionText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textSecondary
+                      : Colors.Light.textSecondary,
+                  },
+                ]}>
+                {t('log out')}
+              </Text>
+              <Ionicons
+                name={'log-out-outline'}
+                size={26}
+                color={
+                  isDarkMode
+                    ? Colors.Dark.textSecondary
+                    : Colors.Light.textPrimary
+                }
+              />
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </View>
       {languageModal ? (
@@ -480,8 +490,8 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 {borderBottomWidth: 1},
                 {
                   backgroundColor: isDarkMode
-                    ? Colors.Dark.textInputBackground
-                    : Colors.Light.textInputBackground,
+                    ? Colors.Dark.componentBG
+                    : Colors.Light.componentBG,
                 },
                 {
                   borderColor: isDarkMode
@@ -512,8 +522,8 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 {borderBottomWidth: 1},
                 {
                   backgroundColor: isDarkMode
-                    ? Colors.Dark.textInputBackground
-                    : Colors.Light.textInputBackground,
+                    ? Colors.Dark.componentBG
+                    : Colors.Light.componentBG,
                 },
                 {
                   borderColor: isDarkMode
@@ -543,8 +553,8 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 styles.languageOption,
                 {
                   backgroundColor: isDarkMode
-                    ? Colors.Dark.textInputBackground
-                    : Colors.Light.textInputBackground,
+                    ? Colors.Dark.componentBG
+                    : Colors.Light.componentBG,
                 },
               ]}
               activeOpacity={1}
@@ -578,8 +588,8 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               ,
               {
                 backgroundColor: isDarkMode
-                  ? Colors.Dark.textInputBackground
-                  : Colors.Light.textInputBackground,
+                  ? Colors.Dark.componentBG
+                  : Colors.Light.componentBG,
               },
             ]}>
             <Ionicons
@@ -660,26 +670,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerSize: {
-    width: '80%',
+    width: '100%',
   },
-  imgBorder: {
-    height: 100,
-    width: 100,
-    alignItems: 'center',
+  accountInfoContainer: {
+    width: '85%',
+    flexDirection: 'row',
+    marginVertical: 20,
+    padding: 10,
+
+    borderRadius: 10,
+    elevation: 4,
+    shadowColor: Colors.Light.black,
+  },
+  userInfoContainer: {
     justifyContent: 'center',
-    borderRadius: 150,
-    padding: 5,
-    position: 'relative',
-    marginTop: 30,
+    flex: 1,
+    alignItems: 'center',
   },
   userImage: {
-    height: 100,
-    width: 100,
+    height: 70,
+    width: 70,
     borderRadius: 150,
   },
   nameText: {
-    marginTop: 15,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: 'Mulish-Light',
   },
   gradeText: {
@@ -687,19 +701,36 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish-Light',
   },
   roleText: {
-    fontSize: 14,
-    marginBottom: 30,
+    fontSize: 12,
     fontFamily: 'Mulish-Light',
     textTransform: 'capitalize',
   },
+  optionsContainer: {
+    height: Dimensions.get('window').height - 260,
+    width: '85%',
+    padding: 10,
+    backgroundColor: Colors.Light.componentBG,
+
+    borderRadius: 10,
+    elevation: 4,
+    shadowColor: Colors.Light.black,
+    marginBottom: 10,
+  },
   option: {
-    height: 55,
+    height: 65,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
 
-    borderTopWidth: 1,
+    borderBottomWidth: 0.2,
+  },
+  optionLast: {
+    height: 65,
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   optionText: {
     fontSize: 17,
@@ -741,7 +772,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 300,
     height: 150,
-    backgroundColor: Colors.Light.textInputBackground,
+    backgroundColor: Colors.Light.componentBG,
     borderRadius: 20,
     overflow: 'hidden',
   },
@@ -762,7 +793,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: 320,
     height: 350,
-    backgroundColor: Colors.Light.textInputBackground,
+    backgroundColor: Colors.Light.componentBG,
     borderRadius: 20,
     overflow: 'hidden',
     alignContent: 'center',
@@ -785,8 +816,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   add: {
-    width: 35,
-    height: 35,
+    width: 20,
+    height: 20,
 
     borderRadius: 50,
 

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   PermissionsAndroid,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState, useRef, useMemo, useCallback} from 'react';
 import {format} from 'date-fns';
@@ -47,7 +48,6 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
   const [selectedClass, setSelectedClass] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [naziv, setNaziv] = useState('');
-
   const [selectedFile, setSelectedFile] =
     useState<DocumentPickerResponse | null>(null);
 
@@ -135,6 +135,12 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     return initials;
   };
 
+  const filterClasses = useMemo(() => {
+    console.log(razredi);
+    if (razredi)
+      return razredi.filter(obj => obj.ProfessorsList.includes(userId));
+  }, [razredi]);
+
   let date: string;
   const renderObavestenje = ({
     item,
@@ -144,14 +150,29 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
     index: number;
   }) => {
     let dateNew: string;
+
+    // const getProfilePicture = async () => {
+    //   const querySnapshot = await firestore()
+    //     .collection('Users')
+    //     .where('Name', '==', item.From)
+    //     .get();
+    //   if (!querySnapshot.empty) {
+    //     const imageUrl = await storage()
+    //       .ref(querySnapshot.docs[0].data().profile_picture)
+    //       .getDownloadURL();
+    //     return imageUrl;
+    //   }
+    //   return '';
+    // };
+
     const display = (
       <TouchableOpacity
         style={[
           styles.obavestenje,
           {
             backgroundColor: isDarkMode
-              ? Colors.Light.notificationBG
-              : Colors.Dark.notificationBG,
+              ? Colors.Light.componentBG
+              : Colors.Dark.componentBG,
           },
         ]}
         activeOpacity={0.7}
@@ -490,8 +511,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                         styles.input,
                         {
                           backgroundColor: isDarkMode
-                            ? Colors.Light.textInputBackground
-                            : Colors.Dark.textInputBackground,
+                            ? Colors.Light.componentBG
+                            : Colors.Dark.componentBG,
                           color: isDarkMode
                             ? Colors.Light.textPrimary
                             : Colors.Dark.textPrimary,
@@ -508,8 +529,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                         styles.input,
                         {
                           backgroundColor: isDarkMode
-                            ? Colors.Light.textInputBackground
-                            : Colors.Dark.textInputBackground,
+                            ? Colors.Light.componentBG
+                            : Colors.Dark.componentBG,
                           color: isDarkMode
                             ? Colors.Light.textPrimary
                             : Colors.Dark.textPrimary,
@@ -531,8 +552,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                         styles.dropdown,
                         {
                           backgroundColor: isDarkMode
-                            ? Colors.Light.textInputBackground
-                            : Colors.Dark.textInputBackground,
+                            ? Colors.Light.componentBG
+                            : Colors.Dark.componentBG,
                         },
                       ]}
                       placeholderStyle={[
@@ -545,8 +566,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                       ]}
                       itemContainerStyle={{
                         backgroundColor: isDarkMode
-                          ? Colors.Light.notificationBG
-                          : Colors.Dark.notificationBG,
+                          ? Colors.Light.componentBG
+                          : Colors.Dark.componentBG,
                       }}
                       selectedTextStyle={[
                         styles.selectedTextStyle,
@@ -558,8 +579,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                       ]}
                       containerStyle={{
                         backgroundColor: isDarkMode
-                          ? Colors.Light.notificationBG
-                          : Colors.Dark.notificationBG,
+                          ? Colors.Light.componentBG
+                          : Colors.Dark.componentBG,
                       }}
                       inputSearchStyle={[
                         styles.inputSearchStyle,
@@ -574,7 +595,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                           ? Colors.Light.textPrimary
                           : Colors.Dark.textPrimary,
                       }}
-                      data={razredi}
+                      data={filterClasses}
                       search
                       placeholder={!isFocus ? t('choose grade') : '...'}
                       value={selectedClass}
@@ -747,7 +768,7 @@ const styles = StyleSheet.create({
   },
   datumText: {
     fontSize: 13,
-    marginTop: 5,
+    marginTop: 0,
     fontFamily: 'Mulish-Light',
   },
   title: {

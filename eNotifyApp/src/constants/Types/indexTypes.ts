@@ -78,13 +78,10 @@ export type Class = {
 
 //Colors
 export type Color = {
-  primary: string;
-  secondary: string;
-  notificationBG: string;
-  headerBG: string;
+  appBackground: string;
+  componentBG: string;
   textPrimary: string;
   textSecondary: string;
-  headerText: string;
 
   headerFirst: string;
   headerSecond: string;
@@ -96,7 +93,6 @@ export type Color = {
   accent: string;
   accentGreen: string;
 
-  appBackground: string;
   textInputBackground: string;
 
   lightText: string;

@@ -257,63 +257,18 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             title: 'Notifikacija',
             headerStyle: {
-              height: 100,
+              backgroundColor: isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent,
+              height: 70,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 28,
+              fontSize: 22,
               fontFamily: 'Mulish-Light',
               width: '100%',
             },
-            headerBackground: () => (
-              <View>
-                <Svg
-                  style={{position: 'absolute', top: -1}}
-                  width={Dimensions.get('window').width + 10}
-                  height="160"
-                  fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
-                  <G clip-path="url(#a)">
-                    <Path
-                      fill={
-                        isDarkMode ? Colors.Dark.accent : Colors.Light.accent
-                      }
-                      d="M0 0h390v234H0z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerFirst
-                          : Colors.Light.headerFirst
-                      }
-                      d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerSecond
-                          : Colors.Light.headerSecond
-                      }
-                      d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerThird
-                          : Colors.Light.headerThird
-                      }
-                      d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                  </G>
-                  <Defs>
-                    <ClipPath id="a">
-                      <Path fill="#fff" d="M0 0h390v234H0z" />
-                    </ClipPath>
-                  </Defs>
-                </Svg>
-              </View>
-            ),
           })}
         />
         <Stack.Screen
@@ -329,64 +284,18 @@ function App(): React.JSX.Element {
               fontFamily: 'Mulish',
             },
             headerStyle: {
-              backgroundColor: Colors.Light.accent,
-              height: 100,
+              backgroundColor: isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent,
+              height: 70,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 28,
+              fontSize: 22,
               fontFamily: 'Mulish',
             },
             headerTitleAlign: 'left',
-            headerBackground: () => (
-              <View>
-                <Svg
-                  style={{position: 'absolute', top: -1}}
-                  width={Dimensions.get('window').width + 10}
-                  height="160"
-                  fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
-                  <G clip-path="url(#a)">
-                    <Path
-                      fill={
-                        isDarkMode ? Colors.Dark.accent : Colors.Light.accent
-                      }
-                      d="M0 0h390v234H0z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerFirst
-                          : Colors.Light.headerFirst
-                      }
-                      d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerSecond
-                          : Colors.Light.headerSecond
-                      }
-                      d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerThird
-                          : Colors.Light.headerThird
-                      }
-                      d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                  </G>
-                  <Defs>
-                    <ClipPath id="a">
-                      <Path fill="#fff" d="M0 0h390v234H0z" />
-                    </ClipPath>
-                  </Defs>
-                </Svg>
-              </View>
-            ),
           })}
         />
         <Stack.Screen
@@ -396,63 +305,18 @@ function App(): React.JSX.Element {
             headerBackVisible: false,
             title: t('about'),
             headerStyle: {
-              height: 100,
+              backgroundColor: isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent,
+              height: 70,
               elevation: 0,
             },
             headerTintColor: Colors.Light.whiteText,
             headerTitleStyle: {
-              fontSize: 28,
+              fontSize: 22,
               fontFamily: 'Mulish-Light',
               textTransform: 'capitalize',
             },
-            headerBackground: () => (
-              <View>
-                <Svg
-                  style={{position: 'absolute', top: -1}}
-                  width={Dimensions.get('window').width + 10}
-                  height="160"
-                  fill="none"
-                  viewBox={`0 0 ${Dimensions.get('window').width + 10} 160`}>
-                  <G clip-path="url(#a)">
-                    <Path
-                      fill={
-                        isDarkMode ? Colors.Dark.accent : Colors.Light.accent
-                      }
-                      d="M0 0h390v234H0z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerFirst
-                          : Colors.Light.headerFirst
-                      }
-                      d="M376.3 105.314c43.088 197.888-49.188 185.883-185.853 162.133-13.245-2.302-20.441-16.805-15.339-29.243 23.369-56.97 18.098-95.949-16.553-116.305-42.185-24.782-98.442-59.87-66.937-97.303C135.429-27.458 250.217-8.186 312.134-8.186c82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerSecond
-                          : Colors.Light.headerSecond
-                      }
-                      d="M448.3 99.889c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.658-44.273-76.871 4.264-44.831-10.242-100.086-75.96-122.42-18.342-6.235-30.754-25.903-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                    <Path
-                      fill={
-                        isDarkMode
-                          ? Colors.Dark.headerThird
-                          : Colors.Light.headerThird
-                      }
-                      d="M517.3 100.214c38.177 175.333-29.912 185.893-140.987 169.503-20.086-2.964-46.196-56.657-44.273-76.871 4.264-44.83-10.242-100.085-75.96-122.42-18.342-6.234-30.754-25.902-21.712-43.036 67.933-128.732 174.629-40.676 218.766-40.676 82.843 0 64.166 30.657 64.166 113.5Z"
-                    />
-                  </G>
-                  <Defs>
-                    <ClipPath id="a">
-                      <Path fill="#fff" d="M0 0h390v234H0z" />
-                    </ClipPath>
-                  </Defs>
-                </Svg>
-              </View>
-            ),
           })}
         />
       </Stack.Navigator>

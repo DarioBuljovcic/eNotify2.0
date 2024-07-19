@@ -146,8 +146,8 @@ const App = () => {
                       styles.cas,
                       {
                         backgroundColor: isDarkMode
-                          ? Colors.Light.notificationBG
-                          : Colors.Dark.notificationBG,
+                          ? Colors.Light.componentBG
+                          : Colors.Dark.componentBG,
                         borderColor: isDarkMode
                           ? Colors.Light.lightText
                           : Colors.Dark.lightText,
@@ -205,8 +205,8 @@ const App = () => {
                         styles.casSmall,
                         {
                           backgroundColor: isDarkMode
-                            ? Colors.Light.notificationBG
-                            : Colors.Dark.notificationBG,
+                            ? Colors.Light.componentBG
+                            : Colors.Dark.componentBG,
                           borderColor: isDarkMode
                             ? Colors.Light.lightText
                             : Colors.Dark.lightText,

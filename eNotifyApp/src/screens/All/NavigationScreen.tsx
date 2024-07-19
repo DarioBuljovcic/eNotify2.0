@@ -31,8 +31,8 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const backgroundColor = bgColor.interpolate({
     inputRange: [0, 1],
     outputRange: isDarkMode
-      ? [Colors.Dark.accent, Colors.Dark.accentGreen]
-      : [Colors.Light.accent, Colors.Light.accentGreen],
+      ? [Colors.Dark.appBackground, Colors.Dark.appBackground]
+      : [Colors.Light.appBackground, Colors.Light.appBackground],
   });
 
   const Tab = createBottomTabNavigator();
@@ -86,11 +86,32 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           let iconName: string = '';
 
           if (route.name === 'Notifications') {
-            iconName = focused ? 'notifications' : 'notifications-outline';
+            iconName = 'notifications-outline';
+            color = focused
+              ? isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent
+              : isDarkMode
+              ? Colors.Dark.textPrimary
+              : Colors.Light.textPrimary;
           } else if (route.name === 'TimeTable') {
-            iconName = focused ? 'calendar' : 'calendar-outline';
+            iconName = 'calendar-outline';
+            color = focused
+              ? isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent
+              : isDarkMode
+              ? Colors.Dark.textPrimary
+              : Colors.Light.textPrimary;
           } else if (route.name === 'MyAccount') {
-            iconName = focused ? 'people' : 'people-outline';
+            iconName = 'people-outline';
+            color = focused
+              ? isDarkMode
+                ? Colors.Dark.accent
+                : Colors.Light.accent
+              : isDarkMode
+              ? Colors.Dark.textPrimary
+              : Colors.Light.textPrimary;
           }
           size = 30;
           // You can return any component that you like here!
@@ -102,8 +123,8 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
                       styles.tabButton,
                       {
                         backgroundColor: isDarkMode
-                          ? Colors.Dark.accent
-                          : Colors.Light.accent,
+                          ? Colors.Dark.componentBG
+                          : Colors.Light.componentBG,
                       },
                       {transform: [{translateY}]},
                     ]
@@ -122,17 +143,21 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             </Animated.View>
           );
         },
+        headerShown: false,
         tabBarActiveTintColor: Colors.Light.whiteText,
         tabBarInactiveTintColor: Colors.Light.whiteText,
         tabBarStyle: [
           styles.tabBar,
           {
             backgroundColor: isDarkMode
-              ? Colors.Dark.accent
-              : Colors.Light.accent,
+              ? Colors.Dark.componentBG
+              : Colors.Light.componentBG,
           },
         ],
         tabBarLabelStyle: {
+          color: isDarkMode
+            ? Colors.Dark.textPrimary
+            : Colors.Light.textPrimary,
           fontSize: 12,
           fontFamily: 'Mulish',
           textTransform: 'capitalize',

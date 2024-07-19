@@ -560,11 +560,11 @@ const styles = StyleSheet.create({
     zIndex: 110,
 
     position: 'absolute',
-    top: -160,
+    top: -70,
     left: 0,
 
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height + 10,
+    height: Dimensions.get('window').height - 20,
 
     backgroundColor: 'rgba(000, 0, 0, 0.8)',
 

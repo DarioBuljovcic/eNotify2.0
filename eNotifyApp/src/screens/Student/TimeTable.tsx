@@ -104,6 +104,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    height: Dimensions.get('window').height / 1.2,
+    height: Dimensions.get('window').height,
   },
 });

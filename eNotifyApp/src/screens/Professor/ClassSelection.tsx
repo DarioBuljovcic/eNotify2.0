@@ -50,15 +50,15 @@ export default function ClassSelection({
           styles.class,
           {
             backgroundColor: isDarkMode
-              ? Colors.Dark.notificationBG
-              : Colors.Light.notificationBG,
+              ? Colors.Dark.componentBG
+              : Colors.Light.componentBG,
             borderColor: Colors.Light.textPrimary,
           },
           item.Class === profClass
             ? {
                 backgroundColor: isDarkMode
                   ? Colors.Dark.accent
-                  : Colors.Light.accentGreen,
+                  : Colors.Light.accent,
               }
             : null,
         ]}>
@@ -72,7 +72,7 @@ export default function ClassSelection({
             item.Class === profClass
               ? {
                   color: isDarkMode
-                    ? Colors.Dark.lightText
+                    ? Colors.Dark.textPrimary
                     : Colors.Light.whiteText,
                 }
               : null,
@@ -102,9 +102,9 @@ const height = 35;
 
 const styles = StyleSheet.create({
   list: {
-    height: height,
+    height: 65,
     width: screenWidth,
-    marginTop: 10,
+    marginTop: 15,
     overflow: 'hidden',
     paddingRight: 20,
     flexGrow: 0.02,
@@ -116,11 +116,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
 
-    height: height - 5,
-    width: 80,
+    height: 55,
+    aspectRatio: 1,
 
-    paddingHorizontal: 10,
-
-    borderRadius: 10,
+    borderRadius: 50,
   },
 });

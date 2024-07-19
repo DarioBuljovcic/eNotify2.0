@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.Light.notificationBG,
+    backgroundColor: Colors.Light.componentBG,
     borderWidth: 0.5,
     borderColor: Colors.Light.lightText,
     padding: 5,
