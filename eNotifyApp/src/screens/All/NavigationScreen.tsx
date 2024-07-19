@@ -18,6 +18,7 @@ import Svg, {Path, G, Defs, ClipPath} from 'react-native-svg';
 import {useTranslation} from 'react-i18next';
 import TimeTable from '../Student/TimeTable';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {Easing} from 'react-native-reanimated';
 
 const NavigationScreen = ({navigation}: NavigationScreenProps) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -54,9 +55,19 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
           size = 30;
           // You can return any component that you like here!
           if (focused) {
-            <View style={styles.backCircle}>
-              <Ionicons name={iconName} size={size} color={color} />
-            </View>;
+            return (
+              <View
+                style={[
+                  styles.tabButtonActive,
+                  {
+                    backgroundColor: isDarkMode
+                      ? Colors.Dark.appBackground
+                      : Colors.Light.appBackground,
+                  },
+                ]}>
+                <Ionicons name={iconName} size={size} color={color} />
+              </View>
+            );
           } else {
             return (
               <View style={styles.tabButton}>
@@ -65,10 +76,17 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
             );
           }
         },
-        tabBarActiveTintColor: '#003060',
-        tabBarInactiveTintColor: '#68BBE3',
+        tabBarActiveTintColor: isDarkMode
+          ? Colors.Dark.textPrimary
+          : Colors.Light.accent,
+        tabBarInactiveTintColor: isDarkMode
+          ? Colors.Dark.textPrimary
+          : Colors.Light.textPrimary,
+        tabBarPressColor: 'transparent',
         tabBarStyle: {
-          backgroundColor: '#f7faff',
+          backgroundColor: isDarkMode
+            ? Colors.Dark.componentBG
+            : Colors.Light.componentBG,
           borderWidth: 0,
           borderTopColor: 'transparent',
           height: 84,
@@ -88,6 +106,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
         },
 
         tabBarLabelStyle: {
+          marginTop: 10,
           fontSize: 10,
           fontFamily: 'Mulish',
           textTransform: 'capitalize',
@@ -145,7 +164,7 @@ const NavigationScreen = ({navigation}: NavigationScreenProps) => {
 
 const styles = StyleSheet.create({
   tabBar: {
-    height: 70,
+    height: 60,
     width: '100%',
     paddingBottom: 10,
     paddingTop: 10,
@@ -154,28 +173,28 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   tabButton: {
-    width: 40,
-    aspectRatio: 1,
-    zIndex: 100,
-  },
-  tabButtonSelected: {
-    width: 40,
-    aspectRatio: 1,
-    zIndex: 100,
-  },
-  tabBackground: {
     width: 45,
-    height: 45,
-    borderWidth: 1,
-    borderColor: 'transparent',
+    aspectRatio: 1,
+    zIndex: 100,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
     borderRadius: 30,
-    position: 'absolute',
+    top: -7,
+    left: -8,
   },
-  backCircle: {
-    height: 30,
-    width: 30,
-    backgroundColor: 'red',
+  tabButtonActive: {
+    width: 45,
+    aspectRatio: 1,
+    zIndex: 100,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
     borderRadius: 30,
+    top: -7,
+    left: -8,
   },
 });
 

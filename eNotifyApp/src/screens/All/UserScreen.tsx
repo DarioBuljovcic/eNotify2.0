@@ -25,6 +25,7 @@ import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import messaging from '@react-native-firebase/messaging';
+import {useFocusEffect} from '@react-navigation/native';
 // import RNRestart from 'react-native-restart';
 
 const UserScreen = ({navigation}: UserScreenTabProps) => {
@@ -45,7 +46,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
   const [selectedFile, setSelectedFile] =
     useState<DocumentPickerResponse | null>(null);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const saveUser = async () => {
       setRole((await AsyncStorage.getItem('Role')) as string);
       setName((await AsyncStorage.getItem('Name')) as string);
@@ -55,7 +56,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
     saveUser();
     console.log('effect');
     updateImage();
-  }, []);
+  });
 
   const changeMode = async () => {
     Appearance.setColorScheme(
@@ -438,7 +439,25 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
               />
             </TouchableOpacity>
 
-            <View style={{flex: 1}}></View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                padding: 10,
+              }}>
+              <Text
+                style={[
+                  styles.versonText,
+                  {
+                    color: isDarkMode
+                      ? Colors.Dark.textPrimary
+                      : Colors.Light.textPrimary,
+                  },
+                ]}>
+                v0.19 build 78
+              </Text>
+            </View>
 
             <TouchableOpacity
               style={[
@@ -828,6 +847,7 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 10,
   },
+  versonText: {fontFamily: 'Mulish-Light'},
 });
 
 export default UserScreen;

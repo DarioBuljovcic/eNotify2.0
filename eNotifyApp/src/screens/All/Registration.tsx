@@ -389,7 +389,6 @@ const styles = StyleSheet.create({
   confirmTxt: {
     fontSize: 17,
 
-    color: Colors.Light.whiteText,
     fontFamily: 'Mulish',
   },
 });

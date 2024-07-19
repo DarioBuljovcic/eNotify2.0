@@ -12,6 +12,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
+import {useFocusEffect} from '@react-navigation/native';
 
 export default function TimeTable() {
   const isDarkMode = useColorScheme() === 'light';
@@ -55,7 +56,7 @@ export default function TimeTable() {
     }
   };
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const func = async () => {
       const myClass = await AsyncStorage.getItem('Class');
 
@@ -68,7 +69,7 @@ export default function TimeTable() {
       setImageUrl(uri);
     };
     func();
-  }, []);
+  });
 
   return (
     <View style={{zIndex: 100}}>
@@ -88,7 +89,7 @@ export default function TimeTable() {
             style={{
               backgroundColor: isDarkMode
                 ? Colors.Light.appBackground
-                : Colors.Dark.white,
+                : Colors.Light.appBackground,
               width: Dimensions.get('window').width,
               height: (100 * Dimensions.get('window').width) / 100,
             }}

@@ -573,8 +573,8 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
                         styles.selectedTextStyle,
                         {
                           color: isDarkMode
-                            ? Colors.Light.lightText
-                            : Colors.Dark.lightText,
+                            ? Colors.Light.textPrimary
+                            : Colors.Dark.textPrimary,
                         },
                       ]}
                       containerStyle={{
@@ -693,7 +693,7 @@ const styles = StyleSheet.create({
     height: 70,
 
     position: 'absolute',
-    bottom: 10,
+    bottom: 100,
     right: 10,
 
     borderRadius: 50,
@@ -703,6 +703,7 @@ const styles = StyleSheet.create({
   },
   flatList: {
     width: screenWidth,
+    marginBottom: 90,
   },
   obavestenje: {
     alignItems: 'center',
@@ -823,7 +824,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
 
-    marginBottom: 30,
+    marginBottom: 130,
 
     borderRadius: 30,
   },

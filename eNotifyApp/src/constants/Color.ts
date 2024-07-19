@@ -33,7 +33,7 @@ const Colors: Theme = {
     appBackground: '#031525',
     componentBG: '#0d2136',
     accent: '#055C9D',
-    textInputBackground: '#704082',
+    textInputBackground: '#0d2136',
 
     textPrimary: '#adb5bd',
     textSecondary: '#adb5bd',
