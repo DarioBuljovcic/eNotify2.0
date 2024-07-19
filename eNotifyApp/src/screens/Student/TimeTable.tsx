@@ -6,7 +6,7 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Colors from '../../constants/Color';
 import Zoom from 'react-native-zoom-reanimated';
 import storage from '@react-native-firebase/storage';
@@ -59,45 +59,54 @@ export default function TimeTable() {
     }
   };
 
-  useFocusEffect(() => {
-    const func = async () => {
-      console.log(tableCheck);
-      const role = await AsyncStorage.getItem('Role');
-      if (role === 'Student') {
-        const myClass = await AsyncStorage.getItem('Class');
+  useEffect(() => {}, []);
 
-        const querySnapshot = await firestore()
-          .collection('Classes')
-          .where('Class', '==', myClass)
-          .get();
+  useFocusEffect(
+    useCallback(() => {
+      const func = async () => {
+        setTableCheck(false);
+        console.log(tableCheck);
+        const role = await AsyncStorage.getItem('Role');
+        if (role === 'Student') {
+          const myClass = await AsyncStorage.getItem('Class');
 
-        try {
-          const uri = await loadImage(querySnapshot.docs[0].data().Table);
-          setTableCheck(true);
-          setImageUrl(uri);
-        } catch {
-          setTableCheck(false);
-          console.log('s');
+          const querySnapshot = await firestore()
+            .collection('Classes')
+            .where('Class', '==', myClass)
+            .get();
+
+          try {
+            const uri = await loadImage(querySnapshot.docs[0].data().Table);
+            if (uri !== 'file:///data/user/0/com.enotifyapp/files/') {
+              setTableCheck(true);
+              setImageUrl(uri);
+            }
+          } catch {
+            setTableCheck(false);
+            console.log('s');
+          }
+        } else if (role === 'Professor') {
+          const myID = await AsyncStorage.getItem('UserId');
+
+          const querySnapshot = await firestore()
+            .collection('Users')
+            .where('UserID', '==', myID)
+            .get();
+          try {
+            const uri = await loadImage(querySnapshot.docs[0].data().Table);
+            if (uri !== 'file:///data/user/0/com.enotifyapp/files/') {
+              setTableCheck(true);
+              setImageUrl(uri);
+            }
+          } catch {
+            setTableCheck(false);
+            console.log('p');
+          }
         }
-      } else if (role === 'Professor') {
-        const myID = await AsyncStorage.getItem('UserId');
-
-        const querySnapshot = await firestore()
-          .collection('Users')
-          .where('UserID', '==', myID)
-          .get();
-        try {
-          const uri = await loadImage(querySnapshot.docs[0].data().Table);
-          setTableCheck(true);
-          setImageUrl(uri);
-        } catch {
-          setTableCheck(false);
-          console.log('p');
-        }
-      }
-    };
-    func();
-  });
+      };
+      func();
+    }, []),
+  );
 
   return (
     <View style={{zIndex: 100}}>

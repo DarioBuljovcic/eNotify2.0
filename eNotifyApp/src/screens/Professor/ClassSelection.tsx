@@ -93,6 +93,7 @@ export default function ClassSelection({
       renderItem={renderClasses}
       keyExtractor={obavestenje => obavestenje.NotificationId}
       showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
     />
   );
 }

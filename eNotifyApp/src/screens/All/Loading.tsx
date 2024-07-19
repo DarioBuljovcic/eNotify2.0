@@ -64,7 +64,9 @@ export default function Loading() {
             cy={screenHeight / 2 - R}
             r={R}
             stroke={
-              isDarkMode ? Colors.Dark.accentGreen : Colors.Light.accentGreen
+              isDarkMode
+                ? Colors.Dark.appBackground
+                : Colors.Light.appBackground
             }
             strokeWidth={13}
             strokeDasharray={loadWidth}
