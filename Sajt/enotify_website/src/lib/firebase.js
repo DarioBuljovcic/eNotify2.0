@@ -114,71 +114,76 @@ export const getProfessors = async () => {
 export const postStudentsFile = async (data) => {
   for (let item of data) {
     const name = item.Name + " " + item.Surname;
-    try {
-      const userID = generatePassword(7);
-      const data = {
-        Name: name,
-        Email: item.Email,
-        Class: item.Class,
-        Role: "Student",
-        UserID: userID,
-        LogOut: true,
-      };
+    const users = await getStudents();
+    if (!users.some((obj) => obj.Email === data.Email))
+      try {
+        const userID = generatePassword(7);
+        const data = {
+          Name: name,
+          Email: item.Email,
+          Class: item.Class,
+          Role: "Student",
+          UserID: userID,
+          LogOut: true,
+        };
 
-      axios
-        .post(
-          "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
-          {
-            to: item.Email,
-            subject: "Vaš kod",
-            text: userID,
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("Error sending email:", error);
-        });
-      await addDoc(collection(db, "Users"), data);
-    } catch (error) {
-      console.error(error);
-    }
+        axios
+          .post(
+            "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
+            {
+              to: item.Email,
+              subject: "Vaš kod",
+              text: userID,
+            }
+          )
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.error("Error sending email:", error);
+          });
+
+        await addDoc(collection(db, "Users"), data);
+      } catch (error) {
+        console.error(error);
+      }
   }
 };
 export const postProfessorsFile = async (data) => {
   for (let item of data) {
     const name = item.Name + " " + item.Surname;
-    try {
-      const userID = generatePassword(7);
-      const data = {
-        Name: name,
-        Email: item.Email,
-        Class: item.Class,
-        Role: "Professor",
-        UserID: userID,
-        LogOut: true,
-      };
+    const users = await getProfessors();
+    if (!users.some((obj) => obj.Email === data.Email))
+      try {
+        const userID = generatePassword(7);
+        const data = {
+          Name: name,
+          Email: item.Email,
+          Class: item.Class,
+          Role: "Professor",
+          UserID: userID,
+          LogOut: true,
+        };
 
-      axios
-        .post(
-          "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
-          {
-            to: item.Email,
-            subject: "Vaš kod",
-            text: userID,
-          }
-        )
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error("Error sending email:", error);
-        });
-      await addDoc(collection(db, "Users"), data);
-    } catch (error) {
-      console.error(error);
-    }
+        axios
+          .post(
+            "https://enotifyserver2.netlify.app/.netlify/functions/api/send-email",
+            {
+              to: item.Email,
+              subject: "Vaš kod",
+              text: userID,
+            }
+          )
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.error("Error sending email:", error);
+          });
+        await addDoc(collection(db, "Users"), data);
+      } catch (error) {
+        console.error(error);
+      }
   }
 };
 export const postOneStudent = async (item) => {
@@ -314,6 +319,8 @@ export const sendNotification = async (item) => {
       Seen: "",
       From: "Uprava škole",
     };
+    //https://enotifyserver2.netlify.app/.netlify/functions/api/data
+    //http://localhost:9000/.netlify/functions/api
     const sendData = async () => {
       try {
         const response = await axios.post(

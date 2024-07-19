@@ -5,9 +5,10 @@ import Home from "./pages/Home/home.tsx";
 import { Login } from "./lib/firebase.js";
 import "./components/css/logo.css";
 import "./components/css/dropdown.css";
+import "./components/css/style.css";
 
 function App() {
-  const [logedIn, setLogedIn] = useState(false);
+  const [logedIn, setLogedIn] = useState(true);
 
   const LoginTest = useCallback(async (password) => {
     const logedIn = await Login(password);

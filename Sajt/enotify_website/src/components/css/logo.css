@@ -2,26 +2,6 @@
   height: 10em;
   max-width: 80px;
 }
-.logoContainer .logo {
-  position: relative;
-  color: #82bcf3;
-  background-color: #023047;
-  border-radius: 0.4em;
-  padding: 0.3em 0.6em;
-  font-weight: 500;
-}
-.logoContainer .logo .e {
-  color: white;
-  font-weight: 300;
-}
-.logoContainer .logo::after {
-  content: "";
-  position: absolute;
-  width: 0px;
-  height: 0px;
-  bottom: -0.5em;
-  left: 0;
-  border: 0.5em solid transparent;
-  border-top: 0.5em solid #023047;
-  border-left: 0.5em solid #023047;
+.logoContainer img {
+  width: 150px;
 }/*# sourceMappingURL=logo.css.map */

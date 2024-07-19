@@ -28,6 +28,7 @@ router.get("/", (req, res) => {
 });
 router.post("/data", (req, res) => {
   const data = req.body; // Data sent from the client
+  console.log(data);
   data.Class.forEach((studentClass) => {
     console.log(studentClass);
     const message = {

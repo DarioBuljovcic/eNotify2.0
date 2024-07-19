@@ -1,0 +1,408 @@
+$dark: #055c9d;
+$dark2: #003060;
+$main: #0e86d4;
+$light: #68bbe3;
+$BG: #f1f6ff;
+$BGauth: #0e85d45a;
+$white: white;
+$gapS: 0.2em;
+$gapM: 0.5em;
+$gapL: 1em;
+$gapXL: 2em;
+
+$color-bg1: #68bbe3;
+$color-bg2: #68bbe3;
+$color1: #0e85d45a;
+$color2: #0e85d45a;
+$color3: #0e85d45a;
+$color4: #0e85d45a;
+$color5: #0e85d45a;
+$color-interactive: #2891d6;
+$circle-size: 80%;
+$blending: hard-light;
+$font: "Mulish";
+
+body {
+  font-family: "Mulish", "sans-serif";
+  .auth {
+    z-index: 100;
+    background-color: $BGauth;
+    min-width: 600px;
+    min-height: 600px;
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border-radius: calc(0.5vw + 10px);
+
+    .loginPanelRight {
+      border-radius: calc(0.5vw);
+      width: 300px;
+      max-width: 300px;
+      min-height: 600px;
+      background-color: $white;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      grid-auto-rows: max-content;
+      padding: 20px 10px;
+      gap: $gapXL;
+
+      h1 {
+        font-size: 50px;
+        font-weight: 500;
+      }
+
+      img {
+        width: 200px;
+      }
+    }
+    .loginPanelLeft {
+      padding-inline: 20px;
+      width: 300px;
+      max-width: 300px;
+      min-height: 600px;
+      display: grid;
+      grid-auto-rows: max-content;
+      align-items: center;
+      justify-items: center;
+      gap: $gapXL;
+
+      img {
+        width: 200px;
+      }
+    }
+    .loginBtn {
+      background-color: $dark2;
+      color: $white;
+      padding: 10px 20px;
+      font-size: 20px;
+      border-radius: 100vw;
+      width: 100%;
+    }
+  }
+  .euiButton {
+    background-color: $dark2;
+    color: $white;
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+  a {
+    color: $main;
+  }
+  .euiIcon {
+    color: $main;
+  }
+  .openSidebar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    pointer-events: none;
+    display: none;
+    transition: left 0.5s ease;
+  }
+  .sidebarContainer {
+    display: grid;
+    background-color: $main;
+    align-content: space-between;
+    transition: all 0.5s ease;
+    overflow: hidden;
+
+    box-shadow: 7px 0 9px -7px black;
+    .sidebarOptions {
+      img {
+        width: 150px;
+      }
+      .sidebarBlock {
+        label {
+          font-size: 1.8em;
+          position: relative;
+          z-index: 10;
+
+          p {
+            display: flex;
+            gap: $gapS;
+            color: $white;
+            align-items: center;
+            background-color: $main;
+            width: min-content;
+            padding-right: 1em;
+          }
+          &::before {
+            position: absolute;
+            content: "";
+            top: calc(50% - 1px);
+            left: 10%;
+            width: 150%;
+            height: 2px;
+            background-color: $white;
+            z-index: -1;
+          }
+        }
+        .sidebarGroup {
+          display: grid;
+          gap: $gapM;
+          padding-block: 1em;
+          .sidebarItem {
+            text-align: left;
+            padding-left: calc(20px + 0.5em);
+            color: $white;
+            position: relative;
+          }
+          &.open {
+            .sidebarItem {
+              &::after {
+                animation: close 0.2s ease forwards;
+                height: 2px;
+              }
+
+              &.open::after {
+                position: absolute;
+                content: "";
+                left: 10%;
+                bottom: 0;
+                height: 2px;
+                background-color: $white;
+                animation: open 0.2s ease forwards;
+              }
+              @keyframes close {
+                0% {
+                  width: 80%;
+                }
+                100% {
+                  width: 0%;
+                }
+              }
+              @keyframes open {
+                0% {
+                  width: 0%;
+                }
+                100% {
+                  width: 80%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .sidebarFooter {
+      display: grid;
+      gap: $gapXL;
+      .sidebarLogout {
+        background-color: $white;
+        color: $dark2;
+        font-size: 1em;
+        padding-block: 0.5em;
+        border-radius: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $gapS;
+      }
+      .sidebarUser {
+        display: flex;
+        gap: $gapM;
+        align-items: center;
+        color: white;
+        img {
+          width: 40px;
+          aspect-ratio: 1;
+        }
+        .text {
+          .name {
+            font-size: 1.4em;
+          }
+          .email {
+            font-size: 0.8em;
+          }
+        }
+      }
+    }
+  }
+}
+
+.text-container {
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: 96px;
+  color: white;
+  opacity: 0.8;
+  user-select: none;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
+}
+.container {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background-image: linear-gradient(40deg, ($color-bg1), ($color-bg2));
+  svg {
+    display: none;
+  }
+
+  .gradient-container {
+    filter: url(#goo) blur(40px);
+    width: 100%;
+    height: 100%;
+  }
+
+  .grad {
+    position: absolute;
+    mix-blend-mode: ($blending);
+    width: ($circle-size);
+    height: ($circle-size);
+    top: calc(50% - ($circle-size) / 2);
+    left: calc(50% - ($circle-size) / 2);
+  }
+  .grad-1 {
+    background: radial-gradient(
+        circle at center,
+        rgba(($color1), 0.8) 0,
+        rgba(($color1), 0) 50%
+      )
+      no-repeat;
+    transform-origin: center center;
+    animation: moveVertical 30s ease infinite;
+    opacity: 1;
+  }
+
+  .grad-2 {
+    background: radial-gradient(
+        circle at center,
+        rgba(($color2), 0.8) 0,
+        rgba(($color2), 0) 50%
+      )
+      no-repeat;
+    transform-origin: calc(50% - 400px);
+    animation: moveInCircle 20s reverse infinite;
+    opacity: 1;
+  }
+
+  .grad-3 {
+    background: radial-gradient(
+        circle at center,
+        rgba(($color3), 0.8) 0,
+        rgba(($color3), 0) 50%
+      )
+      no-repeat;
+    transform-origin: calc(50% + 400px);
+    animation: moveInCircle 40s linear infinite;
+    opacity: 1;
+  }
+
+  .grad-4 {
+    background: radial-gradient(
+        circle at center,
+        rgba(($color4), 0.8) 0,
+        rgba(($color4), 0) 50%
+      )
+      no-repeat;
+    transform-origin: calc(50% - 200px);
+    animation: moveHorizontal 40s ease infinite;
+    opacity: 0.7;
+  }
+
+  .grad-5 {
+    background: radial-gradient(
+        circle at center,
+        rgba(($color5), 0.8) 0,
+        rgba(($color5), 0) 50%
+      )
+      no-repeat;
+    transform-origin: calc(50% - 800px) calc(50% + 200px);
+    animation: moveInCircle 20s ease infinite;
+    opacity: 1;
+  }
+
+  .interactive {
+    position: absolute;
+    background: radial-gradient(
+        circle at center,
+        rgba(($color-interactive), 0.8) 0,
+        rgba(($color-interactive), 0) 50%
+      )
+      no-repeat;
+    mix-blend-mode: ($blending);
+
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+
+    opacity: 0.7;
+  }
+}
+@keyframes moveInCircle {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes moveVertical {
+  0% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes moveHorizontal {
+  0% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(50%) translateY(10%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  body {
+    .openSidebar {
+      display: block;
+      pointer-events: all;
+      z-index: 101;
+      &.open {
+        left: 220px;
+      }
+    }
+    .sidebarContainer {
+      position: absolute;
+      min-inline-size: 250px !important;
+      height: 100vh;
+      z-index: 100;
+      left: -360px;
+      &.open {
+        left: 0px;
+      }
+    }
+    main {
+      padding-top: 20px;
+    }
+  }
+}
