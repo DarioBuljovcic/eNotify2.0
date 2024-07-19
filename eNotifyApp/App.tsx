@@ -199,6 +199,41 @@ function App(): React.JSX.Element {
           animationEnabled: true,
         }}>
         <Stack.Screen
+          name="Registration"
+          component={Registration}
+          options={() => ({
+            headerTitle: t('registration'),
+            headerBackVisible: false,
+            headerLeft: () => null,
+            headerStyle: {
+              height: 170,
+              elevation: 0,
+            },
+            headerTintColor: Colors.Light.whiteText,
+            headerTitleStyle: {
+              marginTop: 40,
+              fontSize: 50,
+              fontFamily: 'Mulish',
+              letterSpacing: 2,
+            },
+            headerTitleAlign: 'center',
+            headerBackground: () => (
+              <View style={{position: 'absolute', top: -1, zIndex: -11}}>
+                <Svg
+                  width={Dimensions.get('window').width}
+                  height="241"
+                  viewBox={`0 0 ${Dimensions.get('window').width} 241`}
+                  fill="none">
+                  <Path
+                    d="M0 0H541V217.519C464.705 265.682 351.65 226.249 312.115 217.519C272.581 208.789 119.991 145.903 0 217.519V0Z"
+                    fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
+                  />
+                </Svg>
+              </View>
+            ),
+          })}
+        />
+        <Stack.Screen
           name="NavigationScreen"
           component={NavigationScreen}
           options={navigation => ({
@@ -282,42 +317,6 @@ function App(): React.JSX.Element {
               fontFamily: 'Mulish-Light',
               textTransform: 'capitalize',
             },
-          })}
-        />
-
-        <Stack.Screen
-          name="Registration"
-          component={Registration}
-          options={() => ({
-            headerTitle: t('registration'),
-            headerBackVisible: false,
-            headerLeft: () => null,
-            headerStyle: {
-              height: 170,
-              elevation: 0,
-            },
-            headerTintColor: Colors.Light.whiteText,
-            headerTitleStyle: {
-              marginTop: 40,
-              fontSize: 50,
-              fontFamily: 'Mulish',
-              letterSpacing: 2,
-            },
-            headerTitleAlign: 'center',
-            headerBackground: () => (
-              <View style={{position: 'absolute', top: -1, zIndex: -11}}>
-                <Svg
-                  width={Dimensions.get('window').width}
-                  height="241"
-                  viewBox={`0 0 ${Dimensions.get('window').width} 241`}
-                  fill="none">
-                  <Path
-                    d="M0 0H541V217.519C464.705 265.682 351.65 226.249 312.115 217.519C272.581 208.789 119.991 145.903 0 217.519V0Z"
-                    fill={isDarkMode ? Colors.Dark.accent : Colors.Light.accent}
-                  />
-                </Svg>
-              </View>
-            ),
           })}
         />
       </Stack.Navigator>

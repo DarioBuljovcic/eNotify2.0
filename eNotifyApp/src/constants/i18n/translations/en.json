@@ -32,5 +32,6 @@
   "incorrect code": "You entered an invalid code",
   "identification code": "Enter your identification code",
   "register": "Register",
-  "choose language": "choosle a language"
+  "choose language": "choosle a language",
+  "no table": "There are no available tables for you🙁"
 }

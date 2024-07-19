@@ -48,6 +48,10 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
   const [selectedClass, setSelectedClass] = useState('');
   const [isFocus, setIsFocus] = useState(false);
   const [naziv, setNaziv] = useState('');
+
+  // const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
+  //   [],
+  // );
   const [selectedFile, setSelectedFile] =
     useState<DocumentPickerResponse | null>(null);
 
@@ -299,27 +303,27 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
   };
   const AddNotifaciton = async () => {
     if (textValue !== '' && TitleValue !== '') {
-      //console.log('textValue: '+textValue,'titleValue: '+TitleValue,'seletedClass: '+selectedClass,'selectedFile: '+selectedFile.name,'naziv: '+naziv)
       const name = (await AsyncStorage.getItem('Name')) as string;
 
-      console.log('check1');
+      // if (selectedFiles.length > 0) {
+      //   await Promise.all(
+      //     selectedFiles.map(async file => {
+      //       const reference = storage().ref(file.name);
+      //       const pathToFile = `file://${decodeURIComponent(file.fileCopyUri)}`;
+      //       await reference.putFile(pathToFile);
+      //     }),
+      //   );
+      // }
       if (selectedFile) {
         const reference = storage().ref(selectedFile?.name);
-
-        console.log('check2');
 
         const pathToFile = `file://${decodeURIComponent(
           selectedFile.fileCopyUri,
         )}`;
 
-        console.log('check3');
-        console.log(pathToFile);
         await reference.putFile(pathToFile);
       }
-      console.log('check4');
 
-      console.log('check5');
-      console.log(naziv);
       const data: NotificationType = {
         NotificationId: generateID(7),
         Title: TitleValue,
@@ -331,8 +335,6 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
         Seen: '',
         From: name,
       };
-
-      console.log('check6');
 
       const sendData = async () => {
         try {
@@ -348,11 +350,7 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
 
       sendData();
 
-      console.log('check8');
-
       firestore().collection('Notifications').add(data);
-
-      console.log('check9');
 
       setTextValue('');
       setTitleValue('');
@@ -376,13 +374,19 @@ export default function NotificationLoader({navigation, prof, razredi}: any) {
           buttonPositive: 'OK',
         },
       );
+
       await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
         copyTo: 'documentDirectory',
       }).then(async file => {
         setSelectedFile(file[0]);
       });
-      //const path = await normalizePath(file.uri)
+      // const files = await DocumentPicker.pickMultiple({
+      //   type: [DocumentPicker.types.allFiles],
+      //   copyTo: 'documentDirectory',
+      // });
+
+      // setSelectedFiles(prevFiles => [...prevFiles, ...files]);
     } catch (error) {
       if (DocumentPicker.isCancel(error)) {
         console.log('User cancelled file selection');
