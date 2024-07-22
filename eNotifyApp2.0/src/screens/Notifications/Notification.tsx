@@ -21,10 +21,6 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState, useRef} from 'react';
 import storage from '@react-native-firebase/storage';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import RNFS from 'react-native-fs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import NotificationSeen from '../../components/NotificationSeen';
 import ImageModal from '../../components/ImageModal';

@@ -1,43 +1,52 @@
+// firestoreHelpers.ts
 import firestore from '@react-native-firebase/firestore';
-import { getNotificationProps, NotificationType } from '../constants/Types/indexTypes';
+import {NotificationType} from '../constants/Types/indexTypes';
 
-export default async function getData({ role, userClass, userId }: getNotificationProps): Promise<NotificationType[]> {
+export const fetchNotifications = async (
+  role: string,
+  userClass: string,
+  userId: string,
+  setNotifications,
+): Promise<NotificationType[]> => {
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
-  let notifications: NotificationType[] = [];
+  let snapshot;
 
-  try {
-    if (role === 'Student') {
-      const snapshot = await firestore()
-        .collection('Notifications')
-        .where('Class', 'array-contains-any', [
-          userClass,
-          subscriptions[parseInt(userClass.slice(0, 1)) - 1],
-          'Svi',
-        ])
-        .get();
-        
-      const data: NotificationType[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as NotificationType),
-      }));
-      
-      notifications = data.sort((a, b) => Number(b.Date) - Number(a.Date));
-    } else {
-      const snapshot = await firestore()
-        .collection('Notifications')
-        .where('Class', 'array-contains', userClass)
-        .where('From', '==', userId)
-        .get();
-      const data: NotificationType[] = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as NotificationType),
-      }));
-      
-      notifications = data.sort((a, b) => Number(b.Date) - Number(a.Date));
-    }
-  } catch (error) {
-    console.error('Error fetching notifications:', error);
+  if (role === 'Student') {
+    snapshot = await firestore()
+      .collection('Notifications')
+      .where('Class', 'array-contains-any', [
+        userClass,
+        subscriptions[parseInt(userClass.slice(0, 1)) - 1],
+        'Svi',
+      ])
+      .onSnapshot(snapshot => {
+        const data = sortNotificationsByDate(
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...(doc.data() as NotificationType),
+          })),
+        );
+        setNotifications(data);
+      });
+  } else {
+    snapshot = await firestore()
+      .collection('Notifications')
+      .where('Class', 'array-contains', userClass)
+      .where('From', '==', userId)
+      .onSnapshot(snapshot => {
+        const data = sortNotificationsByDate(
+          snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...(doc.data() as NotificationType),
+          })),
+        );
+        setNotifications(data);
+      });
   }
+};
 
-  return notifications;
-}
+const sortNotificationsByDate = (
+  notifications: NotificationType[],
+): NotificationType[] => {
+  return notifications.sort((a, b) => Number(b.Date) - Number(a.Date));
+};

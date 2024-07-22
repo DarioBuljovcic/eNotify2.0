@@ -5,9 +5,10 @@ import {FlatList} from 'react-native-gesture-handler';
 import {format} from 'date-fns';
 import {useGlobalContext} from '../context/GlobalProvider';
 import {NotificationType} from '../constants/Types/indexTypes';
-import getData from '../hooks/getNotifications';
+
 import NotifiactionBlock from './NotificationBlock';
 import NoNotification from './NoNotification';
+import {fetchNotifications} from '../hooks/getNotifications';
 
 const NotificationLoader = ({navigation, userClass}: any) => {
   const {isDarkMode, user} = useGlobalContext();
@@ -28,14 +29,12 @@ const NotificationLoader = ({navigation, userClass}: any) => {
 
   useEffect(() => {
     const getNotifications = async () => {
-      const notifi = await getData({
-        role: user?.Role as string,
-        userClass:
-          user?.Role === 'Student' ? (user?.Class as string) : userClass,
-        userId: user?.Name as string,
-      });
-
-      setNotifications(notifi);
+      const notifi = await fetchNotifications(
+        user?.Role as string,
+        user?.Role === 'Student' ? (user?.Class as string) : userClass,
+        user?.Name as string,
+        setNotifications,
+      );
     };
     getNotifications();
   }, [userClass]);
@@ -51,7 +50,10 @@ const NotificationLoader = ({navigation, userClass}: any) => {
               },
             ]}>
             <FlatList
-              style={[styles.flatList]}
+              style={[
+                styles.flatList,
+                {marginBottom: user?.Role === 'Student' ? 85 : 160},
+              ]}
               data={notifications}
               renderItem={({item, index}) => {
                 return (
@@ -90,10 +92,8 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
     display: 'flex',
-    paddingBottom: 80,
   },
   flatList: {
     width: screenWidth,
-    marginBottom: 90,
   },
 });

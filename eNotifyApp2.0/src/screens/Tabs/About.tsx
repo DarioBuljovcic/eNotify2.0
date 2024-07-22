@@ -1,24 +1,28 @@
 import {Appearance, StyleSheet, Text, View, useColorScheme} from 'react-native';
 import Colors from '../../constants/Color';
 import {useTranslation} from 'react-i18next';
-import {useGlobalContext} from '../../context/GlobalProvider';
 
-export default function About({navigation}) {
-  const {isDarkMode} = useGlobalContext();
+export default function About() {
+  const isDarkMode = useColorScheme() === 'light';
   const {t} = useTranslation();
   return (
     <View
       style={[
         styles.aboutContainer,
         {
-          backgroundColor: isDarkMode.appBackground,
+          backgroundColor: isDarkMode
+            ? Colors.Light.appBackground
+            : Colors.Dark.appBackground,
         },
       ]}>
       <Text
         style={[
           styles.aboutText,
           {
-            color: isDarkMode.textPrimary,
+            color:
+              Appearance.getColorScheme() === 'light'
+                ? Colors.Light.textPrimary
+                : Colors.Dark.textPrimary,
           },
         ]}>
         {t('about text')}

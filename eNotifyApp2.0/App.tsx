@@ -28,7 +28,9 @@ import GlobalProvider, {useGlobalContext} from './src/context/GlobalProvider';
 import LayoutTabs from './src/screens/Tabs/_layout';
 import About from './src/screens/Tabs/About';
 import Notification from './src/screens/Notifications/Notification';
-import {use} from 'i18next';
+import LogOutModal from './src/components/LogOutModal';
+import LanguageModal from './src/screens/Tabs/LanguageModal';
+import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -85,7 +87,6 @@ function App(): React.JSX.Element {
       //onNotificationOpenedApp: When the application is running, but in the background.
       const unsubscribe = messaging().onNotificationOpenedApp(remoteMessage => {
         const url = buildDeepLinkFromNotificationData(remoteMessage);
-
         if (typeof url === 'string') {
           listener(url);
           Linking.openURL(url);
@@ -193,11 +194,36 @@ function App(): React.JSX.Element {
             })}
           />
           <Stack.Screen
+            name="NotificationViewrs"
+            component={NotificationViewrs}
+            options={() => ({
+              headerTitle: '',
+              cardStyle: {backgroundColor: 'black'},
+            })}
+          />
+          <Stack.Screen
             name="About"
             component={About}
             options={() => ({
               headerShown: true,
               cardStyle: {backgroundColor: isDarkMode.appBackground},
+            })}
+          />
+          <Stack.Screen
+            name="LogOutModal"
+            component={LogOutModal}
+            options={() => ({
+              presentation: 'transparentModal',
+              header: props => <></>,
+            })}
+          />
+          <Stack.Screen
+            name="LanguageModal"
+            component={LanguageModal}
+            options={() => ({
+              presentation: 'transparentModal',
+              headerBackVisible: false,
+              header: props => <></>,
             })}
           />
         </Stack.Navigator>
