@@ -197,14 +197,22 @@ function App(): React.JSX.Element {
             name="NotificationViewrs"
             component={NotificationViewrs}
             options={() => ({
-              headerTitle: '',
-              cardStyle: {backgroundColor: 'black'},
+              headerTitle: t('view'),
+              headerTitleStyle: {textTransform: 'capitalize'},
+              headerShown: true,
+              headerStyle: {
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+              cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}
           />
           <Stack.Screen
             name="About"
             component={About}
             options={() => ({
+              headerTitle: t('about'),
+              headerTitleStyle: {textTransform: 'capitalize'},
               headerShown: true,
               cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}
