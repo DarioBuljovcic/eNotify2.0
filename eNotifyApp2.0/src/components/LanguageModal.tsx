@@ -1,16 +1,17 @@
 import {View, Text, useColorScheme, StyleSheet, Image} from 'react-native';
 import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Colors from '../../constants/Color';
+import Colors from '../constants/Color';
 import {useTranslation} from 'react-i18next';
 import {Dimensions} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LanguageModalScreen} from '../../constants/Types/indexTypes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useGlobalContext} from '../context/GlobalProvider';
 
-export default function LanguageModal({navigation}: LanguageModalScreen) {
+export default function LanguageModal({navigation}: any) {
   const {t, i18n} = useTranslation();
-  const isDarkMode = useColorScheme() === 'dark';
+
+  const {isDarkMode} = useGlobalContext();
 
   const changeLanguage = async (prop: string) => {
     if (prop === 'sr') {
@@ -23,7 +24,7 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
       i18n.changeLanguage('en');
       AsyncStorage.setItem('Language', 'en');
     }
-    navigation.navigate('NavigationScreen', {screen: 'UserScreen'});
+    navigation.navigate('Profile');
   };
 
   return (
@@ -32,9 +33,7 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
         style={[
           styles.modal,
           {
-            backgroundColor: isDarkMode
-              ? Colors.Dark.componentBG
-              : Colors.Light.componentBG,
+            backgroundColor: isDarkMode.componentBG,
           },
         ]}>
         <TouchableOpacity
@@ -42,12 +41,18 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
             i18n.language === 'sr'
               ? styles.activeLanguageOption
               : styles.languageOption,
+            {
+              backgroundColor:
+                i18n.language === 'sr'
+                  ? isDarkMode.appBackground
+                  : 'transparent',
+            },
           ]}
           activeOpacity={1}
           onPress={() => changeLanguage('sr')}>
           <View style={styles.iconContainer}>
             <Image
-              source={require('../../assets/images/serbia.png')}
+              source={require('../assets/images/serbia.png')}
               style={styles.langImg}
             />
             <Text
@@ -57,9 +62,7 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
                   color:
                     i18n.language === 'sr'
                       ? Colors.Light.hyperlinkText
-                      : isDarkMode
-                      ? Colors.Dark.textPrimary
-                      : Colors.Light.textPrimary,
+                      : isDarkMode.textPrimary,
                 },
               ]}>
               {t('serbian')}
@@ -74,12 +77,18 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
             i18n.language === 'hu'
               ? styles.activeLanguageOption
               : styles.languageOption,
+            {
+              backgroundColor:
+                i18n.language === 'hu'
+                  ? isDarkMode.appBackground
+                  : 'transparent',
+            },
           ]}
           activeOpacity={1}
           onPress={() => changeLanguage('hu')}>
           <View style={styles.iconContainer}>
             <Image
-              source={require('../../assets/images/hungary.webp')}
+              source={require('../assets/images/hungary.webp')}
               style={styles.langImg}
             />
             <Text
@@ -89,9 +98,7 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
                   color:
                     i18n.language === 'hu'
                       ? Colors.Light.hyperlinkText
-                      : isDarkMode
-                      ? Colors.Dark.textPrimary
-                      : Colors.Light.textPrimary,
+                      : isDarkMode.textPrimary,
                 },
               ]}>
               {t('hungarian')}
@@ -106,12 +113,18 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
             i18n.language === 'en'
               ? styles.activeLanguageOption
               : styles.languageOption,
+            {
+              backgroundColor:
+                i18n.language === 'en'
+                  ? isDarkMode.appBackground
+                  : 'transparent',
+            },
           ]}
           activeOpacity={1}
           onPress={() => changeLanguage('en')}>
           <View style={styles.iconContainer}>
             <Image
-              source={require('../../assets/images/england.png')}
+              source={require('../assets/images/england.png')}
               style={styles.langImg}
             />
             <Text
@@ -121,9 +134,7 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
                   color:
                     i18n.language === 'en'
                       ? Colors.Light.hyperlinkText
-                      : isDarkMode
-                      ? Colors.Dark.textPrimary
-                      : Colors.Light.textPrimary,
+                      : isDarkMode.textPrimary,
                 },
               ]}>
               {t('english')}
@@ -136,7 +147,7 @@ export default function LanguageModal({navigation}: LanguageModalScreen) {
         <TouchableOpacity
           style={styles.cancleButton}
           onPress={() => {
-            navigation.navigate('NavigationScreen', {screen: 'UserScreen'});
+            navigation.navigate('Profile');
           }}
           activeOpacity={0.7}>
           <Text style={styles.cancleTxt}>Cancle</Text>
@@ -159,7 +170,6 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     position: 'absolute',
-    top: -120,
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height,
     justifyContent: 'center',

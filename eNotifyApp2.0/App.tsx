@@ -29,7 +29,7 @@ import LayoutTabs from './src/screens/Tabs/_layout';
 import About from './src/screens/Tabs/About';
 import Notification from './src/screens/Notifications/Notification';
 import LogOutModal from './src/components/LogOutModal';
-import LanguageModal from './src/screens/Tabs/LanguageModal';
+import LanguageModal from './src/components/LanguageModal';
 import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
@@ -197,14 +197,22 @@ function App(): React.JSX.Element {
             name="NotificationViewrs"
             component={NotificationViewrs}
             options={() => ({
-              headerTitle: '',
-              cardStyle: {backgroundColor: 'black'},
+              headerTitle: t('view'),
+              headerTitleStyle: {textTransform: 'capitalize'},
+              headerShown: true,
+              headerStyle: {
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+              cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}
           />
           <Stack.Screen
             name="About"
             component={About}
             options={() => ({
+              headerTitle: t('about'),
+              headerTitleStyle: {textTransform: 'capitalize'},
               headerShown: true,
               cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}

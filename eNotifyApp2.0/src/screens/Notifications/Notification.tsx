@@ -149,7 +149,10 @@ export default function Notification({route}: any) {
         <ScrollView showsVerticalScrollIndicator={false}>
           {notification && (
             <View style={styles.content}>
-              <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+              <Text
+                style={[styles.title, {color: isDarkMode.textPrimary}]}
+                numberOfLines={1}
+                ellipsizeMode="tail">
                 {notification.Title}
               </Text>
 

@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight,
     overflow: 'hidden',
-    elevation: 2,
     shadowColor: 'black',
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,

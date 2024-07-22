@@ -13,6 +13,7 @@ export type Navigation = {
   About: undefined;
   LogOutModal: undefined;
   LanguageModal: undefined;
+  NotificationViewrs: undefined;
 };
 export type NotificationData = {
   Notification: NotificationType;

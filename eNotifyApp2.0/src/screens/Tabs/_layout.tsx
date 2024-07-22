@@ -10,6 +10,7 @@ import Profile from './Profile.tsx';
 import {useGlobalContext} from '../../context/GlobalProvider.tsx';
 import TabIcon from '../../components/TabIcon.tsx';
 import HomeProfessor from './HomeProfessor.tsx';
+import {t} from 'i18next';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -56,6 +57,7 @@ const LayoutTabs = ({navigation}: {navigation: any}) => {
         name="Home"
         component={user?.Role === 'Student' ? HomeStudent : HomeProfessor}
         options={{
+          tabBarLabel: t('notification'),
           tabBarIcon: ({focused, color}) => (
             <TabIcon
               focused={focused}
@@ -70,6 +72,7 @@ const LayoutTabs = ({navigation}: {navigation: any}) => {
         name="Table"
         component={Table}
         options={{
+          tabBarLabel: t('timetable'),
           tabBarIcon: ({focused, color}) => (
             <TabIcon
               focused={focused}
@@ -84,6 +87,7 @@ const LayoutTabs = ({navigation}: {navigation: any}) => {
         name="Profile"
         component={Profile}
         options={{
+          tabBarLabel: t('account'),
           tabBarIcon: ({focused, color}) => (
             <TabIcon focused={focused} color={color} size={25} icon="people" />
           ),
