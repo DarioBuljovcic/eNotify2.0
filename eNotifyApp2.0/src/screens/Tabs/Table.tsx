@@ -15,9 +15,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
 import {useFocusEffect} from '@react-navigation/native';
 import {t} from 'i18next';
+import {useGlobalContext} from '../../context/GlobalProvider';
 
-export default function TimeTable() {
-  const isDarkMode = useColorScheme() === 'light';
+export default function Table() {
+  const {isDarkMode, user} = useGlobalContext();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [tableCheck, setTableCheck] = useState(false);
 
@@ -66,13 +67,10 @@ export default function TimeTable() {
       const func = async () => {
         setTableCheck(false);
         console.log(tableCheck);
-        const role = await AsyncStorage.getItem('Role');
-        if (role === 'Student') {
-          const myClass = await AsyncStorage.getItem('Class');
-
+        if (user?.Role === 'Student') {
           const querySnapshot = await firestore()
             .collection('Classes')
-            .where('Class', '==', myClass)
+            .where('Class', '==', user.Class)
             .get();
 
           try {
@@ -85,12 +83,10 @@ export default function TimeTable() {
             setTableCheck(false);
             console.log('s');
           }
-        } else if (role === 'Professor') {
-          const myID = await AsyncStorage.getItem('UserId');
-
+        } else if (user?.Role === 'Professor') {
           const querySnapshot = await firestore()
             .collection('Users')
-            .where('UserID', '==', myID)
+            .where('UserID', '==', user.UserID)
             .get();
           try {
             const uri = await loadImage(querySnapshot.docs[0].data().Table);
@@ -100,7 +96,6 @@ export default function TimeTable() {
             }
           } catch {
             setTableCheck(false);
-            console.log('p');
           }
         }
       };
@@ -114,9 +109,7 @@ export default function TimeTable() {
         style={[
           styles.container,
           {
-            backgroundColor: isDarkMode
-              ? Colors.Light.appBackground
-              : Colors.Dark.appBackground,
+            backgroundColor: isDarkMode.appBackground,
           },
         ]}>
         <Zoom>
@@ -133,9 +126,7 @@ export default function TimeTable() {
           ) : (
             <Text
               style={{
-                color: isDarkMode
-                  ? Colors.Dark.textPrimary
-                  : Colors.Dark.textPrimary,
+                color: isDarkMode.textPrimary,
                 fontFamily: 'Mulish',
               }}>
               {t('no table')}

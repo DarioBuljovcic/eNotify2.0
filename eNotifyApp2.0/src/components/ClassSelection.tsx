@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import {Class} from '../../constants/Types/indexTypes';
 import {
   Text,
   StyleSheet,
@@ -8,9 +7,12 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatListProps,
+  View,
 } from 'react-native';
-import Colors from '../../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Colors from '../constants/Color';
+import {useGlobalContext} from '../context/GlobalProvider';
+import {Class} from '../constants/Types/indexTypes';
 
 export default function ClassSelection({
   razredi,
@@ -21,27 +23,15 @@ export default function ClassSelection({
   profClass: string;
   setProfClass: any;
 }) {
-  const isDarkMode = useColorScheme() === 'dark';
-  const [userId, setUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchUserID = async () => {
-      const id = await AsyncStorage.getItem('UserId');
-      setUserId(id);
-    };
-
-    fetchUserID();
-  }, []);
+  const {isDarkMode, user} = useGlobalContext();
 
   const renderClasses: FlatListProps<Class>['renderItem'] = ({item, index}) => {
     if (
       !item.ProfessorsList ||
-      !userId ||
-      !item.ProfessorsList.includes(userId)
+      !item.ProfessorsList.includes(user?.UserID as string)
     ) {
       return null;
     }
-
     return (
       <TouchableOpacity
         onPress={() => setProfClass(item.Class)}
@@ -49,31 +39,23 @@ export default function ClassSelection({
         style={[
           styles.class,
           {
-            backgroundColor: isDarkMode
-              ? Colors.Dark.componentBG
-              : Colors.Light.componentBG,
+            backgroundColor: isDarkMode.componentBG,
             borderColor: Colors.Light.textPrimary,
           },
           item.Class === profClass
             ? {
-                backgroundColor: isDarkMode
-                  ? Colors.Dark.accent
-                  : Colors.Light.accent,
+                backgroundColor: isDarkMode.accent,
               }
             : null,
         ]}>
         <Text
           style={[
             {
-              color: isDarkMode
-                ? Colors.Dark.textPrimary
-                : Colors.Light.textPrimary,
+              color: isDarkMode.textPrimary,
             },
             item.Class === profClass
               ? {
-                  color: isDarkMode
-                    ? Colors.Dark.textPrimary
-                    : Colors.Light.whiteText,
+                  color: isDarkMode.whiteText,
                 }
               : null,
           ]}>
@@ -84,17 +66,19 @@ export default function ClassSelection({
   };
 
   return (
-    <FlatList
-      horizontal
-      scrollEnabled={razredi.length > 4}
-      style={styles.list}
-      contentContainerStyle={{paddingLeft: 20}}
-      data={razredi}
-      renderItem={renderClasses}
-      keyExtractor={obavestenje => obavestenje.NotificationId}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
-    />
+    <>
+      <FlatList
+        horizontal
+        scrollEnabled={razredi.length > 4}
+        style={styles.list}
+        contentContainerStyle={{paddingLeft: 20}}
+        data={razredi}
+        renderItem={renderClasses}
+        keyExtractor={obavestenje => obavestenje.NotificationId}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      />
+    </>
   );
 }
 
@@ -103,7 +87,7 @@ const height = 35;
 
 const styles = StyleSheet.create({
   list: {
-    height: 65,
+    minHeight: 55,
     width: screenWidth,
     marginTop: 15,
     overflow: 'hidden',
