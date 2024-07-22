@@ -202,13 +202,15 @@ const Profile = ({navigation}: {navigation: any}) => {
               />
             </TouchableOpacity>
 
-            <View
+            <TouchableOpacity
               style={[
                 styles.option,
                 {
                   borderColor: isDarkMode.textPrimary,
                 },
-              ]}>
+              ]}
+              activeOpacity={0.7}
+              onPress={() => navigation.navigate('LanguageModal')}>
               <Text
                 style={[
                   styles.optionText,
@@ -218,10 +220,12 @@ const Profile = ({navigation}: {navigation: any}) => {
                 ]}>
                 {t('language')}
               </Text>
-              <View style={{marginRight: '-6%'}}>
-                <DropdownLang />
-              </View>
-            </View>
+              <Ionicons
+                name={'arrow-forward-outline'}
+                size={26}
+                color={isDarkMode.accent}
+              />
+            </TouchableOpacity>
 
             <TouchableOpacity
               style={[
