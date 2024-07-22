@@ -108,8 +108,8 @@ function Auth({ Login }) {
             <h1>Ulogujte se</h1>
             <p>
               Ulogujte se na nalog vaše škole kako biste pristupili svim
-              resursima i informacijama koje su vam potrebne za uspešno vođenje
-              škole.
+              resursima i informacijama koje su vam potrebni za uspešno vođenje
+              vaše škole.
             </p>
             <img src="./books.png"></img>
           </div>

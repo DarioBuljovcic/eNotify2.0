@@ -61,7 +61,7 @@ export default function FilePicker({
     let toast;
     if (file) {
       const reader = new FileReader();
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         if (event.target) {
           const binaryStr = event.target.result;
           const workbook = XLSX.read(binaryStr, { type: "binary" });
@@ -71,8 +71,24 @@ export default function FilePicker({
           try {
             const jsonData: ExcelItem[] = XLSX.utils.sheet_to_json(worksheet);
             const validatedData = validateExcelItems(jsonData);
-
-            postFile(validatedData);
+            try {
+              await postFile(validatedData);
+            } catch (error) {
+              toast = {
+                id: `toast${toastId}`,
+                title: "Greška",
+                color: "danger",
+                text: (
+                  <>
+                    <p>Neki od korisnika već postoji!</p>
+                  </>
+                ),
+              };
+              setToasts((prev) => [...prev, toast]);
+              setToastId(toastId + 1);
+              if (filePickerRef.current) filePickerRef.current.removeFiles();
+              return;
+            }
 
             toast = {
               id: `toast${toastId}`,
@@ -80,14 +96,14 @@ export default function FilePicker({
               color: "success",
               text: (
                 <>
-                  <p>Uspešno ste dodali nove učenike putem fajla!</p>
+                  <p>Uspešno ste dodali nove korisnike putem fajla!</p>
                 </>
               ),
             };
             setToasts((prev) => [...prev, toast]);
             setToastId(toastId + 1);
             if (filePickerRef.current) filePickerRef.current.removeFiles();
-          } catch (error) {
+          } catch {
             toast = {
               id: `toast${toastId}`,
               title: "Greška",

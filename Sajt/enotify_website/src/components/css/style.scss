@@ -3,7 +3,7 @@ $dark2: #003060;
 $main: #0e86d4;
 $light: #68bbe3;
 $BG: #f1f6ff;
-$BGauth: #0e85d45a;
+$BGauth: #0e85d4db;
 $white: white;
 $gapS: 0.2em;
 $gapM: 0.5em;
@@ -12,11 +12,11 @@ $gapXL: 2em;
 
 $color-bg1: #68bbe3;
 $color-bg2: #68bbe3;
-$color1: #0e85d45a;
-$color2: #0e85d45a;
-$color3: #0e85d45a;
-$color4: #0e85d45a;
-$color5: #0e85d45a;
+$color1: #358bc5;
+$color2: #1675b5;
+$color3: #1184d1;
+$color4: #5aa4d5;
+$color5: #32a3ee;
 $color-interactive: #2891d6;
 $circle-size: 80%;
 $blending: hard-light;
@@ -168,37 +168,9 @@ body {
             position: relative;
           }
           &.open {
-            .sidebarItem {
-              &::after {
-                animation: close 0.2s ease forwards;
-                height: 2px;
-              }
-
-              &.open::after {
-                position: absolute;
-                content: "";
-                left: 10%;
-                bottom: -4px;
-                height: 1px;
-                background-color: $white;
-                animation: open 0.2s ease forwards;
-              }
-              @keyframes close {
-                0% {
-                  width: 80%;
-                }
-                100% {
-                  width: 0%;
-                }
-              }
-              @keyframes open {
-                0% {
-                  width: 0%;
-                }
-                100% {
-                  width: 80%;
-                }
-              }
+            .sidebarItem.open {
+              text-decoration: underline;
+              font-weight: 700;
             }
           }
         }

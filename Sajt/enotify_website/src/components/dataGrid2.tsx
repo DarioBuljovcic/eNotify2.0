@@ -145,6 +145,8 @@ const SelectionButton = () => {
     };
     setToasts((prev) => [...prev, toast]);
     setToastId(toastId + 1);
+    setIsModalVisible(false);
+    setIsPopoverOpen(false);
   };
   const handleUpdate = async () => {
     const newData = searchData.filter((_, index) => selectedRows.has(index));
@@ -159,13 +161,14 @@ const SelectionButton = () => {
         color: "success",
         text: (
           <>
-            <p>Uspešno ste obrisali sve izabrane {text}!</p>
+            <p>Uspešno ste prebacili učenike u sledeći razred!</p>
           </>
         ),
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
       GetSetData();
+      setIsPopoverOpen(false);
     } catch (error) {
       updateSelectedRows({ action: "clear" });
       let toast;
@@ -182,6 +185,7 @@ const SelectionButton = () => {
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
       setIsModalVisible(false);
+      setIsPopoverOpen(false);
     }
   };
 

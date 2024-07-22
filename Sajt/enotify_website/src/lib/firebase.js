@@ -116,7 +116,7 @@ export const postStudentsFile = async (data) => {
   for (let item of data) {
     const name = item.Name + " " + item.Surname;
     const users = await getStudents();
-    if (!users.some((obj) => obj.Email === data.Email))
+    if (!users.some((obj) => obj.Email === item.Email))
       try {
         const userID = generatePassword(7);
         const data = {
@@ -148,13 +148,15 @@ export const postStudentsFile = async (data) => {
       } catch (error) {
         console.error(error);
       }
+    else throw new Error();
   }
 };
 export const postProfessorsFile = async (data) => {
   for (let item of data) {
     const name = item.Name + " " + item.Surname;
     const users = await getProfessors();
-    if (!users.some((obj) => obj.Email === data.Email))
+
+    if (!users.some((obj) => obj.Email === item.Email))
       try {
         const userID = generatePassword(7);
         const data = {
@@ -185,6 +187,7 @@ export const postProfessorsFile = async (data) => {
       } catch (error) {
         console.error(error);
       }
+    else throw new Error();
   }
 };
 export const postOneStudent = async (item) => {
