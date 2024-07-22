@@ -85,9 +85,7 @@ export default function LogOutModal({navigation}: any) {
                 onPress={onCancel}>
                 <Text
                   style={{
-                    color: isDarkMode
-                      ? Colors.Dark.white
-                      : Colors.Light.warningRed,
+                    color: isDarkMode.warningRed,
                   }}>
                   {t('decline')}
                 </Text>

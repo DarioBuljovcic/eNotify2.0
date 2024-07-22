@@ -1,7 +1,7 @@
 import {createContext, useContext, useState, useEffect} from 'react';
 import {MMKV} from 'react-native-mmkv';
 import {useColorScheme} from 'react-native';
-import {GlobarProviderProps, User} from '../constants/Types/indexTypes';
+import {Color, GlobarProviderProps, User} from '../constants/Types/indexTypes';
 import loginUser from '../hooks/loginUser';
 import Colors from '../constants/Color';
 
@@ -14,6 +14,7 @@ const defaultContext = {
   isLoading: false,
   storage: storage,
   isDarkMode: Colors.Light,
+  setMode: (o: Color) => {},
 };
 const GlobalContext = createContext<GlobarProviderProps>(defaultContext);
 
@@ -23,10 +24,25 @@ const GlobalProvider = ({children}: any) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(false);
-  const isDarkMode = useColorScheme() === 'dark' ? Colors.Dark : Colors.Light;
+  const [isDarkMode, setMode] = useState<Color>(Colors.Dark);
   useEffect(() => {
     const getUser = async () => {
       const UserID = await storage.getString('UserID');
+
+      const Mode = await storage.getString('Mode');
+
+      if (Mode) {
+        const theme = Mode === 'dark' ? Colors.Dark : Colors.Light;
+
+        setMode(theme);
+        console.log('brrrraaa');
+      } else {
+        console.log('skrrr');
+        const theme = useColorScheme() === 'dark' ? Colors.Dark : Colors.Light;
+        setMode(theme);
+        console.log('raaa');
+      }
+
       try {
         if (UserID === undefined) {
           console.log('No account');
@@ -60,6 +76,7 @@ const GlobalProvider = ({children}: any) => {
         isLoading,
         storage,
         isDarkMode,
+        setMode,
       }}>
       {children}
     </GlobalContext.Provider>

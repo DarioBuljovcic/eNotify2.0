@@ -6,8 +6,8 @@ export const fetchNotifications = async (
   role: string,
   userClass: string,
   userId: string,
-  setNotifications,
-): Promise<NotificationType[]> => {
+  setNotifications: (o: NotificationType[]) => void,
+) => {
   const subscriptions = ['Prvi', 'Drugi', 'Treci', 'Cetvrti'];
   let snapshot;
 

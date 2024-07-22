@@ -8,7 +8,6 @@ import HomeStudent from './HomeStudent.tsx';
 import Table from './Table.tsx';
 import Profile from './Profile.tsx';
 import {useGlobalContext} from '../../context/GlobalProvider.tsx';
-import Colors from '../../constants/Color.ts';
 import TabIcon from '../../components/TabIcon.tsx';
 import HomeProfessor from './HomeProfessor.tsx';
 
@@ -21,7 +20,7 @@ const LayoutTabs = ({navigation}: {navigation: any}) => {
       screenOptions={({route}) => ({
         tabBarActiveTintColor: isDarkMode.accent,
         tabBarInactiveTintColor: isDarkMode.textPrimary,
-        tabBarPressColor: isDarkMode.appBackground,
+        tabBarPressColor: isDarkMode.componentBG,
         tabBarStyle: {
           backgroundColor: isDarkMode.componentBG,
           borderWidth: 0,

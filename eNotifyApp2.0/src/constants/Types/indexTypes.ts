@@ -99,10 +99,16 @@ export type GlobarProviderProps = {
   isLoggedIn: boolean;
   setIsLoggedIn: (o: boolean) => void;
   user: User | undefined;
-  setUser: (o: User | undefined) => void;
+  setUser: (
+    o:
+      | User
+      | undefined
+      | '(prev: User) => { profile_picture: string; UserID: string; Name: string; Email: string; Class: string; Role: string; LogOut: boolean; }',
+  ) => void;
   isLoading: boolean;
   storage: MMKV;
   isDarkMode: Color;
+  setMode: (o: Color) => void;
 };
 export type LogOutModalProps = {
   onConfirm: () => void;

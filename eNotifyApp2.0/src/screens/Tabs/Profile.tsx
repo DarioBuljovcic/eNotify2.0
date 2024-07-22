@@ -13,7 +13,7 @@ import {
   Text,
 } from 'react-native';
 import React, {useState} from 'react';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useFocusEffect} from '@react-navigation/native';
 import Colors from '../../constants/Color';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -28,6 +28,8 @@ import LogOutModal from '../../components/LogOutModal';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import logOut from '../../hooks/logOut';
 import {User} from '../../constants/Types/indexTypes';
+import getImage from '../../hooks/getImage';
+import updateUserImg from '../../hooks/updateUserImg';
 
 function App() {
   return <Animated.View entering={FadeIn} exiting={FadeOut} />;
@@ -36,14 +38,14 @@ function App() {
 const storagePhone = new MMKV();
 
 const Profile = ({navigation}: {navigation: any}) => {
-  const {isDarkMode, user, setUser, setIsLoggedIn} = useGlobalContext();
+  const {isDarkMode, user, setMode, setUser} = useGlobalContext();
   const [selectedFile, setSelectedFile] =
     useState<DocumentPickerResponse | null>(null);
   const [imageSource, setImageSource] = useState('');
-  const {t, i18n} = useTranslation();
-  const [languageModal, setLanguageModal] = useState(false);
-  const [logoutModal, setLogoutModal] = useState(false);
-
+  const {t} = useTranslation();
+  useFocusEffect(() => {
+    updateImage();
+  });
   const uploadProfilePicture = async () => {
     try {
       await DocumentPicker.pick({
@@ -62,9 +64,17 @@ const Profile = ({navigation}: {navigation: any}) => {
 
             await reference.putFile(pathToFile);
           }
+          if (file[0]) {
+            const name = file[0]?.name as string;
+            await storagePhone.set('Profile_Picture', name);
+            await updateUserImg(user?.UserID as string, name);
 
-          if (file[0])
-            await storagePhone.set('Profile_Picture', file[0]?.name as string);
+            setUser((prev: User) => ({
+              ...prev,
+              profile_picture: name,
+            }));
+            updateImage();
+          }
         };
         Picture();
       });
@@ -76,11 +86,21 @@ const Profile = ({navigation}: {navigation: any}) => {
       }
     }
   };
+  const updateImage = async () => {
+    const imageUrl = await storage()
+      .ref(user?.profile_picture)
+      .getDownloadURL();
+
+    if (imageUrl) setImageSource(imageUrl);
+  };
   const changeMode = async () => {
+    console.log(Appearance.getColorScheme());
     Appearance.setColorScheme(
       Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
     );
-
+    setMode(
+      Appearance.getColorScheme() === 'dark' ? Colors.Light : Colors.Dark,
+    );
     storagePhone.set(
       'Mode',
       Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
@@ -88,9 +108,6 @@ const Profile = ({navigation}: {navigation: any}) => {
   };
   const logOutModal = () => {
     navigation.navigate('LogOutModal');
-  };
-  const logOutCancle = () => {
-    setLogoutModal(false);
   };
 
   return (
