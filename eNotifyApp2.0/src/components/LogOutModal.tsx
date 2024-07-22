@@ -1,107 +1,140 @@
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  Dimensions,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useGlobalContext} from '../context/GlobalProvider';
 import {useTranslation} from 'react-i18next';
-import {LogOutModalProps} from '../constants/Types/indexTypes';
+import {User} from '../constants/Types/indexTypes';
 import Colors from '../constants/Color';
+import logOut from '../hooks/logOut';
+import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 
-export default function LogOutModal({onConfirm, onCancle}: LogOutModalProps) {
-  const {isDarkMode} = useGlobalContext();
-  const {t, i18n} = useTranslation();
+export default function LogOutModal({navigation}: any) {
+  const {isDarkMode, setUser, setIsLoggedIn, user} = useGlobalContext();
+  const [visible, setVisible] = useState(true);
+  const {t} = useTranslation();
+
+  const onConfirm = () => {
+    setVisible(false);
+    logOut({navigation: navigation, User: user as User});
+    setUser(undefined);
+    setIsLoggedIn(false);
+  };
+
+  const onCancel = () => {
+    setVisible(false);
+    navigation.navigate('Tabs', {screens: 'Profile'});
+  };
   return (
-    <TouchableOpacity onPress={onCancle} activeOpacity={1}>
-      <View
-        style={[
-          styles.logOutModal,
-          ,
-          {
-            backgroundColor: isDarkMode.componentBG,
-          },
-        ]}>
-        <Ionicons
-          name={'log-out-outline'}
-          size={140}
-          color={isDarkMode.textPrimary}
-          style={{alignSelf: 'center'}}
-        />
-        <Text
-          style={[
-            styles.logOutText,
-            {
-              color: isDarkMode.textPrimary,
-            },
-          ]}>
-          {t('logout message')}
-        </Text>
-
-        <TouchableOpacity
-          style={[
-            styles.logOutAnswer,
-            {
-              borderColor: isDarkMode.warningRed,
-            },
-          ]}
-          activeOpacity={1}
-          onPress={onCancle}>
-          <Text
-            style={{
-              color: isDarkMode.warningRed,
-            }}>
-            {t('decline logout')}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.logOutAnswer,
-            {
-              backgroundColor: isDarkMode.warningRed,
-            },
-            ,
-            {
-              borderColor: isDarkMode.warningRed,
-            },
-          ]}
-          activeOpacity={1}
-          onPress={onConfirm}>
-          <Text
-            style={{
-              color: isDarkMode.white,
-            }}>
-            {t('confirm logout')}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+    <Modal
+      animationType="none"
+      presentationStyle="overFullScreen"
+      transparent={true}>
+      {visible && (
+        <Animated.View
+          style={styles.modalBackground}
+          entering={FadeIn.duration(300)}
+          exiting={FadeOut.duration(300)}>
+          <View
+            style={[
+              styles.logOutModal,
+              ,
+              {
+                backgroundColor: isDarkMode.componentBG,
+              },
+            ]}>
+            <Ionicons
+              name={'warning-outline'}
+              size={32}
+              color={isDarkMode.textPrimary}
+              style={{}}
+            />
+            <Text
+              style={[
+                styles.logOutTitle,
+                {
+                  color: isDarkMode.textPrimary,
+                },
+              ]}>
+              {t('logout title')}
+            </Text>
+            <Text
+              style={[
+                styles.logOutText,
+                {
+                  color: isDarkMode.textPrimary,
+                },
+              ]}>
+              {t('logout message')}
+            </Text>
+            <View style={styles.buttonContainer}>
+              <Pressable
+                style={[
+                  styles.logOutAnswer,
+                  {
+                    borderColor: isDarkMode.warningRed,
+                  },
+                ]}
+                onPress={onCancel}>
+                <Text
+                  style={{
+                    color: isDarkMode
+                      ? Colors.Dark.white
+                      : Colors.Light.warningRed,
+                  }}>
+                  {t('decline')}
+                </Text>
+              </Pressable>
+              <Pressable
+                style={[
+                  styles.logOutAnswer,
+                  {
+                    backgroundColor: isDarkMode.warningRed,
+                  },
+                  ,
+                  {
+                    borderColor: isDarkMode.warningRed,
+                  },
+                ]}
+                onPress={() => onConfirm()}>
+                <Text
+                  style={{
+                    color: isDarkMode.white,
+                  }}>
+                  {t('confirm')}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </Animated.View>
+      )}
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
   modalBackground: {
     position: 'absolute',
-    top: -120,
+    top: 0,
     width: Dimensions.get('screen').width,
     height: Dimensions.get('screen').height,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 100,
+    zIndex: 10,
   },
-  modal: {
-    alignSelf: 'center',
-    width: 300,
-    height: 150,
-    backgroundColor: Colors.Light.componentBG,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-
   logOutModal: {
     padding: 20,
     paddingBottom: 40,
     alignSelf: 'center',
-    width: 320,
-    height: 350,
+    width: Dimensions.get('screen').width / 1.4,
+    height: 200,
     backgroundColor: Colors.Light.componentBG,
     borderRadius: 20,
     overflow: 'hidden',
@@ -110,18 +143,25 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   logOutAnswer: {
-    height: 40,
+    height: 50,
     borderRadius: 10,
     alignSelf: 'center',
-    width: '80%',
+    width: `45%`,
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  logOutText: {
-    alignSelf: 'center',
-    fontSize: 30,
+  logOutTitle: {
+    fontSize: 20,
     fontFamily: 'Mulish-Bold',
-    marginBottom: 10,
+  },
+  logOutText: {
+    fontSize: 12,
+    fontFamily: 'Mulish-Bold',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    gap: 15,
+    justifyContent: 'center',
   },
 });

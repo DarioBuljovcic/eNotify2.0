@@ -26,6 +26,8 @@ import {useTranslation} from 'react-i18next';
 import DropdownLang from '../../components/DropdownLang';
 import LogOutModal from '../../components/LogOutModal';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
+import logOut from '../../hooks/logOut';
+import {User} from '../../constants/Types/indexTypes';
 
 function App() {
   return <Animated.View entering={FadeIn} exiting={FadeOut} />;
@@ -41,18 +43,6 @@ const Profile = ({navigation}: {navigation: any}) => {
   const {t, i18n} = useTranslation();
   const [languageModal, setLanguageModal] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
-
-  const logOut = () => {
-    navigation.navigate('Registration');
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{name: 'Registration'}],
-      }),
-    );
-    setUser(undefined);
-    setIsLoggedIn(false);
-  };
 
   const uploadProfilePicture = async () => {
     try {
@@ -97,7 +87,7 @@ const Profile = ({navigation}: {navigation: any}) => {
     );
   };
   const logOutModal = () => {
-    setLogoutModal(true);
+    navigation.navigate('LogOutModal');
   };
   const logOutCancle = () => {
     setLogoutModal(false);
@@ -111,14 +101,6 @@ const Profile = ({navigation}: {navigation: any}) => {
           backgroundColor: isDarkMode.appBackground,
         },
       ]}>
-      {logoutModal ? (
-        <Animated.View
-          entering={FadeIn}
-          exiting={FadeOut}
-          style={styles.modalBackground}>
-          <LogOutModal onConfirm={logOut} onCancle={logOutCancle} />
-        </Animated.View>
-      ) : null}
       <View style={styles.containerSize}>
         <ScrollView
           contentContainerStyle={{alignItems: 'center'}}

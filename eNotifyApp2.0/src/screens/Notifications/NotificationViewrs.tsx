@@ -9,11 +9,10 @@ import React, {useEffect, useState} from 'react';
 import {User} from '../../constants/Types/indexTypes';
 import {Text} from 'react-native-elements';
 import Colors from '../../constants/Color';
-import firestore from '@react-native-firebase/firestore';
 import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import storage from '@react-native-firebase/storage';
+import getUsers from '../../hooks/getUsers';
 
 export default function NotificationViewrs({route}: {route: any}) {
   console.warn = () => {};
@@ -25,40 +24,20 @@ export default function NotificationViewrs({route}: {route: any}) {
 
   useEffect(() => {
     const getData = async () => {
-      const stud = await firestore()
-        .collection('Users')
-        .where('Class', '==', route.params.Class[0])
-        .where('Role', '==', 'Student')
-        .get();
-      let data: User[] = [];
-      stud.docs.forEach(s => {
-        data.push(s.data() as User);
-      });
-
-      setStudents(
-        [...data].sort((a, b) =>
-          a.Name.split(' ')[1].localeCompare(b.Name.split(' ')[1]),
-        ),
-      );
+      const data = await getUsers(route.params.Class[0]);
+      setStudents(data);
     };
     if (students.length == 0) getData();
     if (students.length != 0) setLoading(true);
   }, [students]);
 
-  const updateImage = async (userID: any) => {
-    if (userID) {
-      const querySnapshot = await firestore()
-        .collection('Users')
-        .where('UserID', '==', userID)
-        .get();
+  const updateImage = async (item: User) => {
+    if (item) {
+      const imageUrl = await storage()
+        .ref(item.profile_picture)
+        .getDownloadURL();
 
-      if (!querySnapshot.empty) {
-        const imageUrl = await storage()
-          .ref(querySnapshot.docs[0].data().profile_picture)
-          .getDownloadURL();
-
-        if (imageUrl) return imageUrl;
-      }
+      if (imageUrl) return imageUrl;
     }
     return null;
   };
@@ -68,7 +47,7 @@ export default function NotificationViewrs({route}: {route: any}) {
 
     useEffect(() => {
       const fetchImageUrl = async () => {
-        const url = await updateImage(item.UserID);
+        const url = await updateImage(item);
         setImageUrl(url);
       };
 

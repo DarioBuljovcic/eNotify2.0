@@ -25,8 +25,6 @@
   "add file": "Add file",
   "send": "Send",
   "log out": "Log out",
-  "confirm logout": "Yes, I'm sure.",
-  "decline logout": "Nah, bring me back!",
   "logout message": "Oh no, are you sure?",
   "loading": "loading",
   "incorrect code": "You entered an invalid code",
@@ -37,5 +35,8 @@
   "file exists": "File already downloaded",
   "file downloaded": "File succesfuly downloaded",
   "image exists": "Image already downloaded",
-  "image downloaded": "Image succesfuly downloaded"
+  "image downloaded": "Image succesfuly downloaded",
+  "confirm": "Confirm",
+  "decline": "Cancle",
+  "logout title": "Log out from eNotify"
 }
