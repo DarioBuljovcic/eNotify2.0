@@ -12,7 +12,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../constants/Color';
 import firestore from '@react-native-firebase/firestore';
-import LinearGradient from 'react-native-linear-gradient';
 
 type Data = {
   [key: string]: string;
@@ -138,30 +137,24 @@ const App = () => {
   return (
     <>
       <View>
-        <LinearGradient
-          start={{x: 0.8, y: 0}}
-          end={{x: 0, y: 0}}
-          colors={[Colors.Light.accent, Colors.Light.accentGreen]}
-          style={styles.days}>
-          <View style={styles.displayDay}>
-            <Text style={styles.displayDayText}>{studentClass}</Text>
-          </View>
-          <View style={styles.displayDay}>
-            <Text style={styles.displayDayText}>Ponedeljak</Text>
-          </View>
-          <View style={styles.displayDay}>
-            <Text style={styles.displayDayText}>Utorak</Text>
-          </View>
-          <View style={styles.displayDay}>
-            <Text style={styles.displayDayText}>Sreda</Text>
-          </View>
-          <View style={styles.displayDay}>
-            <Text style={styles.displayDayText}>Četvrtak</Text>
-          </View>
-          <View style={styles.displayDay}>
-            <Text style={styles.displayDayText}>Petak</Text>
-          </View>
-        </LinearGradient>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>{studentClass}</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Ponedeljak</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Utorak</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Sreda</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Četvrtak</Text>
+        </View>
+        <View style={styles.displayDay}>
+          <Text style={styles.displayDayText}>Petak</Text>
+        </View>
       </View>
       <ScrollView contentContainerStyle={styles.flatList}>
         {raspored && renderRaspored(raspored)}

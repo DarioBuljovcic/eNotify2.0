@@ -5,6 +5,9 @@ import {
   useColorScheme,
   Animated,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
@@ -18,7 +21,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {PermissionsAndroid} from 'react-native';
 import Colors from '../../constants/Color';
-import LinearGradient from 'react-native-linear-gradient';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Circle} from 'react-native-svg';
 import Loading from './Loading';
@@ -122,9 +124,41 @@ const RegistrationScreen = ({
     }
   };
 
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardOpen(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardOpen(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
-    <>
-      <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: isDarkMode
+            ? Colors.Dark.appBackground
+            : Colors.Light.appBackground,
+        },
+      ]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={[{gap: 20}, {marginBottom: keyboardOpen ? 50 : '80%'}]}>
         <Dropdown
           style={[
             {
@@ -213,14 +247,7 @@ const RegistrationScreen = ({
         </View>
 
         <TouchableOpacity onPress={() => Login()} activeOpacity={0.8}>
-          <LinearGradient
-            start={{x: 1.3, y: 0}}
-            end={{x: 0, y: 0}}
-            colors={
-              isDarkMode
-                ? [Colors.Dark.accent, Colors.Dark.accent]
-                : [Colors.Light.accent, Colors.Light.accent]
-            }
+          <View
             style={[
               styles.confirmBtn,
               {
@@ -240,18 +267,10 @@ const RegistrationScreen = ({
               ]}>
               {t('register')}
             </Text>
-          </LinearGradient>
+          </View>
         </TouchableOpacity>
-      </View>
-
-      <View
-        style={[
-          isDarkMode
-            ? {backgroundColor: Colors.Dark.appBackground}
-            : {backgroundColor: Colors.Light.appBackground},
-          {width: '100%', height: '100%', zIndex: 0},
-        ]}></View>
-    </>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
@@ -333,15 +352,8 @@ const Registration = ({navigation}: RegistrationProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    top: -100,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    zIndex: 100,
     flex: 1,
-    gap: 20,
-    alignContent: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   incorrectText: {
     color: Colors.Light.warningRed,

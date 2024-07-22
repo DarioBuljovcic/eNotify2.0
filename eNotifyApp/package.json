@@ -34,7 +34,7 @@
     "react-native-elements": "3.4.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "2.17.1",
-    "react-native-linear-gradient": "2.8.3",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-orientation-locker": "1.6.0",
     "react-native-pager-view": "6.3.3",
     "react-native-push-notification": "8.1.1",

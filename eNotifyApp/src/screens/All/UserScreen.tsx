@@ -16,7 +16,6 @@ import React, {useEffect, useRef, useState, useTransition} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Image, Text} from 'react-native-elements';
 import {UserScreenTabProps} from '../../constants/Types/indexTypes';
-import {LinearGradient} from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
 import storage from '@react-native-firebase/storage';
@@ -93,22 +92,6 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
       }
     }
   };
-  // updateImage();
-
-  const changeLanguage = async (prop: string) => {
-    if (prop === 'sr') {
-      i18n.changeLanguage('sr');
-      AsyncStorage.setItem('Language', 'sr');
-    } else if (prop === 'hu') {
-      i18n.changeLanguage('hu');
-      AsyncStorage.setItem('Language', 'hu');
-    } else if (prop === 'en') {
-      i18n.changeLanguage('en');
-      AsyncStorage.setItem('Language', 'en');
-    }
-
-    setLanguageModal(false);
-  };
 
   const renderLanguage = () => {
     if (i18n.language === 'sr') {
@@ -154,37 +137,6 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
         </Text>
       );
     }
-  };
-
-  const logOutModal = () => {
-    setLogoutModal(true);
-  };
-  const logOutCancle = () => {
-    setLogoutModal(false);
-  };
-
-  const logOut = async () => {
-    setLogoutModal(false);
-    messaging().unsubscribeFromTopic('Svi');
-    messaging().unsubscribeFromTopic('Prvi');
-    messaging().unsubscribeFromTopic('Drugi');
-    messaging().unsubscribeFromTopic('Treci');
-    messaging().unsubscribeFromTopic('Cetvrit');
-
-    const classTopic = await AsyncStorage.getItem('Class');
-    if (classTopic) messaging().unsubscribeFromTopic(classTopic);
-
-    AsyncStorage.removeItem('UserId');
-    AsyncStorage.removeItem('Name');
-    AsyncStorage.removeItem('Role');
-    AsyncStorage.removeItem('Class');
-    AsyncStorage.removeItem('Email');
-    AsyncStorage.removeItem('Language');
-    AsyncStorage.clear();
-
-    navigation.push('Registration');
-    //RNRestart.restart();
-    //TODO: navigate to registratin
   };
 
   const uploadProfilePicture = async () => {
@@ -387,7 +339,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 },
               ]}
               activeOpacity={0.7}
-              onPress={() => setLanguageModal(true)}>
+              onPress={() => navigation.navigate('LanguageModal')}>
               <Text
                 style={[
                   styles.optionText,
@@ -472,7 +424,7 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
                 {},
               ]}
               activeOpacity={0.7}
-              onPress={() => logOutModal()}>
+              onPress={() => navigation.navigate('LogOutModal')}>
               <Text
                 style={[
                   styles.optionText,
@@ -497,187 +449,6 @@ const UserScreen = ({navigation}: UserScreenTabProps) => {
           </View>
         </ScrollView>
       </View>
-      {languageModal ? (
-        <TouchableOpacity
-          style={styles.modalBackground}
-          onPress={() => setLanguageModal(false)}
-          activeOpacity={1}>
-          <View style={styles.modal}>
-            <TouchableOpacity
-              style={[
-                styles.languageOption,
-                {borderBottomWidth: 1},
-                {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.componentBG
-                    : Colors.Light.componentBG,
-                },
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
-                },
-              ]}
-              activeOpacity={1}
-              onPress={() => changeLanguage('sr')}>
-              <Text
-                style={[
-                  styles.languageOptionText,
-                  {
-                    color:
-                      i18n.language === 'sr'
-                        ? Colors.Light.hyperlinkText
-                        : isDarkMode
-                        ? Colors.Dark.textPrimary
-                        : Colors.Light.textPrimary,
-                  },
-                ]}>
-                {t('serbian')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.languageOption,
-                {borderBottomWidth: 1},
-                {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.componentBG
-                    : Colors.Light.componentBG,
-                },
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.lightText
-                    : Colors.Light.lightText,
-                },
-              ]}
-              activeOpacity={1}
-              onPress={() => changeLanguage('hu')}>
-              <Text
-                style={[
-                  styles.languageOptionText,
-                  {
-                    color:
-                      i18n.language === 'hu'
-                        ? Colors.Light.hyperlinkText
-                        : isDarkMode
-                        ? Colors.Dark.textPrimary
-                        : Colors.Light.textPrimary,
-                  },
-                ]}>
-                {t('hungarian')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.languageOption,
-                {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.componentBG
-                    : Colors.Light.componentBG,
-                },
-              ]}
-              activeOpacity={1}
-              onPress={() => changeLanguage('en')}>
-              <Text
-                style={[
-                  styles.languageOptionText,
-                  {
-                    color:
-                      i18n.language === 'en'
-                        ? Colors.Light.hyperlinkText
-                        : isDarkMode
-                        ? Colors.Dark.textPrimary
-                        : Colors.Light.textPrimary,
-                  },
-                ]}>
-                {t('english')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      ) : null}
-      {logoutModal ? (
-        <TouchableOpacity
-          style={styles.modalBackground}
-          onPress={() => setLogoutModal(false)}
-          activeOpacity={1}>
-          <View
-            style={[
-              styles.logOutModal,
-              ,
-              {
-                backgroundColor: isDarkMode
-                  ? Colors.Dark.componentBG
-                  : Colors.Light.componentBG,
-              },
-            ]}>
-            <Ionicons
-              name={'log-out-outline'}
-              size={140}
-              color={
-                isDarkMode ? Colors.Dark.textPrimary : Colors.Light.textPrimary
-              }
-              style={{alignSelf: 'center'}}
-            />
-            <Text
-              style={[
-                styles.logOutText,
-                {
-                  color: isDarkMode
-                    ? Colors.Dark.textPrimary
-                    : Colors.Light.textPrimary,
-                },
-              ]}>
-              {t('logout message')}
-            </Text>
-
-            <TouchableOpacity
-              style={[
-                styles.logOutAnswer,
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.warningRed
-                    : Colors.Light.warningRed,
-                },
-              ]}
-              activeOpacity={1}
-              onPress={() => logOutCancle()}>
-              <Text
-                style={{
-                  color: isDarkMode
-                    ? Colors.Dark.white
-                    : Colors.Light.warningRed,
-                }}>
-                {t('decline logout')}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.logOutAnswer,
-                {
-                  backgroundColor: isDarkMode
-                    ? Colors.Dark.warningRed
-                    : Colors.Light.warningRed,
-                },
-                ,
-                {
-                  borderColor: isDarkMode
-                    ? Colors.Dark.warningRed
-                    : Colors.Light.warningRed,
-                },
-              ]}
-              activeOpacity={1}
-              onPress={() => logOut()}>
-              <Text
-                style={{
-                  color: isDarkMode ? Colors.Dark.white : Colors.Light.white,
-                }}>
-                {t('confirm logout')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </TouchableOpacity>
-      ) : null}
     </View>
   );
 };
@@ -777,62 +548,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
 
     transformOrigin: 'right',
-  },
-  modalBackground: {
-    position: 'absolute',
-    top: -120,
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 10,
-  },
-  modal: {
-    alignSelf: 'center',
-    width: 300,
-    height: 150,
-    backgroundColor: Colors.Light.componentBG,
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  languageOption: {
-    height: 150 / 3,
-    justifyContent: 'center',
-  },
-  languageOptionText: {
-    marginLeft: 10,
-    fontSize: 14,
-    color: Colors.Light.textPrimary,
-    fontFamily: 'Mulish',
-    textTransform: 'capitalize',
-  },
-  logOutModal: {
-    padding: 20,
-    paddingBottom: 40,
-    alignSelf: 'center',
-    width: 320,
-    height: 350,
-    backgroundColor: Colors.Light.componentBG,
-    borderRadius: 20,
-    overflow: 'hidden',
-    alignContent: 'center',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  logOutAnswer: {
-    height: 40,
-    borderRadius: 10,
-    alignSelf: 'center',
-    width: '80%',
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logOutText: {
-    alignSelf: 'center',
-    fontSize: 30,
-    fontFamily: 'Mulish-Bold',
-    marginBottom: 10,
   },
   add: {
     width: 20,

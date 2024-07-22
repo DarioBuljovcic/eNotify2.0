@@ -16,6 +16,8 @@ export type Navigation = {
   TimeTable: undefined;
   UserScreen: undefined;
   NotificationViewrs: undefined;
+  LogOutModal: undefined;
+  LanguageModal: undefined;
 };
 export type NotificationData = {
   Notification: NotificationType;
@@ -45,6 +47,8 @@ export type UserScreenTabProps = BottomTabScreenProps<
   ParamListBase,
   'UserScreen' | 'MyAccount'
 >;
+export type LogOutModalScreen = StackScreenProps<Navigation, 'LogOutModal'>;
+export type LanguageModalScreen = StackScreenProps<Navigation, 'LanguageModal'>;
 
 //Notification
 export type NotificationType = {

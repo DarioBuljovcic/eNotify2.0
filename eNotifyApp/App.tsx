@@ -32,6 +32,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTranslation} from 'react-i18next';
 import firestore from '@react-native-firebase/firestore';
 import {QuerySnapshot} from 'firebase/firestore';
+import LogOutModal from './src/screens/All/LogOutModal';
+import LanguageModal from './src/screens/All/LanguageModal';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -317,6 +319,24 @@ function App(): React.JSX.Element {
               fontFamily: 'Mulish-Light',
               textTransform: 'capitalize',
             },
+          })}
+        />
+        <Stack.Screen
+          name="LogOutModal"
+          component={LogOutModal}
+          options={() => ({
+            presentation: 'transparentModal',
+            headerBackVisible: false,
+            title: '',
+          })}
+        />
+        <Stack.Screen
+          name="LanguageModal"
+          component={LanguageModal}
+          options={() => ({
+            presentation: 'transparentModal',
+            headerBackVisible: false,
+            title: '',
           })}
         />
       </Stack.Navigator>

@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 30,
     top: -7,
-    left: -8,
+    left: -11,
   },
   tabButtonActive: {
     width: 45,
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderRadius: 30,
     top: -7,
-    left: -8,
+    left: -11,
   },
 });
 
