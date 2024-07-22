@@ -1,9 +1,10 @@
 body {
   font-family: "Mulish", "sans-serif";
+  font-size: 1.2em;
 }
 body .auth {
   z-index: 100;
-  background-color: rgba(14, 133, 212, 0.3529411765);
+  background-color: rgba(14, 133, 212, 0.8588235294);
   min-width: 600px;
   min-height: 600px;
   display: flex;
@@ -58,16 +59,26 @@ body .auth .loginBtn {
   width: 100%;
 }
 body .euiButton {
-  background-color: #003060;
+  background-color: #0e86d4;
   color: white;
   padding: 10px 20px;
   border-radius: 10px;
 }
+body .euiTab__content {
+  font-size: 1em;
+}
 body a {
   color: #0e86d4;
+  font-size: 1em;
+}
+body .subtitleText {
+  font-size: 1.2em;
 }
 body .euiIcon {
   color: #0e86d4;
+}
+body .titleText {
+  font-size: 2em;
 }
 body .openSidebar {
   position: absolute;
@@ -84,6 +95,11 @@ body .sidebarContainer {
   transition: all 0.5s ease;
   overflow: hidden;
   box-shadow: 7px 0 9px -7px black;
+}
+body .sidebarContainer .sidebarOptions {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 body .sidebarContainer .sidebarOptions img {
   width: 150px;
@@ -124,34 +140,9 @@ body .sidebarContainer .sidebarOptions .sidebarBlock .sidebarGroup .sidebarItem 
   color: white;
   position: relative;
 }
-body .sidebarContainer .sidebarOptions .sidebarBlock .sidebarGroup.open .sidebarItem::after {
-  animation: close 0.2s ease forwards;
-  height: 2px;
-}
-body .sidebarContainer .sidebarOptions .sidebarBlock .sidebarGroup.open .sidebarItem.open::after {
-  position: absolute;
-  content: "";
-  left: 10%;
-  bottom: 0;
-  height: 2px;
-  background-color: white;
-  animation: open 0.2s ease forwards;
-}
-@keyframes close {
-  0% {
-    width: 80%;
-  }
-  100% {
-    width: 0%;
-  }
-}
-@keyframes open {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 80%;
-  }
+body .sidebarContainer .sidebarOptions .sidebarBlock .sidebarGroup.open .sidebarItem.open {
+  text-decoration: underline;
+  font-weight: 700;
 }
 body .sidebarContainer .sidebarFooter {
   display: grid;
@@ -230,31 +221,31 @@ body .sidebarContainer .sidebarFooter .sidebarUser .text .email {
   left: 10%;
 }
 .container .grad-1 {
-  background: radial-gradient(circle at center, rgba(14, 133, 212, 0.8) 0, rgba(14, 133, 212, 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(53, 139, 197, 0.8) 0, rgba(53, 139, 197, 0) 50%) no-repeat;
   transform-origin: center center;
   animation: moveVertical 30s ease infinite;
   opacity: 1;
 }
 .container .grad-2 {
-  background: radial-gradient(circle at center, rgba(14, 133, 212, 0.8) 0, rgba(14, 133, 212, 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(22, 117, 181, 0.8) 0, rgba(22, 117, 181, 0) 50%) no-repeat;
   transform-origin: calc(50% - 400px);
   animation: moveInCircle 20s reverse infinite;
   opacity: 1;
 }
 .container .grad-3 {
-  background: radial-gradient(circle at center, rgba(14, 133, 212, 0.8) 0, rgba(14, 133, 212, 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(17, 132, 209, 0.8) 0, rgba(17, 132, 209, 0) 50%) no-repeat;
   transform-origin: calc(50% + 400px);
   animation: moveInCircle 40s linear infinite;
   opacity: 1;
 }
 .container .grad-4 {
-  background: radial-gradient(circle at center, rgba(14, 133, 212, 0.8) 0, rgba(14, 133, 212, 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(90, 164, 213, 0.8) 0, rgba(90, 164, 213, 0) 50%) no-repeat;
   transform-origin: calc(50% - 200px);
   animation: moveHorizontal 40s ease infinite;
   opacity: 0.7;
 }
 .container .grad-5 {
-  background: radial-gradient(circle at center, rgba(14, 133, 212, 0.8) 0, rgba(14, 133, 212, 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(50, 163, 238, 0.8) 0, rgba(50, 163, 238, 0) 50%) no-repeat;
   transform-origin: calc(50% - 800px) calc(50% + 200px);
   animation: moveInCircle 20s ease infinite;
   opacity: 1;

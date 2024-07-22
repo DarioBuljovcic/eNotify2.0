@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaBook, FaUser, FaBell, FaUserGroup } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 
-function Sidebar({ tabs, handleTabChange, tabId }) {
-  const [selectedBlock, setBlock] = useState(0);
+function Sidebar({ tabs, handleTabChange, tabId, blockId }) {
+  const [selectedBlock, setBlock] = useState(blockId);
   const [selectedTab, setTab] = useState(1);
   const handleClick = (block, tab, index) => {
     selectedBlock !== index && setBlock(index);
@@ -11,6 +11,9 @@ function Sidebar({ tabs, handleTabChange, tabId }) {
     tabId !== tab && handleTabChange(tab);
     block.onclick();
   };
+  useEffect(() => {
+    setBlock(blockId - 1);
+  }, [blockId]);
   return (
     <>
       <div className="sidebarOptions">

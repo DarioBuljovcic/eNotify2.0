@@ -14,22 +14,10 @@ import {
   EuiPopover,
   EuiButtonEmpty,
   EuiPopoverTitle,
-  EuiFlyout,
-  EuiFlyoutBody,
-  EuiFlyoutHeader,
-  EuiTitle,
-  EuiDescriptionListTitle,
-  EuiDescriptionListDescription,
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiScreenReaderOnly,
-  EuiFlyoutFooter,
   EuiConfirmModal,
-  EuiFieldText,
-  EuiDatePicker,
-  EuiTextArea,
-  EuiButton,
-  EuiSpacer,
   EuiIcon,
   EuiPageSection,
   EuiFlexGroup,
@@ -157,6 +145,8 @@ const SelectionButton = () => {
     };
     setToasts((prev) => [...prev, toast]);
     setToastId(toastId + 1);
+    setIsModalVisible(false);
+    setIsPopoverOpen(false);
   };
   const handleUpdate = async () => {
     const newData = searchData.filter((_, index) => selectedRows.has(index));
@@ -171,13 +161,14 @@ const SelectionButton = () => {
         color: "success",
         text: (
           <>
-            <p>Uspešno ste obrisali sve izabrane {text}!</p>
+            <p>Uspešno ste prebacili učenike u sledeći razred!</p>
           </>
         ),
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
       GetSetData();
+      setIsPopoverOpen(false);
     } catch (error) {
       updateSelectedRows({ action: "clear" });
       let toast;
@@ -194,6 +185,7 @@ const SelectionButton = () => {
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
       setIsModalVisible(false);
+      setIsPopoverOpen(false);
     }
   };
 
@@ -230,8 +222,7 @@ const SelectionButton = () => {
             iconSide="right"
             onClick={() => setIsPopoverOpen(!isPopoverOpen)}
           >
-            {selectedRows.size} {selectedRows.size > 1 ? "items" : "item"}{" "}
-            selected
+            {selectedRows.size + " "}izabrano
           </EuiButtonEmpty>
         }
         closePopover={() => setIsPopoverOpen(false)}
@@ -343,8 +334,14 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const { searchData, deleteData, GetSetData, ToastContext, dataType } =
-        useContext(DataContext);
+      const {
+        data,
+        searchData,
+        deleteData,
+        GetSetData,
+        ToastContext,
+        dataType,
+      } = useContext(DataContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(searchData[rowIndex]);
 
@@ -367,7 +364,7 @@ const trailingControlColumns = [
       const showFlyout = () => {
         closePopover();
         setIsFlyoutVisible(true);
-        setNewValue(searchData[rowIndex]);
+        setNewValue(data[rowIndex]);
       };
       const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
@@ -654,9 +651,8 @@ export default function DataGrid({
                   stripes: true,
                   rowHover: "highlight",
                   header: "underline",
-                  // If showDisplaySelector.allowDensity={true} from toolbarVisibility, fontSize and cellPadding will be superceded by what the user decides.
                   cellPadding: "m",
-                  fontSize: "m",
+                  fontSize: "l",
                   footer: "overline",
                 }}
               />

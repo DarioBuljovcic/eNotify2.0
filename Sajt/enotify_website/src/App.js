@@ -8,7 +8,7 @@ import "./components/css/dropdown.css";
 import "./components/css/style.css";
 
 function App() {
-  const [logedIn, setLogedIn] = useState(true);
+  const [logedIn, setLogedIn] = useState(false);
 
   const LoginTest = useCallback(async (password) => {
     const logedIn = await Login(password);

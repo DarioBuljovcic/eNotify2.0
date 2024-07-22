@@ -243,6 +243,7 @@ export default function SendNotification({
               }));
             }}
             aria-label="Use aria labels when no actual label is in use"
+            className="inputAll"
           />
 
           <EuiSpacer />
@@ -262,6 +263,7 @@ export default function SendNotification({
               }));
             }}
             aria-label="Use aria labels when no actual label is in use"
+            className="inputAll"
           />
 
           <EuiSpacer />
@@ -277,6 +279,7 @@ export default function SendNotification({
             onChange={onFileChange}
             display="default"
             aria-label="Use aria labels when no actual label is in use"
+            className="inputAll"
           />
           <EuiSpacer />
 

@@ -41,6 +41,7 @@ import {
   postClass,
   editClass,
   deleteClassesDocuments,
+  editProfessor,
 } from "../../lib/firebase.js";
 import FilePicker from "../../components/filePicker.tsx";
 import Modal from "../../components/modal.tsx";
@@ -242,7 +243,7 @@ export default function Home() {
             <DataGrid2
               columns={columnsProfessor}
               getData={getProfessors}
-              editData={editUser}
+              editData={editProfessor}
               deleteData={deleteUserDocuments}
               dataType="Professor"
               getAddition={getAllClasses}
@@ -444,14 +445,14 @@ export default function Home() {
           />
           <EuiPageTemplate.Sidebar
             sticky={true}
-            minWidth={"250px"}
+            minWidth={"300px"}
             className={`sidebarContainer ${sidebarOpen ? "open" : ""}`}
-            style={{ minInlineSize: "350px", maxBlockSize: 350 }}
           >
             <Sidebar
               tabs={allTabs}
               handleTabChange={handleTabChange}
               tabId={selectedTab}
+              blockId={selectedTabId}
             />
           </EuiPageTemplate.Sidebar>
 
