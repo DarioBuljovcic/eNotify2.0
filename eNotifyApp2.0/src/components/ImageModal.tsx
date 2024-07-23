@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 50,
     position: 'absolute',
-    top: '-5%',
+    top: '2%',
 
     zIndex: 120,
     borderWidth: 0.5,

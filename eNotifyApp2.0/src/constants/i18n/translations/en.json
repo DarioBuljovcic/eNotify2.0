@@ -25,7 +25,8 @@
   "add file": "Add file",
   "send": "Send",
   "log out": "Log out",
-  "logout message": "Oh no, are you sure?",
+  "logout title": "Log out from eNotify",
+  "logout message": "Your about to log out from your eNotify account.",
   "loading": "loading",
   "incorrect code": "You entered an invalid code",
   "identification code": "Enter your identification code",
@@ -38,6 +39,6 @@
   "image downloaded": "Image succesfuly downloaded",
   "confirm": "Confirm",
   "decline": "Cancle",
-  "logout title": "Log out from eNotify",
-  "view": "Seen"
+  "view": "Seen",
+  "download": "Click to Download"
 }

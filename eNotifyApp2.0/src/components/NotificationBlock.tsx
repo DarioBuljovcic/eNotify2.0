@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   },
   obavestenjeTitle: {
     fontSize: 20,
+    flexShrink: 1,
 
     fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,

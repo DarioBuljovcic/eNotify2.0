@@ -87,28 +87,6 @@ const SignIn = ({navigation}: {navigation: any}) => {
     }
   }, [user]);
 
-  const [keyboardOpen, setKeyboardOpen] = useState(false);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardOpen(true);
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardOpen(false);
-      },
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
   return (
     <SafeAreaView
       style={{
@@ -127,7 +105,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={[
           styles.container,
-          {paddingBottom: keyboardOpen ? 50 : '80%'},
+          {justifyContent: 'center'},
           {backgroundColor: isDarkMode.appBackground},
         ]}>
         <View>

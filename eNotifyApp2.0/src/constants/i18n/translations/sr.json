@@ -28,7 +28,7 @@
   "confirm": "Potvrdi",
   "decline": "Odustani",
   "logout title": "Izloguj te se sa eNotify-a",
-  "logout message": "O ne, jeste li sigurni?",
+  "logout message": "Upravo ce te biti izlogovani sa vaseg eNotify naloga.",
   "loading": "Učitavanje",
   "incorrect code": "Niste uneli dobar identifikacioni kod",
   "identification code": "Unesite vaš identifikacioni kod",
@@ -39,5 +39,6 @@
   "file downloaded": "Fajl je uspešno skinut",
   "image exists": "Ova slika je već skinuta",
   "image downloaded": "Slika je uspešno skinuta",
-  "view": "Pregled"
+  "view": "Pregled",
+  "download": "Preuzmi"
 }

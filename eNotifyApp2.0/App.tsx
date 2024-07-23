@@ -30,6 +30,7 @@ import About from './src/screens/Tabs/About';
 import Notification from './src/screens/Notifications/Notification';
 import LogOutModal from './src/components/LogOutModal';
 import LanguageModal from './src/components/LanguageModal';
+import OpenImageModal from './src/components/OpenImageModal';
 import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
@@ -234,6 +235,15 @@ function App(): React.JSX.Element {
           <Stack.Screen
             name="LanguageModal"
             component={LanguageModal}
+            options={() => ({
+              presentation: 'transparentModal',
+              headerBackVisible: false,
+              header: props => <></>,
+            })}
+          />
+          <Stack.Screen
+            name="OpenImageModal"
+            component={OpenImageModal}
             options={() => ({
               presentation: 'transparentModal',
               headerBackVisible: false,
