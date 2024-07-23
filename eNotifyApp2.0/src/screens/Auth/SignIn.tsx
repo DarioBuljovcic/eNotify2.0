@@ -1,5 +1,9 @@
 import {
+  Dimensions,
+  Keyboard,
+  KeyboardAvoidingView,
   PermissionsAndroid,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -83,6 +87,28 @@ const SignIn = ({navigation}: {navigation: any}) => {
     }
   }, [user]);
 
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardOpen(true);
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardOpen(false);
+      },
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -97,7 +123,13 @@ const SignIn = ({navigation}: {navigation: any}) => {
         onClose={handleCloseAlert}
       />
 
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={[
+          styles.container,
+          {paddingBottom: keyboardOpen ? 50 : '80%'},
+          {backgroundColor: isDarkMode.appBackground},
+        ]}>
         <View>
           <DropdownLang />
           <TextInput
@@ -135,13 +167,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
             {t('register')}
           </Text>
         </TouchableOpacity>
-      </View>
-
-      <View
-        style={[
-          {backgroundColor: isDarkMode.appBackground},
-          {width: '100%', height: '100%', zIndex: 0},
-        ]}></View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -150,15 +176,11 @@ export default SignIn;
 
 const styles = StyleSheet.create({
   container: {
-    top: -100,
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    zIndex: 100,
+    width: Dimensions.get('screen').width,
     flex: 1,
     gap: 20,
     alignContent: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   incorrectText: {
     color: Colors.Light.warningRed,

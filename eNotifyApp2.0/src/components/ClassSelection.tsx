@@ -52,6 +52,7 @@ export default function ClassSelection({
           style={[
             {
               color: isDarkMode.textPrimary,
+              fontFamily: 'Mulish',
             },
             item.Class === profClass
               ? {

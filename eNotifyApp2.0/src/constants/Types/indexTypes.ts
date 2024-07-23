@@ -153,7 +153,7 @@ export type getNotificationProps = {
 export type sendNotificationProps = {
   TextValue: string;
   TitleValue: string;
-  selectedFile: DocumentPickerResponse | null;
+  selectedFiles: DocumentPickerResponse[] | null;
   selectedClass: string;
   Name: string;
 };

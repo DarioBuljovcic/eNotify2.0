@@ -198,7 +198,10 @@ function App(): React.JSX.Element {
             component={NotificationViewrs}
             options={() => ({
               headerTitle: t('view'),
-              headerTitleStyle: {textTransform: 'capitalize'},
+              headerTitleStyle: {
+                textTransform: 'capitalize',
+                fontFamily: 'Mulish',
+              },
               headerShown: true,
               headerStyle: {
                 elevation: 0,
@@ -212,7 +215,10 @@ function App(): React.JSX.Element {
             component={About}
             options={() => ({
               headerTitle: t('about'),
-              headerTitleStyle: {textTransform: 'capitalize'},
+              headerTitleStyle: {
+                textTransform: 'capitalize',
+                fontFamily: 'Mulish',
+              },
               headerShown: true,
               cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}

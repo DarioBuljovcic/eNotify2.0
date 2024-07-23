@@ -59,7 +59,7 @@ export default function Notification({route}: any) {
       setNotification(data);
 
       //Getting images
-      let imgs: string[] = data.Files.split(',');
+      let imgs: string[] = data.Files.split(' ');
       let imgUrls: Images[] = [];
       for (let i = 0; i < imgs.length; i++) {
         const url = await storage().ref(imgs[i]).getDownloadURL();
@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish',
   },
   title: {
+    fontFamily: 'Mulish',
     paddingHorizontal: 10,
     marginBottom: 10,
     fontSize: 30,

@@ -17,7 +17,8 @@ import logOut from '../hooks/logOut';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 
 export default function LogOutModal({navigation}: any) {
-  const {isDarkMode, setUser, setIsLoggedIn, user} = useGlobalContext();
+  const {isDarkMode, setUser, setIsLoggedIn, user, storage} =
+    useGlobalContext();
   const [visible, setVisible] = useState(true);
   const {t} = useTranslation();
 
@@ -26,6 +27,7 @@ export default function LogOutModal({navigation}: any) {
     logOut({navigation: navigation, User: user as User});
     setUser(undefined);
     setIsLoggedIn(false);
+    storage.delete('UserID');
   };
 
   const onCancel = () => {
@@ -148,6 +150,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 10,
   },
   logOutTitle: {
     fontSize: 20,

@@ -36,11 +36,13 @@ const DropdownLang = () => {
       itemTextStyle={{
         textTransform: 'capitalize',
         color: isDarkMode.textPrimary,
+        fontFamily: 'Mulish',
       }}
       placeholder={t('choose language')}
       placeholderStyle={{
         textTransform: 'capitalize',
         color: isDarkMode.textPrimary,
+        fontFamily: 'Mulish',
       }}
       onChange={item => {
         changeLanguage(item.value);
@@ -54,6 +56,7 @@ const DropdownLang = () => {
       value={lang}
       data={dropdownData}
       selectedTextStyle={{
+        fontFamily: 'Mulish',
         textTransform: 'capitalize',
         marginLeft: 10,
         color: isDarkMode.textPrimary,

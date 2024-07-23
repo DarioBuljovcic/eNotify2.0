@@ -38,8 +38,10 @@ const HomeProfessor = ({navigation}: any) => {
   const [textValue, setTextValue] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
   const [isFocus, setIsFocus] = useState(false);
-  const [selectedFile, setSelectedFile] =
-    useState<DocumentPickerResponse | null>(null);
+
+  const [selectedFiles, setSelectedFiles] = useState<DocumentPickerResponse[]>(
+    [],
+  );
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -72,21 +74,21 @@ const HomeProfessor = ({navigation}: any) => {
     sendNotification({
       TextValue: textValue,
       TitleValue: TitleValue,
-      selectedFile: selectedFile,
+      selectedFiles: selectedFiles,
       selectedClass: selectedClass,
       Name: user?.Name as string,
     });
     setTextValue('');
     setTitleValue('');
     setSelectedClass('');
-    setSelectedFile(null);
+    setSelectedFiles([]);
 
     bottomSheetRef.current?.close();
   };
 
   const AddFile = async () => {
     try {
-      await PermissionsAndroid.request(
+      const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         {
           title: 'External Storage Permission',
@@ -98,25 +100,21 @@ const HomeProfessor = ({navigation}: any) => {
         },
       );
 
-      await DocumentPicker.pick({
+      const files = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
         copyTo: 'documentDirectory',
-      }).then(async file => {
-        setSelectedFile(file[0]);
+        allowMultiSelection: true,
       });
-      // const files = await DocumentPicker.pickMultiple({
-      //   type: [DocumentPicker.types.allFiles],
-      //   copyTo: 'documentDirectory',
-      // });
 
-      // setSelectedFiles(prevFiles => [...prevFiles, ...files]);
+      setSelectedFiles(files); // Clear previous files and set new files
     } catch (error) {
       if (DocumentPicker.isCancel(error)) {
         console.log('User cancelled file selection');
       } else {
-        console.log('Error selecting file:', error);
+        console.log('Error selecting files:', error);
       }
     }
+    console.log(selectedFiles);
   };
 
   return (
@@ -260,7 +258,7 @@ const HomeProfessor = ({navigation}: any) => {
               onPress={() => AddFile()}>
               <Ionicons
                 name={
-                  selectedFile == null
+                  selectedFiles.length === 0
                     ? 'cloud-outline'
                     : 'document-text-outline'
                 }
@@ -271,7 +269,9 @@ const HomeProfessor = ({navigation}: any) => {
                 style={{
                   color: isDarkMode.lightText,
                 }}>
-                {selectedFile === null ? t('add file') : selectedFile.name}
+                {selectedFiles.length === 0
+                  ? t('add file')
+                  : selectedFiles.map(file => file.name).join(', ')}
               </Text>
             </TouchableOpacity>
 
