@@ -72,6 +72,7 @@ export default function AddOneUser({
           Class: value,
         };
         const answer: boolean = await postUser(item);
+        console.log(answer);
         if (answer) {
           toast = {
             id: `toast${toastId}`,

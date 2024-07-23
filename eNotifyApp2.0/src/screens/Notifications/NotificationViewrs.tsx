@@ -13,11 +13,12 @@ import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import storage from '@react-native-firebase/storage';
 import getUsers from '../../hooks/getUsers';
+import {useGlobalContext} from '../../context/GlobalProvider';
 
 export default function NotificationViewrs({route}: {route: any}) {
   console.warn = () => {};
 
-  const isDarkMode = useColorScheme() === 'light';
+  const {isDarkMode} = useGlobalContext();
   const [students, setStudents] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const studentsViewd: string = route.params.Seen.split(',');
@@ -60,7 +61,7 @@ export default function NotificationViewrs({route}: {route: any}) {
           source={
             imageUrl
               ? {uri: imageUrl}
-              : isDarkMode
+              : isDarkMode === Colors.Light
               ? require('../../assets/images/user-light.png')
               : require('../../assets/images/user-dark.png')
           }
@@ -70,9 +71,7 @@ export default function NotificationViewrs({route}: {route: any}) {
           style={[
             styles.userText,
             {
-              color: isDarkMode
-                ? Colors.Light.textSecondary
-                : Colors.Dark.textSecondary,
+              color: isDarkMode.textSecondary,
             },
           ]}>
           {item.Name}
@@ -96,9 +95,7 @@ export default function NotificationViewrs({route}: {route: any}) {
         style={[
           styles.list,
           {
-            backgroundColor: isDarkMode
-              ? Colors.Light.appBackground
-              : Colors.Dark.appBackground,
+            backgroundColor: isDarkMode.appBackground,
           },
         ]}>
         <FlatList

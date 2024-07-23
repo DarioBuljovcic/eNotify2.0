@@ -259,6 +259,7 @@ export const postOneProfessor = async (item) => {
           console.error("Error sending email:", error);
         });
       await addDoc(collection(db, "Users"), data);
+      return true;
     }
     return false;
   } catch (error) {

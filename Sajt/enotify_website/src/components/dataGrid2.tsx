@@ -97,10 +97,20 @@ const deleteUsers = async (
   dataForDelete,
   deleteData,
   GetSetData,
+  dataType,
   closeModal?
 ) => {
   if (dataForDelete instanceof Set) {
-    const newData = searchData.filter((_, index) => dataForDelete.has(index));
+    let newData;
+
+    if (["Student", "Professor"].includes(dataType))
+      newData = searchData.filter((item) => dataForDelete.has(item.UserID));
+    else if (dataType === "Notifications")
+      newData = searchData.filter((item) =>
+        dataForDelete.has(item.NotificationId)
+      );
+    else if (dataType === "Class")
+      newData = searchData.filter((item) => dataForDelete.has(item.Class));
 
     await deleteData(newData);
     GetSetData();
@@ -128,7 +138,7 @@ const SelectionButton = () => {
       : "notifikacije";
 
   const handleDelete = () => {
-    deleteUsers(searchData, selectedRows, deleteData, GetSetData);
+    deleteUsers(searchData, selectedRows, deleteData, GetSetData, dataType);
     updateSelectedRows({ action: "clear" });
     let toast;
     toast = {
@@ -147,7 +157,8 @@ const SelectionButton = () => {
     setIsPopoverOpen(false);
   };
   const handleUpdate = async () => {
-    const newData = searchData.filter((_, index) => selectedRows.has(index));
+    const newData = searchData.filter((item) => selectedRows.has(item.UserID));
+
     try {
       await nextYear(newData);
       setIsModalVisible(false);
@@ -368,6 +379,7 @@ const trailingControlColumns = [
         ToastContext,
         dataType,
       } = useContext(DataContext);
+      const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
       const closePopover = () => setIsPopoverVisible(false);
       const [newValue, setNewValue] = useState(searchData[rowIndex]);
 
@@ -400,8 +412,10 @@ const trailingControlColumns = [
           searchData[rowIndex],
           deleteData,
           GetSetData,
+          dataType,
           closeModal
         );
+        updateSelectedRows({ action: "clear" });
         closeModal();
         let toast;
         toast = {
