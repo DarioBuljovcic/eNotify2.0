@@ -52,6 +52,7 @@ export default function ClassSelection({
           style={[
             {
               color: isDarkMode.textPrimary,
+              fontFamily: 'Mulish',
             },
             item.Class === profClass
               ? {
@@ -70,7 +71,7 @@ export default function ClassSelection({
       <FlatList
         horizontal
         scrollEnabled={razredi.length > 4}
-        style={styles.list}
+        style={[styles.list, {backgroundColor: isDarkMode.appBackground}]}
         contentContainerStyle={{paddingLeft: 20}}
         data={razredi}
         renderItem={renderClasses}
@@ -87,13 +88,12 @@ const height = 35;
 
 const styles = StyleSheet.create({
   list: {
-    minHeight: 55,
+    minHeight: 80,
     width: screenWidth,
-    marginTop: 15,
+    paddingTop: 15,
     overflow: 'hidden',
     paddingRight: 20,
     flexGrow: 0.02,
-    marginBottom: 5,
   },
   class: {
     marginRight: 20,

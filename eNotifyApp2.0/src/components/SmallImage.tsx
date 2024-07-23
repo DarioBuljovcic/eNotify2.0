@@ -1,9 +1,17 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {useGlobalContext} from '../context/GlobalProvider';
 import Colors from '../constants/Color';
 import {SmallImageProps} from '../constants/Types/indexTypes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {t} from 'i18next';
 
 const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
   const {isDarkMode} = useGlobalContext();
@@ -35,6 +43,7 @@ const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
         <View>{ImageFile()}</View>
         <View style={styles.txtContainer}>
           <Text
+            numberOfLines={1}
             style={[
               styles.txtImageName,
               {
@@ -50,7 +59,7 @@ const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
                 color: isDarkMode.lightText,
               },
             ]}>
-            Click to Download
+            {t('download')}
           </Text>
         </View>
       </View>
@@ -83,6 +92,7 @@ const styles = StyleSheet.create({
   txtImageName: {
     fontSize: 14,
     fontFamily: 'Mulish',
+    maxWidth: Dimensions.get('screen').width / 1.5,
   },
   txtClick: {
     fontSize: 11,

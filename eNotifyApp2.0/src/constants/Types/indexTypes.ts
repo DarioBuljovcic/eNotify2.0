@@ -15,6 +15,7 @@ export type Navigation = {
   LogOutModal: undefined;
   LanguageModal: undefined;
   NotificationViewrs: undefined;
+  OpenImageModal: undefined;
 };
 export type NotificationData = {
   Notification: NotificationType;
@@ -128,6 +129,7 @@ export type OpenImageProps = {
   shownImage: Images;
   shown: boolean;
   setModalOpen: (o: boolean) => void;
+  navigation: any;
 };
 export type ImageModalProps = {
   message: string;
@@ -149,7 +151,7 @@ export type getNotificationProps = {
 export type sendNotificationProps = {
   TextValue: string;
   TitleValue: string;
-  selectedFile: DocumentPickerResponse | null;
+  selectedFiles: DocumentPickerResponse[] | null;
   selectedClass: string;
   Name: string;
 };

@@ -24,7 +24,7 @@ import storage from '@react-native-firebase/storage';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import NotificationSeen from '../../components/NotificationSeen';
 import ImageModal from '../../components/ImageModal';
-import OpenImage from '../../components/OpenImage';
+import OpenImage from '../../components/OpenImageModal';
 import SmallImage from '../../components/SmallImage';
 
 export default function Notification({route}: any) {
@@ -33,13 +33,7 @@ export default function Notification({route}: any) {
   const [notification, setNotification] = useState<NotificationType>();
 
   const [images, setImages] = useState<Images[]>([]);
-  const [message, setMessage] = useState('Slika je uspešno skinuta!');
   const [shown, setShown] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [icon, setIcon] = useState<Icon>({
-    name: 'checkmark-circle-outline',
-    color: 'green',
-  });
 
   useEffect(() => {
     const getNotification = async () => {
@@ -59,7 +53,7 @@ export default function Notification({route}: any) {
       setNotification(data);
 
       //Getting images
-      let imgs: string[] = data.Files.split(',');
+      let imgs: string[] = data.Files.split(' ');
       let imgUrls: Images[] = [];
       for (let i = 0; i < imgs.length; i++) {
         const url = await storage().ref(imgs[i]).getDownloadURL();
@@ -78,6 +72,12 @@ export default function Notification({route}: any) {
   const handleOpen = (image: Images) => {
     setShownImage(image);
     setShown(true);
+    console.log(image);
+    navigation.navigate('OpenImageModal', {
+      shownImage: image,
+      shown: shown,
+      navigation: navigation,
+    });
   };
   const renderImages = () => {
     return (
@@ -130,15 +130,15 @@ export default function Notification({route}: any) {
 
   return (
     <>
-      <OpenImage
+      {/* <OpenImage
         shown={shown}
         shownImage={shownImage}
         setShown={setShown}
         setIcon={setIcon}
         setMessage={setMessage}
         setModalOpen={setModalOpen}
-      />
-      <ImageModal message={message} icon={icon} shown={modalOpen} />
+        navigation={navigation}
+      /> */}
       <View
         style={[
           styles.container,
@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Mulish',
   },
   title: {
+    fontFamily: 'Mulish',
     paddingHorizontal: 10,
     marginBottom: 10,
     fontSize: 30,

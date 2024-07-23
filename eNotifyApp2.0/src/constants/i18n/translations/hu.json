@@ -28,7 +28,7 @@
   "confirm": "Megerősít",
   "decline": "Mégse",
   "logout title": "Kijelentkezés az eNotify-ból",
-  "logout message": "Ó, ne, biztos vagy benne?",
+  "logout message": "Az eNotify fiókjából fog kijelentkezni.",
   "loading": "betöltés",
   "incorrect code": "Érvénytelen kódot adott meg",
   "identification code": "Adja meg az azonosító kódját",
@@ -39,5 +39,6 @@
   "file downloaded": "A fájl sikeresen letöltve",
   "image exists": "A kép már le van töltve",
   "image downloaded": "A kép sikeresen letöltve",
-  "view": "Látott"
+  "view": "Látott",
+  "download": "Kattintson a letöltéshez"
 }

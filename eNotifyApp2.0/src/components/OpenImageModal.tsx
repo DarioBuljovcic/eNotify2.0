@@ -1,20 +1,22 @@
 import {Dimensions, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../constants/Color';
 import RNFS from 'react-native-fs';
-import {OpenImageProps} from '../constants/Types/indexTypes';
+import {Icon, OpenImageProps} from '../constants/Types/indexTypes';
 import {useTranslation} from 'react-i18next';
+import ImageModal from './ImageModal';
 
-const OpenImage = ({
-  setShown,
-  setMessage,
-  setIcon,
-  shownImage,
-  shown,
-  setModalOpen,
-}: OpenImageProps) => {
+const OpenImageModal = ({navigation, route}: any) => {
+  const [message, setMessage] = useState('Slika je uspešno skinuta!');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [icon, setIcon] = useState<Icon>({
+    name: 'checkmark-circle-outline',
+    color: 'green',
+  });
+
+  console.log('img: ' + route.params.shownImage);
   const {t} = useTranslation();
   const downloadImage = async (imageUrl: string, fileName: string) => {
     try {
@@ -38,7 +40,10 @@ const OpenImage = ({
                   ? t('image downloaded')
                   : t('file downloaded'),
               );
-              setIcon({name: 'checkmark-circle-outline', color: 'green'});
+              setIcon({
+                name: 'checkmark-circle-outline',
+                color: 'green',
+              });
               setModalOpen(true);
               setTimeout(() => {
                 setModalOpen(false);
@@ -69,45 +74,64 @@ const OpenImage = ({
       console.error('Error downloading file:', error);
     }
   };
-  if (shown)
-    return (
-      <Animated.View
-        entering={FadeIn}
-        exiting={FadeOut}
-        style={[styles.modal, {opacity: 1}]}>
-        <TouchableOpacity
-          style={styles.closeImage}
-          onPress={() => setShown(false)}>
-          <Ionicons
-            size={40}
-            color={Colors.Dark.white}
-            name="close-outline"></Ionicons>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.downloadImage}
-          onPress={() =>
-            downloadImage(shownImage.imageUrl, shownImage.imageName)
-          }>
-          <Ionicons
-            size={35}
-            color={Colors.Dark.white}
-            name="download-outline"></Ionicons>
-        </TouchableOpacity>
-        <Image source={{uri: shownImage?.imageUrl}} style={styles.modalImage} />
-      </Animated.View>
-    );
-  else return <></>;
+  const ImageFile = () => {
+    if (
+      /\.(jpg|jpeg|png|gif|bmp|svg|webp|tiff)$/i.test(
+        route.params.shownImage?.imageName,
+      )
+    )
+      return (
+        <Image
+          source={{uri: route.params.shownImage?.imageUrl}}
+          style={styles.modalImage}
+        />
+      );
+    else
+      return (
+        <Ionicons
+          size={360}
+          name="document-outline"
+          color="white"
+          style={{alignSelf: 'center', marginTop: '55%'}}></Ionicons>
+      );
+  };
+  return (
+    <Animated.View
+      entering={FadeIn}
+      exiting={FadeOut}
+      style={[styles.modal, {opacity: 1}]}>
+      <ImageModal message={message} icon={icon} shown={modalOpen} />
+      <TouchableOpacity
+        style={styles.closeImage}
+        onPress={() => navigation.goBack()}>
+        <Ionicons
+          size={40}
+          color={Colors.Dark.white}
+          name="close-outline"></Ionicons>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.downloadImage}
+        onPress={() => {
+          downloadImage(
+            route.params.shownImage.imageUrl,
+            route.params.shownImage.imageName,
+          );
+        }}>
+        <Ionicons
+          size={35}
+          color={Colors.Dark.white}
+          name="download-outline"></Ionicons>
+      </TouchableOpacity>
+      {ImageFile()}
+    </Animated.View>
+  );
 };
 
-export default OpenImage;
+export default OpenImageModal;
 
 const styles = StyleSheet.create({
   modal: {
     zIndex: 110,
-
-    position: 'absolute',
-    top: '-7.1%',
-    left: 0,
 
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
@@ -118,16 +142,16 @@ const styles = StyleSheet.create({
   },
   closeImage: {
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: 10,
+    right: 10,
     width: 40,
     height: 40,
     borderRadius: 20,
   },
   downloadImage: {
     position: 'absolute',
-    top: 0,
-    right: 40,
+    top: 10,
+    right: 50,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -136,7 +160,7 @@ const styles = StyleSheet.create({
     height: '90%',
     width: '95%',
     alignSelf: 'center',
-    top: '10%',
+    top: '5%',
     borderRadius: 10,
   },
 });
