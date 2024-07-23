@@ -132,10 +132,12 @@ function App(): React.JSX.Element {
   const TestTheme = () => {
     const storage = new MMKV();
     const themeStorage = storage.getString('Mode');
-    let theme =
-      useColorScheme() === 'dark' ? CustomDarkTheme : CustomDefaultTheme;
-    if (themeStorage)
+    let theme = CustomDefaultTheme;
+
+    if (themeStorage) {
       theme = themeStorage === 'dark' ? CustomDarkTheme : CustomDefaultTheme;
+    }
+    console.log(theme);
     return theme;
   };
 

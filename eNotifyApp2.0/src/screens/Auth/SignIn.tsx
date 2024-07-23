@@ -33,7 +33,7 @@ PermissionsAndroid.request(
 const SignIn = ({navigation}: {navigation: any}) => {
   const {t} = useTranslation();
   const [UserID, setUserID] = useState('');
-  const {setUser, setIsLoggedIn, storage, isDarkMode, user} =
+  const {setUser, setIsLoggedIn, storage, isDarkMode, user, isLoading} =
     useGlobalContext();
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -86,68 +86,68 @@ const SignIn = ({navigation}: {navigation: any}) => {
       );
     }
   }, [user]);
+  if (!isLoading)
+    return (
+      <SafeAreaView
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white',
+        }}>
+        <CustomAlertModal
+          visible={modalVisible}
+          message={modalMessage}
+          onClose={handleCloseAlert}
+        />
 
-  return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'white',
-      }}>
-      <CustomAlertModal
-        visible={modalVisible}
-        message={modalMessage}
-        onClose={handleCloseAlert}
-      />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={[
+            styles.container,
+            {justifyContent: 'center'},
+            {backgroundColor: isDarkMode.appBackground},
+          ]}>
+          <View>
+            <DropdownLang />
+            <TextInput
+              placeholder={t('identification code')}
+              placeholderTextColor={isDarkMode.lightText}
+              autoCapitalize="none"
+              onChangeText={text => {
+                setUserID(text);
+              }}
+              value={UserID}
+              style={[
+                styles.input,
+                {
+                  backgroundColor: isDarkMode.textInputBackground,
+                },
+                {
+                  color: isDarkMode.textPrimary,
+                },
+              ]}
+            />
+          </View>
 
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={[
-          styles.container,
-          {justifyContent: 'center'},
-          {backgroundColor: isDarkMode.appBackground},
-        ]}>
-        <View>
-          <DropdownLang />
-          <TextInput
-            placeholder={t('identification code')}
-            placeholderTextColor={isDarkMode.lightText}
-            autoCapitalize="none"
-            onChangeText={text => {
-              setUserID(text);
-            }}
-            value={UserID}
-            style={[
-              styles.input,
-              {
-                backgroundColor: isDarkMode.textInputBackground,
-              },
-              {
-                color: isDarkMode.textPrimary,
-              },
-            ]}
-          />
-        </View>
-
-        <TouchableOpacity
-          onPress={submit}
-          activeOpacity={0.8}
-          style={styles.confirmBtn}
-          disabled={isSubmitting}>
-          <Text
-            style={[
-              styles.confirmTxt,
-              {
-                color: isDarkMode.whiteText,
-              },
-            ]}>
-            {t('register')}
-          </Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
+          <TouchableOpacity
+            onPress={submit}
+            activeOpacity={0.8}
+            style={styles.confirmBtn}
+            disabled={isSubmitting}>
+            <Text
+              style={[
+                styles.confirmTxt,
+                {
+                  color: isDarkMode.whiteText,
+                },
+              ]}>
+              {t('register')}
+            </Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    );
 };
 
 export default SignIn;

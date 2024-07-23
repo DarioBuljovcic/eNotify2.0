@@ -29,7 +29,13 @@ const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
           ]}
         />
       );
-    else return <Ionicons size={60} name="document-outline"></Ionicons>;
+    else
+      return (
+        <Ionicons
+          size={60}
+          name="document-outline"
+          color={isDarkMode.textPrimary}></Ionicons>
+      );
   };
   return (
     <TouchableOpacity key={index} activeOpacity={0.8} onPress={handleOpen}>

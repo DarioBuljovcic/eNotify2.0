@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, useEffect} from 'react';
 import {MMKV} from 'react-native-mmkv';
-import {useColorScheme} from 'react-native';
+import {Appearance, useColorScheme} from 'react-native';
 import {Color, GlobarProviderProps, User} from '../constants/Types/indexTypes';
 import loginUser from '../hooks/loginUser';
 import Colors from '../constants/Color';
@@ -24,22 +24,13 @@ const GlobalProvider = ({children}: any) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(false);
-  const [isDarkMode, setMode] = useState<Color>(Colors.Dark);
+  const [isDarkMode, setMode] = useState<Color>(Colors.Light);
   useEffect(() => {
     const getUser = async () => {
+      setIsLoading(true);
       const UserID = await storage.getString('UserID');
 
       const Mode = await storage.getString('Mode');
-
-      if (Mode) {
-        const theme = Mode === 'dark' ? Colors.Dark : Colors.Light;
-
-        setMode(theme);
-      } else {
-        const theme = useColorScheme() === 'dark' ? Colors.Dark : Colors.Light;
-        setMode(theme);
-      }
-
       try {
         if (UserID === undefined) {
           console.log('No account');
@@ -49,6 +40,7 @@ const GlobalProvider = ({children}: any) => {
         }
 
         const user = await loginUser(UserID);
+
         user
           ? setUser(user)
           : () => {
@@ -57,11 +49,20 @@ const GlobalProvider = ({children}: any) => {
         setIsLoggedIn(true);
       } catch (error: any) {
         console.log(error.message);
+      } finally {
+        setIsLoading(false);
+        if (Mode) {
+          const theme = Mode === 'dark' ? Colors.Dark : Colors.Light;
+          setMode(theme);
+          Appearance.setColorScheme(Mode);
+        } else Appearance.setColorScheme('light');
       }
-      setIsLoading(false);
     };
     getUser();
   }, []);
+  useEffect(() => {
+    console.log(isDarkMode);
+  }, [isDarkMode]);
 
   return (
     <GlobalContext.Provider
