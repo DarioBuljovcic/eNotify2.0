@@ -35,12 +35,9 @@ const GlobalProvider = ({children}: any) => {
         const theme = Mode === 'dark' ? Colors.Dark : Colors.Light;
 
         setMode(theme);
-        
       } else {
-        
         const theme = useColorScheme() === 'dark' ? Colors.Dark : Colors.Light;
         setMode(theme);
-        
       }
 
       try {

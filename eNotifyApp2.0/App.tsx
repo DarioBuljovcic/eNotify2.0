@@ -32,6 +32,7 @@ import LogOutModal from './src/components/LogOutModal';
 import LanguageModal from './src/components/LanguageModal';
 import OpenImageModal from './src/components/OpenImageModal';
 import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
+import {MMKV} from 'react-native-mmkv';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -128,15 +129,22 @@ function App(): React.JSX.Element {
       card: '#031525',
     },
   };
+  const TestTheme = () => {
+    const storage = new MMKV();
+    const themeStorage = storage.getString('Mode');
+    let theme =
+      useColorScheme() === 'dark' ? CustomDarkTheme : CustomDefaultTheme;
+    if (themeStorage)
+      theme = themeStorage === 'dark' ? CustomDarkTheme : CustomDefaultTheme;
+    return theme;
+  };
 
   return (
     <GlobalProvider>
       <NavigationContainer
         linking={linking}
         fallback={<ActivityIndicator animating />}
-        theme={
-          useColorScheme() === 'dark' ? CustomDarkTheme : CustomDefaultTheme
-        }>
+        theme={TestTheme()}>
         <Stack.Navigator
           initialRouteName="Registration"
           screenOptions={{
