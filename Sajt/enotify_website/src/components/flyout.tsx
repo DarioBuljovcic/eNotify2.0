@@ -691,7 +691,8 @@ export const FlyoutClasses = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { data, editData, addition, GetSetData } = useContext(DataContext);
+  const { data, editData, addition, GetSetData, searchData } =
+    useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
   const [value, setValue] = useState<string>(newValue.Professor);
@@ -701,11 +702,17 @@ export const FlyoutClasses = ({
   const [modalHeader, setModalHeader] = useState("");
   const [modalText, setModalText] = useState("");
   const [modalConfirm, setModalConfirm] = useState(true);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     const funk = async () => {
       const profs: DropdownUsers[] = [];
       const selectedProfs: DropdownUsers[] = [];
+
+      const image = await getImage(newValue.url);
+      console.log(newValue);
+      setImage(image);
+
       addition.forEach((d) => {
         if (d.Name === newValue.Professor) setValue(d.UserID);
         profs.push({
@@ -795,7 +802,25 @@ export const FlyoutClasses = ({
     setModalText(`Da li ste sigurni da želite da izvršite ovu izmenu?`);
     setIsModalVisible(true);
   };
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
+    if (file) {
+      handleChange(file, "Table");
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        setImage(e.target?.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleEditTable = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
   if (isFlyoutVisible) {
     return (
       <>
@@ -858,6 +883,30 @@ export const FlyoutClasses = ({
                 data-test-subj="demoComboBox"
                 isClearable={true}
               />
+            </EuiDescriptionListDescription>
+
+            <EuiSpacer />
+
+            <EuiDescriptionListTitle>Raspored</EuiDescriptionListTitle>
+            <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
+              <EuiFieldText
+                value={newValue["Table"]}
+                disabled={true}
+                append={
+                  <button onClick={handleEditTable} style={{ height: "100%" }}>
+                    <input
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg"
+                      style={{ display: "none" }}
+                      onChange={onChange}
+                      ref={fileInputRef}
+                    />
+                    <EuiIcon type="documentEdit"></EuiIcon>
+                  </button>
+                }
+              />
+
+              <EuiImage src={image as string} alt="Prikaz slike rasporeda" />
             </EuiDescriptionListDescription>
 
             <EuiSpacer />

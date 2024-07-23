@@ -35,12 +35,12 @@ const GlobalProvider = ({children}: any) => {
         const theme = Mode === 'dark' ? Colors.Dark : Colors.Light;
 
         setMode(theme);
-        console.log('brrrraaa');
+        
       } else {
-        console.log('skrrr');
+        
         const theme = useColorScheme() === 'dark' ? Colors.Dark : Colors.Light;
         setMode(theme);
-        console.log('raaa');
+        
       }
 
       try {

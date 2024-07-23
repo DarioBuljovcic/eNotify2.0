@@ -60,48 +60,45 @@ export default function Table() {
     }
   };
 
-  useEffect(() => {}, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      const func = async () => {
-        setTableCheck(false);
-        console.log(tableCheck);
-        if (user?.Role === 'Student') {
-          const querySnapshot = await firestore()
-            .collection('Classes')
-            .where('Class', '==', user.Class)
-            .get();
-
-          try {
-            const uri = await loadImage(querySnapshot.docs[0].data().Table);
-            if (uri !== 'file:///data/user/0/com.enotifyapp/files/') {
-              setTableCheck(true);
-              setImageUrl(uri);
+  useEffect(() => {
+    const func = async () => {
+      setTableCheck(false);
+      if (user?.Role === 'Student') {
+        await firestore()
+          .collection('Classes')
+          .where('Class', '==', user.Class)
+          .onSnapshot(async snapshot => {
+            try {
+              const uri = await loadImage(snapshot.docs[0].data().Table);
+              if (uri !== 'file:///data/user/0/com.enotifyapp/files/') {
+                setTableCheck(true);
+                setImageUrl(uri);
+              }
+            } catch {
+              setTableCheck(false);
+              console.log('s');
             }
-          } catch {
-            setTableCheck(false);
-            console.log('s');
-          }
-        } else if (user?.Role === 'Professor') {
-          const querySnapshot = await firestore()
-            .collection('Users')
-            .where('UserID', '==', user.UserID)
-            .get();
-          try {
-            const uri = await loadImage(querySnapshot.docs[0].data().Table);
-            if (uri !== 'file:///data/user/0/com.enotifyapp/files/') {
-              setTableCheck(true);
-              setImageUrl(uri);
+          });
+      } else if (user?.Role === 'Professor') {
+        await firestore()
+          .collection('Users')
+          .where('UserID', '==', user.UserID)
+          .onSnapshot(async snapshot => {
+            try {
+              const uri = await loadImage(snapshot.docs[0].data().Table);
+              if (uri !== 'file:///data/user/0/com.enotifyapp/files/') {
+                setTableCheck(true);
+                setImageUrl(uri);
+              }
+            } catch {
+              setTableCheck(false);
+              console.log('s');
             }
-          } catch {
-            setTableCheck(false);
-          }
-        }
-      };
-      func();
-    }, []),
-  );
+          });
+      }
+    };
+    func();
+  }, []);
 
   return (
     <View style={{zIndex: 100}}>

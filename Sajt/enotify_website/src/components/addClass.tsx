@@ -39,6 +39,7 @@ export default function AddClass({
   const [value, setValue] = useState("");
   const [selectedClasses, setSelectedClasses] = useState<DropdownUsers[]>([]);
   const [allClasses, setClasses] = useState<dataClass[]>();
+  const [sending, setSending] = useState(false);
   const filePickerRef = useRef<
     LegacyRef<Omit<EuiFilePickerProps, "stylesMemoizer">> | undefined
   >(undefined);
@@ -75,6 +76,7 @@ export default function AddClass({
       }
     }
   };
+
   const onChangeCombo = (selected) => {
     setSelectedClasses(selected);
     setErrorList((prev) => ({
@@ -107,6 +109,7 @@ export default function AddClass({
 
   const handlePost = async () => {
     let toast;
+    setSending(true);
     setErrorList({
       name: name === "" ? true : false,
       professorList: selectedClasses.length === 0 ? true : false,
@@ -135,31 +138,33 @@ export default function AddClass({
               </>
             ),
           };
-          setToasts((prev) => [...prev, toast]);
-          setToastId(toastId + 1);
-          setFiles(undefined);
-          setName("");
-          setSelectedClasses([]);
-          if (filePickerRef.current) filePickerRef.current.removeFiles();
-          return;
+        } else if (/^[1-4][A-Z]{3}$/.test(name)) {
+          await postClass(dataToInsert, file);
+          toast = {
+            id: `toast${toastId}`,
+            title: "Uspeh",
+            color: "success",
+            text: (
+              <>
+                <p>Uspešno ste dodali novi razred '{name}'</p>
+              </>
+            ),
+          };
+        } else {
+          toast = {
+            id: `toast${toastId}`,
+            title: "Greška",
+            color: "danger",
+            text: (
+              <>
+                <p>Naziv razreda nije dobar</p>
+                <p>
+                  Mora da počinje sa brojem od 1-4 i da sva slova budu velika
+                </p>
+              </>
+            ),
+          };
         }
-        await postClass(dataToInsert, file);
-        toast = {
-          id: `toast${toastId}`,
-          title: "Uspeh",
-          color: "success",
-          text: (
-            <>
-              <p>Uspešno ste dodali novi razred '{name}'</p>
-            </>
-          ),
-        };
-        setToasts((prev) => [...prev, toast]);
-        setToastId(toastId + 1);
-        setFiles(undefined);
-        setName("");
-        setSelectedClasses([]);
-        if (filePickerRef.current) filePickerRef.current.removeFiles();
       } catch (error) {
         console.log(error.message);
         toast = {
@@ -172,11 +177,13 @@ export default function AddClass({
             </>
           ),
         };
+      } finally {
         setToasts((prev) => [...prev, toast]);
         setToastId(toastId + 1);
         setFiles(undefined);
         setName("");
         setSelectedClasses([]);
+        console.log(filePickerRef);
         if (filePickerRef.current) filePickerRef.current.removeFiles();
       }
     } else {
@@ -196,6 +203,7 @@ export default function AddClass({
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
     }
+    setSending(false);
   };
 
   return (
@@ -275,15 +283,21 @@ export default function AddClass({
           </EuiFormLabel>
           <EuiFilePicker
             id={filePickerId}
+            ref={filePickerRef}
             initialPromptText="Izaberite ili prevucite sliku rasporeda"
             onChange={onChangeFile}
             display="default"
             aria-label="Use aria labels when no actual label is in use"
+            accept="image/*"
           />
         </EuiFlexItem>
 
         <EuiFlexItem>
-          <EuiButton fill={true} onClick={() => handlePost()}>
+          <EuiButton
+            fill={true}
+            onClick={() => handlePost()}
+            disabled={sending}
+          >
             Dodajte razred
           </EuiButton>
         </EuiFlexItem>

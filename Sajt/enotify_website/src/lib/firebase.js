@@ -316,7 +316,8 @@ export const sendNotification = async (item) => {
       NotificationId: generatePassword(7),
       Class: item.Classes,
       Date: new Date(),
-      Files: fileArray.length > 0 ? `${fileArray.map((f) => f.name)}` : ``,
+      Files:
+        fileArray.length > 0 ? `${fileArray.map((f) => `${f.name} `)}` : ``,
       Text: item.Text,
       Title: item.Title,
       Type: `T${fileArray.length > 0 ? "F" : ""}`,

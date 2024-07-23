@@ -41,6 +41,7 @@ export default function SendNotification({
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [classList, setClassList] = useState<ClassesNotification[]>();
+  const [sending, setSending] = useState(false);
   const [selectedClasses, setSelectedClasses] = useState<optionsNotification[]>(
     []
   );
@@ -134,6 +135,7 @@ export default function SendNotification({
 
   const handlePost = async () => {
     let toast;
+    setSending(true);
     setErrorList({
       title: title === "" ? true : false,
       text: text === "" ? true : false,
@@ -199,6 +201,7 @@ export default function SendNotification({
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
     }
+    setSending(false);
   };
   const onFileChange = (files) => {
     setFiles(files);
@@ -300,7 +303,11 @@ export default function SendNotification({
         </EuiFlexItem>
 
         <EuiFlexItem>
-          <EuiButton fill={true} onClick={() => handlePost()}>
+          <EuiButton
+            fill={true}
+            onClick={() => handlePost()}
+            disabled={sending}
+          >
             Pošaljite obaveštenje
           </EuiButton>
         </EuiFlexItem>

@@ -34,6 +34,7 @@ export default function AddOneUser({
   const [email, setEmail] = useState("");
   const [classList, setClassList] = useState<Classes[]>([]);
   const [value, setValue] = useState("");
+  const [sending, setSending] = useState(false);
   const [errorList, setErrorList] = useState({
     name: false,
     surname: false,
@@ -53,21 +54,16 @@ export default function AddOneUser({
 
   const handlePost = async () => {
     let toast;
-
-    setErrorList({
-      name: name === "" ? true : false,
-      surname: surname === "" ? true : false,
-      email:
-        email === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-          ? true
-          : false,
-    });
-    if (
-      name.length > 0 &&
-      surname.length > 0 &&
-      email.length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    ) {
+    setSending(true);
+    const patternName = /^[a-zA-Z]+$/;
+    const patternEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const test = {
+      name: name === "" ? true : false || !patternName.test(name),
+      surname: surname === "" ? true : false || !patternName.test(surname),
+      email: email === "" || !patternEmail.test(email) ? true : false,
+    };
+    setErrorList(test);
+    if (!test.name && !test.surname && !test.email) {
       try {
         const item = {
           Name: name,
@@ -105,12 +101,6 @@ export default function AddOneUser({
             ),
           };
         }
-
-        setToasts((prev) => [...prev, toast]);
-        setToastId(toastId + 1);
-        setName("");
-        setSurname("");
-        setEmail("");
       } catch (error) {
         console.log(error.message);
         toast = {
@@ -123,8 +113,12 @@ export default function AddOneUser({
             </>
           ),
         };
+      } finally {
         setToasts((prev) => [...prev, toast]);
         setToastId(toastId + 1);
+        setName("");
+        setSurname("");
+        setEmail("");
       }
     } else {
       toast = {
@@ -134,9 +128,13 @@ export default function AddOneUser({
         text: (
           <>
             {name === "" && <p> &gt; Ime nije popunjeno!</p>}
+            {patternName.test(name) && <p> &gt; Ime mogu biti samo slova!</p>}
             {surname === "" && <p> &gt; Prezime nije popunjeno!</p>}
+            {patternName.test(surname) && (
+              <p> &gt; Prezime mogu biti samo slova!</p>
+            )}
             {email === "" && <p>&gt; Email nije popunjen!</p>}
-            {email !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && (
+            {email !== "" && patternEmail.test(email) && (
               <p>&gt; Email nije u dobrom formatu!</p>
             )}
           </>
@@ -145,6 +143,7 @@ export default function AddOneUser({
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
     }
+    setSending(false);
   };
 
   return (
@@ -194,6 +193,7 @@ export default function AddOneUser({
             }}
             aria-label="Use aria labels when no actual label is in use"
             className="inputAll"
+            accept=""
           />
 
           <EuiSpacer />
@@ -256,9 +256,11 @@ export default function AddOneUser({
         </EuiFlexItem>
 
         <EuiFlexItem>
-          <EuiButton fill={true} onClick={() => handlePost()}>{`Dodajte ${
-            role === "u" ? "učenika" : "profesora"
-          }`}</EuiButton>
+          <EuiButton
+            disabled={sending}
+            fill={true}
+            onClick={() => handlePost()}
+          >{`Dodajte ${role === "u" ? "učenika" : "profesora"}`}</EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPageSection>

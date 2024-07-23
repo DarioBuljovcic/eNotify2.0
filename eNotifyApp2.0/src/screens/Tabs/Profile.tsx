@@ -3,17 +3,14 @@ import {
   View,
   TouchableOpacity,
   Appearance,
-  useColorScheme,
   Dimensions,
-  PermissionsAndroid,
   ScrollView,
-  DevSettings,
   Switch,
   Image,
   Text,
 } from 'react-native';
 import React, {useState} from 'react';
-import {CommonActions, useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Colors from '../../constants/Color';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -23,17 +20,8 @@ import DocumentPicker, {
 import storage from '@react-native-firebase/storage';
 import {MMKV} from 'react-native-mmkv';
 import {useTranslation} from 'react-i18next';
-import DropdownLang from '../../components/DropdownLang';
-import LogOutModal from '../../components/LogOutModal';
-import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
-import logOut from '../../hooks/logOut';
 import {User} from '../../constants/Types/indexTypes';
-import getImage from '../../hooks/getImage';
 import updateUserImg from '../../hooks/updateUserImg';
-
-function App() {
-  return <Animated.View entering={FadeIn} exiting={FadeOut} />;
-}
 
 const storagePhone = new MMKV();
 
@@ -49,7 +37,7 @@ const Profile = ({navigation}: {navigation: any}) => {
   const uploadProfilePicture = async () => {
     try {
       await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.images],
         copyTo: 'documentDirectory',
       }).then(async file => {
         setSelectedFile(file[0]);
@@ -69,10 +57,13 @@ const Profile = ({navigation}: {navigation: any}) => {
             await storagePhone.set('Profile_Picture', name);
             await updateUserImg(user?.UserID as string, name);
 
-            setUser((prev: User) => ({
-              ...prev,
-              profile_picture: name,
-            }));
+            setUser(
+              (prev: User | undefined) =>
+                ({
+                  ...prev,
+                  profile_picture: name,
+                } as User),
+            );
             updateImage();
           }
         };

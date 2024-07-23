@@ -2,6 +2,7 @@ import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
 import {ParamListBase} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Timestamp} from 'firebase/firestore';
+import {Dispatch, SetStateAction} from 'react';
 import {DocumentPickerResponse} from 'react-native-document-picker';
 import {MMKV} from 'react-native-mmkv';
 
@@ -100,12 +101,7 @@ export type GlobarProviderProps = {
   isLoggedIn: boolean;
   setIsLoggedIn: (o: boolean) => void;
   user: User | undefined;
-  setUser: (
-    o:
-      | User
-      | undefined
-      | '(prev: User) => { profile_picture: string; UserID: string; Name: string; Email: string; Class: string; Role: string; LogOut: boolean; }',
-  ) => void;
+  setUser: Dispatch<SetStateAction<User | undefined>>;
   isLoading: boolean;
   storage: MMKV;
   isDarkMode: Color;

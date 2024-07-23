@@ -119,8 +119,6 @@ const SelectionButton = () => {
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalText, setModalText] = useState("");
-  const [modalTitle, setModalTitle] = useState("");
   const [option, setOption] = useState(0);
   const text =
     dataType === "Student" || dataType === "Professor"
@@ -296,18 +294,46 @@ const SelectionHeaderCell = () => {
 };
 const SelectionRowCell = ({ rowIndex }) => {
   const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
-  const isChecked = selectedRows.has(rowIndex);
+  const { data, searchData, dataType } = useContext(DataContext);
+  const index = searchData[rowIndex];
+
+  const handleAdd = () => {
+    if (["Student", "Professor"].includes(dataType))
+      updateSelectedRows({ action: "add", rowIndex: index.UserID });
+    else if (dataType === "Notifications")
+      updateSelectedRows({ action: "add", rowIndex: index.NotificationId });
+    else if (dataType === "Class")
+      updateSelectedRows({ action: "add", rowIndex: index.Class });
+  };
+  const handleDelete = () => {
+    if (["Student", "Professor"].includes(dataType))
+      updateSelectedRows({ action: "delete", rowIndex: index.UserID });
+    else if (dataType === "Notifications")
+      updateSelectedRows({ action: "delete", rowIndex: index.NotificationId });
+    else if (dataType === "Class")
+      updateSelectedRows({ action: "delete", rowIndex: index.Class });
+  };
+
+  const handleChecked = () => {
+    if (["Student", "Professor"].includes(dataType))
+      return selectedRows.has(searchData[rowIndex].UserID);
+    else if (dataType === "Notifications")
+      return selectedRows.has(searchData[rowIndex].NotificationId);
+    else if (dataType === "Class")
+      return selectedRows.has(searchData[rowIndex].Class);
+    else return false;
+  };
   return (
     <div>
       <EuiCheckbox
         id={`${rowIndex}`}
         aria-label={`Select row `}
-        checked={isChecked}
+        checked={handleChecked()}
         onChange={(e) => {
           if (e.target.checked) {
-            updateSelectedRows({ action: "add", rowIndex });
+            handleAdd();
           } else {
-            updateSelectedRows({ action: "delete", rowIndex });
+            handleDelete();
           }
         }}
       />
@@ -526,7 +552,6 @@ export default function DataGrid({
         );
       else if (dataType === "Notification")
         newData = data.filter((obj) => {
-          console.log();
           return (
             obj["Text"].toLowerCase().includes(search.toLowerCase()) ||
             obj["Title"].toLowerCase().includes(search.toLowerCase()) ||
@@ -553,9 +578,6 @@ export default function DataGrid({
     setAddition(a);
     setData(d);
   };
-  useEffect(() => {
-    GetSetData();
-  }, []);
 
   const setPageIndex = useCallback(
     (pageIndex) =>
@@ -574,8 +596,12 @@ export default function DataGrid({
   const [visibleColumns, setVisibleColumns] = useState(
     columns.map(({ id }) => id)
   );
+  type Selection = {
+    action: "add" | "delete" | "clear" | "selectAll";
+    rowIndex: string;
+  };
   const rowSelection = useReducer(
-    (rowSelection: Set<number>, { action, rowIndex }: RowSelectionAction) => {
+    (rowSelection: Set<string>, { action, rowIndex }: Selection) => {
       if (action === "add") {
         const nextRowSelection = new Set(rowSelection);
         nextRowSelection.add(rowIndex);
@@ -587,7 +613,14 @@ export default function DataGrid({
       } else if (action === "clear") {
         return new Set();
       } else if (action === "selectAll") {
-        return new Set(searchData.map((_: any, index) => index));
+        let data;
+        if (["Student", "Professor"].includes(dataType))
+          data = searchData.map((d: any) => d.UserID);
+        else if (dataType === "Notifications")
+          data = searchData.map((d: any) => d.NotificationId);
+        else if (dataType === "Class")
+          data = searchData.map((d: any) => d.Class);
+        return new Set(data);
       }
       return rowSelection;
     },
@@ -607,7 +640,15 @@ export default function DataGrid({
     [searchData]
   );
 
-  if (searchData.length > 0)
+  useEffect(() => {
+    setData([]);
+    setAddition([]);
+    setVisibleColumns(columns.map(({ id }) => id));
+    setSearch("");
+    rowSelection[1]({ action: "clear" });
+    GetSetData();
+  }, [dataType]);
+  if (searchData.length > 0 && data.length > 0)
     return (
       <EuiPageSection>
         <DataContext.Provider
@@ -628,6 +669,7 @@ export default function DataGrid({
               <DataGridSearchUser search={search} setSearch={setSearch} />
               <EuiDataGrid
                 aria-label="Lista"
+                key={dataType}
                 leadingControlColumns={leadingControlColumns}
                 trailingControlColumns={trailingControlColumns}
                 columns={columns}

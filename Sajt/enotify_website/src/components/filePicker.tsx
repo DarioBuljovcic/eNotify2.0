@@ -73,6 +73,16 @@ export default function FilePicker({
             const validatedData = validateExcelItems(jsonData);
             try {
               await postFile(validatedData);
+              toast = {
+                id: `toast${toastId}`,
+                title: "Uspešno dodavanje",
+                color: "success",
+                text: (
+                  <>
+                    <p>Uspešno ste dodali nove korisnike putem fajla!</p>
+                  </>
+                ),
+              };
             } catch (error) {
               toast = {
                 id: `toast${toastId}`,
@@ -84,25 +94,7 @@ export default function FilePicker({
                   </>
                 ),
               };
-              setToasts((prev) => [...prev, toast]);
-              setToastId(toastId + 1);
-              if (filePickerRef.current) filePickerRef.current.removeFiles();
-              return;
             }
-
-            toast = {
-              id: `toast${toastId}`,
-              title: "Uspešno dodavanje",
-              color: "success",
-              text: (
-                <>
-                  <p>Uspešno ste dodali nove korisnike putem fajla!</p>
-                </>
-              ),
-            };
-            setToasts((prev) => [...prev, toast]);
-            setToastId(toastId + 1);
-            if (filePickerRef.current) filePickerRef.current.removeFiles();
           } catch {
             toast = {
               id: `toast${toastId}`,
@@ -114,10 +106,10 @@ export default function FilePicker({
                 </>
               ),
             };
+          } finally {
             setToasts((prev) => [...prev, toast]);
             setToastId(toastId + 1);
             if (filePickerRef.current) filePickerRef.current.removeFiles();
-            return;
           }
         }
       };
@@ -185,6 +177,7 @@ export default function FilePicker({
             onChange={onChange}
             display="large"
             aria-label="Use aria labels when no actual label is in use"
+            accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.oasis.opendocument.spreadsheet"
           />
         </EuiFlexItem>
         <EuiFlexItem>

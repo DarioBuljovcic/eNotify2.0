@@ -1,9 +1,9 @@
 import { Timestamp } from "firebase/firestore";
 import { Dispatch, SetStateAction } from "react";
-import { getAllClasses } from './../lib/firebase';
+import { getAllClasses } from "./../lib/firebase";
 
 export type dataUsers = {
-  [key: string]: any;
+  [key: string | number]: any;
   UserID: string;
   Name: string;
   Role: string;
@@ -11,14 +11,14 @@ export type dataUsers = {
   Class: string;
 };
 export type dataNotification = {
-  [key: string]: any;
+  [key: string | number]: any;
   NotificationId: string;
   Title: string;
   Text: string;
   Date: Timestamp;
 };
 export type dataClass = {
-  [key: string]: any;
+  [key: string | number]: any;
   label: string;
   value: string;
   text: string;
@@ -57,7 +57,7 @@ export type DropdownUsers = {
 };
 export type AddClassProps = {
   postClass: (o, p) => void;
-  getAllClasses:()=> Promise<any[]>;
+  getAllClasses: () => Promise<any[]>;
   getProfessors?: () => void;
   DataContext: React.Context<toastContext>;
 };
