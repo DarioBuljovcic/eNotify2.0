@@ -298,13 +298,10 @@ const styles = StyleSheet.create({
   add: {
     width: 70,
     height: 70,
-
     position: 'absolute',
     bottom: 180,
     right: 10,
-
     borderRadius: 50,
-
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -321,18 +318,14 @@ const styles = StyleSheet.create({
   dropdown: {
     fontSize: 17,
     fontFamily: 'Mulish',
-
     padding: 15,
     margin: 16,
     height: 50,
     width: '85%',
-
     alignSelf: 'center',
-
     borderRadius: 10,
     borderWidth: 1,
     borderColor: Colors.Light.lightText,
-
     elevation: 13,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
@@ -354,14 +347,10 @@ const styles = StyleSheet.create({
   send: {
     marginTop: 20,
     padding: 20,
-
     width: '80%',
-
     alignSelf: 'center',
     alignItems: 'center',
-
     marginBottom: 130,
-
     borderRadius: 30,
   },
   sendText: {
@@ -373,20 +362,15 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 17,
     fontFamily: 'Mulish',
-
     padding: 15,
     width: '85%',
-
     alignSelf: 'center',
-
     borderRadius: 10,
     borderWidth: 1,
-
     elevation: 13,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
-
     overflow: 'scroll',
   },
   addFile: {

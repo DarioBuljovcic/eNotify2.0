@@ -47,14 +47,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 5,
-
     alignSelf: 'center',
-
     width: '90%',
     height: 50,
     position: 'absolute',
     top: '2%',
-
     zIndex: 120,
     borderWidth: 0.5,
     borderRadius: 10,

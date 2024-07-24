@@ -132,12 +132,9 @@ export default OpenImageModal;
 const styles = StyleSheet.create({
   modal: {
     zIndex: 110,
-
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-
     backgroundColor: 'rgba(000, 0, 0, 0.8)',
-
     padding: 20,
   },
   closeImage: {

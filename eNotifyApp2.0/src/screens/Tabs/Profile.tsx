@@ -337,7 +337,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 20,
     padding: 10,
-
     borderRadius: 10,
     elevation: 4,
     shadowColor: Colors.Light.black,
@@ -370,7 +369,6 @@ const styles = StyleSheet.create({
     width: '85%',
     padding: 10,
     backgroundColor: '#ffffff',
-
     borderRadius: 10,
     elevation: 4,
     shadowColor: Colors.Light.black,
@@ -479,9 +477,7 @@ const styles = StyleSheet.create({
   add: {
     width: 20,
     height: 20,
-
     borderRadius: 50,
-
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
@@ -489,5 +485,7 @@ const styles = StyleSheet.create({
     top: 0,
     zIndex: 10,
   },
-  versonText: {fontFamily: 'Mulish-Light'},
+  versonText: {
+    fontFamily: 'Mulish-Light',
+  },
 });

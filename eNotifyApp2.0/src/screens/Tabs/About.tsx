@@ -31,12 +31,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '150%',
     padding: 20,
-
     zIndex: 10,
   },
   aboutText: {
     fontSize: 16,
-
     marginTop: 5,
     marginHorizontal: 5,
     fontFamily: 'Mulish',

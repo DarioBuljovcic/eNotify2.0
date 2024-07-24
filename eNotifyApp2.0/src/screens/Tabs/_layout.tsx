@@ -98,39 +98,3 @@ const LayoutTabs = ({navigation}: {navigation: any}) => {
 };
 
 export default LayoutTabs;
-
-const styles = StyleSheet.create({
-  tabBar: {
-    height: 60,
-    width: '100%',
-    paddingBottom: 10,
-    paddingTop: 10,
-    position: 'absolute',
-    bottom: 0,
-    zIndex: 100,
-  },
-  tabButton: {
-    width: 45,
-    aspectRatio: 1,
-    zIndex: 100,
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: 30,
-    top: -7,
-    left: -8,
-  },
-  tabButtonActive: {
-    width: 45,
-    aspectRatio: 1,
-    zIndex: 100,
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: 30,
-    top: -7,
-    left: -8,
-  },
-});

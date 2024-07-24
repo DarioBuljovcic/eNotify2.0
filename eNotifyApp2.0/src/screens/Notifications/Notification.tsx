@@ -224,7 +224,6 @@ const styles = StyleSheet.create({
   body: {
     marginTop: 20,
     fontSize: 18,
-
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },
@@ -236,9 +235,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginTop: 10,
-
     flexDirection: 'row',
-
     borderRadius: 0,
     borderBottomWidth: 0.8,
     marginHorizontal: 10,
@@ -247,12 +244,10 @@ const styles = StyleSheet.create({
   date: {
     flex: 1,
     textAlign: 'right',
-
     fontFamily: 'Mulish',
   },
   class: {
     flex: 1,
-
     fontFamily: 'Mulish',
   },
   imageContainer: {
@@ -266,7 +261,6 @@ const styles = StyleSheet.create({
   imageButton: {
     borderRadius: 10,
     padding: 10,
-
     flexDirection: 'row',
     elevation: 3,
     shadowColor: Colors.Light.black,
@@ -294,22 +288,17 @@ const styles = StyleSheet.create({
   sender: {
     marginTop: 5,
     fontSize: 12,
-
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },
   modal: {
     zIndex: 110,
-
     position: 'absolute',
     top: -70,
     left: 0,
-
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height - 20,
-
     backgroundColor: 'rgba(000, 0, 0, 0.8)',
-
     padding: 20,
   },
   closeImage: {

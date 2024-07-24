@@ -120,7 +120,6 @@ const screenHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     borderWidth: 0,
     width: screenWidth,
     height: screenHeight,
@@ -128,7 +127,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-
     overflow: 'hidden',
     elevation: 2,
     shadowColor: Colors.Light.black,

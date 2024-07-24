@@ -100,10 +100,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-
     height: 55,
     aspectRatio: 1,
-
     borderRadius: 50,
   },
 });

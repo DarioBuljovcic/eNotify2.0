@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
-
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
@@ -151,27 +150,23 @@ const styles = StyleSheet.create({
   initialsContainer: {
     aspectRatio: 1 / 1,
     height: '85%',
-
     borderRadius: 50,
     marginRight: 10,
     justifyContent: 'center',
   },
   initialsText: {
     textAlign: 'center',
-
     fontFamily: 'Mulish',
     fontSize: 30,
   },
   obavestenjeTitle: {
     fontSize: 20,
     flexShrink: 1,
-
     fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,
   },
   obavestenjeBody: {
     flexShrink: 1,
-
     fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,
   },
@@ -179,11 +174,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-
     width: 20,
     height: 20,
     borderRadius: 10,
-
     position: 'absolute',
     top: 10,
     right: 10,
