@@ -36,7 +36,6 @@ const SignIn = ({navigation}: {navigation: any}) => {
   const [UserID, setUserID] = useState('');
   const {setUser, setIsLoggedIn, storage, isDarkMode, user, isLoading} =
     useGlobalContext();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCorrect, setIsCorrect] = useState(true);
 
