@@ -157,10 +157,13 @@ export default function LanguageModal({navigation}: any) {
   );
 }
 
+const screenHeight = Dimensions.get('screen').height;
+const screenWidth = Dimensions.get('screen').width;
+
 const styles = StyleSheet.create({
   modal: {
     alignSelf: 'center',
-    width: Dimensions.get('screen').width / 1.7,
+    width: screenWidth / 1.7,
     height: 240,
     backgroundColor: Colors.Light.componentBG,
     borderRadius: 10,
@@ -169,9 +172,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   modalBackground: {
-    position: 'absolute',
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
+    width: screenWidth,
+    height: screenHeight,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 10,

@@ -66,7 +66,7 @@ const NotificationLoader = ({navigation, userClass}: any) => {
                   />
                 );
               }}
-              keyExtractor={obavestenje => obavestenje.NotificationId}
+              keyExtractor={notification => notification.NotificationId}
               initialNumToRender={7}
               showsVerticalScrollIndicator={false}
               updateCellsBatchingPeriod={50}
@@ -83,6 +83,7 @@ export default NotificationLoader;
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   list: {
     width: screenWidth,

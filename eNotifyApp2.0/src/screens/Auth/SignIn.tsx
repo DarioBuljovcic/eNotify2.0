@@ -161,9 +161,11 @@ const SignIn = ({navigation}: {navigation: any}) => {
 
 export default SignIn;
 
+const screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get('screen').width,
+    width: screenWidth,
     flex: 1,
     gap: 20,
     alignContent: 'center',

@@ -44,7 +44,7 @@ export default function NotificationViewrs({route}: {route: any}) {
     return null;
   };
 
-  const RenderObavestenje = ({item}: {item: User}) => {
+  const RenderNotification = ({item}: {item: User}) => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
@@ -106,7 +106,7 @@ export default function NotificationViewrs({route}: {route: any}) {
         <FlatList
           style={styles.flatList}
           data={students}
-          renderItem={({item}) => <RenderObavestenje item={item} />}
+          renderItem={({item}) => <RenderNotification item={item} />}
           keyExtractor={(stud: User) => stud.UserID}
           showsVerticalScrollIndicator={false}
         />

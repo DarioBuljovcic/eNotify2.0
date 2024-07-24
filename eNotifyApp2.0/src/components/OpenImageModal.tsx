@@ -1,4 +1,10 @@
-import {Dimensions, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useState} from 'react';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -101,27 +107,29 @@ const OpenImageModal = ({navigation, route}: any) => {
       exiting={FadeOut}
       style={[styles.modal, {opacity: 1}]}>
       <ImageModal message={message} icon={icon} shown={modalOpen} />
-      <TouchableOpacity
-        style={styles.closeImage}
-        onPress={() => navigation.goBack()}>
-        <Ionicons
-          size={40}
-          color={Colors.Dark.white}
-          name="close-outline"></Ionicons>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.downloadImage}
-        onPress={() => {
-          downloadImage(
-            route.params.shownImage.imageUrl,
-            route.params.shownImage.imageName,
-          );
-        }}>
-        <Ionicons
-          size={35}
-          color={Colors.Dark.white}
-          name="download-outline"></Ionicons>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.downloadImage}
+          onPress={() => {
+            downloadImage(
+              route.params.shownImage.imageUrl,
+              route.params.shownImage.imageName,
+            );
+          }}>
+          <Ionicons
+            size={35}
+            color={Colors.Dark.white}
+            name="download-outline"></Ionicons>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.closeImage}
+          onPress={() => navigation.goBack()}>
+          <Ionicons
+            size={40}
+            color={Colors.Dark.white}
+            name="close-outline"></Ionicons>
+        </TouchableOpacity>
+      </View>
       {ImageFile()}
     </Animated.View>
   );
@@ -129,26 +137,24 @@ const OpenImageModal = ({navigation, route}: any) => {
 
 export default OpenImageModal;
 
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   modal: {
     zIndex: 110,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    width: screenWidth,
+    height: screenHeight,
     backgroundColor: 'rgba(000, 0, 0, 0.8)',
     padding: 20,
   },
+  buttonContainer: {flexDirection: 'row', alignSelf: 'flex-end'},
   closeImage: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
     width: 40,
     height: 40,
     borderRadius: 20,
   },
   downloadImage: {
-    position: 'absolute',
-    top: 10,
-    right: 50,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
     height: '90%',
     width: '95%',
     alignSelf: 'center',
-    top: '5%',
     borderRadius: 10,
+    marginTop: 20,
   },
 });

@@ -5,16 +5,14 @@ import {
   StyleSheet,
   Text,
   View,
-  useColorScheme,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../constants/Color';
 import Zoom from 'react-native-zoom-reanimated';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
-import {useFocusEffect} from '@react-navigation/native';
 import {t} from 'i18next';
 import {useGlobalContext} from '../../context/GlobalProvider';
 
@@ -22,6 +20,7 @@ export default function Table() {
   const {isDarkMode, user} = useGlobalContext();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [tableCheck, setTableCheck] = useState(false);
+  const screenWidth = Dimensions.get('window').width;
 
   const downloadAndSaveImage = async (
     imageName: string,
@@ -117,8 +116,8 @@ export default function Table() {
               resizeMode="contain"
               style={{
                 backgroundColor: Colors.Light.appBackground,
-                width: Dimensions.get('window').width,
-                height: (100 * Dimensions.get('window').width) / 100,
+                width: screenWidth,
+                height: (100 * screenWidth) / 100,
               }}
             />
           ) : (
@@ -136,11 +135,13 @@ export default function Table() {
   );
 }
 
+const screenHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    height: Dimensions.get('window').height,
+    height: screenHeight,
   },
 });

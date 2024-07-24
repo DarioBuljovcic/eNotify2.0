@@ -323,6 +323,8 @@ const Profile = ({navigation}: {navigation: any}) => {
 
 export default Profile;
 
+const screenHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -365,7 +367,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   optionsContainer: {
-    height: Dimensions.get('window').height - 260,
+    height: screenHeight - 260,
     width: '85%',
     padding: 10,
     backgroundColor: '#ffffff',
@@ -396,83 +398,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Mulish-Light',
     textTransform: 'capitalize',
-  },
-  optionTextLanguage: {
-    fontSize: 12,
-    fontFamily: 'Mulish-Light',
-    textAlign: 'right',
-    marginRight: 15,
-  },
-  modeChange: {
-    width: 45,
-    aspectRatio: 1 / 1,
-    display: 'flex',
-    justifyContent: 'center',
-    borderRadius: 25,
-    overflow: 'hidden',
-  },
-  modeRotate: {
-    display: 'flex',
-    gap: 20,
-    flexDirection: 'row',
-
-    transformOrigin: 'right',
-  },
-  modalBackground: {
-    position: 'absolute',
-    top: -120,
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 10,
-  },
-  modal: {
-    alignSelf: 'center',
-    width: 300,
-    height: 150,
-    backgroundColor: '#ffffff',
-    borderRadius: 20,
-    overflow: 'hidden',
-  },
-  languageOption: {
-    height: 150 / 3,
-    justifyContent: 'center',
-  },
-  languageOptionText: {
-    marginLeft: 10,
-    fontSize: 14,
-    color: Colors.Light.textPrimary,
-    fontFamily: 'Mulish',
-    textTransform: 'capitalize',
-  },
-  logOutModal: {
-    padding: 20,
-    paddingBottom: 40,
-    alignSelf: 'center',
-    width: 320,
-    height: 350,
-    backgroundColor: Colors.Light.componentBG,
-    borderRadius: 20,
-    overflow: 'hidden',
-    alignContent: 'center',
-    justifyContent: 'center',
-    gap: 10,
-  },
-  logOutAnswer: {
-    height: 40,
-    borderRadius: 10,
-    alignSelf: 'center',
-    width: '80%',
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logOutText: {
-    alignSelf: 'center',
-    fontSize: 30,
-    fontFamily: 'Mulish-Bold',
-    marginBottom: 10,
   },
   add: {
     width: 20,
