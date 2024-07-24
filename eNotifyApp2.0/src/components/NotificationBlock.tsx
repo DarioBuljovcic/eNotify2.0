@@ -40,7 +40,7 @@ const NotifiactionBlock = ({
   const display = (
     <TouchableOpacity
       style={[
-        styles.obavestenje,
+        styles.notification,
         {
           backgroundColor: isDarkMode.componentBG,
         },
@@ -55,7 +55,7 @@ const NotifiactionBlock = ({
           user?.UserID && item.Seen.includes(user?.UserID)
             ? {display: 'none'}
             : [
-                styles.newObavestenje,
+                styles.newNotification,
                 {
                   backgroundColor: isDarkMode.accent,
                 },
@@ -82,7 +82,7 @@ const NotifiactionBlock = ({
       <View>
         <Text
           style={[
-            styles.obavestenjeTitle,
+            styles.notificationTitle,
             {
               color: isDarkMode.textPrimary,
             },
@@ -92,7 +92,7 @@ const NotifiactionBlock = ({
 
         <Text
           style={[
-            styles.obavestenjeBody,
+            styles.notificationBody,
             {
               color: isDarkMode.textPrimary,
             },
@@ -130,9 +130,11 @@ const NotifiactionBlock = ({
 };
 
 export default NotifiactionBlock;
+
 const screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
-  obavestenje: {
+  notification: {
     alignItems: 'center',
     flexDirection: 'row',
     height: 90,
@@ -141,7 +143,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
     padding: 10,
-
     borderRadius: 10,
     elevation: 3,
     shadowColor: Colors.Light.black,
@@ -151,45 +152,36 @@ const styles = StyleSheet.create({
   initialsContainer: {
     aspectRatio: 1 / 1,
     height: '85%',
-
     borderRadius: 50,
     marginRight: 10,
     justifyContent: 'center',
   },
   initialsText: {
     textAlign: 'center',
-
     fontFamily: 'Mulish',
     fontSize: 30,
   },
-  obavestenjeTitle: {
+  notificationTitle: {
     fontSize: 20,
     flexShrink: 1,
-
     fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,
   },
-  obavestenjeBody: {
+  notificationBody: {
     flexShrink: 1,
-
     fontFamily: 'Mulish',
     maxWidth: screenWidth / 1.5,
   },
-  newObavestenje: {
+  newNotification: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-
     width: 20,
     height: 20,
     borderRadius: 10,
-
     position: 'absolute',
     top: 10,
     right: 10,
-  },
-  newObavestenjeText: {
-    color: Colors.Light.white,
   },
   datum: {
     marginTop: 20,

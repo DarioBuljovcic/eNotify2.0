@@ -34,7 +34,6 @@ const SignIn = ({navigation}: {navigation: any}) => {
   const [UserID, setUserID] = useState('');
   const {setUser, setIsLoggedIn, storage, isDarkMode, user, isLoading} =
     useGlobalContext();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCorrect, setIsCorrect] = useState(true);
 
@@ -160,9 +159,11 @@ const SignIn = ({navigation}: {navigation: any}) => {
 
 export default SignIn;
 
+const screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get('screen').width,
+    width: screenWidth,
     flex: 1,
     gap: 20,
     alignContent: 'center',
@@ -170,9 +171,7 @@ const styles = StyleSheet.create({
   },
   incorrectText: {
     color: Colors.Light.warningRed,
-
     width: '80%',
-
     alignSelf: 'center',
     textAlign: 'left',
     fontFamily: 'Mulish',
@@ -180,20 +179,14 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 17,
     fontFamily: 'Mulish',
-
     backgroundColor: Colors.Light.textInputBackground,
     color: Colors.Light.textPrimary,
-
     padding: 15,
     width: '80%',
-
     alignSelf: 'center',
-
     borderRadius: 10,
-
     borderWidth: 1,
     borderColor: Colors.Light.lightText,
-
     elevation: 13,
     shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
@@ -201,14 +194,10 @@ const styles = StyleSheet.create({
   },
   confirmBtn: {
     backgroundColor: Colors.Light.accent,
-
     padding: 20,
-
     width: '50%',
-
     alignSelf: 'center',
     alignItems: 'center',
-
     borderRadius: 50,
   },
   confirmTxt: {

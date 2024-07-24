@@ -109,27 +109,24 @@ export default function LogOutModal({navigation}: any) {
   );
 }
 
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   modalBackground: {
-    position: 'absolute',
-    top: 0,
-    width: Dimensions.get('screen').width,
-    height: Dimensions.get('screen').height,
+    width: screenWidth,
+    height: screenHeight,
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     zIndex: 10,
   },
   logOutModal: {
     padding: 20,
-    paddingBottom: 40,
     alignSelf: 'center',
-    width: Dimensions.get('screen').width / 1.4,
+    width: screenWidth / 1.4,
     backgroundColor: Colors.Light.componentBG,
     borderRadius: 10,
-    overflow: 'hidden',
-    alignContent: 'center',
-    justifyContent: 'flex-end',
-    gap: 10,
+    gap: 5,
   },
   logOutAnswer: {
     height: 50,

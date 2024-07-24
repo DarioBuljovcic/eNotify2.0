@@ -139,6 +139,11 @@ export type SmallImageProps = {
   index: number;
   handleOpen: () => void;
 };
+export type ClassSelectionProps = {
+  razredi: Class[];
+  profClass: string;
+  setProfClass: any;
+};
 
 //Hooks
 export type getNotificationProps = {

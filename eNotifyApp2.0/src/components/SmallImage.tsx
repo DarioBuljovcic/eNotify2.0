@@ -80,6 +80,8 @@ const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
 
 export default SmallImage;
 
+const screenWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   imageButton: {
     borderRadius: 10,
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
   txtImageName: {
     fontSize: 14,
     fontFamily: 'Mulish',
-    maxWidth: Dimensions.get('screen').width / 1.5,
+    maxWidth: screenWidth / 1.5,
   },
   txtClick: {
     fontSize: 11,

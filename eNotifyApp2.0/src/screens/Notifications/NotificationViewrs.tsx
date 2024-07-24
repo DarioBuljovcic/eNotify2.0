@@ -44,7 +44,7 @@ export default function NotificationViewrs({route}: {route: any}) {
     return null;
   };
 
-  const RenderObavestenje = ({item}: {item: User}) => {
+  const RenderNotification = ({item}: {item: User}) => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
@@ -106,7 +106,7 @@ export default function NotificationViewrs({route}: {route: any}) {
         <FlatList
           style={styles.flatList}
           data={students}
-          renderItem={({item}) => <RenderObavestenje item={item} />}
+          renderItem={({item}) => <RenderNotification item={item} />}
           keyExtractor={(stud: User) => stud.UserID}
           showsVerticalScrollIndicator={false}
         />
@@ -120,7 +120,6 @@ const screenHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     borderWidth: 0,
     width: screenWidth,
     height: screenHeight,
@@ -128,7 +127,6 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-
     overflow: 'hidden',
     elevation: 2,
     shadowColor: Colors.Light.black,
@@ -143,7 +141,6 @@ const styles = StyleSheet.create({
     width: '90%',
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: screenWidth * 0.05,
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',

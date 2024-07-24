@@ -64,6 +64,7 @@ function App(): React.JSX.Element {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const Stack = createStackNavigator<Navigation>();
+  const screenWidth = Dimensions.get('window').width;
 
   function buildDeepLinkFromNotificationData(data: any): string | null {
     const notificationId = data.notification.android.channelId;
@@ -180,9 +181,9 @@ function App(): React.JSX.Element {
               headerBackground: () => (
                 <View style={{position: 'absolute', top: -1, zIndex: -11}}>
                   <Svg
-                    width={Dimensions.get('window').width}
+                    width={screenWidth}
                     height="241"
-                    viewBox={`0 0 ${Dimensions.get('window').width} 241`}
+                    viewBox={`0 0 ${screenWidth} 241`}
                     fill="none">
                     <Path
                       d="M0 0H541V217.519C464.705 265.682 351.65 226.249 312.115 217.519C272.581 208.789 119.991 145.903 0 217.519V0Z"

@@ -198,6 +198,8 @@ export default function Notification({route}: any) {
   );
 }
 
+const screenHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -207,14 +209,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   content: {
-    minHeight: Dimensions.get('window').height - 80,
+    minHeight: screenHeight - 80,
     position: 'relative',
     paddingBottom: 200,
   },
   body: {
     marginTop: 20,
     fontSize: 18,
-
     marginHorizontal: 15,
     fontFamily: 'Mulish',
   },
@@ -226,103 +227,31 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginTop: 10,
-
     flexDirection: 'row',
-
     borderRadius: 0,
     borderBottomWidth: 0.8,
     marginHorizontal: 10,
   },
-
   date: {
     flex: 1,
     textAlign: 'right',
-
     fontFamily: 'Mulish',
   },
   class: {
     flex: 1,
-
     fontFamily: 'Mulish',
   },
   imageContainer: {
     marginVertical: 15,
-    position: 'absolute',
-    bottom: 0,
     width: '100%',
     padding: 10,
     gap: 10,
-  },
-  imageButton: {
-    borderRadius: 10,
-    padding: 10,
-
-    flexDirection: 'row',
-    elevation: 3,
-    shadowColor: Colors.Light.black,
-    shadowOffset: {width: 2, height: 5},
-    shadowRadius: 1,
-  },
-  image: {
-    height: 70,
-    width: 70,
-    borderRadius: 10,
-    borderWidth: 1,
-  },
-  txtContainer: {
-    marginLeft: 10,
-  },
-  txtImageName: {
-    fontSize: 14,
-    fontFamily: 'Mulish',
-  },
-  txtClick: {
-    fontSize: 11,
-    fontFamily: 'Mulish',
   },
 
   sender: {
     marginTop: 5,
     fontSize: 12,
-
     marginHorizontal: 15,
     fontFamily: 'Mulish',
-  },
-  modal: {
-    zIndex: 110,
-
-    position: 'absolute',
-    top: -70,
-    left: 0,
-
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 20,
-
-    backgroundColor: 'rgba(000, 0, 0, 0.8)',
-
-    padding: 20,
-  },
-  closeImage: {
-    position: 'absolute',
-    top: 0,
-    right: -10,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  downloadImage: {
-    position: 'absolute',
-    top: 0,
-    right: 40,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  modalImage: {
-    height: '90%',
-    width: '95%',
-    alignSelf: 'center',
-    top: '10%',
-    borderRadius: 10,
   },
 });
