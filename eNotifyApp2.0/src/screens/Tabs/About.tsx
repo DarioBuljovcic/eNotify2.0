@@ -1,4 +1,4 @@
-import {Appearance, StyleSheet, Text, View} from 'react-native';
+import {Appearance, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useGlobalContext} from '../../context/GlobalProvider';
 
@@ -6,7 +6,7 @@ export default function About() {
   const {isDarkMode} = useGlobalContext();
   const {t} = useTranslation();
   return (
-    <View
+    <SafeAreaView
       style={[
         styles.aboutContainer,
         {
@@ -22,7 +22,7 @@ export default function About() {
         ]}>
         {t('about text')}
       </Text>
-    </View>
+    </SafeAreaView>
   );
 }
 

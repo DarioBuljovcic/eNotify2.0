@@ -22,12 +22,12 @@ const Colors: Theme = {
     hyperlinkText: '#0055cc',
     warningRed: '#f56262',
 
-    accentGreen: '#0E86D4',
     headerFirst: '#A35CBC',
     headerSecond: '#9648B2',
     headerThird: '#8D3AAB',
-    white: 'white',
-    black: 'black',
+    white: '#fff',
+    black: '#000',
+    green: '#0f0',
   },
   Dark: {
     appBackground: '#031525',
@@ -45,9 +45,9 @@ const Colors: Theme = {
     headerFirst: '#0D3055',
     headerSecond: '#052546',
     headerThird: '#0b233d',
-    white: 'white',
-    black: 'black',
-    accentGreen: '#055C9D',
+    white: '#fff',
+    black: '#000',
+    green: '#0f0',
   },
 };
 export default Colors;

@@ -13,7 +13,7 @@ const OpenImageModal = ({navigation, route}: any) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [icon, setIcon] = useState<Icon>({
     name: 'checkmark-circle-outline',
-    color: 'green',
+    color: Colors.Light.green,
   });
 
   console.log('img: ' + route.params.shownImage);
@@ -42,7 +42,7 @@ const OpenImageModal = ({navigation, route}: any) => {
               );
               setIcon({
                 name: 'checkmark-circle-outline',
-                color: 'green',
+                color: Colors.Light.green,
               });
               setModalOpen(true);
               setTimeout(() => {
@@ -64,7 +64,7 @@ const OpenImageModal = ({navigation, route}: any) => {
             ? t('image exists')
             : t('file exists'),
         );
-        setIcon({name: 'alert-circle-outline', color: 'red'});
+        setIcon({name: 'alert-circle-outline', color: Colors.Light.warningRed});
         setModalOpen(true);
         setTimeout(() => {
           setModalOpen(false);
@@ -91,7 +91,7 @@ const OpenImageModal = ({navigation, route}: any) => {
         <Ionicons
           size={360}
           name="document-outline"
-          color="white"
+          color={Colors.Light.white}
           style={{alignSelf: 'center', marginTop: '55%'}}></Ionicons>
       );
   };

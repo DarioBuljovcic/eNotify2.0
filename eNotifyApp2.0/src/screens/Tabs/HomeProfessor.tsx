@@ -12,6 +12,7 @@ import {
   View,
   TextInput,
   PermissionsAndroid,
+  SafeAreaView,
 } from 'react-native';
 import BottomSheet, {
   BottomSheetBackdrop,
@@ -118,7 +119,7 @@ const HomeProfessor = ({navigation}: any) => {
   };
 
   return (
-    <>
+    <SafeAreaView>
       <ClassSelection
         razredi={classes}
         setProfClass={(o: any) => setProfClass(o)}
@@ -129,12 +130,12 @@ const HomeProfessor = ({navigation}: any) => {
         style={[
           styles.add,
           {
-            backgroundColor: isDarkMode.accentGreen,
+            backgroundColor: isDarkMode.accent,
           },
         ]}
         activeOpacity={0.7}
         onPress={handleOpenPress}>
-        <Ionicons name={'add-outline'} size={35} color={'white'} />
+        <Ionicons name={'add-outline'} size={35} color={Colors.Light.white} />
       </TouchableOpacity>
       <BottomSheet
         ref={bottomSheetRef}
@@ -288,7 +289,7 @@ const HomeProfessor = ({navigation}: any) => {
           </View>
         </BottomSheetScrollView>
       </BottomSheet>
-    </>
+    </SafeAreaView>
   );
 };
 

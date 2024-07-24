@@ -4,6 +4,7 @@ import {
   View,
   useColorScheme,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {User} from '../../constants/Types/indexTypes';
@@ -83,14 +84,18 @@ export default function NotificationViewrs({route}: {route: any}) {
               : 'checkmark-circle-outline'
           }
           size={25}
-          color={studentsViewd.includes(item.UserID) ? 'green' : 'gray'}
+          color={
+            studentsViewd.includes(item.UserID)
+              ? Colors.Light.green
+              : isDarkMode.lightText
+          }
         />
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View
         style={[
           styles.list,
@@ -106,7 +111,7 @@ export default function NotificationViewrs({route}: {route: any}) {
           showsVerticalScrollIndicator={false}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 const screenWidth = Dimensions.get('window').width;
@@ -135,7 +140,7 @@ const styles = StyleSheet.create({
   },
   studentContainer: {
     height: 70,
-    width: '80%',
+    width: '90%',
     marginTop: 10,
     marginBottom: 10,
     marginLeft: screenWidth * 0.05,
@@ -144,6 +149,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   userImage: {
     width: 50,

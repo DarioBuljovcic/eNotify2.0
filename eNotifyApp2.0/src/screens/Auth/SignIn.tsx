@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useGlobalContext} from '../../context/GlobalProvider';
@@ -36,22 +37,11 @@ const SignIn = ({navigation}: {navigation: any}) => {
   const {setUser, setIsLoggedIn, storage, isDarkMode, user, isLoading} =
     useGlobalContext();
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleShowAlert = () => {
-    setModalVisible(true);
-  };
-
-  const handleCloseAlert = () => {
-    setModalVisible(false);
-  };
+  const [isCorrect, setIsCorrect] = useState(true);
 
   const submit = async () => {
     if (!UserID) {
-      setModalMessage('Molim vas popunite polje za šifru!');
-      handleShowAlert();
       return;
     }
     setIsSubmitting(true);
@@ -61,7 +51,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
       storage.set('UserID', UserID);
       setUser(user);
       setIsLoggedIn(true);
-
+      setIsCorrect(true);
       navigation.navigate('Tabs');
       navigation.dispatch(
         CommonActions.reset({
@@ -70,8 +60,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
         }),
       );
     } else {
-      setModalMessage('Vaš email ili šifra nisu dobri!');
-      handleShowAlert();
+      setIsCorrect(false);
     }
     setIsSubmitting(false);
   };
@@ -86,6 +75,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
       );
     }
   }, [user]);
+
   if (!isLoading)
     return (
       <SafeAreaView
@@ -93,14 +83,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
           flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: 'white',
         }}>
-        <CustomAlertModal
-          visible={modalVisible}
-          message={modalMessage}
-          onClose={handleCloseAlert}
-        />
-
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={[
@@ -110,6 +93,9 @@ const SignIn = ({navigation}: {navigation: any}) => {
           ]}>
           <View>
             <DropdownLang />
+            <Text style={styles.incorrectText}>
+              {isCorrect ? '' : t('incorrect code')}
+            </Text>
             <TextInput
               placeholder={t('identification code')}
               placeholderTextColor={isDarkMode.lightText}
@@ -125,6 +111,11 @@ const SignIn = ({navigation}: {navigation: any}) => {
                 },
                 {
                   color: isDarkMode.textPrimary,
+                },
+                {
+                  borderColor: isCorrect
+                    ? isDarkMode.lightText
+                    : isDarkMode.warningRed,
                 },
               ]}
             />
@@ -147,6 +138,24 @@ const SignIn = ({navigation}: {navigation: any}) => {
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </SafeAreaView>
+    );
+  else
+    return (
+      <View style={{flex: 1}}>
+        <Image
+          source={
+            isDarkMode
+              ? require('../../assets/images/LogoDark.png')
+              : require('../../assets/images/LogoLight.png')
+          }
+          style={{
+            width: 700,
+            aspectRatio: 1 / 1,
+            alignSelf: 'center',
+            marginTop: '35%',
+          }}
+        />
+      </View>
     );
 };
 

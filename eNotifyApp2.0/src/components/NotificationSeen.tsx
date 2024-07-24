@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
   seen: {
     width: 30,
     height: 30,
-    position: 'absolute',
-    right: 15,
-    top: 10,
+    alignSelf: 'flex-end',
+    marginTop: 10,
+    marginRight: 20,
   },
 });

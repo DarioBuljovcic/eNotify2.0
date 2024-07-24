@@ -8,6 +8,7 @@ import {
   Switch,
   Image,
   Text,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
@@ -22,6 +23,8 @@ import {MMKV} from 'react-native-mmkv';
 import {useTranslation} from 'react-i18next';
 import {User} from '../../constants/Types/indexTypes';
 import updateUserImg from '../../hooks/updateUserImg';
+
+import DeviceInfo from 'react-native-device-info';
 
 const storagePhone = new MMKV();
 
@@ -102,7 +105,7 @@ const Profile = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={[
         styles.container,
         {
@@ -125,7 +128,7 @@ const Profile = ({navigation}: {navigation: any}) => {
                 style={[
                   styles.add,
                   {
-                    backgroundColor: isDarkMode.accentGreen,
+                    backgroundColor: isDarkMode.accent,
                   },
                 ]}
                 activeOpacity={0.9}
@@ -277,7 +280,10 @@ const Profile = ({navigation}: {navigation: any}) => {
                     color: isDarkMode.textPrimary,
                   },
                 ]}>
-                v0.19 build 78
+                {'v' +
+                  DeviceInfo.getVersion() +
+                  ' build ' +
+                  DeviceInfo.getBuildNumber()}
               </Text>
             </View>
 
@@ -311,7 +317,7 @@ const Profile = ({navigation}: {navigation: any}) => {
           </View>
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

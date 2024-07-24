@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 20,
     textAlign: 'center',
-    color: 'white',
+    color: Colors.Light.white,
   },
   button: {
     backgroundColor: '#c40cf3',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonText: {
-    color: 'white',
+    color: Colors.Light.white,
     fontSize: 16,
   },
 });

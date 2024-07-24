@@ -1,6 +1,7 @@
 import {
   Dimensions,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
@@ -101,7 +102,7 @@ export default function Table() {
   }, []);
 
   return (
-    <View style={{zIndex: 100}}>
+    <SafeAreaView style={{zIndex: 100}}>
       <View
         style={[
           styles.container,
@@ -131,7 +132,7 @@ export default function Table() {
           )}
         </Zoom>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

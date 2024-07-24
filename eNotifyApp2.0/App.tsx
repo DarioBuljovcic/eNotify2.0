@@ -201,7 +201,7 @@ function App(): React.JSX.Element {
             component={Notification}
             options={() => ({
               headerTitle: '',
-              cardStyle: {backgroundColor: 'black'},
+              cardStyle: {backgroundColor: Colors.Light.black},
             })}
           />
           <Stack.Screen

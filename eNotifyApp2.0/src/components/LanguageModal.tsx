@@ -69,7 +69,7 @@ export default function LanguageModal({navigation}: any) {
             </Text>
           </View>
           {i18n.language === 'sr' && (
-            <Ionicons size={20} name={'checkmark'} color={'green'} />
+            <Ionicons size={20} name={'checkmark'} color={Colors.Light.green} />
           )}
         </TouchableOpacity>
         <TouchableOpacity
@@ -105,7 +105,7 @@ export default function LanguageModal({navigation}: any) {
             </Text>
           </View>
           {i18n.language === 'hu' && (
-            <Ionicons size={20} name={'checkmark'} color={'green'} />
+            <Ionicons size={20} name={'checkmark'} color={Colors.Light.green} />
           )}
         </TouchableOpacity>
         <TouchableOpacity
@@ -141,7 +141,7 @@ export default function LanguageModal({navigation}: any) {
             </Text>
           </View>
           {i18n.language === 'en' && (
-            <Ionicons size={20} name={'checkmark'} color={'green'} />
+            <Ionicons size={20} name={'checkmark'} color={Colors.Light.green} />
           )}
         </TouchableOpacity>
         <TouchableOpacity

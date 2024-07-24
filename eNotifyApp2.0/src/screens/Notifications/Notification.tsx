@@ -8,6 +8,7 @@ import {
   PermissionsAndroid,
   Dimensions,
   ScrollView,
+  SafeAreaView,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../constants/Color';
@@ -129,82 +130,71 @@ export default function Notification({route}: any) {
   };
 
   return (
-    <>
-      {/* <OpenImage
-        shown={shown}
-        shownImage={shownImage}
-        setShown={setShown}
-        setIcon={setIcon}
-        setMessage={setMessage}
-        setModalOpen={setModalOpen}
-        navigation={navigation}
-      /> */}
-      <View
-        style={[
-          styles.container,
-          {
-            backgroundColor: isDarkMode.appBackground,
-          },
-        ]}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {notification && (
-            <View style={styles.content}>
-              <Text
-                style={[styles.title, {color: isDarkMode.textPrimary}]}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {notification.Title}
-              </Text>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: isDarkMode.appBackground,
+        },
+      ]}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {notification && (
+          <View style={styles.content}>
+            <Text
+              style={[styles.title, {color: isDarkMode.textPrimary}]}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {notification.Title}
+            </Text>
 
-              <View
-                style={[
-                  styles.infoContainer,
-                  {
-                    borderColor: isDarkMode.textSecondary,
-                  },
-                ]}>
-                {true && renderClass()}
-                <Text
-                  style={[
-                    styles.date,
-                    {
-                      color: isDarkMode.textSecondary,
-                    },
-                  ]}>
-                  {format(notification.Date.toDate(), 'dd.MM.yyyy')}
-                </Text>
-              </View>
-              {user?.Role === 'Professor' && (
-                <NotificationSeen
-                  navigation={navigation}
-                  notification={notification}
-                />
-              )}
+            <View
+              style={[
+                styles.infoContainer,
+                {
+                  borderColor: isDarkMode.textSecondary,
+                },
+              ]}>
+              {true && renderClass()}
               <Text
                 style={[
-                  styles.body,
+                  styles.date,
                   {
-                    color: isDarkMode.textPrimary,
+                    color: isDarkMode.textSecondary,
                   },
                 ]}>
-                {notification.Text}
+                {format(notification.Date.toDate(), 'dd.MM.yyyy')}
               </Text>
-              <Text
-                style={[
-                  styles.sender,
-                  {
-                    color: isDarkMode.lightText,
-                  },
-                ]}>
-                {notification.From}
-              </Text>
-              {/* TODO scrolable */}
-              {images && renderImages()}
             </View>
-          )}
-        </ScrollView>
-      </View>
-    </>
+            {user?.Role === 'Professor' && (
+              <NotificationSeen
+                navigation={navigation}
+                notification={notification}
+              />
+            )}
+            <Text
+              style={[
+                styles.body,
+                {
+                  color: isDarkMode.textPrimary,
+                },
+              ]}>
+              {notification.Text}
+            </Text>
+            <Text
+              style={[
+                styles.sender,
+                {
+                  color: isDarkMode.lightText,
+                },
+              ]}>
+              {notification.From}
+            </Text>
+            {/* TODO scrolable */}
+            {images && renderImages()}
+          </View>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -214,7 +204,6 @@ const styles = StyleSheet.create({
     zIndex: 10,
     paddingHorizontal: 10,
     height: '100%',
-    backgroundColor: 'red',
     overflow: 'hidden',
   },
   content: {
@@ -223,7 +212,7 @@ const styles = StyleSheet.create({
     paddingBottom: 200,
   },
   body: {
-    marginTop: 40,
+    marginTop: 20,
     fontSize: 18,
 
     marginHorizontal: 15,

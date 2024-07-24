@@ -7,6 +7,7 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useGlobalContext} from '../context/GlobalProvider';
 import {format} from 'date-fns';
+import Colors from '../constants/Color';
 
 const NotifiactionBlock = ({
   item,
@@ -56,7 +57,7 @@ const NotifiactionBlock = ({
             : [
                 styles.newObavestenje,
                 {
-                  backgroundColor: isDarkMode.accentGreen,
+                  backgroundColor: isDarkMode.accent,
                 },
               ]
         }></View>
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 10,
     elevation: 3,
-    shadowColor: 'black',
+    shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
   },
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     right: 10,
   },
   newObavestenjeText: {
-    color: 'white',
+    color: Colors.Light.white,
   },
   datum: {
     marginTop: 20,

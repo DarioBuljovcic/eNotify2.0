@@ -9,6 +9,7 @@ import {NotificationType} from '../constants/Types/indexTypes';
 import NotifiactionBlock from './NotificationBlock';
 import NoNotification from './NoNotification';
 import {fetchNotifications} from '../hooks/getNotifications';
+import Colors from '../constants/Color';
 
 const NotificationLoader = ({navigation, userClass}: any) => {
   const {isDarkMode, user} = useGlobalContext();
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight,
     overflow: 'hidden',
-    shadowColor: 'black',
+    shadowColor: Colors.Light.black,
     shadowOffset: {width: 2, height: 5},
     shadowRadius: 1,
     display: 'flex',

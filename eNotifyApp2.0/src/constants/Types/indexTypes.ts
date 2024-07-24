@@ -75,9 +75,9 @@ export type Color = {
 
   white: string;
   black: string;
+  green: string;
 
   accent: string;
-  accentGreen: string;
 
   textInputBackground: string;
 
