@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, useEffect} from 'react';
 import {MMKV} from 'react-native-mmkv';
-import {Appearance, useColorScheme} from 'react-native';
+import {Appearance, ColorSchemeName, useColorScheme} from 'react-native';
 import {Color, GlobarProviderProps, User} from '../constants/Types/indexTypes';
 import loginUser from '../hooks/loginUser';
 import Colors from '../constants/Color';
@@ -30,7 +30,9 @@ const GlobalProvider = ({children}: any) => {
       setIsLoading(true);
       const UserID = await storage.getString('UserID');
 
-      const Mode = await storage.getString('Mode');
+      const Mode: ColorSchemeName = (await storage.getString(
+        'Mode',
+      )) as ColorSchemeName;
       try {
         if (UserID === undefined) {
           console.log('No account');

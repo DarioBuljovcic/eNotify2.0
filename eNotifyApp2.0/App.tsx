@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Linking,
   ActivityIndicator,
@@ -22,7 +22,7 @@ import Colors from './src/constants/Color';
 import {Navigation} from './src/constants/Types/indexTypes';
 
 import Svg, {Path} from 'react-native-svg';
-import {useTranslation} from 'react-i18next';
+import {useSSR, useTranslation} from 'react-i18next';
 import SignIn from './src/screens/Auth/SignIn';
 import GlobalProvider, {useGlobalContext} from './src/context/GlobalProvider';
 import LayoutTabs from './src/screens/Tabs/_layout';
@@ -41,10 +41,27 @@ PermissionsAndroid.request(
 PermissionsAndroid.request(
   PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
 );
+const CustomDefaultTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#f1f6ff',
+    card: '#f1f6ff',
+  },
+};
 
+const CustomDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: '#031525',
+    card: '#031525',
+  },
+};
+const storage = new MMKV();
 function App(): React.JSX.Element {
   LogBox.ignoreAllLogs();
-  const {isDarkMode} = useGlobalContext();
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const {t} = useTranslation();
 
   const Stack = createStackNavigator<Navigation>();
@@ -112,34 +129,22 @@ function App(): React.JSX.Element {
     );
     return unsubscribe;
   }, []);
-  const CustomDefaultTheme = {
-    ...DefaultTheme,
-    colors: {
-      ...DefaultTheme.colors,
-      background: '#f1f6ff',
-      card: '#f1f6ff',
-    },
-  };
 
-  const CustomDarkTheme = {
-    ...DarkTheme,
-    colors: {
-      ...DarkTheme.colors,
-      background: '#031525',
-      card: '#031525',
-    },
-  };
-  const TestTheme = () => {
-    const storage = new MMKV();
+  Appearance.addChangeListener(e => {
+    const mode = e.colorScheme === 'dark' ? true : false;
+    setIsDarkMode(mode);
+  });
+
+  const TestTheme = useCallback(() => {
     const themeStorage = storage.getString('Mode');
-    let theme = CustomDefaultTheme;
+    let theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
 
     if (themeStorage) {
       theme = themeStorage === 'dark' ? CustomDarkTheme : CustomDefaultTheme;
     }
-    console.log(theme);
+
     return theme;
-  };
+  }, [isDarkMode]);
 
   return (
     <GlobalProvider>

@@ -86,7 +86,7 @@ body .openSidebar {
   left: 10px;
   pointer-events: none;
   display: none;
-  transition: left 0.5s ease;
+  transition: left 0.5s 0.05s ease;
 }
 body .sidebarContainer {
   display: grid;
@@ -174,6 +174,10 @@ body .sidebarContainer .sidebarFooter .sidebarUser .text .name {
 }
 body .sidebarContainer .sidebarFooter .sidebarUser .text .email {
   font-size: 0.8em;
+}
+body .filePicker {
+  width: 95%;
+  max-width: 400px;
 }
 
 .text-container {
@@ -301,19 +305,54 @@ body .sidebarContainer .sidebarFooter .sidebarUser .text .email {
     z-index: 101;
   }
   body .openSidebar.open {
-    left: 220px;
+    left: 250px;
   }
   body .sidebarContainer {
     position: absolute;
     min-inline-size: 250px !important;
-    height: 100vh;
+    height: 100dvh;
     z-index: 100;
     left: -360px;
+    overflow-y: auto;
   }
   body .sidebarContainer.open {
     left: 0px;
   }
   body main {
     padding-top: 20px;
+  }
+  body .euiTabs {
+    scrollbar-width: 0px;
+  }
+  body .euiTabs::-webkit-scrollbar-thumb {
+    display: none;
+  }
+  body .euiTabs::-webkit-scrollbar {
+    display: none;
+  }
+  body .euiTitle {
+    font-size: 1.5em;
+  }
+  body .euiText {
+    font-size: 1em;
+  }
+  body:has(.sidebarContainer.open) {
+    overflow: hidden;
+  }
+}
+@media screen and (max-width: 650px) {
+  body .auth {
+    z-index: 100;
+    background-color: rgba(14, 133, 212, 0.8588235294);
+    min-width: 300px;
+    width: 300px;
+    min-height: 300px;
+    height: 500px;
+  }
+  body .auth .loginPanelRight {
+    display: none;
+  }
+  body .auth .loginPanelLeft {
+    height: 500px;
   }
 }/*# sourceMappingURL=style.css.map */

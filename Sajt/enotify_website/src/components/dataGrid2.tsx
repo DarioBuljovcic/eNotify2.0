@@ -701,7 +701,6 @@ export default function DataGrid({
                 toolbarVisibility={{
                   additionalControls: <SelectionButton />,
                 }}
-                style={{ maxHeight: 470 }}
                 gridStyle={{
                   border: "none",
                   stripes: true,

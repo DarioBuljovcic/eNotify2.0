@@ -1,20 +1,9 @@
 import {
-  EuiButton,
   EuiFieldPassword,
-  EuiFieldText,
-  EuiFlexGrid,
-  EuiFlexItem,
-  EuiFormLabel,
   EuiGlobalToastList,
-  EuiPageBody,
-  EuiPageHeader,
   EuiPageTemplate,
   EuiPageTemplateProps,
   EuiProvider,
-  EuiSpacer,
-  EuiSwitch,
-  EuiText,
-  EuiTitle,
 } from "@elastic/eui";
 import React, { useEffect, useState } from "react";
 
