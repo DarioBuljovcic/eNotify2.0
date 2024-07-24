@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
     width: '90%',
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: screenWidth * 0.05,
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -132,15 +132,11 @@ const styles = StyleSheet.create({
   },
   logOutModal: {
     padding: 20,
-    paddingBottom: 40,
     alignSelf: 'center',
     width: screenWidth / 1.4,
     backgroundColor: Colors.Light.componentBG,
     borderRadius: 10,
-    overflow: 'hidden',
-    alignContent: 'center',
-    justifyContent: 'flex-end',
-    gap: 10,
+    gap: 5,
   },
   logOutAnswer: {
     height: 50,
