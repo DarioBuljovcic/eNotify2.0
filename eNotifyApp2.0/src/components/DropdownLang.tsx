@@ -1,30 +1,26 @@
 import {StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import {Dropdown} from 'react-native-element-dropdown';
-import {useTranslation} from 'react-i18next';
 import {useGlobalContext} from '../context/GlobalProvider';
+import translations from '../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
+import i18next from 'i18next';
 
 const DropdownLang = () => {
   const {storage, isDarkMode} = useGlobalContext();
-  const {t, i18n} = useTranslation();
+
   const [lang, setLang] = useState('');
   const changeLanguage = async (prop: string) => {
-    if (prop === 'sr') {
-      i18n.changeLanguage('sr');
-      storage.set('Language', 'sr');
-    } else if (prop === 'hu') {
-      i18n.changeLanguage('hu');
-      storage.set('Language', 'hu');
-    } else if (prop === 'en') {
-      i18n.changeLanguage('en');
-      storage.set('Language', 'en');
-    }
+    i18next.changeLanguage(prop);
+    storage.set('Language', prop);
   };
+
   const dropdownData = [
-    {label: t('serbian'), value: 'sr'},
-    {label: t('hungarian'), value: 'hu'},
-    {label: t('english'), value: 'en'},
+    {label: translateTextOutOfComponent(translations.serbian), value: 'sr'},
+    {label: translateTextOutOfComponent(translations.hungarian), value: 'hu'},
+    {label: translateTextOutOfComponent(translations.english), value: 'en'},
   ];
+
   return (
     <Dropdown
       style={[
@@ -38,7 +34,7 @@ const DropdownLang = () => {
         color: isDarkMode.textPrimary,
         fontFamily: 'Mulish',
       }}
-      placeholder={t('choose language')}
+      placeholder={translateTextOutOfComponent(translations.language)}
       placeholderStyle={{
         textTransform: 'capitalize',
         color: isDarkMode.textPrimary,

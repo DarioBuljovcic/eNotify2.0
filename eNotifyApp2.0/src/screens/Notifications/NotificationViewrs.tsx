@@ -5,10 +5,10 @@ import {
   useColorScheme,
   Image,
   SafeAreaView,
+  Text,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {User} from '../../constants/Types/indexTypes';
-import {Text} from 'react-native-elements';
 import Colors from '../../constants/Color';
 import {FlatList} from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';

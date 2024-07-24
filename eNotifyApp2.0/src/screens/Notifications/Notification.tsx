@@ -2,10 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  Animated,
-  useColorScheme,
-  PermissionsAndroid,
   Dimensions,
   ScrollView,
   SafeAreaView,
@@ -13,19 +9,13 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../constants/Color';
 import {format} from 'date-fns';
-import {
-  NotificationType,
-  Navigation,
-  Images,
-  Icon,
-} from '../../constants/Types/indexTypes';
+import {NotificationType, Images} from '../../constants/Types/indexTypes';
 import firestore from '@react-native-firebase/firestore';
 import {useEffect, useState, useRef} from 'react';
 import storage from '@react-native-firebase/storage';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import NotificationSeen from '../../components/NotificationSeen';
-import ImageModal from '../../components/ImageModal';
-import OpenImage from '../../components/OpenImageModal';
+
 import SmallImage from '../../components/SmallImage';
 
 export default function Notification({route}: any) {

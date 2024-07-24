@@ -5,18 +5,16 @@ import {
   StyleSheet,
   Text,
   View,
-  useColorScheme,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Colors from '../../constants/Color';
 import Zoom from 'react-native-zoom-reanimated';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
-import {useFocusEffect} from '@react-navigation/native';
-import {t} from 'i18next';
 import {useGlobalContext} from '../../context/GlobalProvider';
+import translations from '../../constants/i18n/translations/translation';
+import {TranslatedText} from '../../hooks/getTranslation.tsx';
 
 export default function Table() {
   const {isDarkMode, user} = useGlobalContext();
@@ -122,13 +120,13 @@ export default function Table() {
               }}
             />
           ) : (
-            <Text
+            <TranslatedText
+              value={translations.noTable}
               style={{
                 color: isDarkMode.textPrimary,
                 fontFamily: 'Mulish',
-              }}>
-              {t('no table')}
-            </Text>
+              }}
+            />
           )}
         </Zoom>
       </View>

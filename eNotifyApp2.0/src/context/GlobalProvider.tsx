@@ -48,23 +48,21 @@ const GlobalProvider = ({children}: any) => {
           : () => {
               throw new Error();
             };
+          
         setIsLoggedIn(true);
       } catch (error: any) {
         console.log(error.message);
       } finally {
-        setIsLoading(false);
         if (Mode) {
           const theme = Mode === 'dark' ? Colors.Dark : Colors.Light;
           setMode(theme);
           Appearance.setColorScheme(Mode);
         } else Appearance.setColorScheme('light');
+        setIsLoading(false);
       }
     };
     getUser();
   }, []);
-  useEffect(() => {
-    console.log(isDarkMode);
-  }, [isDarkMode]);
 
   return (
     <GlobalContext.Provider

@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {
   Text,
   StyleSheet,
-  useColorScheme,
   Dimensions,
   TouchableOpacity,
   FlatListProps,
-  View,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import Colors from '../constants/Color';
 import {useGlobalContext} from '../context/GlobalProvider';
 import {Class} from '../constants/Types/indexTypes';

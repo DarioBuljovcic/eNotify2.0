@@ -15,13 +15,12 @@ import {
 import React, {useEffect, useState} from 'react';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
 import Colors from '../../constants/Color';
-
 import loginUser from '../../hooks/loginUser';
-import CustomAlertModal from '../../components/CustomAlertModal';
 import {CommonActions} from '@react-navigation/native';
 import DropdownLang from '../../components/DropdownLang';
+import translations from '../../constants/i18n/translations/translation';
+import {TranslatedText, translateText} from '../../hooks/getTranslation.tsx';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -32,7 +31,6 @@ PermissionsAndroid.request(
 );
 
 const SignIn = ({navigation}: {navigation: any}) => {
-  const {t} = useTranslation();
   const [UserID, setUserID] = useState('');
   const {setUser, setIsLoggedIn, storage, isDarkMode, user, isLoading} =
     useGlobalContext();
@@ -93,11 +91,12 @@ const SignIn = ({navigation}: {navigation: any}) => {
           ]}>
           <View>
             <DropdownLang />
-            <Text style={styles.incorrectText}>
-              {isCorrect ? '' : t('incorrect code')}
-            </Text>
+            <TranslatedText
+              value={isCorrect ? '' : translations.incorrectCode}
+              style={styles.incorrectText}
+            />
             <TextInput
-              placeholder={t('identification code')}
+              placeholder={translateText(translations.identificationCode)}
               placeholderTextColor={isDarkMode.lightText}
               autoCapitalize="none"
               onChangeText={text => {
@@ -126,15 +125,15 @@ const SignIn = ({navigation}: {navigation: any}) => {
             activeOpacity={0.8}
             style={styles.confirmBtn}
             disabled={isSubmitting}>
-            <Text
+            <TranslatedText
+              value={translations.register}
               style={[
                 styles.confirmTxt,
                 {
                   color: isDarkMode.whiteText,
                 },
-              ]}>
-              {t('register')}
-            </Text>
+              ]}
+            />
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </SafeAreaView>

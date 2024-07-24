@@ -21,14 +21,15 @@ import BottomSheet, {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Dropdown} from 'react-native-element-dropdown';
 import Colors from '../../constants/Color';
-import {useTranslation} from 'react-i18next';
+
 import DocumentPicker, {
   DocumentPickerResponse,
 } from 'react-native-document-picker';
 import sendNotification from '../../hooks/sendNotification';
+import translations from '../../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../../hooks/getTranslation.tsx';
 
 const HomeProfessor = ({navigation}: any) => {
-  const {t} = useTranslation();
   const {user, isDarkMode} = useGlobalContext();
   const [profClass, setProfClass] = useState<string>(user?.Class);
   const [classes, setClasses] = useState<Class[]>([]);
@@ -164,12 +165,14 @@ const HomeProfessor = ({navigation}: any) => {
                 color: isDarkMode.textPrimary,
               },
             ]}>
-            {t('add notification')}
+            {translateTextOutOfComponent(translations.addNotification)}
           </Text>
 
           <View style={styles.inputContainer}>
             <TextInput
-              placeholder={t('Notification title')}
+              placeholder={translateTextOutOfComponent(
+                translations.notificationTitle,
+              )}
               placeholderTextColor={isDarkMode.lightText}
               style={[
                 styles.input,
@@ -192,7 +195,9 @@ const HomeProfessor = ({navigation}: any) => {
                 },
                 {textAlignVertical: 'top'},
               ]}
-              placeholder={t('notification text')}
+              placeholder={translateTextOutOfComponent(
+                translations.notificationText,
+              )}
               placeholderTextColor={isDarkMode.lightText}
               numberOfLines={4}
               value={textValue}
@@ -235,7 +240,11 @@ const HomeProfessor = ({navigation}: any) => {
               }}
               data={classes}
               search
-              placeholder={!isFocus ? t('choose grade') : '...'}
+              placeholder={
+                !isFocus
+                  ? translateTextOutOfComponent(translations.chooseGrade)
+                  : '...'
+              }
               value={selectedClass}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
@@ -271,7 +280,7 @@ const HomeProfessor = ({navigation}: any) => {
                   color: isDarkMode.lightText,
                 }}>
                 {selectedFiles.length === 0
-                  ? t('add file')
+                  ? translateTextOutOfComponent(translations.addFile)
                   : selectedFiles.map(file => file.name).join(', ')}
               </Text>
             </TouchableOpacity>
@@ -284,7 +293,9 @@ const HomeProfessor = ({navigation}: any) => {
                 },
               ]}
               onPress={AddNotifaciton}>
-              <Text style={[styles.sendText]}>{t('send')}</Text>
+              <Text style={[styles.sendText]}>
+                {translateTextOutOfComponent(translations.send)}
+              </Text>
             </TouchableOpacity>
           </View>
         </BottomSheetScrollView>

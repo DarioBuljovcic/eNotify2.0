@@ -1,29 +1,23 @@
-import {View, Text, useColorScheme, StyleSheet, Image} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import React, {useTransition} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Colors from '../constants/Color';
-import {useTranslation} from 'react-i18next';
+
 import {Dimensions} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useGlobalContext} from '../context/GlobalProvider';
+import translations from '../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
+import {useTranslation} from 'react-i18next';
 
 export default function LanguageModal({navigation}: any) {
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
 
-  const {isDarkMode} = useGlobalContext();
+  const {isDarkMode, storage} = useGlobalContext();
 
   const changeLanguage = async (prop: string) => {
-    if (prop === 'sr') {
-      i18n.changeLanguage('sr');
-      AsyncStorage.setItem('Language', 'sr');
-    } else if (prop === 'hu') {
-      i18n.changeLanguage('hu');
-      AsyncStorage.setItem('Language', 'hu');
-    } else if (prop === 'en') {
-      i18n.changeLanguage('en');
-      AsyncStorage.setItem('Language', 'en');
-    }
+    i18n.changeLanguage(prop);
+    storage.set('Language', prop);
     navigation.navigate('Profile');
   };
 
@@ -65,7 +59,7 @@ export default function LanguageModal({navigation}: any) {
                       : isDarkMode.textPrimary,
                 },
               ]}>
-              {t('serbian')}
+              {translateTextOutOfComponent(translations.serbian)}
             </Text>
           </View>
           {i18n.language === 'sr' && (
@@ -101,7 +95,7 @@ export default function LanguageModal({navigation}: any) {
                       : isDarkMode.textPrimary,
                 },
               ]}>
-              {t('hungarian')}
+              {translateTextOutOfComponent(translations.hungarian)}
             </Text>
           </View>
           {i18n.language === 'hu' && (
@@ -137,7 +131,7 @@ export default function LanguageModal({navigation}: any) {
                       : isDarkMode.textPrimary,
                 },
               ]}>
-              {t('english')}
+              {translateTextOutOfComponent(translations.english)}
             </Text>
           </View>
           {i18n.language === 'en' && (
@@ -145,12 +139,12 @@ export default function LanguageModal({navigation}: any) {
           )}
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.cancleButton}
+          style={styles.cancelButton}
           onPress={() => {
             navigation.navigate('Profile');
           }}
           activeOpacity={0.7}>
-          <Text style={styles.cancleTxt}>Cancle</Text>
+          <Text style={styles.cancelTxt}>cancel</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -207,7 +201,7 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   iconContainer: {flexDirection: 'row', alignItems: 'center'},
-  cancleButton: {
+  cancelButton: {
     alignItems: 'center',
     borderWidth: 2,
     width: 100,
@@ -217,7 +211,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 10,
   },
-  cancleTxt: {
+  cancelTxt: {
     color: Colors.Light.warningRed,
     fontFamily: 'Mulish',
   },

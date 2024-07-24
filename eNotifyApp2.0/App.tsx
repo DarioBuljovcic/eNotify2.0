@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   View,
   Dimensions,
-  useColorScheme,
   LogBox,
   Appearance,
   PermissionsAndroid,
@@ -22,9 +21,8 @@ import Colors from './src/constants/Color';
 import {Navigation} from './src/constants/Types/indexTypes';
 
 import Svg, {Path} from 'react-native-svg';
-import {useSSR, useTranslation} from 'react-i18next';
 import SignIn from './src/screens/Auth/SignIn';
-import GlobalProvider, {useGlobalContext} from './src/context/GlobalProvider';
+import GlobalProvider from './src/context/GlobalProvider';
 import LayoutTabs from './src/screens/Tabs/_layout';
 import About from './src/screens/Tabs/About';
 import Notification from './src/screens/Notifications/Notification';
@@ -33,6 +31,8 @@ import LanguageModal from './src/components/LanguageModal';
 import OpenImageModal from './src/components/OpenImageModal';
 import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
 import {MMKV} from 'react-native-mmkv';
+import translations from './src/constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from './src/hooks/getTranslation.tsx';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -62,7 +62,6 @@ const storage = new MMKV();
 function App(): React.JSX.Element {
   LogBox.ignoreAllLogs();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const {t} = useTranslation();
 
   const Stack = createStackNavigator<Navigation>();
 
@@ -161,7 +160,9 @@ function App(): React.JSX.Element {
             name="Registration"
             component={SignIn}
             options={() => ({
-              headerTitle: t('registration'),
+              headerTitle: translateTextOutOfComponent(
+                translations.registration,
+              ),
               headerBackVisible: false,
               headerLeft: () => null,
               headerStyle: {
@@ -213,7 +214,7 @@ function App(): React.JSX.Element {
             name="NotificationViewrs"
             component={NotificationViewrs}
             options={() => ({
-              headerTitle: t('view'),
+              headerTitle: translateTextOutOfComponent(translations.view),
               headerTitleStyle: {
                 textTransform: 'capitalize',
                 fontFamily: 'Mulish',
@@ -223,20 +224,18 @@ function App(): React.JSX.Element {
                 elevation: 0,
                 shadowOpacity: 0,
               },
-              cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}
           />
           <Stack.Screen
             name="About"
             component={About}
             options={() => ({
-              headerTitle: t('about'),
+              headerTitle: translateTextOutOfComponent(translations.about),
               headerTitleStyle: {
                 textTransform: 'capitalize',
                 fontFamily: 'Mulish',
               },
               headerShown: true,
-              cardStyle: {backgroundColor: isDarkMode.appBackground},
             })}
           />
           <Stack.Screen

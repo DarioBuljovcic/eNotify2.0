@@ -8,19 +8,18 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useGlobalContext} from '../context/GlobalProvider';
-import {useTranslation} from 'react-i18next';
 import {User} from '../constants/Types/indexTypes';
 import Colors from '../constants/Color';
 import logOut from '../hooks/logOut';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
+import translations from '../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
 
 export default function LogOutModal({navigation}: any) {
   const {isDarkMode, setUser, setIsLoggedIn, user, storage} =
     useGlobalContext();
   const [visible, setVisible] = useState(true);
-  const {t} = useTranslation();
 
   const onConfirm = () => {
     setVisible(false);
@@ -65,16 +64,7 @@ export default function LogOutModal({navigation}: any) {
                   color: isDarkMode.textPrimary,
                 },
               ]}>
-              {t('logout title')}
-            </Text>
-            <Text
-              style={[
-                styles.logOutText,
-                {
-                  color: isDarkMode.textPrimary,
-                },
-              ]}>
-              {t('logout message')}
+              {translateTextOutOfComponent(translations.logoutTitle)}
             </Text>
             <View style={styles.buttonContainer}>
               <Pressable
@@ -89,7 +79,7 @@ export default function LogOutModal({navigation}: any) {
                   style={{
                     color: isDarkMode.warningRed,
                   }}>
-                  {t('decline')}
+                  {translateTextOutOfComponent(translations.decline)}
                 </Text>
               </Pressable>
               <Pressable
@@ -108,7 +98,7 @@ export default function LogOutModal({navigation}: any) {
                   style={{
                     color: isDarkMode.white,
                   }}>
-                  {t('confirm')}
+                  {translateTextOutOfComponent(translations.confirm)}
                 </Text>
               </Pressable>
             </View>

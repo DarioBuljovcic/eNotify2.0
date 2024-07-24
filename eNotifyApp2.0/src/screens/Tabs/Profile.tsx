@@ -20,11 +20,11 @@ import DocumentPicker, {
 } from 'react-native-document-picker';
 import storage from '@react-native-firebase/storage';
 import {MMKV} from 'react-native-mmkv';
-import {useTranslation} from 'react-i18next';
 import {User} from '../../constants/Types/indexTypes';
 import updateUserImg from '../../hooks/updateUserImg';
-
 import DeviceInfo from 'react-native-device-info';
+import translations from '../../constants/i18n/translations/translation';
+import {TranslatedText} from '../../hooks/getTranslation.tsx';
 
 const storagePhone = new MMKV();
 
@@ -33,7 +33,6 @@ const Profile = ({navigation}: {navigation: any}) => {
   const [selectedFile, setSelectedFile] =
     useState<DocumentPickerResponse | null>(null);
   const [imageSource, setImageSource] = useState('');
-  const {t} = useTranslation();
   useFocusEffect(() => {
     updateImage();
   });
@@ -88,7 +87,6 @@ const Profile = ({navigation}: {navigation: any}) => {
     if (imageUrl) setImageSource(imageUrl);
   };
   const changeMode = async () => {
-    console.log('asparugus');
     Appearance.setColorScheme(
       Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
     );
@@ -197,15 +195,15 @@ const Profile = ({navigation}: {navigation: any}) => {
               ]}
               activeOpacity={0.7}
               onPress={() => navigation.navigate('About')}>
-              <Text
+              <TranslatedText
+                value={translations.about}
                 style={[
                   styles.optionText,
                   {
                     color: isDarkMode.textSecondary,
                   },
-                ]}>
-                {t('about')}
-              </Text>
+                ]}
+              />
               <Ionicons
                 name={'arrow-forward-outline'}
                 size={26}
@@ -222,15 +220,15 @@ const Profile = ({navigation}: {navigation: any}) => {
               ]}
               activeOpacity={0.7}
               onPress={() => navigation.navigate('LanguageModal')}>
-              <Text
+              <TranslatedText
+                value={translations.language}
                 style={[
                   styles.optionText,
                   {
                     color: isDarkMode.textSecondary,
                   },
-                ]}>
-                {t('language')}
-              </Text>
+                ]}
+              />
               <Ionicons
                 name={'arrow-forward-outline'}
                 size={26}
@@ -247,15 +245,15 @@ const Profile = ({navigation}: {navigation: any}) => {
               ]}
               activeOpacity={0.7}
               onPress={() => changeMode()}>
-              <Text
+              <TranslatedText
+                value={translations.darkMode}
                 style={[
                   styles.optionText,
                   {
                     color: isDarkMode.textSecondary,
                   },
-                ]}>
-                {t('dark mode')}
-              </Text>
+                ]}
+              />
               <Switch
                 trackColor={{false: '#767577', true: '#81b0ff'}}
                 thumbColor={'#f4f3f4'}
@@ -299,15 +297,15 @@ const Profile = ({navigation}: {navigation: any}) => {
               ]}
               activeOpacity={0.7}
               onPress={() => logOutModal()}>
-              <Text
+              <TranslatedText
+                value={translations.logOut}
                 style={[
                   styles.optionText,
                   {
                     color: isDarkMode.textSecondary,
                   },
-                ]}>
-                {t('log out')}
-              </Text>
+                ]}
+              />
               <Ionicons
                 name={'log-out-outline'}
                 size={26}

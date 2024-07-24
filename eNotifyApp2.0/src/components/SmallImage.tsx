@@ -11,7 +11,8 @@ import {useGlobalContext} from '../context/GlobalProvider';
 import Colors from '../constants/Color';
 import {SmallImageProps} from '../constants/Types/indexTypes';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {t} from 'i18next';
+import translations from '../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
 
 const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
   const {isDarkMode} = useGlobalContext();
@@ -69,7 +70,7 @@ const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
                 color: isDarkMode.lightText,
               },
             ]}>
-            {t('download')}
+            {translateTextOutOfComponent(translations.download)}
           </Text>
         </View>
       </View>

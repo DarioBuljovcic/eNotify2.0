@@ -4,9 +4,10 @@ import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Colors from '../constants/Color';
 import RNFS from 'react-native-fs';
-import {Icon, OpenImageProps} from '../constants/Types/indexTypes';
-import {useTranslation} from 'react-i18next';
+import {Icon} from '../constants/Types/indexTypes';
 import ImageModal from './ImageModal';
+import translations from '../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
 
 const OpenImageModal = ({navigation, route}: any) => {
   const [message, setMessage] = useState('Slika je uspešno skinuta!');
@@ -17,7 +18,7 @@ const OpenImageModal = ({navigation, route}: any) => {
   });
 
   console.log('img: ' + route.params.shownImage);
-  const {t} = useTranslation();
+
   const downloadImage = async (imageUrl: string, fileName: string) => {
     try {
       const extention = fileName.split('.')[fileName.split('.').length - 1];
@@ -37,8 +38,8 @@ const OpenImageModal = ({navigation, route}: any) => {
             if (result.statusCode === 200) {
               setMessage(
                 ['img', 'jpg', 'jpeg', 'png'].includes(extention)
-                  ? t('image downloaded')
-                  : t('file downloaded'),
+                  ? translateTextOutOfComponent(translations.imageDownloaded)
+                  : translateTextOutOfComponent(translations.fileDownloaded),
               );
               setIcon({
                 name: 'checkmark-circle-outline',
@@ -61,8 +62,8 @@ const OpenImageModal = ({navigation, route}: any) => {
       } else {
         setMessage(
           ['img', 'jpg', 'jpeg', 'png'].includes(extention)
-            ? t('image exists')
-            : t('file exists'),
+            ? translateTextOutOfComponent(translations.imageExists)
+            : translateTextOutOfComponent(translations.fileExists),
         );
         setIcon({name: 'alert-circle-outline', color: Colors.Light.warningRed});
         setModalOpen(true);

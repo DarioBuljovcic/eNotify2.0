@@ -1,5 +1,3 @@
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {ParamListBase} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Timestamp} from 'firebase/firestore';
 import {Dispatch, SetStateAction} from 'react';
@@ -110,7 +108,7 @@ export type GlobarProviderProps = {
 };
 export type LogOutModalProps = {
   onConfirm: () => void;
-  onCancle: () => void;
+  oncancel: () => void;
 };
 export type OneNotificationProps = {
   item: NotificationType;

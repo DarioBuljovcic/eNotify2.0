@@ -1,10 +1,11 @@
-import {Appearance, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import {useTranslation} from 'react-i18next';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {useGlobalContext} from '../../context/GlobalProvider';
+import translations from '../../constants/i18n/translations/translation';
+import {translateTextOutOfComponent} from '../../hooks/getTranslation.tsx';
 
 export default function About() {
   const {isDarkMode} = useGlobalContext();
-  const {t} = useTranslation();
+
   return (
     <SafeAreaView
       style={[
@@ -20,7 +21,7 @@ export default function About() {
             color: isDarkMode.textPrimary,
           },
         ]}>
-        {t('about text')}
+        {translateTextOutOfComponent(translations.aboutText)}
       </Text>
     </SafeAreaView>
   );
