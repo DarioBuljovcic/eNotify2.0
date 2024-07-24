@@ -54,12 +54,22 @@ export default function Notification({route}: any) {
       setNotification(data);
 
       //Getting images
-      let imgs: string[] = data.Files.split(' ');
+
+      let imgs: string[] = data.Files.split(',');
       let imgUrls: Images[] = [];
       for (let i = 0; i < imgs.length; i++) {
-        const url = await storage().ref(imgs[i]).getDownloadURL();
-        imgUrls.push({imageName: imgs[i], imageUrl: url});
+        try {
+          const url = await storage()
+            .ref(imgs[i].trimEnd().trimStart())
+            .getDownloadURL();
+
+          imgUrls.push({
+            imageName: imgs[i].trimEnd().trimStart(),
+            imageUrl: url.trimEnd().trimStart(),
+          });
+        } catch (error) {}
       }
+
       setImages(imgUrls);
     };
 

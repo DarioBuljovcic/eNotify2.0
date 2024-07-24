@@ -104,7 +104,7 @@ export default function ClassTable({ getClasses, getImage, setImage }: Props) {
             direction="column"
           >
             <EuiTitle size="m">
-              <EuiText size="m">Pregled rasporeda</EuiText>
+              <p className="titleText">Pregled rasporeda</p>
             </EuiTitle>
             <EuiText size="s">Dodavanje i izmena rasporeda po razredu</EuiText>
           </EuiFlexGroup>

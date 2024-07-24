@@ -163,9 +163,9 @@ export default function AddOneUser({
             <EuiTitle
               size="m"
               children={
-                <EuiText className="titleText">
+                <p className="titleText">
                   Dodajte jednog {role === "u" ? "učenika" : "profesora"}
-                </EuiText>
+                </p>
               }
             ></EuiTitle>
             <EuiText className="subtitleText">

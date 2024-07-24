@@ -16,7 +16,11 @@ import {t} from 'i18next';
 const SmallImage = ({image, index, handleOpen}: SmallImageProps) => {
   const {isDarkMode} = useGlobalContext();
   const ImageFile = () => {
-    if (/\.(jpg|jpeg|png|gif|bmp|svg|webp|tiff)$/i.test(image.imageName))
+    if (
+      /(jpg|jpeg|png|gif|bmp|svg|webp|tiff)$/i.test(
+        image.imageName.trimEnd().trimStart(),
+      )
+    )
       return (
         <Image
           key={index}

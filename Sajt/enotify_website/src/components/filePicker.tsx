@@ -146,9 +146,9 @@ export default function FilePicker({
             <EuiTitle
               size="l"
               children={
-                <EuiText className="titleText">
+                <p className="titleText">
                   Dodajte {role === "u" ? "učenike" : "profesore"} pomoću fajla
-                </EuiText>
+                </p>
               }
             ></EuiTitle>
             <EuiText className="subtitleText">
@@ -169,7 +169,7 @@ export default function FilePicker({
           </EuiFlexGroup>
         </EuiFlexItem>
         <EuiSpacer />
-        <EuiFlexItem style={{ minWidth: 400 }}>
+        <EuiFlexItem className="filePicker">
           <EuiFilePicker
             id={filePickerId}
             ref={filePickerRef}

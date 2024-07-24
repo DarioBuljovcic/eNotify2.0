@@ -422,7 +422,6 @@ export default function Home() {
     <DataContext.Provider value={{ setToasts, toastId, setToastId }}>
       <EuiProvider colorMode="light">
         <EuiPageTemplate panelled={panelled} color="red">
-          {sidebarOpen}
           <button
             className={`openSidebar ${sidebarOpen ? "open" : ""}`}
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -453,12 +452,13 @@ export default function Home() {
               handleTabChange={handleTabChange}
               tabId={selectedTab}
               blockId={selectedTabId}
+              closeSidebar={() => setSidebarOpen(false)}
             />
           </EuiPageTemplate.Sidebar>
 
           <EuiPageHeader pageTitle={title} paddingSize="m" />
           <EuiPageBody paddingSize="m">
-            <EuiTabs>{renderTabs()}</EuiTabs>
+            <EuiTabs style={{ scrollbarWidth: "0px" }}>{renderTabs()}</EuiTabs>
 
             {selectedTabContent}
           </EuiPageBody>

@@ -222,7 +222,7 @@ export default function SendNotification({
           >
             <EuiTitle
               size="m"
-              children={<EuiText size="m">Slanje obaveštenja</EuiText>}
+              children={<p className="titleText">Slanje obaveštenja</p>}
             ></EuiTitle>
             <EuiText size="s">Slanje obaveštenja učenicima škole</EuiText>
           </EuiFlexGroup>

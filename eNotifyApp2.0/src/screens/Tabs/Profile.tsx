@@ -88,7 +88,7 @@ const Profile = ({navigation}: {navigation: any}) => {
     if (imageUrl) setImageSource(imageUrl);
   };
   const changeMode = async () => {
-    console.log(Appearance.getColorScheme());
+    console.log('asparugus');
     Appearance.setColorScheme(
       Appearance.getColorScheme() === 'dark' ? 'light' : 'dark',
     );

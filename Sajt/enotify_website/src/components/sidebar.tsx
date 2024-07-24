@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaBook, FaUser, FaBell, FaUserGroup } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 
-function Sidebar({ tabs, handleTabChange, tabId, blockId }) {
+function Sidebar({ tabs, handleTabChange, tabId, blockId, closeSidebar }) {
   const [selectedBlock, setBlock] = useState(blockId);
   const [selectedTab, setTab] = useState(1);
   const handleClick = (block, tab, index) => {
@@ -10,6 +10,7 @@ function Sidebar({ tabs, handleTabChange, tabId, blockId }) {
     selectedTab !== tab && setTab(tab);
     tabId !== tab && handleTabChange(tab);
     block.onclick();
+    closeSidebar();
   };
   useEffect(() => {
     setBlock(blockId - 1);

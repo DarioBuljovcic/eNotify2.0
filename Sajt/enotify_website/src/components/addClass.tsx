@@ -221,7 +221,7 @@ export default function AddClass({
           >
             <EuiTitle
               size="m"
-              children={<EuiText size="m">Dodavanje razreda</EuiText>}
+              children={<p className="titleText">Dodavanje razreda</p>}
             ></EuiTitle>
             <EuiText size="s">
               Manuelno upisivanje jednog razreda u školski sistem
