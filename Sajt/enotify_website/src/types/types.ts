@@ -26,6 +26,7 @@ export type dataClass = {
   Class: string;
   ProfessorsList: string;
   Professor: string;
+  ProfessorID: string;
 };
 
 export type gridDataContext = {

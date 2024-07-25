@@ -72,7 +72,7 @@ export default function AddOneUser({
           Class: value,
         };
         const answer: boolean = await postUser(item);
-        console.log(answer);
+
         if (answer) {
           toast = {
             id: `toast${toastId}`,
@@ -129,13 +129,15 @@ export default function AddOneUser({
         text: (
           <>
             {name === "" && <p> &gt; Ime nije popunjeno!</p>}
-            {patternName.test(name) && <p> &gt; Ime mogu biti samo slova!</p>}
+            {name !== "" && !patternName.test(name) && (
+              <p> &gt; Ime mogu biti samo slova!</p>
+            )}
             {surname === "" && <p> &gt; Prezime nije popunjeno!</p>}
-            {patternName.test(surname) && (
+            {surname !== "" && !patternName.test(surname) && (
               <p> &gt; Prezime mogu biti samo slova!</p>
             )}
             {email === "" && <p>&gt; Email nije popunjen!</p>}
-            {email !== "" && patternEmail.test(email) && (
+            {email !== "" && !patternEmail.test(email) && (
               <p>&gt; Email nije u dobrom formatu!</p>
             )}
           </>

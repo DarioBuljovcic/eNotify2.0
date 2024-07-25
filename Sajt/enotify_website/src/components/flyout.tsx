@@ -164,7 +164,6 @@ export const FlyoutStudent = ({
           [key]: value,
         } as dataUsers | dataNotification | dataClass)
     );
-    console.log(value);
   };
 
   const onChangeCombo = (selected) => {
@@ -328,7 +327,6 @@ export const FlyoutProfessor = ({
           [key]: value,
         } as dataUsers | dataNotification | dataClass)
     );
-    console.log(value);
   };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -527,7 +525,7 @@ export const FlyoutNotification = ({
       );
       const newData = [...searchData];
       newData[rowIndex] = newValue;
-      console.log(newData);
+
       GetSetData();
       closeFlyout();
       toast = {
@@ -563,7 +561,6 @@ export const FlyoutNotification = ({
 
   const handleChange = (value, key) => {
     setNewValue((prev) => ({ ...prev, [key]: value }));
-    console.log(value);
   };
   const onChangeClass = (selected) => {
     let toast;
@@ -710,7 +707,7 @@ export const FlyoutClasses = ({
       const selectedProfs: DropdownUsers[] = [];
 
       const image = await getImage(newValue.url);
-      console.log(newValue);
+
       setImage(image);
 
       addition.forEach((d) => {
@@ -734,7 +731,6 @@ export const FlyoutClasses = ({
     if (professorList.length === 0) funk();
   }, []);
   const onChangeCombo = (selected) => {
-    console.log(selected);
     setSelectedProfessors(selected);
     let profs = "";
     selected.forEach((s) => {
@@ -747,18 +743,18 @@ export const FlyoutClasses = ({
     let toast;
     try {
       let ProfessorsList = "";
-      console.log(newValue.ProfessorsList);
+      let Professor;
       professorList.forEach((prof) => {
-        console.log(prof.label);
         if (newValue.ProfessorsList.includes(prof.label))
           ProfessorsList += `${prof.value},`;
+        if (newValue.Professor === prof.text) Professor = prof.value;
       });
       const setValue = {
         Class: newValue.Class,
-        Professor: newValue.Professor,
+        Professor: Professor,
         ProfessorsList: ProfessorsList,
       };
-      console.log(ProfessorsList, setValue, data[rowIndex]);
+
       await editData(data[rowIndex], setValue);
 
       toast = {
@@ -780,7 +776,7 @@ export const FlyoutClasses = ({
       toast = {
         id: `toast${toastId}`,
         title: "Greška",
-        color: "success",
+        color: "danger",
         text: (
           <>
             <p>Došlo je do greške prilikom izmene razreda</p>
@@ -789,12 +785,13 @@ export const FlyoutClasses = ({
       };
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
+      setIsModalVisible(false);
+      closeFlyout();
     }
   };
 
   const handleChange = (value, key) => {
     setNewValue((prev) => ({ ...prev, [key]: value }));
-    console.log(value);
   };
   const handleSubmit = () => {
     setModalConfirm(true);

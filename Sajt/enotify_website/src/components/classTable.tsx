@@ -40,7 +40,7 @@ export default function ClassTable({ getClasses, getImage, setImage }: Props) {
     setClassList([...data]);
     setSelectedClass(data[0]);
     const image = await getImage(data[0].url);
-    console.log(image);
+
     setTableImage(image !== undefined ? image : "");
   };
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function ClassTable({ getClasses, getImage, setImage }: Props) {
     const file = e.target.files?.[0];
     if (file) {
       await setImage(selectedClass?.value, file);
-      console.log("done?");
+
       const image = await getImage(file.name);
       setTableImage(image !== undefined ? image : "");
     }

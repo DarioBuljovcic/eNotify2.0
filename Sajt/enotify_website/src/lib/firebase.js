@@ -278,10 +278,12 @@ export const getAllClasses = async () => {
   querySnapshot.forEach(async (doc) => {
     const data = doc.data();
     let ProfessorsList = "";
+    let Professor = "";
 
     profesors.docs.forEach((prof) => {
       if (data.ProfessorsList.includes(prof.data().UserID))
         ProfessorsList += `${prof.data().Name}, `;
+      if (data.Professor === prof.data().UserID) Professor = prof.data().Name;
     });
 
     newData.push({
@@ -291,7 +293,8 @@ export const getAllClasses = async () => {
       url: data.Table,
       Class: data.Class,
       ProfessorsList: ProfessorsList,
-      Professor: data.Professor,
+      Professor: Professor,
+      ProfessorID: data.Professor,
     });
   });
   return newData;
@@ -338,7 +341,7 @@ export const sendNotification = async (item) => {
       }
     };
     sendData();
-    console.log("radiiii");
+
     await addDoc(collection(db, "Notifications"), dataToInsert);
   } catch (error) {
     throw new Error("Neuspešno slanje");
@@ -419,7 +422,7 @@ export const editUser = async (user, newValue) => {
   const q = query(collection(db, "Users"), where("UserID", "==", user.UserID));
   const querySnapshot = await getDocs(q);
   const docId = querySnapshot.docs[0].id;
-  console.log(newValue.Class);
+
   await updateDoc(doc(db, "Users", docId), {
     Name: newValue.Name,
     Class: newValue.Class,
@@ -432,7 +435,6 @@ export const editProfessor = async (user, newValue) => {
   const docId = querySnapshot.docs[0].id;
   if (newValue.Table)
     try {
-      console.log(newValue.Table.name);
       const storageRef = ref(storage, newValue.Table.name);
       uploadBytes(storageRef, newValue.Table)
         .then((snapshot) => {
@@ -485,11 +487,10 @@ export const postClass = async (dataToInsert, file) => {
   }
 };
 export const editClass = async (Class, newValue) => {
-  console.log(newValue);
   const q = query(collection(db, "Classes"), where("Class", "==", Class.Class));
   const querySnapshot = await getDocs(q);
   const docId = querySnapshot.docs[0].id;
-  console.log();
+
   await updateDoc(doc(db, "Classes", docId), {
     Professor: newValue.Professor,
     ProfessorsList: newValue.ProfessorsList,
@@ -502,7 +503,6 @@ export const Login = async (password) => {
 };
 export const deleteClassesDocuments = async (Classes) => {
   for (const Class of Classes) {
-    console.log(Class);
     const q = query(
       collection(db, "Classes"),
       where("Class", "==", Class.Class)
@@ -526,7 +526,6 @@ export const nextYear = async (Users) => {
       parseInt(user.Class.substring(0, 1)) +
       1 +
       user.Class.substring(1, user.Class.length);
-    console.log(newClass);
 
     if (classes.some((obj) => obj.Class === newClass)) {
       const newUser = {

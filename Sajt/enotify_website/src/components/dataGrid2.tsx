@@ -104,13 +104,17 @@ const deleteUsers = async (
     let newData;
 
     if (["Student", "Professor"].includes(dataType))
-      newData = searchData.filter((item) => dataForDelete.has(item.UserID));
+      newData = searchData.filter((item: dataUsers) =>
+        dataForDelete.has(item.UserID)
+      );
     else if (dataType === "Notifications")
-      newData = searchData.filter((item) =>
+      newData = searchData.filter((item: dataNotification) =>
         dataForDelete.has(item.NotificationId)
       );
     else if (dataType === "Class")
-      newData = searchData.filter((item) => dataForDelete.has(item.Class));
+      newData = searchData.filter((item: dataClass) =>
+        dataForDelete.has(item.value)
+      );
 
     await deleteData(newData);
     GetSetData();
@@ -314,7 +318,7 @@ const SelectionRowCell = ({ rowIndex }) => {
     else if (dataType === "Notifications")
       updateSelectedRows({ action: "add", rowIndex: index.NotificationId });
     else if (dataType === "Class")
-      updateSelectedRows({ action: "add", rowIndex: index.Class });
+      updateSelectedRows({ action: "add", rowIndex: index.value });
   };
   const handleDelete = () => {
     if (["Student", "Professor"].includes(dataType))
@@ -322,7 +326,7 @@ const SelectionRowCell = ({ rowIndex }) => {
     else if (dataType === "Notifications")
       updateSelectedRows({ action: "delete", rowIndex: index.NotificationId });
     else if (dataType === "Class")
-      updateSelectedRows({ action: "delete", rowIndex: index.Class });
+      updateSelectedRows({ action: "delete", rowIndex: index.value });
   };
 
   const handleChecked = () => {
@@ -331,7 +335,7 @@ const SelectionRowCell = ({ rowIndex }) => {
     else if (dataType === "Notifications")
       return selectedRows.has(searchData[rowIndex].NotificationId);
     else if (dataType === "Class")
-      return selectedRows.has(searchData[rowIndex].Class);
+      return selectedRows.has(searchData[rowIndex].value);
     else return false;
   };
   return (
@@ -575,7 +579,7 @@ export default function DataGrid({
       else if (dataType === "Class")
         newData = data.filter(
           (obj) =>
-            obj["Class"].toLowerCase().includes(search.toLowerCase()) ||
+            obj["value"].toLowerCase().includes(search.toLowerCase()) ||
             obj["ProfessorsList"]
               .toLowerCase()
               .includes(search.toLowerCase()) ||
@@ -629,11 +633,11 @@ export default function DataGrid({
       } else if (action === "selectAll") {
         let data;
         if (["Student", "Professor"].includes(dataType))
-          data = searchData.map((d: any) => d.UserID);
+          data = searchData.map((d: dataUsers) => d.UserID);
         else if (dataType === "Notifications")
-          data = searchData.map((d: any) => d.NotificationId);
+          data = searchData.map((d: dataNotification) => d.NotificationId);
         else if (dataType === "Class")
-          data = searchData.map((d: any) => d.Class);
+          data = searchData.map((d: dataClass) => d.value);
         return new Set(data);
       }
       return rowSelection;

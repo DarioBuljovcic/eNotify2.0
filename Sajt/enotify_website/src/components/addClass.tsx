@@ -53,7 +53,6 @@ export default function AddClass({
     let toast;
 
     if (file[0]) {
-      console.log(file[0]);
       const validateImage = (file) => {
         const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
         return validImageTypes.includes(file.type);
@@ -99,7 +98,6 @@ export default function AddClass({
           });
         });
         setProfessorList([...profs]);
-        console.log(getAllClasses);
         const classes: dataClass[] = await getAllClasses();
         setClasses(classes);
       };
@@ -127,7 +125,7 @@ export default function AddClass({
           Professor: prof?.text,
           ProfessorsList: ProfessorsList,
         };
-        if (allClasses?.some((obj) => obj.Class === name)) {
+        if (allClasses?.some((obj) => obj.value === name)) {
           toast = {
             id: `toast${toastId}`,
             title: "Greška",
@@ -183,7 +181,7 @@ export default function AddClass({
         setFiles(undefined);
         setName("");
         setSelectedClasses([]);
-        console.log(filePickerRef);
+
         if (filePickerRef.current) filePickerRef.current.removeFiles();
       }
     } else {

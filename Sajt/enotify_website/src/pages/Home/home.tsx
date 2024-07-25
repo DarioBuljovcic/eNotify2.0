@@ -123,12 +123,9 @@ export default function Home() {
   const panelled: EuiPageTemplateProps["panelled"] = true;
   const [selectedTab, setSelectedTab] = useState(1);
   const [selectedTabId, setSelectedTabId] = useState(1);
-  const [title, setTitle] = useState("Učenici");
   const [isOpen, setIsOpen] = useState(false);
   const [modalHeader, setModalHeader] = useState("");
   const [modalText, setModalText] = useState("");
-  const [modalConfirm, setModalConfirm] = useState(false);
-  const [result, setResult] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [toasts, setToasts] = useState([]);
@@ -368,23 +365,19 @@ export default function Home() {
     setSelectedTab(tab);
     switch (tab) {
       case 1:
-        setTitle("Učenici");
         setTabs(allTabs.Student);
         onSelectedTabChanged(1);
         break;
       case 2:
-        setTitle("Profesori");
         setTabs(allTabs.Professor);
         onSelectedTabChanged(1);
 
         break;
       case 3:
-        setTitle("Obaveštenja");
         setTabs(allTabs.Notifications);
         onSelectedTabChanged(1);
         break;
       case 4:
-        setTitle("Razredi");
         setTabs(allTabs.Class);
         onSelectedTabChanged(1);
         break;
@@ -417,7 +410,18 @@ export default function Home() {
     }
     return <FaGripLines size={20} />;
   };
-
+  const getTitle = () => {
+    switch (selectedTab) {
+      case 1:
+        return "Učenici";
+      case 2:
+        return "Profesori";
+      case 3:
+        return "Obaveštenja";
+      case 4:
+        return "Razredi";
+    }
+  };
   return (
     <DataContext.Provider value={{ setToasts, toastId, setToastId }}>
       <EuiProvider colorMode="light">
@@ -439,8 +443,6 @@ export default function Home() {
             setIsOpen={setIsOpen}
             modalHeader={modalHeader}
             modalText={modalText}
-            modalConfirm={modalConfirm}
-            setResult={setResult}
           />
           <EuiPageTemplate.Sidebar
             sticky={true}
@@ -456,9 +458,9 @@ export default function Home() {
             />
           </EuiPageTemplate.Sidebar>
 
-          <EuiPageHeader pageTitle={title} paddingSize="m" />
+          <EuiPageHeader pageTitle={getTitle()} paddingSize="m" />
           <EuiPageBody paddingSize="m">
-            <EuiTabs style={{ scrollbarWidth: "0px" }}>{renderTabs()}</EuiTabs>
+            <EuiTabs>{renderTabs()}</EuiTabs>
 
             {selectedTabContent}
           </EuiPageBody>
