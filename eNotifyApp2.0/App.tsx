@@ -32,10 +32,7 @@ import OpenImageModal from './src/components/OpenImageModal';
 import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
 import {MMKV} from 'react-native-mmkv';
 import translations from './src/constants/i18n/translations/translation';
-import {
-  translateText,
-  translateTextOutOfComponent,
-} from './src/hooks/getTranslation.tsx';
+import {useTranslation} from 'react-i18next';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -65,6 +62,7 @@ const storage = new MMKV();
 function App(): React.JSX.Element {
   LogBox.ignoreAllLogs();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const {t} = useTranslation();
 
   const Stack = createStackNavigator<Navigation>();
   const screenWidth = Dimensions.get('window').width;
@@ -164,7 +162,7 @@ function App(): React.JSX.Element {
             name="Registration"
             component={SignIn}
             options={() => ({
-              headerTitle: translateText(translations.registration),
+              headerTitle: t(translations.registration),
               headerBackVisible: false,
               headerLeft: () => null,
               headerStyle: {
@@ -216,7 +214,7 @@ function App(): React.JSX.Element {
             name="NotificationViewrs"
             component={NotificationViewrs}
             options={() => ({
-              headerTitle: translateTextOutOfComponent(translations.view),
+              headerTitle: t(translations.view),
               headerTitleStyle: {
                 textTransform: 'capitalize',
                 fontFamily: 'Mulish',
@@ -232,7 +230,7 @@ function App(): React.JSX.Element {
             name="About"
             component={About}
             options={() => ({
-              headerTitle: translateTextOutOfComponent(translations.about),
+              headerTitle: t(translations.about),
               headerTitleStyle: {
                 textTransform: 'capitalize',
                 fontFamily: 'Mulish',

@@ -30,7 +30,7 @@ import translations from '../../constants/i18n/translations/translation';
 import {TranslatedText, translateText} from '../../hooks/getTranslation.tsx';
 
 const HomeProfessor = ({navigation}: any) => {
-  const {user, isDarkMode} = useGlobalContext();
+  const {user, isDarkMode, isLoading, setIsLoading} = useGlobalContext();
   const [profClass, setProfClass] = useState<string>(user?.Class);
   const [classes, setClasses] = useState<Class[]>([]);
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -73,6 +73,7 @@ const HomeProfessor = ({navigation}: any) => {
     [],
   );
   const AddNotifaciton = () => {
+    setIsLoading(true);
     sendNotification({
       TextValue: textValue,
       TitleValue: TitleValue,
@@ -86,6 +87,7 @@ const HomeProfessor = ({navigation}: any) => {
     setSelectedFiles([]);
 
     bottomSheetRef.current?.close();
+    setIsLoading(false);
   };
 
   const AddFile = async () => {
@@ -236,9 +238,7 @@ const HomeProfessor = ({navigation}: any) => {
               }}
               data={classes}
               search
-              placeholder={
-                !isFocus ? translateText(translations.chooseGrade) : '...'
-              }
+              placeholder={translateText(translations.chooseGrade)}
               value={selectedClass}
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
@@ -288,6 +288,12 @@ const HomeProfessor = ({navigation}: any) => {
             </TouchableOpacity>
 
             <TouchableOpacity
+              disabled={
+                isLoading &&
+                TitleValue !== '' &&
+                textValue !== '' &&
+                selectedClass !== ''
+              }
               style={[
                 styles.send,
                 {

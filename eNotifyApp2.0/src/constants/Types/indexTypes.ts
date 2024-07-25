@@ -105,6 +105,7 @@ export type GlobarProviderProps = {
   storage: MMKV;
   isDarkMode: Color;
   setMode: (o: Color) => void;
+  setIsLoading: (o: boolean) => void;
 };
 export type LogOutModalProps = {
   onConfirm: () => void;

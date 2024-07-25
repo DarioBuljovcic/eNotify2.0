@@ -12,7 +12,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useTransition} from 'react';
 import {useGlobalContext} from '../../context/GlobalProvider';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Colors from '../../constants/Color';
@@ -25,6 +25,8 @@ import {
   translateText,
   translateTextOutOfComponent,
 } from '../../hooks/getTranslation.tsx';
+import i18n from 'i18next';
+import {useTranslation} from 'react-i18next';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -40,6 +42,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
     useGlobalContext();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCorrect, setIsCorrect] = useState(true);
+  const {t} = useTranslation();
 
   const submit = async () => {
     if (!UserID) {
@@ -99,7 +102,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
               style={styles.incorrectText}
             />
             <TextInput
-              placeholder={translateText(translations.identificationCode)}
+              placeholder={t(translations.identificationCode)}
               placeholderTextColor={isDarkMode.lightText}
               autoCapitalize="none"
               onChangeText={text => {

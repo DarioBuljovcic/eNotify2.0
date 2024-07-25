@@ -4,6 +4,7 @@ import {Appearance, ColorSchemeName, useColorScheme} from 'react-native';
 import {Color, GlobarProviderProps, User} from '../constants/Types/indexTypes';
 import loginUser from '../hooks/loginUser';
 import Colors from '../constants/Color';
+import i18n from 'i18next';
 
 const storage = new MMKV();
 const defaultContext = {
@@ -15,6 +16,7 @@ const defaultContext = {
   storage: storage,
   isDarkMode: Colors.Light,
   setMode: (o: Color) => {},
+  setIsLoading: (o: boolean) => {},
 };
 const GlobalContext = createContext<GlobarProviderProps>(defaultContext);
 
@@ -26,13 +28,15 @@ const GlobalProvider = ({children}: any) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isDarkMode, setMode] = useState<Color>(Colors.Light);
   useEffect(() => {
-    const getUser = async () => {
+    const getData = async () => {
       setIsLoading(true);
-      const UserID = await storage.getString('UserID');
 
-      const Mode: ColorSchemeName = (await storage.getString(
+      const Mode: ColorSchemeName = storage.getString(
         'Mode',
-      )) as ColorSchemeName;
+      ) as ColorSchemeName;
+      const Language = storage.getString('Language');
+      i18n.changeLanguage(Language);
+      const UserID = await storage.getString('UserID');
       try {
         if (UserID === undefined) {
           console.log('No account');
@@ -48,7 +52,7 @@ const GlobalProvider = ({children}: any) => {
           : () => {
               throw new Error();
             };
-          
+
         setIsLoggedIn(true);
       } catch (error: any) {
         console.log(error.message);
@@ -61,7 +65,7 @@ const GlobalProvider = ({children}: any) => {
         setIsLoading(false);
       }
     };
-    getUser();
+    getData();
   }, []);
 
   return (
@@ -75,6 +79,7 @@ const GlobalProvider = ({children}: any) => {
         storage,
         isDarkMode,
         setMode,
+        setIsLoading,
       }}>
       {children}
     </GlobalContext.Provider>
