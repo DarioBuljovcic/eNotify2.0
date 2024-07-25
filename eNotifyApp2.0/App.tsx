@@ -208,6 +208,11 @@ function App(): React.JSX.Element {
             options={() => ({
               headerTitle: '',
               cardStyle: {backgroundColor: Colors.Light.black},
+              headerStyle: {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.appBackground
+                  : Colors.Light.appBackground,
+              },
             })}
           />
           <Stack.Screen
@@ -223,6 +228,9 @@ function App(): React.JSX.Element {
               headerStyle: {
                 elevation: 0,
                 shadowOpacity: 0,
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.appBackground
+                  : Colors.Light.appBackground,
               },
             })}
           />
@@ -235,7 +243,11 @@ function App(): React.JSX.Element {
                 textTransform: 'capitalize',
                 fontFamily: 'Mulish',
               },
-              headerShown: true,
+              headerStyle: {
+                backgroundColor: isDarkMode
+                  ? Colors.Dark.appBackground
+                  : Colors.Light.appBackground,
+              },
             })}
           />
           <Stack.Screen
