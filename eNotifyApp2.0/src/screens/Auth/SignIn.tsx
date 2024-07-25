@@ -20,7 +20,11 @@ import loginUser from '../../hooks/loginUser';
 import {CommonActions} from '@react-navigation/native';
 import DropdownLang from '../../components/DropdownLang';
 import translations from '../../constants/i18n/translations/translation';
-import {TranslatedText, translateText} from '../../hooks/getTranslation.tsx';
+import {
+  TranslatedText,
+  translateText,
+  translateTextOutOfComponent,
+} from '../../hooks/getTranslation.tsx';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(

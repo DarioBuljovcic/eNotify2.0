@@ -7,7 +7,10 @@ import {Dimensions} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useGlobalContext} from '../context/GlobalProvider';
 import translations from '../constants/i18n/translations/translation';
-import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
+import {
+  TranslatedText,
+  translateTextOutOfComponent,
+} from '../hooks/getTranslation.tsx';
 import {useTranslation} from 'react-i18next';
 
 export default function LanguageModal({navigation}: any) {
@@ -144,7 +147,10 @@ export default function LanguageModal({navigation}: any) {
             navigation.navigate('Profile');
           }}
           activeOpacity={0.7}>
-          <Text style={styles.cancelTxt}>cancel</Text>
+          <TranslatedText
+            style={styles.cancelTxt}
+            value={translations.decline}
+          />
         </TouchableOpacity>
       </View>
     </View>
