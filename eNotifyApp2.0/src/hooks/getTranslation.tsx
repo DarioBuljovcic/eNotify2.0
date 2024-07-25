@@ -1,4 +1,4 @@
-import {t} from 'i18next';
+import i18n, {t} from 'i18next';
 import {useTranslation} from 'react-i18next';
 import {Text} from 'react-native';
 

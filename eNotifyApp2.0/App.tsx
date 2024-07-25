@@ -32,7 +32,10 @@ import OpenImageModal from './src/components/OpenImageModal';
 import NotificationViewrs from './src/screens/Notifications/NotificationViewrs';
 import {MMKV} from 'react-native-mmkv';
 import translations from './src/constants/i18n/translations/translation';
-import {translateTextOutOfComponent} from './src/hooks/getTranslation.tsx';
+import {
+  translateText,
+  translateTextOutOfComponent,
+} from './src/hooks/getTranslation.tsx';
 
 PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
 PermissionsAndroid.request(
@@ -161,9 +164,7 @@ function App(): React.JSX.Element {
             name="Registration"
             component={SignIn}
             options={() => ({
-              headerTitle: translateTextOutOfComponent(
-                translations.registration,
-              ),
+              headerTitle: translateText(translations.registration),
               headerBackVisible: false,
               headerLeft: () => null,
               headerStyle: {

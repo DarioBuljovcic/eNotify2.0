@@ -14,7 +14,10 @@ import Colors from '../constants/Color';
 import logOut from '../hooks/logOut';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import translations from '../constants/i18n/translations/translation';
-import {translateTextOutOfComponent} from '../hooks/getTranslation.tsx';
+import {
+  TranslatedText,
+  translateTextOutOfComponent,
+} from '../hooks/getTranslation.tsx';
 
 export default function LogOutModal({navigation}: any) {
   const {isDarkMode, setUser, setIsLoggedIn, user, storage} =
@@ -57,15 +60,24 @@ export default function LogOutModal({navigation}: any) {
               color={isDarkMode.textPrimary}
               style={{}}
             />
-            <Text
+            <TranslatedText
               style={[
                 styles.logOutTitle,
                 {
                   color: isDarkMode.textPrimary,
                 },
-              ]}>
-              {translateTextOutOfComponent(translations.logoutTitle)}
-            </Text>
+              ]}
+              value={translations.logoutTitle}
+            />
+            <TranslatedText
+              style={[
+                styles.logOutText,
+                {
+                  color: isDarkMode.textPrimary,
+                },
+              ]}
+              value={translations.logoutMessage}
+            />
             <View style={styles.buttonContainer}>
               <Pressable
                 style={[
@@ -75,12 +87,12 @@ export default function LogOutModal({navigation}: any) {
                   },
                 ]}
                 onPress={onCancel}>
-                <Text
+                <TranslatedText
+                  value={translations.decline}
                   style={{
                     color: isDarkMode.warningRed,
-                  }}>
-                  {translateTextOutOfComponent(translations.decline)}
-                </Text>
+                  }}
+                />
               </Pressable>
               <Pressable
                 style={[
@@ -94,12 +106,12 @@ export default function LogOutModal({navigation}: any) {
                   },
                 ]}
                 onPress={() => onConfirm()}>
-                <Text
+                <TranslatedText
+                  value={translations.confirm}
                   style={{
                     color: isDarkMode.white,
-                  }}>
-                  {translateTextOutOfComponent(translations.confirm)}
-                </Text>
+                  }}
+                />
               </Pressable>
             </View>
           </View>
