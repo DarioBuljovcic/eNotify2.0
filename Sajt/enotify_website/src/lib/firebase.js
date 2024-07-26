@@ -113,10 +113,17 @@ export const getProfessors = async () => {
   return newData;
 };
 export const postStudentsFile = async (data) => {
+  const users = await getStudents();
+  const classes = await getAllClasses();
+  let isWrong = false;
+  let indexes = "";
+  let i = 1;
   for (let item of data) {
     const name = item.Name + " " + item.Surname;
-    const users = await getStudents();
-    if (!users.some((obj) => obj.Email === item.Email))
+    if (
+      !users.some((obj) => obj.Email === item.Email) &&
+      !classes.some((obj) => obj.Class === item.Class)
+    )
       try {
         const userID = generatePassword(7);
         const data = {
@@ -148,7 +155,16 @@ export const postStudentsFile = async (data) => {
       } catch (error) {
         console.error(error);
       }
-    else throw new Error();
+    else {
+      isWrong = true;
+      indexes += `${i}, `;
+    }
+    i++;
+  }
+  if (isWrong) {
+    throw new Error(
+      `Korisnici u redovima ${indexes} su pogrešni ili već postoje`
+    );
   }
 };
 export const postProfessorsFile = async (data) => {

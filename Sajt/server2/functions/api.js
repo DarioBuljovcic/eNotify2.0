@@ -29,8 +29,7 @@ router.get("/", (req, res) => {
 router.post("/data", (req, res) => {
   const data = req.body; // Data sent from the client
   console.log(data);
-  data.Class.forEach((studentClass) => {
-    console.log(studentClass);
+  data.Class.forEach(async (studentClass) => {
     const message = {
       notification: {
         title: data.Tittle,
@@ -44,17 +43,25 @@ router.post("/data", (req, res) => {
       topic: studentClass, // or specify the device token for individual devices
     };
 
-    // Send the message
-    admin
+    await admin
       .messaging()
       .send(message)
       .then((response) => {
-        console.log("Successfully sent message:", response);
+        return response;
       })
       .catch((error) => {
-        console.error("Error sending message:", error);
+        return error;
       });
   });
+  response = {
+    statusCode: 200,
+    body: json.stringify({
+      message: "Success",
+      data: data,
+    }),
+  };
+
+  return response;
 });
 const transporter = nodemailer.createTransport({
   service: "gmail",

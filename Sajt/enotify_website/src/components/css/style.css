@@ -89,6 +89,7 @@ body .openSidebar {
   transition: left 0.5s 0.05s ease;
 }
 body .sidebarContainer {
+  height: 100vh;
   display: grid;
   background-color: #0e86d4;
   align-content: space-between;

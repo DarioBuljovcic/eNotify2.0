@@ -48,11 +48,11 @@ const sendNotification = async ({
       Seen: '',
       From: Name,
     };
-
+    console.log(data);
     const sendData = async () => {
       try {
         const response = await axios.post(
-          'http://enotifyserver2.netlify.app/.netlify/functions/api/data',
+          'https://enotifyserver2.netlify.app/.netlify/functions/api/data',
           data,
         );
       } catch (error) {

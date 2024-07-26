@@ -117,6 +117,7 @@ body {
     transition: left 0.5s 0.05s ease;
   }
   .sidebarContainer {
+    height: 100vh;
     display: grid;
     background-color: $main;
     align-content: space-between;

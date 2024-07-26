@@ -375,21 +375,11 @@ const trailingControlColumns = [
     ),
     rowCellRender: function RowCellRender({ rowIndex, colIndex }) {
       const [isPopoverVisible, setIsPopoverVisible] = useState(false);
-      const {
-        data,
-        searchData,
-        deleteData,
-        GetSetData,
-        ToastContext,
-        dataType,
-      } = useContext(DataContext);
-      const [selectedRows, updateSelectedRows] = useContext(SelectionContext);
+      const { searchData, deleteData, GetSetData, ToastContext, dataType } =
+        useContext(DataContext);
+      const [updateSelectedRows] = useContext(SelectionContext);
       const closePopover = () => setIsPopoverVisible(false);
-      const [newValue, setNewValue] = useState(searchData[rowIndex]);
-
       const [isModalVisible, setIsModalVisible] = useState(false);
-      // const [modalText, setModalText] = useState("");
-      // const [modalTitle, setModalTitle] = useState("");
 
       const closeModal = () => {
         setIsModalVisible(false);
@@ -406,7 +396,6 @@ const trailingControlColumns = [
       const showFlyout = () => {
         closePopover();
         setIsFlyoutVisible(true);
-        setNewValue(data[rowIndex]);
       };
       const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
@@ -495,9 +484,8 @@ const trailingControlColumns = [
           />
           {(dataType === "Student" || dataType === "Professor") && (
             <FlyoutStudent
-              newValue={newValue}
+              rowValue={searchData[rowIndex]}
               rowIndex={rowIndex}
-              setNewValue={setNewValue}
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
@@ -506,9 +494,8 @@ const trailingControlColumns = [
           )}
           {dataType === "Professor" && (
             <FlyoutProfessor
-              newValue={newValue}
+              rowValue={searchData[rowIndex]}
               rowIndex={rowIndex}
-              setNewValue={setNewValue}
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
@@ -517,9 +504,8 @@ const trailingControlColumns = [
           )}
           {dataType === "Notification" && (
             <FlyoutNotification
-              newValue={newValue}
+              rowValue={searchData[rowIndex]}
               rowIndex={rowIndex}
-              setNewValue={setNewValue}
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
@@ -529,9 +515,8 @@ const trailingControlColumns = [
 
           {dataType === "Class" && (
             <FlyoutClasses
-              newValue={newValue}
+              rowValue={searchData[rowIndex]  }
               rowIndex={rowIndex}
-              setNewValue={setNewValue}
               closeFlyout={closeFlyout}
               isFlyoutVisible={isFlyoutVisible}
               DataContext={DataContext}
@@ -593,6 +578,8 @@ export default function DataGrid({
   const GetSetData = async () => {
     const d: any = await getData();
     const a: any = await getAddition?.();
+    console.log("D:", d);
+    console.log("A:", a);
     setAddition(a);
     setData(d);
   };
@@ -699,6 +686,7 @@ export default function DataGrid({
                 renderCellValue={renderCellValue}
                 pagination={{
                   ...pagination,
+                  pageSize: 50,
                   onChangeItemsPerPage: setPageSize,
                   onChangePage: setPageIndex,
                 }}
