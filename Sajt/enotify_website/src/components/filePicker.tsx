@@ -35,6 +35,7 @@ export default function FilePicker({
   const { setToasts, setToastId, toastId } = useContext(DataContext);
 
   const [file, setFiles] = useState<File>();
+  const [isLoading, setIsLoading] = useState(false);
   const filePickerId = useGeneratedHtmlId({ prefix: "filePicker" });
   const filePickerRef = useRef<
     LegacyRef<Omit<EuiFilePickerProps, "stylesMemoizer">> | undefined
@@ -60,6 +61,7 @@ export default function FilePicker({
   const handleFile = async () => {
     let toast;
     if (file) {
+      setIsLoading(true);
       const reader = new FileReader();
       reader.onload = async (event) => {
         if (event.target) {
@@ -71,6 +73,7 @@ export default function FilePicker({
           try {
             const jsonData: ExcelItem[] = XLSX.utils.sheet_to_json(worksheet);
             const validatedData = validateExcelItems(jsonData);
+            console.log(validatedData);
             try {
               await postFile(validatedData);
               toast = {
@@ -90,7 +93,7 @@ export default function FilePicker({
                 color: "danger",
                 text: (
                   <>
-                    <p>Neki od korisnika već postoji!</p>
+                    <p>{error.message}</p>
                   </>
                 ),
               };
@@ -112,6 +115,7 @@ export default function FilePicker({
             if (filePickerRef.current) filePickerRef.current.removeFiles();
           }
         }
+        setIsLoading(false);
       };
 
       reader.readAsBinaryString(file);
@@ -129,6 +133,10 @@ export default function FilePicker({
       setToasts((prev) => [...prev, toast]);
       setToastId(toastId + 1);
     }
+  };
+  const btnText = () => {
+    if (isLoading) return "Učitava se fajl";
+    else return `Dodajte ${role === "u" ? "učenike" : "profesore"}`;
   };
   return (
     <EuiPageSection>
@@ -181,9 +189,13 @@ export default function FilePicker({
           />
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiButton fill={true} onClick={() => handleFile()}>{`Dodajte ${
-            role === "u" ? "učenike" : "profesore"
-          }`}</EuiButton>
+          <EuiButton
+            fill={true}
+            onClick={() => handleFile()}
+            disabled={isLoading}
+          >
+            {btnText()}
+          </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPageSection>

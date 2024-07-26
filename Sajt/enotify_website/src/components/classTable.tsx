@@ -132,7 +132,7 @@ export default function ClassTable({ getClasses, getImage, setImage }: Props) {
             }
           />
         </EuiFlexItem>
-        <EuiFlexItem style={{ minWidth: 300 }}>
+        <EuiFlexItem style={{ minWidth: 300, maxWidth: 1200 }}>
           <EuiImage src={tableImage} alt="Prikaz slike rasporeda" />
         </EuiFlexItem>
       </EuiFlexGroup>

@@ -80,17 +80,8 @@ export type PropsNotification = {
   DataContext: React.Context<toastContext>;
 };
 export type PropfFlyout = {
-  newValue: dataUsers | dataNotification | dataClass;
+  rowValue: dataUsers | dataNotification | dataClass;
   rowIndex: number;
-  setNewValue: (
-    cb:
-      | ((
-          prev: dataUsers | dataNotification | dataClass
-        ) => dataUsers | dataNotification | dataClass)
-      | dataUsers
-      | dataNotification
-      | dataClass
-  ) => void;
   closeFlyout: () => void;
   isFlyoutVisible: boolean;
   DataContext: React.Context<gridDataContext>;

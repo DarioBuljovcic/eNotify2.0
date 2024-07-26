@@ -87,29 +87,28 @@ const Modal = ({
 };
 
 export const FlyoutStudent = ({
-  newValue,
+  rowValue,
   rowIndex,
-  setNewValue,
   closeFlyout,
   isFlyoutVisible,
   DataContext,
   ToastContext,
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
-
   const { searchData, GetSetData, editData, addition, dataType } =
     useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const [selectedClass, setSelectedClass] = useState<dataClass[]>([]);
+  const [newValue, setNewValue] = useState(rowValue);
 
   useEffect(() => {
+    setNewValue(rowValue);
     const additionArray: dataClass | undefined = addition.find(
       (obj) => obj.text === searchData[rowIndex].Class
     ) as dataClass | undefined;
     if (additionArray === undefined) setSelectedClass([]);
     else setSelectedClass([additionArray]);
-  }, []);
+  }, [rowValue]);
   const handleEdit = async () => {
     let toast;
     try {
@@ -244,9 +243,8 @@ export const FlyoutStudent = ({
   return <></>;
 };
 export const FlyoutProfessor = ({
-  newValue,
+  rowValue,
   rowIndex,
-  setNewValue,
   closeFlyout,
   isFlyoutVisible,
   DataContext,
@@ -254,24 +252,18 @@ export const FlyoutProfessor = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { searchData, GetSetData, editData, addition, dataType } =
+  const { searchData, GetSetData, editData, dataType } =
     useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const [selectedClass, setSelectedClass] = useState<dataClass[]>([]);
-  const [image, setImage] = useState();
+  const [image, setImage] = useState<string>();
+  const [newValue, setNewValue] = useState(rowValue);
 
   useEffect(() => {
     const getImg = async () => {
-      const image = await getImage(newValue.Table);
-      setImage(image);
+      const image = await getImage(rowValue.Table);
+      setImage(image as string);
     };
     getImg();
-    const additionArray: dataClass | undefined = addition.find(
-      (obj) => obj.text === searchData[rowIndex].Class
-    ) as dataClass | undefined;
-    if (additionArray === undefined) setSelectedClass([]);
-    else setSelectedClass([additionArray]);
   }, []);
 
   const handleEdit = async () => {
@@ -678,9 +670,8 @@ export const FlyoutNotification = ({
   return <></>;
 };
 export const FlyoutClasses = ({
-  newValue,
+  rowValue,
   rowIndex,
-  setNewValue,
   closeFlyout,
   isFlyoutVisible,
   DataContext,
@@ -688,27 +679,23 @@ export const FlyoutClasses = ({
 }: PropfFlyout) => {
   const { setToasts, toastId, setToastId } = useContext(ToastContext);
 
-  const { data, editData, addition, GetSetData, searchData } =
+  const { addition, GetSetData, searchData, editData } =
     useContext(DataContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [professorList, setProfessorList] = useState<DropdownUsers[]>([]);
-  const [value, setValue] = useState<string>(newValue.Professor);
+  const [value, setValue] = useState<string>(rowValue.Professor);
   const [selectedProfessors, setSelectedProfessors] = useState<DropdownUsers[]>(
     []
   );
   const [modalHeader, setModalHeader] = useState("");
   const [modalText, setModalText] = useState("");
   const [modalConfirm, setModalConfirm] = useState(true);
-  const [image, setImage] = useState("");
+  const [newValue, setNewValue] = useState(rowValue);
 
   useEffect(() => {
     const funk = async () => {
       const profs: DropdownUsers[] = [];
       const selectedProfs: DropdownUsers[] = [];
-
-      const image = await getImage(newValue.url);
-
-      setImage(image);
 
       addition.forEach((d) => {
         if (d.Name === newValue.Professor) setValue(d.UserID);
@@ -745,17 +732,19 @@ export const FlyoutClasses = ({
       let ProfessorsList = "";
       let Professor;
       professorList.forEach((prof) => {
-        if (newValue.ProfessorsList.includes(prof.label))
+        console.log(prof.text);
+        if (newValue.ProfessorsList.includes(prof.text))
           ProfessorsList += `${prof.value},`;
-        if (newValue.Professor === prof.text) Professor = prof.value;
+        if (value === prof.value) Professor = prof.value;
       });
+
       const setValue = {
         Class: newValue.Class,
         Professor: Professor,
         ProfessorsList: ProfessorsList,
       };
-
-      await editData(data[rowIndex], setValue);
+      console.log(setValue);
+      await editData(searchData[rowIndex], setValue);
 
       toast = {
         id: `toast${toastId}`,
@@ -799,25 +788,7 @@ export const FlyoutClasses = ({
     setModalText(`Da li ste sigurni da želite da izvršite ovu izmenu?`);
     setIsModalVisible(true);
   };
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
 
-    if (file) {
-      handleChange(file, "Table");
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        setImage(e.target?.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const handleEditTable = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
   if (isFlyoutVisible) {
     return (
       <>
@@ -884,38 +855,8 @@ export const FlyoutClasses = ({
 
             <EuiSpacer />
 
-            <EuiDescriptionListTitle>Raspored</EuiDescriptionListTitle>
-            <EuiDescriptionListDescription style={{ maxWidth: 300 }}>
-              <EuiFieldText
-                value={newValue["Table"]}
-                disabled={true}
-                append={
-                  <button onClick={handleEditTable} style={{ height: "100%" }}>
-                    <input
-                      type="file"
-                      accept="image/png, image/gif, image/jpeg"
-                      style={{ display: "none" }}
-                      onChange={onChange}
-                      ref={fileInputRef}
-                    />
-                    <EuiIcon type="documentEdit"></EuiIcon>
-                  </button>
-                }
-              />
-
-              <EuiImage src={image as string} alt="Prikaz slike rasporeda" />
-            </EuiDescriptionListDescription>
-
-            <EuiSpacer />
-
             <EuiButton onClick={handleSubmit}>Izmeni</EuiButton>
           </EuiFlyoutBody>
-
-          <EuiFlyoutFooter>
-            <EuiButtonEmpty flush="left" iconType="cross" onClick={closeFlyout}>
-              Spusti
-            </EuiButtonEmpty>
-          </EuiFlyoutFooter>
         </EuiFlyout>
       </>
     );
