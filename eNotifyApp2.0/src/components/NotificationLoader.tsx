@@ -30,7 +30,7 @@ const NotificationLoader = ({navigation, userClass}: any) => {
 
   useEffect(() => {
     const getNotifications = async () => {
-      const notifi = await fetchNotifications(
+      await fetchNotifications(
         user?.Role as string,
         user?.Role === 'Student' ? (user?.Class as string) : userClass,
         user?.Name as string,

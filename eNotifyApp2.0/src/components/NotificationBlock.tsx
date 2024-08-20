@@ -103,11 +103,8 @@ const NotifiactionBlock = ({
       </View>
     </TouchableOpacity>
   );
-
-  index === 0
-    ? (dateNew = '')
-    : (dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.'));
-  if (dateNew === date) {
+  dateNew = format(item.Date.toDate(), 'dd.MM.yyyy.');
+  if (dateNew === date && index !== 0) {
     return display;
   } else {
     return (
@@ -120,7 +117,7 @@ const NotifiactionBlock = ({
                 color: isDarkMode.textPrimary,
               },
             ]}>
-            {date}
+            {dateNew}
           </Text>
         </View>
         {display}
