@@ -50,7 +50,7 @@ export default function FilePicker({
         typeof item.Name !== "string" ||
         typeof item.Surname !== "string" ||
         typeof item.Email !== "string" ||
-        typeof item.Class !== "string" ||
+        typeof item.Class !== "string" || //this line needs to be removed for when we're adding proffesors
         !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.Email)
       ) {
         throw new Error("Invalid ExcelItem");
@@ -72,7 +72,9 @@ export default function FilePicker({
           const worksheet = workbook.Sheets?.[sheetName];
           try {
             const jsonData: ExcelItem[] = XLSX.utils.sheet_to_json(worksheet);
+            console.log(jsonData);
             const validatedData = validateExcelItems(jsonData);
+            console.log("CHECK");
             console.log(validatedData);
             try {
               await postFile(validatedData);

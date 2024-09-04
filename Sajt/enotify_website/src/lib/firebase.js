@@ -178,7 +178,8 @@ export const postProfessorsFile = async (data) => {
         const data = {
           Name: name,
           Email: item.Email,
-          Class: item.Class,
+          //Class: item.Class,
+          Class: "", //When adding proffesors trough file class needs to be removed
           Role: "Professor",
           UserID: userID,
           LogOut: true,
